@@ -1,36 +1,51 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
 import { StructuredData } from "@/components/structured-data";
 import "./globals.css";
 
-const geist = Geist({ variable: "--font-geist", subsets: ["latin"] });
-const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-heading",
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+});
+
+const inter = Inter({
+  variable: "--font-body",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-mono",
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://viot.in"),
   applicationName: "VIoT",
-  title: { default: "VIoT — Reliable fleet data, from device to platform", template: "%s | VIoT" },
-  description: "VIoT connects certified telematics, smart locks, asset trackers, application-specific sensors and one operating platform.",
-  keywords: ["AIS-140 telematics", "fleet telematics India", "mining fleet tracking", "e-locks", "EV telematics", "fleet management platform"],
+  title: { default: "VIoT — Track what moves. Secure what matters. Control who gets in.", template: "%s | VIoT" },
+  description: "VIoT is an Indian IoT company built on three divisions: Fleet Intelligence, Asset Intelligence, and Access Control. One team, three disciplines, one platform.",
+  keywords: ["fleet intelligence", "asset intelligence", "access control", "vehicle telematics India", "smart locks", "IoT sensors India"],
   robots: { index: true, follow: true },
   icons: { icon: "/icon.svg" },
   creator: "VIoT Technologies LLP",
   publisher: "VIoT Technologies LLP",
-  category: "Fleet telematics and connected operations",
+  category: "Fleet, Asset & Access Intelligence",
   formatDetection: { email: false, address: false, telephone: false },
   openGraph: {
     type: "website",
     siteName: "VIoT",
-    title: "VIoT — Reliable fleet data, from device to platform",
-    description: "Connected field devices and one operating platform, evaluated as a single accountable system.",
+    title: "VIoT — Track what moves. Secure what matters. Control who gets in.",
+    description: "Fleet Intelligence, Asset Intelligence and Access Control unified on one platform with India-first support.",
     url: "https://viot.in",
   },
   twitter: {
     card: "summary",
-    title: "VIoT — Reliable fleet data, from device to platform",
-    description: "Connected field devices and one operating platform, evaluated as a single accountable system.",
+    title: "VIoT — Track what moves. Secure what matters. Control who gets in.",
+    description: "Fleet Intelligence, Asset Intelligence and Access Control unified on one platform with India-first support.",
   },
 };
 
@@ -44,7 +59,7 @@ const organizationSchema = {
       url: "https://viot.in",
       logo: "https://viot.in/icon.svg",
       email: "team@viot.in",
-      foundingDate: "2026-05",
+      foundingDate: "2026",
       address: {
         "@type": "PostalAddress",
         streetAddress: "Sector 104",
@@ -65,14 +80,17 @@ const organizationSchema = {
   ],
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${geist.variable} ${geistMono.variable}`}>
-      <body>
+    <html lang="en" className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable}`}>
+      {/* Added bg-ink here so the entire app base and header backdrop stays dark */}
+      <body className="bg-ink text-white antialiased">
         <StructuredData data={organizationSchema} />
-        <a className="skip-link" href="#main-content">Skip to content</a>
+      
         <Header />
-        <main id="main-content">{children}</main>
+        <main id="main-content" className="pt-[68px] lg:pt-[82px]">
+          {children}
+        </main>
         <Footer />
       </body>
     </html>
