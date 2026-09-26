@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
+import { Poppins, Inter, JetBrains_Mono } from "next/font/google";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
 import { StructuredData } from "@/components/structured-data";
 import "./globals.css";
 
-const spaceGrotesk = Space_Grotesk({
+const poppins = Poppins({
   variable: "--font-heading",
   subsets: ["latin"],
   weight: ["500", "600", "700"],
@@ -82,13 +82,11 @@ const organizationSchema = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable}`}>
-      {/* Added bg-ink here so the entire app base and header backdrop stays dark */}
+    <html lang="en" className={`${poppins.variable} ${inter.variable} ${jetbrainsMono.variable}`}>
       <body className="bg-ink text-white antialiased">
         <StructuredData data={organizationSchema} />
-      
         <Header />
-        <main id="main-content" className="pt-[68px] lg:pt-[82px]">
+        <main id="main-content">
           {children}
         </main>
         <Footer />

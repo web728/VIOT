@@ -70,17 +70,17 @@ function NavGroup({
             ? (hover ? "#007c67" : "#081b24") 
             : (hover ? "#27d59b" : "#ffffff"),
         }}
-        className="inline-flex items-center gap-1.5 text-[13px] font-semibold transition-colors"
+        className="inline-flex items-center gap-1 text-[13px] font-semibold transition-colors"
       >
         {label}
         <svg
-          width="9"
-          height="6"
+          width="7"
+          height="4"
           viewBox="0 0 9 6"
           fill="none"
           className={`transition-transform duration-200 ${hover ? "rotate-180" : ""}`}
         >
-          <path d="M1 1L4.5 4.5L8 1" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+          <path d="M1 1L4.5 4.5L8 1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
         </svg>
       </Link>
 
@@ -98,9 +98,9 @@ function NavGroup({
                 <Link
                   key={itemHref}
                   href={itemHref}
-                  className="group flex items-center justify-between rounded-xl px-3 py-2.5 text-[13px] font-medium text-[#081b24] transition-all hover:bg-[#f4f6f2] hover:text-[#007c67] hover:translate-x-0.5"
+                  className="group flex items-center justify-between rounded-xl px-3 py-2 text-[13px] font-semibold text-[#081b24] transition-all hover:bg-[#f4f6f2] hover:text-[#007c67]"
                 >
-                  <span className="font-medium text-[#081b24]">{itemLabel}</span>
+                  <span className="text-[#081b24]">{itemLabel}</span>
                   <span className="text-[#27d59b] opacity-0 transition-opacity group-hover:opacity-100 font-mono text-xs">→</span>
                 </Link>
               ))}
@@ -116,7 +116,12 @@ export function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const close = () => setOpen(false);
+  const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
+
+  const close = () => {
+    setOpen(false);
+    setMobileExpanded(null);
+  };
 
   useEffect(() => {
     const update = () => setIsScrolled(window.scrollY > 20);
@@ -125,6 +130,17 @@ export function Header() {
     return () => window.removeEventListener("scroll", update);
   }, []);
 
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [open]);
+
   return (
     <header className="fixed left-0 top-0 z-50 w-full px-4 pt-4 sm:px-6">
       <div
@@ -132,7 +148,7 @@ export function Header() {
           backgroundColor: isScrolled ? "#ffffff" : "#0d2935",
           borderColor: isScrolled ? "#cdd5d2" : "rgba(255, 255, 255, 0.15)",
         }}
-        className="mx-auto flex h-16 max-w-6xl items-center justify-between rounded-2xl px-5 transition-all duration-300 shadow-xl"
+        className="mx-auto flex h-16 max-w-6xl items-center justify-between rounded-2xl px-5 transition-all duration-300 shadow-xl border"
       >
         {/* Brand Logo */}
         <Link href="/" aria-label="VIoT home" className="flex items-center gap-2 group py-1" onClick={close}>
@@ -185,9 +201,10 @@ export function Header() {
               backgroundColor: isScrolled ? "#081b24" : "#27d59b",
               color: isScrolled ? "#ffffff" : "#081b24",
             }}
-            className="hidden items-center justify-center gap-2 rounded-full px-5 py-2.5 text-[13px] font-semibold whitespace-nowrap transition-all hover:opacity-90 hover:shadow-md lg:inline-flex"
+            className="hidden items-center justify-center gap-1.5 rounded-full px-4 py-2 text-[12px] font-bold tracking-wide whitespace-nowrap transition-all hover:opacity-90 hover:shadow-md lg:inline-flex"
           >
-            Get in touch <ArrowIcon />
+            Get in touch 
+            <span className="scale-75 inline-flex items-center"><ArrowIcon /></span>
           </Link>
 
           {/* Mobile Menu Button */}
@@ -208,44 +225,139 @@ export function Header() {
         </div>
       </div>
 
-      {/* Mobile Drawer / Dropdown */}
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ opacity: 0, y: -10, height: 0 }}
-            animate={{ opacity: 1, y: 0, height: "auto" }}
-            exit={{ opacity: 0, y: -10, height: 0 }}
-            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            className="mx-auto mt-2 max-w-6xl overflow-hidden rounded-2xl border border-[#cdd5d2] bg-white p-4 shadow-2xl lg:hidden"
-          >
-            <div className="flex flex-col gap-1 pb-2">
-              <Link href="/" onClick={close} className="rounded-xl px-3.5 py-3 text-sm font-semibold text-[#081b24] hover:bg-[#f4f6f2]">Home</Link>
-              <Link href="/about" onClick={close} className="rounded-xl px-3.5 py-3 text-sm font-semibold text-[#081b24] hover:bg-[#f4f6f2]">About Us</Link>
-              
-              {navItems.map((n) => (
-                <div key={n.href} className="border-t border-[#cdd5d2] pt-2 mt-1">
-                  <Link href={n.href} onClick={close} className="block px-3.5 py-2 text-sm font-bold text-[#081b24]">{n.label}</Link>
-                  <div className="flex flex-col gap-1 py-1 pl-3">
+    {/* Mobile Drawer / Dropdown */}
+<AnimatePresence>
+  {open && (
+    <motion.div
+      initial={{ opacity: 0, y: -10, scale: 0.98 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, y: -10, scale: 0.98 }}
+      transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+      className="absolute inset-x-4 top-20 z-50 mx-auto max-h-[82vh] max-w-6xl overflow-y-auto rounded-3xl border border-[#cdd5d2] bg-white p-5 shadow-2xl lg:hidden"
+    >
+      <div className="flex flex-col gap-1.5 pb-3">
+
+        {/* Home */}
+        <Link
+          href="/"
+          onClick={close}
+          className={`rounded-xl px-4 py-2.5 text-sm font-bold transition-colors ${
+            pathname === "/"
+              ? "bg-[#f4f6f2] !text-[#007c67]"
+              : "!text-[#07151c] hover:bg-[#f4f6f2] hover:!text-[#007c67]"
+          }`}
+        >
+          Home
+        </Link>
+
+        {/* About */}
+        <Link
+          href="/about"
+          onClick={close}
+          className={`rounded-xl px-4 py-2.5 text-sm font-bold transition-colors ${
+            pathname === "/about"
+              ? "bg-[#f4f6f2] !text-[#007c67]"
+              : "!text-[#07151c] hover:bg-[#f4f6f2] hover:!text-[#007c67]"
+          }`}
+        >
+          About Us
+        </Link>
+
+        {/* Navigation Items */}
+        {navItems.map((n) => {
+          const isExpanded = mobileExpanded === n.label;
+
+          return (
+            <div
+              key={n.href}
+              className="mt-1 overflow-hidden rounded-2xl border border-[#e5eae7] bg-[#f8faf9]"
+            >
+              <div className="flex items-center justify-between px-4 py-2.5">
+
+                <Link
+                  href={n.href}
+                  onClick={close}
+                  className="!text-[#07151c] text-sm font-bold transition-colors hover:!text-[#007c67]"
+                >
+                  {n.label}
+                </Link>
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    setMobileExpanded(isExpanded ? null : n.label)
+                  }
+                  className="p-2 !text-[#07151c] focus:outline-none"
+                  aria-label={`Toggle ${n.label} menu`}
+                >
+                  <svg
+                    width="9"
+                    height="6"
+                    viewBox="0 0 9 6"
+                    fill="none"
+                    className={`transition-transform duration-200 ${
+                      isExpanded ? "rotate-180" : ""
+                    }`}
+                  >
+                    <path
+                      d="M1 1L4.5 4.5L8 1"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                </button>
+              </div>
+
+              {/* Dropdown */}
+              <AnimatePresence>
+                {isExpanded && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="flex flex-col gap-1 border-t border-[#e5eae7] bg-white px-3 pb-3 pt-1"
+                  >
                     {n.links.map(([label, href]) => (
-                      <Link key={href} href={href} onClick={close} className="rounded-lg px-3 py-2 text-[13px] font-medium text-[#607078] hover:bg-[#f4f6f2] hover:text-[#081b24]">
-                        {label}
+                      <Link
+                        key={href}
+                        href={href}
+                        onClick={close}
+                        className="flex items-center justify-between rounded-xl px-3 py-2 text-[13px] font-semibold !text-[#07151c] transition-colors hover:bg-[#f4f6f2] hover:!text-[#007c67]"
+                      >
+                        <span>{label}</span>
+
+                        <span className="text-xs font-mono !text-[#009f7f]">
+                          →
+                        </span>
                       </Link>
                     ))}
-                  </div>
-                </div>
-              ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
+          );
+        })}
+      </div>
 
-            <Link
-              href="/contact"
-              onClick={close}
-              className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-[#27d59b] px-4 py-3 text-sm font-bold text-[#081b24] shadow-sm hover:bg-[#081b24] hover:text-white transition-colors"
-            >
-              Get in touch <ArrowIcon />
-            </Link>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Contact Button */}
+      <div className="mt-2 border-t border-[#e5eae7] pt-2">
+        <Link
+          href="/contact"
+          onClick={close}
+          className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#27d59b] px-4 py-3 text-sm font-bold !text-[#07151c] shadow-sm transition-colors hover:bg-[#081b24] hover:!text-white"
+        >
+          Get in touch
+
+          <span className="inline-flex scale-90 items-center">
+            <ArrowIcon />
+          </span>
+        </Link>
+      </div>
+    </motion.div>
+  )}
+</AnimatePresence>
     </header>
   );
 }

@@ -104,47 +104,402 @@ export default function PlatformPage() {
         </div>
       </section>
 
-      {/* 3. The Operating Loop (Dark Section) */}
-      <section className="py-24 md:py-32 bg-ink text-white border-b border-white/15 relative overflow-hidden">
-        <div className="absolute top-1/2 left-1/3 -translate-y-1/2 w-[500px] h-[300px] bg-signal/[0.04] rounded-full blur-[140px] pointer-events-none" />
+   {/* =========================================================
+    3. THE OPERATING LOOP — PREMIUM
+========================================================= */}
+<section className="relative overflow-hidden bg-[#06171f] text-white">
+  {/* Background grid */}
+  <div
+    className="pointer-events-none absolute inset-0 opacity-[0.035]"
+    style={{
+      backgroundImage:
+        "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
+      backgroundSize: "48px 48px",
+    }}
+  />
 
-        <div className="container mx-auto px-6 max-w-6xl relative z-10 space-y-16">
-          <Reveal direction="left">
-            <div className="space-y-3">
-              <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-ink-2 px-3.5 py-1 font-mono text-[11px] uppercase tracking-widest text-signal">
-                <span className="h-1.5 w-1.5 rounded-full bg-signal animate-pulse" />
-                The Operating Loop
-              </div>
-              <h2 className="font-heading text-3xl sm:text-4xl font-semibold text-white tracking-tight leading-[1.15]">
-                Capture. Deliver. Read. Act.
-              </h2>
-            </div>
-          </Reveal>
+  {/* Subtle ambient light */}
+  <div className="pointer-events-none absolute left-1/2 top-[35%] h-[420px] w-[700px] -translate-x-1/2 rounded-full bg-[#27d59b]/[0.035] blur-[150px]" />
 
-          <ProcessReveal className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="p-6 rounded-xl border border-white/10 bg-ink-2/40 backdrop-blur-sm space-y-2">
-              <span className="font-mono text-[10px] uppercase tracking-widest text-signal">01 / EDGE</span>
-              <h3 className="text-base font-semibold text-white">Capture</h3>
-              <p className="text-xs text-white/60 leading-relaxed">The device records position, vehicle and security events.</p>
-            </div>
-            <div className="p-6 rounded-xl border border-white/10 bg-ink-2/40 backdrop-blur-sm space-y-2">
-              <span className="font-mono text-[10px] uppercase tracking-widest text-signal">02 / NETWORK</span>
-              <h3 className="text-base font-semibold text-white">Deliver</h3>
-              <p className="text-xs text-white/60 leading-relaxed">Live reporting with fallback and offline storage for interruptions.</p>
-            </div>
-            <div className="p-6 rounded-xl border border-white/10 bg-ink-2/40 backdrop-blur-sm space-y-2">
-              <span className="font-mono text-[10px] uppercase tracking-widest text-signal">03 / PLATFORM</span>
-              <h3 className="text-base font-semibold text-white">Read</h3>
-              <p className="text-xs text-white/60 leading-relaxed">One operating picture makes the current state visible.</p>
-            </div>
-            <div className="p-6 rounded-xl border border-white/10 bg-ink-2/40 backdrop-blur-sm space-y-2">
-              <span className="font-mono text-[10px] uppercase tracking-widest text-signal">04 / TEAM</span>
-              <h3 className="text-base font-semibold text-white">Act</h3>
-              <p className="text-xs text-white/60 leading-relaxed">Alerts and history give teams the context to respond.</p>
-            </div>
-          </ProcessReveal>
+  <div className="relative mx-auto max-w-7xl px-6 py-24 sm:px-8 lg:px-12 lg:py-32">
+
+    {/* =====================================================
+        HEADER
+    ===================================================== */}
+    <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-end">
+
+      <div className="lg:col-span-7">
+        <div className="mb-6 flex items-center gap-3">
+          <span className="h-px w-10 bg-[#27d59b]" />
+
+          <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.22em] text-[#27d59b]">
+            The Operating Loop
+          </span>
         </div>
-      </section>
+
+        <h2 className="max-w-3xl text-4xl font-semibold leading-[1.02] tracking-[-0.045em] text-white sm:text-5xl lg:text-[58px]">
+          Capture.
+          <span className="text-white/30"> Deliver.</span>
+          <br />
+          Read.
+          <span className="text-[#27d59b]"> Act.</span>
+        </h2>
+      </div>
+
+      <div className="lg:col-span-5 lg:pb-1">
+        <p className="max-w-lg text-[15px] leading-7 tracking-[-0.005em] text-white/50">
+          VIoT turns signals from connected hardware into an operating
+          workflow — capturing what happens in the field, delivering it
+          reliably, making it visible and helping teams respond.
+        </p>
+      </div>
+    </div>
+
+    {/* =====================================================
+        FLOW
+    ===================================================== */}
+    <div className="relative mt-20">
+
+      {/* Desktop connecting line */}
+      <div className="absolute left-[12.5%] right-[12.5%] top-[91px] hidden h-px bg-white/[0.12] lg:block" />
+
+      {/* Green active line */}
+      <div className="absolute left-[12.5%] top-[91px] hidden h-px w-[22%] bg-[#27d59b] lg:block" />
+
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-4">
+
+        {/* =================================================
+            STEP 01
+        ================================================= */}
+        <div className="relative">
+          <div className="relative min-h-[360px] overflow-hidden rounded-[26px] border border-white/[0.1] bg-[#0a222c] p-7 transition-all duration-300 hover:-translate-y-1 hover:border-[#27d59b]/40">
+
+            {/* Step */}
+            <div className="flex items-center justify-between">
+              <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-[#27d59b]">
+                01 / Edge
+              </span>
+
+              <span className="font-mono text-[11px] text-white/20">
+                01
+              </span>
+            </div>
+
+            {/* Big icon */}
+            <div className="mt-9 flex h-[100px] w-[100px] items-center justify-center rounded-full border border-[#27d59b]/25 bg-[#27d59b]/[0.045]">
+
+              <svg
+                viewBox="0 0 48 48"
+                className="h-11 w-11 text-[#27d59b]"
+                fill="none"
+                aria-hidden="true"
+              >
+                <rect
+                  x="6"
+                  y="11"
+                  width="36"
+                  height="26"
+                  rx="5"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                />
+
+                <path
+                  d="M11 29h26"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
+                />
+
+                <path
+                  d="M14 22h10"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
+                />
+
+                <circle
+                  cx="34"
+                  cy="20"
+                  r="3"
+                  fill="currentColor"
+                />
+              </svg>
+            </div>
+
+            {/* Title */}
+            <div className="mt-8">
+              <h3 className="text-[25px] font-semibold leading-tight tracking-[-0.025em] text-white">
+                Capture
+              </h3>
+
+              <p className="mt-4 text-[14px] leading-7 text-white/50">
+                Connected devices record position, vehicle state and security
+                events directly from the field.
+              </p>
+            </div>
+
+            {/* Footer */}
+            <div className="absolute bottom-7 left-7 right-7 border-t border-white/[0.07] pt-4">
+              <p className="font-mono text-[9px] uppercase tracking-[0.16em] text-white/25">
+                Hardware · Sensors · Events
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* =================================================
+            STEP 02
+        ================================================= */}
+        <div className="relative">
+          <div className="relative min-h-[360px] overflow-hidden rounded-[26px] border border-white/[0.1] bg-[#0a222c] p-7 transition-all duration-300 hover:-translate-y-1 hover:border-[#27d59b]/40">
+
+            <div className="flex items-center justify-between">
+              <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-[#27d59b]">
+                02 / Network
+              </span>
+
+              <span className="font-mono text-[11px] text-white/20">
+                02
+              </span>
+            </div>
+
+            {/* Big icon */}
+            <div className="mt-9 flex h-[100px] w-[100px] items-center justify-center rounded-full border border-[#27d59b]/25 bg-[#27d59b]/[0.045]">
+
+              <svg
+                viewBox="0 0 48 48"
+                className="h-11 w-11 text-[#27d59b]"
+                fill="none"
+                aria-hidden="true"
+              >
+                <circle
+                  cx="24"
+                  cy="33"
+                  r="3"
+                  fill="currentColor"
+                />
+
+                <path
+                  d="M16 27a11 11 0 0 1 16 0"
+                  stroke="currentColor"
+                  strokeWidth="1.7"
+                  strokeLinecap="round"
+                />
+
+                <path
+                  d="M11 21a18 18 0 0 1 26 0"
+                  stroke="currentColor"
+                  strokeWidth="1.7"
+                  strokeLinecap="round"
+                  opacity=".65"
+                />
+
+                <path
+                  d="M6 15a25 25 0 0 1 36 0"
+                  stroke="currentColor"
+                  strokeWidth="1.7"
+                  strokeLinecap="round"
+                  opacity=".35"
+                />
+              </svg>
+            </div>
+
+            <div className="mt-8">
+              <h3 className="text-[25px] font-semibold leading-tight tracking-[-0.025em] text-white">
+                Deliver
+              </h3>
+
+              <p className="mt-4 text-[14px] leading-7 text-white/50">
+                Signals move through the network with fallback and offline
+                storage when connectivity is interrupted.
+              </p>
+            </div>
+
+            <div className="absolute bottom-7 left-7 right-7 border-t border-white/[0.07] pt-4">
+              <p className="font-mono text-[9px] uppercase tracking-[0.16em] text-white/25">
+                Connectivity · Sync · Fallback
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* =================================================
+            STEP 03
+        ================================================= */}
+        <div className="relative">
+          <div className="relative min-h-[360px] overflow-hidden rounded-[26px] border border-white/[0.1] bg-[#0a222c] p-7 transition-all duration-300 hover:-translate-y-1 hover:border-[#27d59b]/40">
+
+            <div className="flex items-center justify-between">
+              <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-[#27d59b]">
+                03 / Platform
+              </span>
+
+              <span className="font-mono text-[11px] text-white/20">
+                03
+              </span>
+            </div>
+
+            {/* Big icon */}
+            <div className="mt-9 flex h-[100px] w-[100px] items-center justify-center rounded-full border border-[#27d59b]/25 bg-[#27d59b]/[0.045]">
+
+              <svg
+                viewBox="0 0 48 48"
+                className="h-11 w-11 text-[#27d59b]"
+                fill="none"
+                aria-hidden="true"
+              >
+                <rect
+                  x="7"
+                  y="8"
+                  width="34"
+                  height="31"
+                  rx="5"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                />
+
+                <path
+                  d="M13 31l6-7 5 4 10-12"
+                  stroke="currentColor"
+                  strokeWidth="1.7"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+
+                <circle
+                  cx="13"
+                  cy="31"
+                  r="2"
+                  fill="currentColor"
+                />
+
+                <circle
+                  cx="19"
+                  cy="24"
+                  r="2"
+                  fill="currentColor"
+                />
+
+                <circle
+                  cx="24"
+                  cy="28"
+                  r="2"
+                  fill="currentColor"
+                />
+
+                <circle
+                  cx="34"
+                  cy="16"
+                  r="2"
+                  fill="currentColor"
+                />
+              </svg>
+            </div>
+
+            <div className="mt-8">
+              <h3 className="text-[25px] font-semibold leading-tight tracking-[-0.025em] text-white">
+                Read
+              </h3>
+
+              <p className="mt-4 text-[14px] leading-7 text-white/50">
+                The platform turns incoming signals into one operating picture
+                of what is happening across the deployment.
+              </p>
+            </div>
+
+            <div className="absolute bottom-7 left-7 right-7 border-t border-white/[0.07] pt-4">
+              <p className="font-mono text-[9px] uppercase tracking-[0.16em] text-white/25">
+                Platform · Analytics · Context
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* =================================================
+            STEP 04
+        ================================================= */}
+        <div className="relative">
+          <div className="relative min-h-[360px] overflow-hidden rounded-[26px] border border-[#27d59b]/25 bg-[#0a222c] p-7 transition-all duration-300 hover:-translate-y-1 hover:border-[#27d59b]/50">
+
+            <div className="flex items-center justify-between">
+              <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-[#27d59b]">
+                04 / Team
+              </span>
+
+              <span className="font-mono text-[11px] text-[#27d59b]/50">
+                04
+              </span>
+            </div>
+
+            {/* Big icon */}
+            <div className="mt-9 flex h-[100px] w-[100px] items-center justify-center rounded-full border border-[#27d59b]/35 bg-[#27d59b]/[0.07]">
+
+              <svg
+                viewBox="0 0 48 48"
+                className="h-11 w-11 text-[#27d59b]"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M24 6l15 6v10c0 9.5-6.2 16.2-15 20-8.8-3.8-15-10.5-15-20V12l15-6z"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  strokeLinejoin="round"
+                />
+
+                <path
+                  d="M15 24l6 6 12-13"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </div>
+
+            <div className="mt-8">
+              <h3 className="text-[25px] font-semibold leading-tight tracking-[-0.025em] text-white">
+                Act
+              </h3>
+
+              <p className="mt-4 text-[14px] leading-7 text-white/50">
+                Alerts and event history give teams the context to investigate,
+                respond and make operational decisions.
+              </p>
+            </div>
+
+            <div className="absolute bottom-7 left-7 right-7 border-t border-[#27d59b]/10 pt-4">
+              <p className="font-mono text-[9px] uppercase tracking-[0.16em] text-[#27d59b]/55">
+                Alerts · Response · Decisions
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    {/* =====================================================
+        BOTTOM STATEMENT
+    ===================================================== */}
+    <div className="mt-14 flex flex-col gap-5 border-t border-white/[0.08] pt-7 sm:flex-row sm:items-center sm:justify-between">
+      <p className="max-w-xl text-xs leading-6 text-white/35">
+        One continuous path from connected hardware to the people responsible
+        for the operation.
+      </p>
+
+      <div className="flex items-center gap-2">
+        <span className="h-1.5 w-1.5 rounded-full bg-[#27d59b]" />
+
+        <span className="font-mono text-[9px] font-medium uppercase tracking-[0.18em] text-white/30">
+          Connected operating architecture
+        </span>
+      </div>
+    </div>
+
+  </div>
+</section>
 
       {/* 4. Capabilities Feature Table (Light Background) */}
       <section className="py-24 md:py-32 bg-paper border-b border-line">
