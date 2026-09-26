@@ -21,42 +21,66 @@ const stats = [
   { value: "XXX+", label: "Global deployments" },
 ];
 
+// Light-trail streaks — varied lanes, speeds, widths, and a couple in amber for accent
+const streaks = [
+  { top: "8%", width: 340, duration: 3.2, delay: 0, color: "signal", opacity: 0.5 },
+  { top: "18%", width: 220, duration: 4.5, delay: 1.1, color: "signal", opacity: 0.3 },
+  { top: "27%", width: 420, duration: 2.8, delay: 0.4, color: "amber", opacity: 0.35 },
+  { top: "38%", width: 260, duration: 3.8, delay: 2, color: "signal", opacity: 0.4 },
+  { top: "50%", width: 500, duration: 3.4, delay: 0.8, color: "signal", opacity: 0.25 },
+  { top: "61%", width: 300, duration: 4.1, delay: 1.6, color: "amber", opacity: 0.3 },
+  { top: "71%", width: 240, duration: 2.6, delay: 2.4, color: "signal", opacity: 0.45 },
+  { top: "82%", width: 380, duration: 3.9, delay: 0.2, color: "signal", opacity: 0.3 },
+  { top: "92%", width: 260, duration: 3.1, delay: 1.4, color: "signal", opacity: 0.35 },
+];
+
 export function HeroSection() {
   return (
     <section className="relative flex min-h-[calc(100vh-68px)] lg:min-h-[calc(100vh-82px)] w-full items-center justify-center overflow-hidden bg-ink text-white px-6 py-12 lg:py-16">
-      
-      {/* Background Image with Foggy Dark Gradient Overlay */}
-      <div 
-        className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat opacity-25 mix-blend-luminosity scale-105 pointer-events-none"
-        style={{ backgroundImage: "url('/image/car.jpeg')" }}
-      />
-      <div className="absolute inset-0 z-0 bg-gradient-to-b from-ink/90 via-ink/80 to-ink pointer-events-none" />
 
-      {/* Minimalist animated background glow & floating pulse rings */}
+      {/* Base gradient */}
+      <div className="absolute inset-0 z-0 bg-gradient-to-b from-ink via-ink to-[#0d2935] pointer-events-none" />
+
+      {/* Light-trail streak field — rotated for a dynamic diagonal flow */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        <div className="absolute inset-[-15%] rotate-[-8deg]">
+          {streaks.map((s, i) => (
+            <motion.div
+              key={i}
+              className="absolute h-px rounded-full"
+              style={{
+                top: s.top,
+                width: s.width,
+                background:
+                  s.color === "signal"
+                    ? `linear-gradient(90deg, transparent, rgba(39,213,155,${s.opacity}) 60%, rgba(39,213,155,${s.opacity + 0.25}) 92%, rgba(39,213,155,0) 100%)`
+                    : `linear-gradient(90deg, transparent, rgba(255,179,33,${s.opacity}) 60%, rgba(255,179,33,${s.opacity + 0.2}) 92%, rgba(255,179,33,0) 100%)`,
+                boxShadow:
+                  s.color === "signal"
+                    ? `0 0 6px rgba(39,213,155,${s.opacity})`
+                    : `0 0 6px rgba(255,179,33,${s.opacity})`,
+              }}
+              animate={{ x: ["-40vw", "140vw"] }}
+              transition={{
+                duration: s.duration,
+                delay: s.delay,
+                repeat: Infinity,
+                ease: "linear",
+              }}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Vignette so streaks fade at the edges, keeping center clean for text */}
+      <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,#081b24_78%)] pointer-events-none" />
+      <div className="absolute inset-0 z-0 bg-gradient-to-b from-ink/40 via-transparent to-ink pointer-events-none" />
+
+      {/* Breathing ambient glow */}
       <motion.div
-        animate={{
-          scale: [1, 1.25, 1],
-          opacity: [0.06, 0.12, 0.06],
-        }}
-        transition={{
-          duration: 8,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
+        animate={{ scale: [1, 1.2, 1], opacity: [0.05, 0.1, 0.05] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[650px] bg-signal rounded-full blur-[160px] pointer-events-none z-0"
-      />
-      <motion.div
-        animate={{
-          scale: [1, 1.3, 1],
-          opacity: [0.03, 0.07, 0.03],
-        }}
-        transition={{
-          duration: 10,
-          repeat: Infinity,
-          ease: "easeInOut",
-          delay: 1,
-        }}
-        className="absolute bottom-10 right-1/4 w-[450px] h-[450px] bg-amber rounded-full blur-[140px] pointer-events-none z-0"
       />
 
       <motion.div
@@ -92,15 +116,15 @@ export function HeroSection() {
           VIoT is an Indian IoT company built on three unified divisions: Fleet Intelligence, Asset Intelligence, and Access Control. One platform, total command.
         </motion.p>
 
-        {/* CTA Buttons - Increased width & minimal compact arrow */}
+        {/* CTA Buttons */}
         <motion.div variants={item} className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4 w-full max-w-md">
-    <Link
-  href="/contact"
-  className="group inline-flex w-full sm:w-auto min-w-[210px] items-center justify-center gap-2.5 rounded-full bg-signal px-9 py-3.5 text-sm font-semibold text-ink whitespace-nowrap transition-all hover:bg-white hover:!text-black hover:shadow-[0_0_30px_rgba(39,213,155,0.35)]"
->
-  Talk to us
-  <ArrowIcon className="w-3 h-3 flex-shrink-0 transition-transform group-hover:translate-x-1" />
-</Link>
+          <Link
+            href="/contact"
+            className="group inline-flex w-full sm:w-auto min-w-[210px] items-center justify-center gap-2.5 rounded-full bg-signal px-9 py-3.5 text-sm font-semibold text-ink whitespace-nowrap transition-all hover:bg-white hover:!text-black hover:shadow-[0_0_30px_rgba(39,213,155,0.35)]"
+          >
+            Talk to us
+            <ArrowIcon className="w-3 h-3 flex-shrink-0 transition-transform group-hover:translate-x-1" />
+          </Link>
           <Link
             href="/platform"
             className="inline-flex w-full sm:w-auto min-w-[210px] items-center justify-center gap-2.5 rounded-full border border-white/15 bg-ink-2/40 px-9 py-3.5 text-sm font-medium text-white/90 whitespace-nowrap backdrop-blur-sm transition-all hover:border-signal hover:bg-ink-2 hover:text-white"

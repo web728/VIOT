@@ -16,7 +16,7 @@ export function CtaBand() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center justify-between rounded-3xl border border-white/10 bg-ink-2/60 backdrop-blur-xl p-8 sm:p-12 shadow-2xl"
+          className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center justify-between rounded-3xl border border-signal/20 bg-signal-dark/25 backdrop-blur-xl p-8 sm:p-12 shadow-2xl"
         >
           {/* Left Column: Heading & Eyebrow */}
           <div className="lg:col-span-7 space-y-3">
