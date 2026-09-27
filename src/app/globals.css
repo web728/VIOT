@@ -1,23 +1,26 @@
 @import "tailwindcss";
 
 @theme {
-  /* Brand colors */
+  /* Brand */
   --color-ink: #081b24;
   --color-ink-2: #0d2935;
   --color-paper: #f4f6f2;
   --color-white: #ffffff;
   --color-muted: #607078;
   --color-line: #cdd5d2;
+
+  /* Accent */
   --color-signal: #27d59b;
   --color-signal-dark: #007c67;
   --color-amber: #ffb321;
 
-  /* Fonts — mapped to next/font variables set in layout.tsx */
-  --font-sans: var(--font-body), -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-  --font-heading: var(--font-heading), var(--font-sans);
-  --font-mono: var(--font-mono), "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  /* Typography */
+  --font-sans: var(--viot-body), -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Arial, sans-serif;
+  --font-heading: var(--viot-heading), var(--font-sans);
+  --font-mono: var(--viot-mono), "SFMono-Regular", Consolas, monospace;
 
-  /* Extra spacing scale used across sections */
+  /* Layout */
   --spacing-18: 4.5rem;
   --spacing-22: 5.5rem;
   --spacing-30: 7.5rem;
@@ -34,8 +37,8 @@ html {
 body {
   margin: 0;
   overflow-x: hidden;
-  background-color: var(--color-ink); /* Updated to ink to fix the header backdrop issue */
-  color: var(--color-white);
+  background: var(--color-paper);
+  color: var(--color-ink);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -46,8 +49,21 @@ a {
   text-decoration: none;
 }
 
-button, input, textarea, select {
+button,
+input,
+textarea,
+select {
   font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+img,
+video {
+  display: block;
+  max-width: 100%;
 }
 
 svg {
@@ -59,7 +75,13 @@ svg {
   color: var(--color-ink);
 }
 
-/* Honeypot field for spam bots on the contact form */
+/* Accessibility */
+:where(a, button, input, select, textarea):focus-visible {
+  outline: 2px solid var(--color-amber);
+  outline-offset: 3px;
+}
+
+/* Contact form honeypot */
 .hp-field {
   position: absolute !important;
   left: -10000px !important;
@@ -68,21 +90,15 @@ svg {
   overflow: hidden !important;
 }
 
-/* Consistent focus ring across all interactive elements */
-:where(a, button, input, select, textarea):focus-visible {
-  outline: 3px solid var(--color-amber);
-  outline-offset: 4px;
-}
-
-/* Skip-to-content link (a11y) */
+/* Skip navigation */
 .skip-link {
   position: fixed;
   top: -80px;
   left: 16px;
   z-index: 100;
+  padding: 10px 16px;
   background: var(--color-signal);
   color: var(--color-ink);
-  padding: 10px 16px;
   font-weight: 700;
   transition: top 0.2s ease;
 }
@@ -91,11 +107,15 @@ svg {
   top: 12px;
 }
 
+/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
-  *, *::before, *::after {
+
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;

@@ -1,116 +1,215 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowIcon } from "@/components/icons";
 import Image from "next/image";
+
+import { ArrowIcon } from "@/components/icons";
 
 export function CtaBand() {
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e) => {
+ const handleSubmit = (e) => {
     e.preventDefault();
     setSubmitted(true);
   };
 
   return (
-    <section className="bg-slate-50 py-20 lg:py-24 px-6 lg:px-12 border-t border-slate-200/80">
-      <div className="mx-auto max-w-5xl bg-[#081b24] text-white rounded-[36px] p-6 sm:p-10 lg:p-12 relative overflow-visible shadow-[0_20px_50px_rgba(8,27,36,0.25)] border border-emerald-500/20">
-        
-        {/* Subtle Ambient Glow */}
-        <div className="absolute top-0 right-0 w-[450px] h-[450px] bg-emerald-500/10 rounded-full blur-[140px] pointer-events-none" />
+    <section className="border-t border-line bg-white">
+      <div className="mx-auto max-w-7xl px-6 py-14 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
+        {/* ================================================= */}
+        {/* CTA HEADER */}
+        {/* ================================================= */}
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center relative z-10">
-          
-          {/* LEFT SIDE: Floating 3D Truck Graphic & Clean Text */}
-          <div className="lg:col-span-5 space-y-4 pt-10 lg:pt-0">
-            
-            {/* Truck Container with Overlapping 3D Image */}
-            <div className="relative w-full h-32 sm:h-36 group overflow-visible">
-              
-              {/* Floating Truck Image (Half inside, half outside on top) */}
-              <div className="absolute -top-16 sm:-top-20 left-1/2 -translate-x-1/2 w-60 sm:w-72 h-44 sm:h-52 transition-transform duration-500 group-hover:scale-105 z-20">
+        <div className="grid gap-8 lg:grid-cols-12 lg:items-end">
+          <div className="lg:col-span-7">
+            <div className="mb-5 flex items-center gap-3">
+              <span className="h-px w-8 bg-signal-dark" />
+
+              <span className="font-mono text-[8px] font-semibold uppercase tracking-[0.2em] text-signal-dark">
+                Start a conversation
+              </span>
+            </div>
+
+            <h2 className="max-w-3xl font-heading text-3xl font-semibold leading-[1.04] tracking-[-0.045em] text-ink sm:text-4xl lg:text-[50px]">
+              Have a vehicle, asset or
+              <br />
+              <span className="text-muted">access challenge?</span>
+            </h2>
+          </div>
+
+          <div className="lg:col-span-5 lg:pb-1">
+            <p className="max-w-md text-sm leading-6 text-muted">
+              Tell us what you need to track, monitor or secure. Our team can
+              help identify the right VIoT solution for your operation.
+            </p>
+          </div>
+        </div>
+
+        {/* ================================================= */}
+        {/* MAIN CTA AREA */}
+        {/* ================================================= */}
+
+        <div className="mt-10 grid border-y border-line lg:grid-cols-12">
+          {/* ================================================= */}
+          {/* LEFT — VISUAL / MESSAGE */}
+          {/* ================================================= */}
+
+          <div className="relative overflow-hidden border-b border-line bg-paper lg:col-span-5 lg:border-b-0 lg:border-r">
+            {/* Technical top line */}
+            <div className="flex items-center justify-between border-b border-line px-5 py-3 sm:px-6">
+              <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-muted">
+                VIoT / Connected operations
+              </span>
+
+              <span className="font-mono text-[8px] text-muted">
+                01
+              </span>
+            </div>
+
+            <div className="relative min-h-[270px] overflow-hidden px-5 pb-5 pt-7 sm:px-6">
+              {/* Truck image */}
+              <div className="relative mx-auto h-[170px] w-full max-w-[390px] sm:h-[185px]">
                 <Image
                   src="/image/truck-pn.png"
-                  alt="VIoT Smart Fleet Truck"
+                  alt="VIoT connected vehicle"
                   fill
-                  priority
-                  className="object-contain drop-shadow-[0_20px_30px_rgba(16,185,129,0.35)]"
+                  sizes="(max-width: 1024px) 100vw, 40vw"
+                  className="object-contain"
                 />
               </div>
 
-              {/* Telemetry Badge */}
-              <div className="absolute bottom-2 left-1/2 -translate-x-1/2 z-10 bg-slate-900/90 backdrop-blur-md px-3 py-1 rounded-full border border-slate-800 text-[10px] font-mono text-emerald-400 shadow-sm">
-                ● Live Hardware Telemetry
-              </div>
-            </div>
+              {/* Technical reference line */}
+              <div className="absolute bottom-5 left-5 right-5 flex items-center gap-3 sm:left-6 sm:right-6">
+                <span className="h-px flex-1 bg-line" />
 
-            <div className="space-y-2 text-center lg:text-left pt-3">
-              <span className="font-mono text-[10px] uppercase tracking-widest text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-3 py-1 rounded-full inline-block">
-                Get Started
-              </span>
-              <h2 className="font-heading text-xl sm:text-2xl font-bold tracking-tight text-white leading-snug">
-                Track what moves. <span className="text-emerald-400">Secure what matters.</span>
-              </h2>
-              <p className="text-slate-300 text-xs sm:text-sm leading-relaxed font-sans max-w-sm">
-                Talk directly with the engineers behind the hardware for your fleet or facility tender.
-              </p>
+                <span className="font-mono text-[7px] uppercase tracking-[0.18em] text-muted">
+                  Fleet intelligence
+                </span>
+
+                <span className="h-1 w-1 bg-signal-dark" />
+              </div>
             </div>
           </div>
 
-          {/* RIGHT SIDE: Compact, Sleek Conversion Form (Matching Dark Ecosystem Tone) */}
-          <div className="lg:col-span-7 bg-slate-950/90 text-white border border-slate-800 rounded-3xl p-6 sm:p-7 shadow-xl backdrop-blur-md">
+          {/* ================================================= */}
+          {/* RIGHT — FORM */}
+          {/* ================================================= */}
+
+          <div className="lg:col-span-7">
             {submitted ? (
-              <div className="text-center py-10 space-y-3">
-                <div className="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 flex items-center justify-center mx-auto text-xl font-bold">
-                  ✓
+              <div className="flex min-h-[330px] flex-col justify-center px-5 py-10 sm:px-8 lg:px-10">
+                <div className="max-w-md">
+                  <div className="flex items-center gap-3">
+                    <span className="flex h-8 w-8 items-center justify-center border border-signal-dark bg-signal-dark text-sm font-semibold text-white">
+                      ✓
+                    </span>
+
+                    <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-signal-dark">
+                      Request received
+                    </span>
+                  </div>
+
+                  <h3 className="mt-5 font-heading text-2xl font-semibold tracking-[-0.035em] text-ink">
+                    Thank you for reaching out.
+                  </h3>
+
+                  <p className="mt-3 max-w-sm text-sm leading-6 text-muted">
+                    Our team will review your requirement and get back to you
+                    with the next steps.
+                  </p>
                 </div>
-                <h3 className="text-lg font-bold text-white tracking-tight">Request Received</h3>
-                <p className="text-xs text-slate-300 max-w-xs mx-auto font-sans">
-                  Our engineering team will connect with you within 24 hours.
-                </p>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-3.5">
-                <div className="border-b border-slate-800 pb-2.5 mb-1">
-                  <h3 className="text-sm font-bold text-white tracking-tight">Request a Free Demo</h3>
-                  <p className="text-[11px] text-slate-400 font-sans">Enter your details to get started instantly.</p>
+              <form
+                onSubmit={handleSubmit}
+                className="px-5 py-7 sm:px-8 sm:py-8 lg:px-10"
+              >
+                {/* Form heading */}
+                <div className="mb-6 flex items-end justify-between gap-4 border-b border-line pb-4">
+                  <div>
+                    <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-signal-dark">
+                      Enquiry
+                    </span>
+
+                    <h3 className="mt-1.5 font-heading text-xl font-semibold tracking-[-0.03em] text-ink">
+                      Tell us what you need.
+                    </h3>
+                  </div>
+
+                  <span className="hidden font-mono text-[8px] text-muted sm:block">
+                    VIOT / 01
+                  </span>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div className="space-y-1">
-                    <label className="text-[10px] font-mono text-slate-400 uppercase tracking-wider">Your Name</label>
-                    <input 
-                      required
-                      type="text" 
-                      placeholder="e.g. Rajesh Kumar"
-                      className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-emerald-500 transition-colors font-sans"
-                    />
-                  </div>
-                  <div className="space-y-1">
-                    <label className="text-[10px] font-mono text-slate-400 uppercase tracking-wider">Work Email</label>
-                    <input 
-                      required
-                      type="email" 
-                      placeholder="rajesh@company.com"
-                      className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-emerald-500 transition-colors font-sans"
-                    />
-                  </div>
-                </div>
+                {/* Fields */}
+                <div className="grid gap-x-5 gap-y-5 sm:grid-cols-2">
+                  {/* Name */}
+                  <div>
+                    <label
+                      htmlFor="cta-name"
+                      className="mb-1.5 block font-mono text-[8px] uppercase tracking-[0.16em] text-muted"
+                    >
+                      Your name
+                    </label>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div className="space-y-1">
-                    <label className="text-[10px] font-mono text-slate-400 uppercase tracking-wider">Phone Number</label>
-                    <input 
+                    <input
+                      id="cta-name"
                       required
-                      type="tel" 
+                      type="text"
+                      placeholder="Your name"
+                      className="w-full border-b border-line bg-transparent px-0 py-2.5 text-sm text-ink placeholder:text-muted/50 focus:border-signal-dark focus:outline-none"
+                    />
+                  </div>
+
+                  {/* Email */}
+                  <div>
+                    <label
+                      htmlFor="cta-email"
+                      className="mb-1.5 block font-mono text-[8px] uppercase tracking-[0.16em] text-muted"
+                    >
+                      Work email
+                    </label>
+
+                    <input
+                      id="cta-email"
+                      required
+                      type="email"
+                      placeholder="name@company.com"
+                      className="w-full border-b border-line bg-transparent px-0 py-2.5 text-sm text-ink placeholder:text-muted/50 focus:border-signal-dark focus:outline-none"
+                    />
+                  </div>
+
+                  {/* Phone */}
+                  <div>
+                    <label
+                      htmlFor="cta-phone"
+                      className="mb-1.5 block font-mono text-[8px] uppercase tracking-[0.16em] text-muted"
+                    >
+                      Phone number
+                    </label>
+
+                    <input
+                      id="cta-phone"
+                      required
+                      type="tel"
                       placeholder="+91 98765 43210"
-                      className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-emerald-500 transition-colors font-sans"
+                      className="w-full border-b border-line bg-transparent px-0 py-2.5 text-sm text-ink placeholder:text-muted/50 focus:border-signal-dark focus:outline-none"
                     />
                   </div>
-                  <div className="space-y-1">
-                    <label className="text-[10px] font-mono text-slate-400 uppercase tracking-wider">Looking For</label>
-                    <select 
-                      className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-300 focus:outline-none focus:border-emerald-500 transition-colors font-sans"
+
+                  {/* Requirement */}
+                  <div>
+                    <label
+                      htmlFor="cta-looking"
+                      className="mb-1.5 block font-mono text-[8px] uppercase tracking-[0.16em] text-muted"
+                    >
+                      Looking for
+                    </label>
+
+                    <select
+                      id="cta-looking"
+                      defaultValue="Fleet Intelligence"
+                      className="w-full border-b border-line bg-transparent px-0 py-2.5 text-sm text-ink focus:border-signal-dark focus:outline-none"
                     >
                       <option>Fleet Intelligence</option>
                       <option>Asset Intelligence</option>
@@ -120,23 +219,51 @@ export function CtaBand() {
                   </div>
                 </div>
 
-                <button
-                  type="submit"
-                  className="w-full mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-emerald-500 px-7 py-3 text-xs font-semibold text-slate-950 transition-all hover:bg-emerald-400 hover:shadow-[0_0_20px_rgba(16,185,129,0.35)] shadow-sm"
-                >
-                  Send inquiry
-                  <ArrowIcon className="w-3.5 h-3.5 flex-shrink-0" />
-                </button>
+                {/* Submit */}
+                <div className="mt-7 flex flex-col gap-4 border-t border-line pt-5 sm:flex-row sm:items-center sm:justify-between">
+                  <span className="max-w-xs font-mono text-[8px] leading-4 text-muted">
+                    Share your requirement and our team will help map the right
+                    connected solution.
+                  </span>
 
-                <p className="text-[10px] text-slate-400 text-center font-mono pt-1">
-                  Direct email: <span className="text-emerald-400 font-semibold">team@viot.in</span>
-                </p>
+                  <button
+                    type="submit"
+                    className="group inline-flex w-full items-center justify-center gap-3 bg-ink px-6 py-3 text-xs font-semibold text-white transition-colors hover:bg-signal-dark sm:w-auto"
+                  >
+                    Send enquiry
+
+                    <ArrowIcon className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-1" />
+                  </button>
+                </div>
+
+                {/* Email */}
+                <div className="mt-4 flex items-center justify-between">
+                  <span className="font-mono text-[8px] uppercase tracking-[0.15em] text-muted">
+                    Direct contact
+                  </span>
+
+                  <span className="font-mono text-[9px] text-signal-dark">
+                    team@viot.in
+                  </span>
+                </div>
               </form>
             )}
           </div>
-
         </div>
 
+        {/* ================================================= */}
+        {/* BOTTOM LINE */}
+        {/* ================================================= */}
+
+        <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-muted">
+            Fleet · Asset · Access
+          </span>
+
+          <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-muted">
+            One connected ecosystem
+          </span>
+        </div>
       </div>
     </section>
   );

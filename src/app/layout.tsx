@@ -1,51 +1,90 @@
 import type { Metadata } from "next";
 import { Poppins, Inter, JetBrains_Mono } from "next/font/google";
+
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
 import { StructuredData } from "@/components/structured-data";
+
 import "./globals.css";
 
 const poppins = Poppins({
-  variable: "--font-heading",
+  variable: "--viot-heading",
   subsets: ["latin"],
   weight: ["500", "600", "700"],
+  display: "swap",
 });
 
 const inter = Inter({
-  variable: "--font-body",
+  variable: "--viot-body",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
+  display: "swap",
 });
 
 const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-mono",
+  variable: "--viot-mono",
   subsets: ["latin"],
   weight: ["500", "600", "700"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://viot.in"),
   applicationName: "VIoT",
-  title: { default: "VIoT — Track what moves. Secure what matters. Control who gets in.", template: "%s | VIoT" },
-  description: "VIoT is an Indian IoT company built on three divisions: Fleet Intelligence, Asset Intelligence, and Access Control. One team, three disciplines, one platform.",
-  keywords: ["fleet intelligence", "asset intelligence", "access control", "vehicle telematics India", "smart locks", "IoT sensors India"],
-  robots: { index: true, follow: true },
-  icons: { icon: "/icon.svg" },
+
+  title: {
+    default:
+      "VIoT — Track what moves. Secure what matters. Control who gets in.",
+    template: "%s | VIoT",
+  },
+
+  description:
+    "VIoT is an Indian IoT company built on three divisions: Fleet Intelligence, Asset Intelligence, and Access Control. One team, three disciplines, one platform.",
+
+  keywords: [
+    "fleet intelligence",
+    "asset intelligence",
+    "access control",
+    "vehicle telematics India",
+    "smart locks",
+    "IoT sensors India",
+  ],
+
+  robots: {
+    index: true,
+    follow: true,
+  },
+
+  icons: {
+    icon: "/icon.svg",
+  },
+
   creator: "VIoT Technologies LLP",
   publisher: "VIoT Technologies LLP",
   category: "Fleet, Asset & Access Intelligence",
-  formatDetection: { email: false, address: false, telephone: false },
+
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+
   openGraph: {
     type: "website",
     siteName: "VIoT",
-    title: "VIoT — Track what moves. Secure what matters. Control who gets in.",
-    description: "Fleet Intelligence, Asset Intelligence and Access Control unified on one platform with India-first support.",
+    title:
+      "VIoT — Track what moves. Secure what matters. Control who gets in.",
+    description:
+      "Fleet Intelligence, Asset Intelligence and Access Control unified on one platform with India-first support.",
     url: "https://viot.in",
   },
+
   twitter: {
     card: "summary",
-    title: "VIoT — Track what moves. Secure what matters. Control who gets in.",
-    description: "Fleet Intelligence, Asset Intelligence and Access Control unified on one platform with India-first support.",
+    title:
+      "VIoT — Track what moves. Secure what matters. Control who gets in.",
+    description:
+      "Fleet Intelligence, Asset Intelligence and Access Control unified on one platform with India-first support.",
   },
 };
 
@@ -74,21 +113,31 @@ const organizationSchema = {
       "@id": "https://viot.in/#website",
       url: "https://viot.in",
       name: "VIoT",
-      publisher: { "@id": "https://viot.in/#organization" },
+      publisher: {
+        "@id": "https://viot.in/#organization",
+      },
       inLanguage: "en-IN",
     },
   ],
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
-    <html lang="en" className={`${poppins.variable} ${inter.variable} ${jetbrainsMono.variable}`}>
-      <body className="bg-ink text-white antialiased">
+    <html
+      lang="en"
+      className={`${poppins.variable} ${inter.variable} ${jetbrainsMono.variable}`}
+    >
+      <body className="bg-paper text-ink antialiased">
         <StructuredData data={organizationSchema} />
+
         <Header />
-        <main id="main-content">
-          {children}
-        </main>
+
+        <div id="main-content">{children}</div>
+
         <Footer />
       </body>
     </html>

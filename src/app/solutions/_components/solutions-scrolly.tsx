@@ -10,7 +10,7 @@ const containerVariants: Variants = {
   hidden: {},
   show: {
     transition: {
-      staggerChildren: 0.08,
+      staggerChildren: 0.06,
     },
   },
 };
@@ -18,13 +18,13 @@ const containerVariants: Variants = {
 const itemVariants: Variants = {
   hidden: {
     opacity: 0,
-    y: 18,
+    y: 14,
   },
   show: {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.6,
+      duration: 0.55,
       ease: [0.16, 1, 0.3, 1],
     },
   },
@@ -37,57 +37,57 @@ export function SolutionsScrolly({
 }) {
   return (
     <section className="relative overflow-hidden border-b border-white/[0.08] bg-[#081b24] text-white">
-      {/* Very subtle grid */}
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.018]"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(255,255,255,0.7) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.7) 1px, transparent 1px)",
-          backgroundSize: "56px 56px",
-        }}
-      />
-
-      <div className="relative z-10 mx-auto max-w-7xl px-6 py-20 lg:px-12 lg:py-28">
-        {/* Section heading */}
+      <div className="relative z-10 mx-auto max-w-[1440px] px-6 sm:px-8 lg:px-12">
+        {/* =====================================================
+            HEADER
+        ===================================================== */}
         <motion.div
-          initial={{ opacity: 0, y: 15 }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
+          viewport={{ once: true, amount: 0.25 }}
           transition={{
             duration: 0.7,
             ease: [0.16, 1, 0.3, 1],
           }}
-          className="mb-14 flex flex-col gap-6 border-b border-white/[0.08] pb-8 sm:flex-row sm:items-end sm:justify-between"
+          className="grid grid-cols-1 gap-8 border-b border-white/[0.1] py-12 sm:py-14 lg:grid-cols-12 lg:items-end lg:gap-10 lg:py-16"
         >
-          <div>
-            <div className="mb-4 flex items-center gap-3">
-              <span className="h-px w-7 bg-[#24C491]" />
+          <div className="lg:col-span-8">
+            <div className="mb-5 flex items-center gap-3">
+              <span className="h-px w-9 bg-[#27d59b]" />
 
-              <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.2em] text-[#24C491]/80">
+              <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.2em] text-[#27d59b]">
                 Operating environments
               </span>
             </div>
 
-            <h2 className="max-w-2xl font-heading text-2xl font-semibold leading-tight tracking-[-0.035em] text-white sm:text-3xl lg:text-4xl">
-              Technology follows the operation.
+            <h2 className="max-w-3xl font-heading text-3xl font-semibold leading-[1.06] tracking-[-0.045em] text-white sm:text-4xl lg:text-[48px]">
+              Technology follows
+              <br />
+              <span className="font-normal text-white/40">
+                the operation.
+              </span>
             </h2>
           </div>
 
-          <p className="max-w-sm text-sm leading-6 text-white/35">
-            Select an environment to see how VIoT can connect field hardware,
-            operational data and the teams responsible for action.
-          </p>
+          <div className="lg:col-span-4">
+            <p className="max-w-md text-sm leading-7 text-white/40">
+              Explore the operating environments where connected hardware,
+              field data and platform intelligence come together.
+            </p>
+          </div>
         </motion.div>
 
-        {/* Solution list */}
+        {/* =====================================================
+            SOLUTION LIST
+        ===================================================== */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="show"
-          viewport={{ once: true, margin: "-60px" }}
-          className="divide-y divide-white/[0.09]"
+          viewport={{ once: true, amount: 0.12 }}
+          className="divide-y divide-white/[0.1]"
         >
-          {solutions.map((solution, index) => (
+          {solutions.map((solution) => (
             <motion.article
               key={solution.slug}
               variants={itemVariants}
@@ -95,40 +95,49 @@ export function SolutionsScrolly({
             >
               <Link
                 href={`/solutions/${solution.slug}`}
-                className="block py-8 outline-none sm:py-10 lg:py-11"
+                className="relative block outline-none"
               >
-                <div className="grid grid-cols-1 gap-7 lg:grid-cols-12 lg:items-center lg:gap-10">
-                  {/* Number */}
+                {/* Active vertical signal */}
+                <span className="absolute left-0 top-0 h-0 w-px bg-[#27d59b] transition-all duration-500 group-hover:h-full" />
+
+                <div className="grid grid-cols-1 gap-7 py-8 sm:py-9 lg:grid-cols-12 lg:items-center lg:gap-10 lg:py-10">
+                  {/* -------------------------------------------------
+                      NUMBER
+                  ------------------------------------------------- */}
                   <div className="lg:col-span-1">
                     <div className="flex items-center gap-3">
-                      <span className="font-mono text-[10px] font-medium tracking-[0.16em] text-[#24C491]/70">
+                      <span className="font-mono text-[10px] font-semibold tracking-[0.18em] text-[#27d59b]/70">
                         {solution.number}
                       </span>
 
-                      <span className="h-px w-7 bg-white/10 transition-all duration-300 group-hover:w-10 group-hover:bg-[#24C491]/60" />
+                      <span className="h-px w-5 bg-white/[0.15] transition-all duration-500 group-hover:w-8 group-hover:bg-[#27d59b]/50" />
                     </div>
                   </div>
 
-                  {/* Main title */}
+                  {/* -------------------------------------------------
+                      TITLE / HEADLINE
+                  ------------------------------------------------- */}
                   <div className="lg:col-span-4">
-                    <h3 className="font-heading text-xl font-semibold tracking-[-0.025em] text-white transition-colors duration-300 group-hover:text-[#24C491] sm:text-2xl">
+                    <h3 className="font-heading text-xl font-semibold leading-tight tracking-[-0.03em] text-white transition-transform duration-500 group-hover:translate-x-1 sm:text-2xl">
                       {solution.name}
                     </h3>
 
-                    <p className="mt-3 max-w-md text-sm leading-6 text-white/40 transition-colors duration-300 group-hover:text-white/55">
-                      {solution.lede}
+                    <p className="mt-3 max-w-lg text-sm leading-6 text-white/38 transition-colors duration-300 group-hover:text-white/55">
+                      {solution.headline}
                     </p>
                   </div>
 
-                  {/* Priorities */}
+                  {/* -------------------------------------------------
+                      PRIORITIES
+                  ------------------------------------------------- */}
                   <div className="lg:col-span-5">
-                    <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
-                      {solution.priorities.slice(0, 3).map((priority) => (
+                    <div className="grid grid-cols-1 gap-x-6 gap-y-2.5 sm:grid-cols-2 lg:grid-cols-1">
+                      {solution.priorities.slice(0, 4).map((priority) => (
                         <div
                           key={priority}
-                          className="flex items-start gap-3 text-xs text-white/45 transition-colors duration-300 group-hover:text-white/65"
+                          className="flex items-start gap-3 text-xs leading-5 text-white/38 transition-colors duration-300 group-hover:text-white/55"
                         >
-                          <span className="mt-[2px] shrink-0 text-[#24C491]">
+                          <span className="mt-[3px] flex h-3 w-3 shrink-0 items-center justify-center text-[#27d59b]/70">
                             <CheckIcon />
                           </span>
 
@@ -138,15 +147,17 @@ export function SolutionsScrolly({
                     </div>
                   </div>
 
-                  {/* Arrow */}
+                  {/* -------------------------------------------------
+                      ACTION
+                  ------------------------------------------------- */}
                   <div className="lg:col-span-2 lg:flex lg:justify-end">
-                    <div className="inline-flex items-center gap-3 font-mono text-[9px] font-semibold uppercase tracking-[0.16em] text-white/30 transition-colors duration-300 group-hover:text-white">
-                      <span className="hidden sm:inline">
-                        Explore environment
+                    <div className="flex items-center gap-4">
+                      <span className="hidden font-mono text-[8px] font-semibold uppercase tracking-[0.18em] text-white/25 transition-colors duration-300 group-hover:text-white/50 sm:inline">
+                        Explore
                       </span>
 
-                      <span className="flex h-10 w-10 items-center justify-center rounded-full border border-white/[0.12] transition-all duration-300 group-hover:border-[#24C491]/50 group-hover:bg-[#24C491] group-hover:text-[#081b24]">
-                        <ArrowIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+                      <span className="flex h-9 w-9 items-center justify-center border border-white/[0.16] text-white/45 transition-all duration-400 group-hover:border-[#27d59b]/60 group-hover:bg-[#27d59b] group-hover:text-[#081b24]">
+                        <ArrowIcon className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
                       </span>
                     </div>
                   </div>
@@ -156,21 +167,47 @@ export function SolutionsScrolly({
           ))}
         </motion.div>
 
-        {/* Bottom note */}
+        {/* =====================================================
+            BOTTOM SYSTEM STRIP
+        ===================================================== */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: 0.2 }}
-          className="mt-10 flex flex-col gap-3 border-t border-white/[0.08] pt-6 sm:flex-row sm:items-center sm:justify-between"
+          transition={{ duration: 0.7, delay: 0.15 }}
+          className="flex flex-col gap-4 border-t border-white/[0.1] py-6 sm:flex-row sm:items-center sm:justify-between"
         >
-          <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/25">
-            Hardware · Connectivity · Platform · Action
-          </p>
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+            <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-white/25">
+              Hardware
+            </span>
 
-          <span className="text-xs text-white/25">
-            Built around the conditions in the field.
-          </span>
+            <span className="h-3 w-px bg-white/[0.12]" />
+
+            <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-white/25">
+              Connectivity
+            </span>
+
+            <span className="h-3 w-px bg-white/[0.12]" />
+
+            <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-white/25">
+              Platform
+            </span>
+
+            <span className="h-3 w-px bg-white/[0.12]" />
+
+            <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-white/25">
+              Action
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <span className="h-1.5 w-1.5 bg-[#27d59b]" />
+
+            <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-white/30">
+              Built around the field
+            </span>
+          </div>
         </motion.div>
       </div>
     </section>

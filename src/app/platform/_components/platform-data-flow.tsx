@@ -1,770 +1,544 @@
 "use client";
 
+import { motion } from "framer-motion";
+
+const devices = [
+  {
+    number: "01",
+    name: "Vehicle",
+    detail: "Telematics",
+  },
+  {
+    number: "02",
+    name: "E-Lock",
+    detail: "Security",
+  },
+  {
+    number: "03",
+    name: "Sensors",
+    detail: "Field data",
+  },
+  {
+    number: "04",
+    name: "Video",
+    detail: "Visual layer",
+  },
+];
+
 export function PlatformDataFlow() {
   return (
-    <div
-      className="relative w-full overflow-hidden rounded-[28px] border border-white/[0.08] bg-[#0a2029] p-5 shadow-[0_24px_80px_rgba(0,0,0,0.22)] sm:p-8 lg:p-10"
+    <section
       aria-label="VIoT data flow from connected field devices into the operating platform"
+      className="relative overflow-hidden border border-white/[0.08] bg-[#071a22]"
     >
-      {/* =========================================================
-          SUBTLE AMBIENT LIGHT
-      ========================================================= */}
-      <div className="pointer-events-none absolute left-1/2 top-0 h-[360px] w-[520px] -translate-x-1/2 rounded-full bg-[#27d59b]/[0.035] blur-[130px]" />
+      {/* Very subtle technical grid */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 opacity-[0.022]"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(255,255,255,0.7) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.7) 1px, transparent 1px)",
+          backgroundSize: "64px 64px",
+        }}
+      />
 
-      <div className="pointer-events-none absolute bottom-0 right-0 h-[260px] w-[320px] rounded-full bg-[#27d59b]/[0.02] blur-[110px]" />
+      <div className="relative z-10">
 
-      {/* =========================================================
-          HEADER
-      ========================================================= */}
-      <div className="relative z-10 max-w-[720px]">
-        <div className="mb-5 inline-flex items-center gap-2.5 rounded-full border border-white/[0.09] bg-white/[0.025] px-3.5 py-1.5">
-          <span className="relative flex h-1.5 w-1.5">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#27d59b] opacity-50" />
-            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#27d59b]" />
-          </span>
+        {/* =====================================================
+            HEADER
+        ===================================================== */}
 
-          <span className="font-mono text-[10px] font-medium uppercase tracking-[0.18em] text-[#27d59b]">
-            One connected path
-          </span>
+        <div className="grid border-b border-white/[0.08] lg:grid-cols-12">
+
+          <div className="border-b border-white/[0.08] px-6 py-7 sm:px-8 lg:col-span-8 lg:border-b-0 lg:border-r lg:px-10 lg:py-9">
+            <div className="mb-4 flex items-center gap-3">
+              <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.2em] text-[#27d59b]">
+                Data architecture
+              </span>
+
+              <span className="h-px w-8 bg-white/15" />
+
+              <span className="font-mono text-[8px] uppercase tracking-[0.16em] text-white/25">
+                VIoT / 01
+              </span>
+            </div>
+
+            <h2 className="max-w-2xl font-heading text-3xl font-semibold leading-[1.04] tracking-[-0.04em] text-white sm:text-4xl lg:text-[46px]">
+              From field signal
+              <span className="text-white/30"> to operational action.</span>
+            </h2>
+
+            <p className="mt-5 max-w-2xl text-sm leading-7 text-white/45 sm:text-[15px]">
+              Vehicle, security, sensor and visual data moves through one
+              connected architecture — from hardware deployed in the field to
+              the VIoT platform where teams monitor, understand and respond.
+            </p>
+          </div>
+
+          <div className="hidden items-end justify-between px-8 py-9 lg:col-span-4 lg:flex lg:flex-col">
+            <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-white/20">
+              Connected operating architecture
+            </span>
+
+            <div className="w-full">
+              <div className="mb-3 flex items-center justify-between">
+                <span className="font-mono text-[8px] uppercase tracking-[0.15em] text-white/25">
+                  Signal path
+                </span>
+
+                <span className="flex items-center gap-2 font-mono text-[8px] uppercase tracking-[0.15em] text-[#27d59b]">
+                  <span className="h-1.5 w-1.5 bg-[#27d59b]" />
+                  Active
+                </span>
+              </div>
+
+              <div className="h-px w-full bg-white/[0.1]">
+                <motion.div
+                  className="h-px bg-[#27d59b]"
+                  initial={{ width: "0%" }}
+                  whileInView={{ width: "68%" }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 1.4, ease: "easeOut" }}
+                />
+              </div>
+            </div>
+          </div>
         </div>
 
-        <h2 className="max-w-2xl font-heading text-3xl font-semibold leading-[1.08] tracking-[-0.035em] text-white sm:text-4xl lg:text-[46px]">
-          From field signal
-          <br />
-          <span className="font-normal tracking-[-0.025em] text-white/45">
-            to operational action.
-          </span>
-        </h2>
+        {/* =====================================================
+            ARCHITECTURE
+        ===================================================== */}
 
-        <p className="mt-5 max-w-[620px] text-sm leading-7 tracking-[-0.005em] text-white/60 sm:text-[15px]">
-          Vehicle, security, sensor and visual data moves through one connected
-          architecture—from hardware deployed in the field to the VIoT
-          platform where teams monitor, understand and respond.
-        </p>
-      </div>
+        <div className="overflow-x-auto">
+          <div className="min-w-[980px] px-6 py-10 sm:px-8 lg:px-10 lg:py-12">
 
-      {/* =========================================================
-          ARCHITECTURE
-      ========================================================= */}
-      <div className="relative z-10 mt-10 w-full overflow-x-auto pb-2">
-        <svg
-          className="h-auto min-w-[900px] w-full select-none"
-          viewBox="0 0 1100 590"
-          role="img"
-          aria-labelledby="flow-title flow-description"
-        >
-          <title id="flow-title">
-            VIoT connected hardware and platform architecture
-          </title>
+            {/* Top architecture labels */}
 
-          <desc id="flow-description">
-            GNSS positioning connects with vehicle telematics, smart locks,
-            IoT sensors and video systems. These field signals move into the
-            VIoT platform for monitoring, analytics and operational response.
-          </desc>
+            <div className="grid grid-cols-[180px_1fr_210px] items-center gap-8">
 
-          <defs>
-            {/* Fine technical grid */}
-            <pattern
-              id="viot-grid"
-              width="36"
-              height="36"
-              patternUnits="userSpaceOnUse"
-            >
-              <path
-                d="M36 0H0V36"
-                fill="none"
-                stroke="#ffffff"
-                strokeOpacity="0.035"
-                strokeWidth="1"
+              <div>
+                <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-white/25">
+                  Field layer
+                </span>
+
+                <div className="mt-2 h-px w-10 bg-[#27d59b]/60" />
+              </div>
+
+              <div className="relative flex items-center justify-center">
+                <div className="absolute left-0 right-0 h-px bg-white/[0.1]" />
+
+                <div className="relative bg-[#071a22] px-5">
+                  <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-white/30">
+                    Data transport
+                  </span>
+                </div>
+              </div>
+
+              <div className="text-right">
+                <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-white/25">
+                  Intelligence layer
+                </span>
+
+                <div className="ml-auto mt-2 h-px w-10 bg-[#27d59b]/60" />
+              </div>
+            </div>
+
+            {/* =================================================
+                GNSS → DEVICES → PLATFORM
+            ================================================= */}
+
+            <div className="relative mt-10">
+
+              {/* Main horizontal signal line */}
+
+              <div className="absolute left-[8%] right-[8%] top-[73px] h-px bg-white/[0.12]" />
+
+              <motion.div
+                aria-hidden="true"
+                className="absolute left-[8%] top-[72px] h-[2px] w-[14%] bg-[#27d59b]"
+                animate={{
+                  left: ["8%", "78%"],
+                  opacity: [0.3, 1, 0.3],
+                }}
+                transition={{
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "linear",
+                }}
               />
-            </pattern>
 
-            {/* Main signal gradient */}
-            <linearGradient
-              id="viot-signal"
-              x1="0%"
-              y1="0%"
-              x2="100%"
-              y2="100%"
-            >
-              <stop offset="0%" stopColor="#27d59b" stopOpacity="0.9" />
-              <stop offset="100%" stopColor="#27d59b" stopOpacity="0.15" />
-            </linearGradient>
+              {/* GNSS */}
 
-            {/* Platform gradient */}
-            <linearGradient
-              id="platform-fill"
-              x1="0%"
-              y1="0%"
-              x2="100%"
-              y2="100%"
-            >
-              <stop offset="0%" stopColor="#0d2a35" />
-              <stop offset="100%" stopColor="#081b24" />
-            </linearGradient>
+              <div className="relative mx-auto w-[150px]">
 
-            {/* Soft glow */}
-            <filter
-              id="soft-glow"
-              x="-100%"
-              y="-100%"
-              width="300%"
-              height="300%"
-            >
-              <feGaussianBlur stdDeviation="4" result="blur" />
-              <feMerge>
-                <feMergeNode in="blur" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
+                <div className="flex h-[150px] flex-col items-center justify-center border border-[#27d59b]/25 bg-[#0a222c]">
 
-            {/* Signal dot */}
-            <filter
-              id="signal-glow"
-              x="-200%"
-              y="-200%"
-              width="400%"
-              height="400%"
-            >
-              <feGaussianBlur stdDeviation="2.5" result="blur" />
-              <feMerge>
-                <feMergeNode in="blur" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-          </defs>
+                  <div className="relative flex h-12 w-12 items-center justify-center border border-[#27d59b]/50">
 
-          {/* =======================================================
-              DIAGRAM BACKGROUND
-          ======================================================= */}
-          <rect
-            x="0.5"
-            y="0.5"
-            width="1099"
-            height="589"
-            rx="26"
-            fill="#081b24"
-            stroke="#ffffff"
-            strokeOpacity="0.07"
-          />
+                    <svg
+                      viewBox="0 0 48 48"
+                      className="h-7 w-7 text-[#27d59b]"
+                      fill="none"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M10 14l24 24M10 34l24-24"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                      />
 
-          <rect
-            x="1"
-            y="1"
-            width="1098"
-            height="588"
-            rx="26"
-            fill="url(#viot-grid)"
-          />
+                      <rect
+                        x="6"
+                        y="10"
+                        width="13"
+                        height="13"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                      />
 
-          {/* =======================================================
-              TOP LABEL
-          ======================================================= */}
-          <text
-            x="550"
-            y="38"
-            textAnchor="middle"
-            fill="#ffffff"
-            fillOpacity="0.28"
-            fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
-            fontSize="9"
-            fontWeight="600"
-            letterSpacing="2"
-          >
-            POSITIONING &amp; FIELD DATA
-          </text>
+                      <rect
+                        x="29"
+                        y="25"
+                        width="13"
+                        height="13"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                      />
 
-          {/* =======================================================
-              GNSS CIRCULAR NODE
-          ======================================================= */}
-          <g transform="translate(550 112)">
-            {/* outer technical ring */}
-            <circle
-              cx="0"
-              cy="0"
-              r="49"
-              fill="none"
-              stroke="#27d59b"
-              strokeOpacity="0.12"
-              strokeWidth="1"
-              strokeDasharray="3 6"
-            />
+                      <path
+                        d="M34 8c4 2 6 5 7 9"
+                        stroke="currentColor"
+                        strokeWidth="1.3"
+                        strokeLinecap="round"
+                      />
+                    </svg>
 
-            <circle
-              cx="0"
-              cy="0"
-              r="39"
-              fill="#0a222c"
-              stroke="#27d59b"
-              strokeOpacity="0.65"
-              strokeWidth="1.5"
-            />
+                    <motion.span
+                      className="absolute -right-1 -top-1 h-1.5 w-1.5 bg-[#27d59b]"
+                      animate={{ opacity: [0.25, 1, 0.25] }}
+                      transition={{
+                        duration: 1.8,
+                        repeat: Infinity,
+                      }}
+                    />
+                  </div>
 
-            <circle
-              cx="0"
-              cy="0"
-              r="31"
-              fill="#081b24"
-              stroke="#27d59b"
-              strokeOpacity="0.15"
-              strokeWidth="1"
-            />
+                  <span className="mt-4 font-mono text-[9px] font-semibold uppercase tracking-[0.18em] text-[#27d59b]">
+                    GNSS
+                  </span>
 
-            {/* Satellite icon */}
-            <g
-              fill="none"
-              stroke="#27d59b"
-              strokeWidth="1.7"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M-11 -10L11 12" />
-              <path d="M-17 -4L-9 -12L-3 -6L-11 2Z" />
-              <path d="M3 10L11 2L17 8L9 16Z" />
-              <path d="M-3 14L-9 20" />
-              <path d="M8 -15L14 -21" />
-            </g>
+                  <span className="mt-1 text-[10px] text-white/30">
+                    Position reference
+                  </span>
+                </div>
 
-            {/* GNSS signal */}
-            <path
-              d="M18 -19 Q28 -10 29 1"
-              fill="none"
-              stroke="#27d59b"
-              strokeOpacity="0.45"
-              strokeWidth="1.2"
-              strokeLinecap="round"
-            />
+                {/* Vertical connector */}
 
-            <text
-              x="0"
-              y="70"
-              textAnchor="middle"
-              fill="#27d59b"
-              fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
-              fontSize="10"
-              fontWeight="600"
-              letterSpacing="1.7"
-            >
-              GNSS POSITION
-            </text>
+                <div className="absolute left-1/2 top-full h-8 w-px -translate-x-1/2 bg-[#27d59b]/30" />
+              </div>
 
-            <text
-              x="0"
-              y="86"
-              textAnchor="middle"
-              fill="#ffffff"
-              fillOpacity="0.35"
-              fontFamily="system-ui, sans-serif"
-              fontSize="9"
-              letterSpacing="0.2"
-            >
-              Location reference
-            </text>
-          </g>
+              {/* Device layer */}
 
-          {/* =======================================================
-              GNSS → DEVICES CONNECTORS
-          ======================================================= */}
-          <g
-            fill="none"
-            stroke="#27d59b"
-            strokeWidth="1.2"
-            strokeOpacity="0.24"
-            strokeDasharray="4 7"
-          >
-            <path d="M550 162 C550 190 145 188 145 236" />
-            <path d="M550 162 C550 198 405 196 405 236" />
-            <path d="M550 162 C550 198 695 196 695 236" />
-            <path d="M550 162 C550 190 955 188 955 236" />
-          </g>
+              <div className="relative mt-8 grid grid-cols-4 gap-5">
 
-          {/* =======================================================
-              DEVICE CONNECTOR ACTIVE DOTS
-          ======================================================= */}
-          <g fill="#27d59b" filter="url(#signal-glow)">
-            <circle cx="145" cy="236" r="3" />
-            <circle cx="405" cy="236" r="3" />
-            <circle cx="695" cy="236" r="3" />
-            <circle cx="955" cy="236" r="3" />
-          </g>
+                {devices.map((device, index) => (
+                  <div
+                    key={device.number}
+                    className="group relative border border-white/[0.09] bg-[#0a222c] px-5 py-5 transition-colors duration-300 hover:border-[#27d59b]/40"
+                  >
+                    {/* top connector */}
 
-          {/* =======================================================
-              DEVICE 01 — VEHICLE
-          ======================================================= */}
-          <g transform="translate(65 236)">
-            <rect
-              width="160"
-              height="112"
-              rx="18"
-              fill="#0d2732"
-              stroke="#ffffff"
-              strokeOpacity="0.09"
-            />
+                    <div className="absolute -top-8 left-1/2 h-8 w-px -translate-x-1/2 bg-white/[0.1]" />
 
-            {/* Icon circle */}
-            <circle
-              cx="38"
-              cy="38"
-              r="23"
-              fill="#27d59b"
-              fillOpacity="0.07"
-              stroke="#27d59b"
-              strokeOpacity="0.3"
-            />
+                    <div className="flex items-start justify-between">
+                      <span className="font-mono text-[9px] text-[#27d59b]">
+                        {device.number}
+                      </span>
 
-            {/* Truck icon */}
-            <g
-              transform="translate(23 25)"
-              fill="none"
-              stroke="#27d59b"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M0 3h22v14H0z" />
-              <path d="M22 8h7l5 5v4H22z" />
-              <circle cx="7" cy="20" r="3" />
-              <circle cx="28" cy="20" r="3" />
-            </g>
+                      <span className="font-mono text-[8px] uppercase tracking-[0.15em] text-white/20">
+                        Edge
+                      </span>
+                    </div>
 
-            <text
-              x="70"
-              y="35"
-              fill="#ffffff"
-              fontFamily="system-ui, sans-serif"
-              fontSize="13"
-              fontWeight="600"
-              letterSpacing="0.1"
-            >
-              VEHICLE
-            </text>
+                    <div className="mt-7 flex items-center gap-3">
+                      <span className="flex h-9 w-9 items-center justify-center border border-white/[0.1]">
+                        {index === 0 && (
+                          <svg
+                            viewBox="0 0 32 32"
+                            className="h-5 w-5 text-[#27d59b]"
+                            fill="none"
+                          >
+                            <path
+                              d="M3 9h16v11H3zM19 13h5l5 5v2H19z"
+                              stroke="currentColor"
+                              strokeWidth="1.3"
+                            />
+                            <circle
+                              cx="9"
+                              cy="23"
+                              r="2.5"
+                              stroke="currentColor"
+                              strokeWidth="1.3"
+                            />
+                            <circle
+                              cx="24"
+                              cy="23"
+                              r="2.5"
+                              stroke="currentColor"
+                              strokeWidth="1.3"
+                            />
+                          </svg>
+                        )}
 
-            <text
-              x="70"
-              y="52"
-              fill="#ffffff"
-              fillOpacity="0.42"
-              fontFamily="ui-monospace, monospace"
-              fontSize="8.5"
-              fontWeight="500"
-              letterSpacing="1"
-            >
-              TELEMATICS
-            </text>
+                        {index === 1 && (
+                          <svg
+                            viewBox="0 0 32 32"
+                            className="h-5 w-5 text-[#ffb321]"
+                            fill="none"
+                          >
+                            <rect
+                              x="7"
+                              y="14"
+                              width="18"
+                              height="13"
+                              rx="2"
+                              stroke="currentColor"
+                              strokeWidth="1.3"
+                            />
+                            <path
+                              d="M11 14V9a5 5 0 0110 0v5"
+                              stroke="currentColor"
+                              strokeWidth="1.3"
+                            />
+                            <circle
+                              cx="16"
+                              cy="20"
+                              r="1.5"
+                              fill="currentColor"
+                            />
+                          </svg>
+                        )}
 
-            <line
-              x1="20"
-              y1="73"
-              x2="140"
-              y2="73"
-              stroke="#ffffff"
-              strokeOpacity="0.07"
-            />
+                        {index === 2 && (
+                          <svg
+                            viewBox="0 0 32 32"
+                            className="h-5 w-5 text-[#27d59b]"
+                            fill="none"
+                          >
+                            <circle
+                              cx="16"
+                              cy="20"
+                              r="2"
+                              fill="currentColor"
+                            />
+                            <path
+                              d="M10 16a8 8 0 0112 0M6 12a14 14 0 0120 0"
+                              stroke="currentColor"
+                              strokeWidth="1.3"
+                              strokeLinecap="round"
+                            />
+                          </svg>
+                        )}
 
-            <text
-              x="20"
-              y="92"
-              fill="#ffffff"
-              fillOpacity="0.42"
-              fontFamily="system-ui, sans-serif"
-              fontSize="9"
-            >
-              Position · Trip · Vehicle
-            </text>
-          </g>
+                        {index === 3 && (
+                          <svg
+                            viewBox="0 0 32 32"
+                            className="h-5 w-5 text-white/60"
+                            fill="none"
+                          >
+                            <rect
+                              x="4"
+                              y="8"
+                              width="18"
+                              height="15"
+                              rx="2"
+                              stroke="currentColor"
+                              strokeWidth="1.3"
+                            />
+                            <path
+                              d="M22 12l7-4v16l-7-4"
+                              stroke="currentColor"
+                              strokeWidth="1.3"
+                            />
+                          </svg>
+                        )}
+                      </span>
 
-          {/* =======================================================
-              DEVICE 02 — E LOCK
-          ======================================================= */}
-          <g transform="translate(325 236)">
-            <rect
-              width="160"
-              height="112"
-              rx="18"
-              fill="#0d2732"
-              stroke="#ffffff"
-              strokeOpacity="0.09"
-            />
+                      <div>
+                        <h3 className="font-heading text-sm font-semibold tracking-[-0.01em] text-white">
+                          {device.name}
+                        </h3>
 
-            <circle
-              cx="38"
-              cy="38"
-              r="23"
-              fill="#ffb321"
-              fillOpacity="0.07"
-              stroke="#ffb321"
-              strokeOpacity="0.3"
-            />
+                        <p className="mt-0.5 font-mono text-[8px] uppercase tracking-[0.12em] text-white/30">
+                          {device.detail}
+                        </p>
+                      </div>
+                    </div>
 
-            {/* Lock icon */}
-            <g
-              transform="translate(25 24)"
-              fill="none"
-              stroke="#ffb321"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <rect x="3" y="12" width="21" height="18" rx="3" />
-              <path d="M8 12V7a6 6 0 0112 0v5" />
-              <circle cx="13.5" cy="20" r="1.5" />
-              <path d="M13.5 22v3" />
-            </g>
+                    <div className="mt-5 border-t border-white/[0.07] pt-3">
+                      <span className="font-mono text-[7px] uppercase tracking-[0.14em] text-white/20">
+                        Connected endpoint
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
 
-            <text
-              x="70"
-              y="35"
-              fill="#ffffff"
-              fontFamily="system-ui, sans-serif"
-              fontSize="13"
-              fontWeight="600"
-            >
-              E-LOCK
-            </text>
+              {/* Data convergence */}
 
-            <text
-              x="70"
-              y="52"
-              fill="#ffb321"
-              fillOpacity="0.75"
-              fontFamily="ui-monospace, monospace"
-              fontSize="8.5"
-              fontWeight="500"
-              letterSpacing="1"
-            >
-              SECURITY
-            </text>
+              <div className="relative mt-10">
 
-            <line
-              x1="20"
-              y1="73"
-              x2="140"
-              y2="73"
-              stroke="#ffffff"
-              strokeOpacity="0.07"
-            />
+                <div className="absolute left-[12.5%] top-0 h-8 w-px bg-white/[0.12]" />
+                <div className="absolute left-[37.5%] top-0 h-8 w-px bg-white/[0.12]" />
+                <div className="absolute left-[62.5%] top-0 h-8 w-px bg-white/[0.12]" />
+                <div className="absolute left-[87.5%] top-0 h-8 w-px bg-white/[0.12]" />
 
-            <text
-              x="20"
-              y="92"
-              fill="#ffffff"
-              fillOpacity="0.42"
-              fontFamily="system-ui, sans-serif"
-              fontSize="9"
-            >
-              Lock state · Tamper · Access
-            </text>
-          </g>
+                <div className="mx-auto h-8 w-px bg-[#27d59b]/30" />
 
-          {/* =======================================================
-              DEVICE 03 — SENSOR
-          ======================================================= */}
-          <g transform="translate(615 236)">
-            <rect
-              width="160"
-              height="112"
-              rx="18"
-              fill="#0d2732"
-              stroke="#ffffff"
-              strokeOpacity="0.09"
-            />
+                <div className="mx-auto mt-0 max-w-[540px] border border-[#27d59b]/30 bg-[#0b2630]">
 
-            <circle
-              cx="38"
-              cy="38"
-              r="23"
-              fill="#27d59b"
-              fillOpacity="0.07"
-              stroke="#27d59b"
-              strokeOpacity="0.3"
-            />
+                  <div className="flex items-center gap-5 px-6 py-5">
 
-            {/* Sensor / signal icon */}
-            <g
-              transform="translate(22 24)"
-              fill="none"
-              stroke="#27d59b"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            >
-              <circle cx="16" cy="18" r="3" fill="#27d59b" />
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center border border-[#27d59b]/40">
+                      <svg
+                        viewBox="0 0 32 32"
+                        className="h-5 w-5 text-[#27d59b]"
+                        fill="none"
+                      >
+                        <rect
+                          x="4"
+                          y="5"
+                          width="24"
+                          height="22"
+                          rx="2"
+                          stroke="currentColor"
+                          strokeWidth="1.3"
+                        />
 
-              <path d="M8 18a8 8 0 018-8" />
-              <path d="M24 18a8 8 0 00-8-8" />
+                        <path
+                          d="M8 21l5-6 4 4 7-9"
+                          stroke="currentColor"
+                          strokeWidth="1.3"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
 
-              <path d="M3 18a13 13 0 0113-13" />
-              <path d="M29 18A13 13 0 0016 5" />
-            </g>
+                        <circle
+                          cx="8"
+                          cy="21"
+                          r="1"
+                          fill="currentColor"
+                        />
 
-            <text
-              x="70"
-              y="35"
-              fill="#ffffff"
-              fontFamily="system-ui, sans-serif"
-              fontSize="13"
-              fontWeight="600"
-            >
-              IOT SENSOR
-            </text>
+                        <circle
+                          cx="13"
+                          cy="15"
+                          r="1"
+                          fill="currentColor"
+                        />
 
-            <text
-              x="70"
-              y="52"
-              fill="#27d59b"
-              fillOpacity="0.75"
-              fontFamily="ui-monospace, monospace"
-              fontSize="8.5"
-              fontWeight="500"
-              letterSpacing="1"
-            >
-              FIELD DATA
-            </text>
+                        <circle
+                          cx="17"
+                          cy="19"
+                          r="1"
+                          fill="currentColor"
+                        />
 
-            <line
-              x1="20"
-              y1="73"
-              x2="140"
-              y2="73"
-              stroke="#ffffff"
-              strokeOpacity="0.07"
-            />
+                        <circle
+                          cx="24"
+                          cy="10"
+                          r="1"
+                          fill="currentColor"
+                        />
+                      </svg>
+                    </div>
 
-            <text
-              x="20"
-              y="92"
-              fill="#ffffff"
-              fillOpacity="0.42"
-              fontFamily="system-ui, sans-serif"
-              fontSize="9"
-            >
-              Environment · Status · Event
-            </text>
-          </g>
+                    <div>
+                      <div className="flex items-center gap-3">
+                        <h3 className="font-heading text-lg font-semibold tracking-[-0.02em] text-white">
+                          VIoT Platform
+                        </h3>
 
-          {/* =======================================================
-              DEVICE 04 — VIDEO
-          ======================================================= */}
-          <g transform="translate(875 236)">
-            <rect
-              width="160"
-              height="112"
-              rx="18"
-              fill="#0d2732"
-              stroke="#ffffff"
-              strokeOpacity="0.09"
-            />
+                        <span className="h-1.5 w-1.5 bg-[#27d59b]" />
+                      </div>
 
-            <circle
-              cx="38"
-              cy="38"
-              r="23"
-              fill="#ffffff"
-              fillOpacity="0.035"
-              stroke="#ffffff"
-              strokeOpacity="0.18"
-            />
+                      <p className="mt-1 font-mono text-[8px] uppercase tracking-[0.16em] text-[#27d59b]/70">
+                        Monitor · Analyse · Respond
+                      </p>
+                    </div>
 
-            {/* Camera icon */}
-            <g
-              transform="translate(22 25)"
-              fill="none"
-              stroke="#ffffff"
-              strokeOpacity="0.7"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <rect x="2" y="6" width="23" height="17" rx="3" />
-              <path d="M25 11l9-5v17l-9-5" />
-              <circle cx="13.5" cy="14.5" r="4" />
-            </g>
+                    <div className="ml-auto hidden text-right sm:block">
+                      <span className="font-mono text-[7px] uppercase tracking-[0.14em] text-white/20">
+                        Unified data
+                      </span>
 
-            <text
-              x="70"
-              y="35"
-              fill="#ffffff"
-              fontFamily="system-ui, sans-serif"
-              fontSize="13"
-              fontWeight="600"
-            >
-              VIDEO
-            </text>
+                      <div className="mt-1 flex items-center justify-end gap-1.5">
+                        <span className="h-1 w-1 bg-[#27d59b]" />
+                        <span className="h-1 w-6 bg-[#27d59b]/30" />
+                        <span className="h-1 w-2 bg-[#27d59b]/15" />
+                      </div>
+                    </div>
+                  </div>
 
-            <text
-              x="70"
-              y="52"
-              fill="#ffb321"
-              fillOpacity="0.75"
-              fontFamily="ui-monospace, monospace"
-              fontSize="8.5"
-              fontWeight="500"
-              letterSpacing="1"
-            >
-              PLANNED LAYER
-            </text>
+                  <div className="border-t border-white/[0.07] px-6 py-3">
+                    <span className="font-mono text-[7px] uppercase tracking-[0.14em] text-white/25">
+                      Connected data / operational view
+                    </span>
+                  </div>
+                </div>
+              </div>
 
-            <line
-              x1="20"
-              y1="73"
-              x2="140"
-              y2="73"
-              stroke="#ffffff"
-              strokeOpacity="0.07"
-            />
+              {/* Bottom flow */}
 
-            <text
-              x="20"
-              y="92"
-              fill="#ffffff"
-              fillOpacity="0.42"
-              fontFamily="system-ui, sans-serif"
-              fontSize="9"
-            >
-              Visual safety · Review
-            </text>
-          </g>
+              <div className="mt-10 flex items-center justify-between border-t border-white/[0.08] pt-5">
+                <span className="font-mono text-[7px] uppercase tracking-[0.16em] text-white/20">
+                  Hardware
+                </span>
 
-          {/* =======================================================
-              DEVICE → PLATFORM DATA PATH
-          ======================================================= */}
-          <g
-            fill="none"
-            stroke="url(#viot-signal)"
-            strokeWidth="1.5"
-            strokeOpacity="0.6"
-          >
-            <path d="M145 348 C145 410 355 415 465 438" />
-            <path d="M405 348 C405 400 450 418 492 438" />
-            <path d="M695 348 C695 400 650 418 608 438" />
-            <path d="M955 348 C955 410 745 415 635 438" />
-          </g>
+                <div className="flex flex-1 items-center px-5">
+                  <div className="h-px flex-1 bg-white/[0.08]" />
 
-          {/* Small active data points */}
-          <g fill="#27d59b" filter="url(#signal-glow)">
-            <circle cx="260" cy="386" r="2.8" />
-            <circle cx="447" cy="410" r="2.8" />
-            <circle cx="653" cy="410" r="2.8" />
-            <circle cx="840" cy="386" r="2.8" />
-          </g>
+                  <motion.span
+                    className="mx-3 h-1.5 w-1.5 bg-[#27d59b]"
+                    animate={{
+                      opacity: [0.25, 1, 0.25],
+                      scale: [0.8, 1.2, 0.8],
+                    }}
+                    transition={{
+                      duration: 1.8,
+                      repeat: Infinity,
+                    }}
+                  />
 
-          {/* =======================================================
-              PLATFORM CORE
-          ======================================================= */}
-          <g transform="translate(385 438)">
-            {/* outer ring */}
-            <rect
-              x="0"
-              y="0"
-              width="330"
-              height="105"
-              rx="22"
-              fill="url(#platform-fill)"
-              stroke="#27d59b"
-              strokeOpacity="0.55"
-              strokeWidth="1.5"
-            />
+                  <div className="h-px flex-1 bg-white/[0.08]" />
+                </div>
 
-            {/* left icon area */}
-            <circle
-              cx="47"
-              cy="47"
-              r="25"
-              fill="#27d59b"
-              fillOpacity="0.07"
-              stroke="#27d59b"
-              strokeOpacity="0.28"
-            />
+                <span className="font-mono text-[7px] uppercase tracking-[0.16em] text-white/20">
+                  Intelligence
+                </span>
+              </div>
 
-            {/* platform / intelligence icon */}
-            <g
-              transform="translate(34 34)"
-              fill="none"
-              stroke="#27d59b"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <rect x="1" y="1" width="24" height="24" rx="5" />
-              <path d="M7 17l4-5 4 3 5-7" />
-              <circle cx="7" cy="17" r="1" fill="#27d59b" />
-              <circle cx="11" cy="12" r="1" fill="#27d59b" />
-              <circle cx="15" cy="15" r="1" fill="#27d59b" />
-              <circle cx="20" cy="8" r="1" fill="#27d59b" />
-            </g>
+            </div>
+          </div>
 
-            <text
-              x="88"
-              y="39"
-              fill="#ffffff"
-              fontFamily="system-ui, sans-serif"
-              fontSize="15"
-              fontWeight="650"
-              letterSpacing="-0.1"
-            >
-              VIoT PLATFORM
-            </text>
+          {/* =====================================================
+              FOOTER
+          ===================================================== */}
 
-            <text
-              x="88"
-              y="58"
-              fill="#27d59b"
-              fontFamily="ui-monospace, monospace"
-              fontSize="8.5"
-              fontWeight="600"
-              letterSpacing="1.2"
-            >
-              MONITOR · ANALYSE · RESPOND
-            </text>
+          <div className="border-t border-white/[0.08] px-6 py-4 sm:px-8 lg:px-10">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+              <span className="font-mono text-[7px] uppercase tracking-[0.15em] text-white/20">
+                Data depth depends on hardware, vehicle & deployment
+                configuration
+              </span>
 
-            <line
-              x1="22"
-              y1="78"
-              x2="308"
-              y2="78"
-              stroke="#ffffff"
-              strokeOpacity="0.07"
-            />
-
-            <circle
-              cx="30"
-              cy="92"
-              r="3"
-              fill="#27d59b"
-              filter="url(#signal-glow)"
-            />
-
-            <text
-              x="41"
-              y="95"
-              fill="#ffffff"
-              fillOpacity="0.42"
-              fontFamily="ui-monospace, monospace"
-              fontSize="7.5"
-              letterSpacing="0.8"
-            >
-              CONNECTED DATA / OPERATIONAL VIEW
-            </text>
-          </g>
-
-          {/* =======================================================
-              BOTTOM DESCRIPTION
-          ======================================================= */}
-          <text
-            x="550"
-            y="574"
-            textAnchor="middle"
-            fill="#ffffff"
-            fillOpacity="0.25"
-            fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
-            fontSize="8.5"
-            fontWeight="500"
-            letterSpacing="1.3"
-          >
-            DATA DEPTH DEPENDS ON HARDWARE, VEHICLE &amp; DEPLOYMENT CONFIGURATION
-          </text>
-        </svg>
+              <span className="font-mono text-[7px] uppercase tracking-[0.15em] text-[#27d59b]/60">
+                VIoT Connected Architecture
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
   );
 }

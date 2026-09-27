@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 
 interface CounterProps {
@@ -9,77 +9,186 @@ interface CounterProps {
 
 function AnimatedCounter({ value }: CounterProps) {
   const ref = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-50px" });
-  
-  const numericPart = parseInt(value.replace(/[^0-9]/g, "")) || 0;
+
+  const isInView = useInView(ref, {
+    once: true,
+    amount: 0.25,
+  });
+
+  const numericPart =
+    parseInt(value.replace(/[^0-9]/g, ""), 10) || 0;
+
   const suffix = value.replace(/[0-9,]/g, "");
 
   const [count, setCount] = useState(0);
 
   useEffect(() => {
-    if (!isInView) return;
+    if (!isInView || numericPart === 0) return;
 
-    let startTime: number;
-    const duration = 1800;
+    let startTime: number | null = null;
+    let frameId: number;
 
-    const animateCount = (timestamp: number) => {
-      if (!startTime) startTime = timestamp;
-      const progress = Math.min((timestamp - startTime) / duration, 1);
-      const easeProgress = 1 - Math.pow(1 - progress, 3);
-      
-      setCount(Math.floor(easeProgress * numericPart));
+    const duration = 1400;
+
+    const animate = (timestamp: number) => {
+      if (startTime === null) {
+        startTime = timestamp;
+      }
+
+      const elapsed = timestamp - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+
+      // Smooth ease-out
+      const eased = 1 - Math.pow(1 - progress, 3);
+
+      setCount(Math.floor(eased * numericPart));
 
       if (progress < 1) {
-        requestAnimationFrame(animateCount);
+        frameId = requestAnimationFrame(animate);
+      } else {
+        // Make sure final value is always exact
+        setCount(numericPart);
       }
     };
 
-    requestAnimationFrame(animateCount);
+    frameId = requestAnimationFrame(animate);
+
+    return () => {
+      cancelAnimationFrame(frameId);
+    };
   }, [isInView, numericPart]);
 
-  const formattedCount = count.toLocaleString();
-
   return (
-    <span ref={ref} className="font-mono text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900">
-      {numericPart > 0 ? formattedCount : value}
+    <span
+      ref={ref}
+      className="font-heading text-[34px] font-semibold leading-none tracking-[-0.04em] text-ink sm:text-[42px] lg:text-[48px]"
+    >
+      {numericPart > 0 ? count.toLocaleString() : value}
       {suffix}
     </span>
   );
 }
 
+const stats = [
+  {
+    number: "3",
+    label: "Divisions, one team",
+  },
+  {
+    number: "5",
+    label: "Hardware & sensor product lines",
+  },
+  {
+    number: "5,000+",
+    label: "Devices deployed in India",
+  },
+  {
+    number: "500+",
+    label: "Devices deployed internationally",
+  },
+];
+
 export function StatsSection() {
-  const stats = [
-    { label: "Divisions, one team", value: "3" },
-    { label: "Hardware & sensor product lines", value: "5" },
-    { label: "Devices deployed in India", value: "5,000+" },
-    { label: "Devices deployed internationally", value: "500+" },
-  ];
-
   return (
-    <section className="bg-white py-16 sm:py-20 px-4 sm:px-6 lg:px-12 border-b border-slate-200/80 relative overflow-hidden">
-      {/* Subtle background glow */}
-      <div className="absolute inset-0 bg-[radial-gradient(#10b981_1px,transparent_1px)] opacity-[0.03] [background-size:16px_16px] pointer-events-none" />
+    <section className="border-b border-line bg-white">
+      <div className="mx-auto max-w-7xl px-6 py-14 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
 
-      <div className="mx-auto max-w-7xl relative z-10">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:divide-x divide-slate-100">
-          {stats.map((stat, idx) => (
-            <motion.div 
-              key={idx} 
-              initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: idx * 0.1 }}
-              className="flex flex-col items-start text-left p-4 sm:p-6 rounded-2xl bg-slate-50/50 sm:bg-transparent border border-slate-100 sm:border-0"
-            >
-              <div className="flex items-baseline gap-1.5">
-                <AnimatedCounter value={stat.value} />
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mb-1 flex-shrink-0" />
-              </div>
-              <span className="mt-2.5 text-[11px] sm:text-xs lg:text-sm font-medium text-slate-500 uppercase tracking-widest font-mono leading-relaxed">
-                {stat.label}
+        {/* Section intro */}
+        <div className="mb-10 flex flex-col gap-4 sm:mb-12 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <div className="mb-4 flex items-center gap-3">
+              <span className="h-px w-7 bg-signal-dark" />
+
+              <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.2em] text-signal-dark">
+                At a glance
               </span>
+            </div>
+
+            <h2 className="max-w-xl font-heading text-2xl font-semibold leading-tight tracking-[-0.035em] text-ink sm:text-3xl">
+              Built across vehicles, assets and access.
+            </h2>
+          </div>
+
+          <p className="max-w-sm text-sm leading-6 text-muted">
+            One connected ecosystem bringing hardware, data and operations
+            together.
+          </p>
+        </div>
+
+        {/* Stats */}
+        <div className="grid grid-cols-2 border-t border-line lg:grid-cols-4">
+          {stats.map((stat, index) => (
+            <motion.div
+              key={stat.label}
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{
+                duration: 0.55,
+                delay: index * 0.08,
+                ease: [0.16, 1, 0.3, 1],
+              }}
+              className={`
+                relative py-7 sm:py-8
+                ${
+                  index % 2 !== 0
+                    ? "border-l border-line pl-5 sm:pl-7"
+                    : "pr-5 sm:pr-7"
+                }
+                ${
+                  index >= 2
+                    ? "border-t border-line lg:border-t-0"
+                    : ""
+                }
+                ${
+                  index > 0
+                    ? "lg:border-l lg:border-line lg:pl-7"
+                    : ""
+                }
+                ${
+                  index === 0
+                    ? "lg:pr-7"
+                    : ""
+                }
+              `}
+            >
+              {/* Small index */}
+              <div className="mb-5 flex items-center gap-2">
+                <span className="font-mono text-[9px] tracking-[0.16em] text-muted">
+                  0{index + 1}
+                </span>
+
+                <span className="h-1 w-1 bg-signal" />
+              </div>
+
+              {/* Number */}
+              <div className="flex items-baseline">
+                <AnimatedCounter value={stat.number} />
+              </div>
+
+              {/* Label */}
+              <p className="mt-3 max-w-[190px] text-[10px] font-medium uppercase leading-5 tracking-[0.13em] text-muted sm:text-[11px]">
+                {stat.label}
+              </p>
             </motion.div>
           ))}
+        </div>
+      </div>
+
+      {/* Bottom technical strip */}
+      <div className="border-t border-line bg-paper">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-3 sm:px-8 lg:px-12">
+          <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-muted sm:text-[9px]">
+            Connected intelligence infrastructure
+          </span>
+
+          <div className="hidden items-center gap-4 font-mono text-[8px] uppercase tracking-[0.14em] text-muted sm:flex">
+            <span>Fleet</span>
+            <span className="h-1 w-1 bg-signal" />
+            <span>Asset</span>
+            <span className="h-1 w-1 bg-signal" />
+            <span>Access</span>
+          </div>
         </div>
       </div>
     </section>

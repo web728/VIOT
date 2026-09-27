@@ -126,38 +126,43 @@ export function ContactForm({
   if (status.kind === "success") {
     return (
       <div
-        className="relative overflow-hidden"
+        className="relative"
         role="status"
         aria-live="polite"
       >
-        {/* Subtle success accent */}
-        <div className="absolute -right-20 -top-20 h-48 w-48 rounded-full bg-signal/[0.06] blur-3xl" />
+        <div className="border-b border-[#cdd5d2] pb-8">
+          <div className="flex items-start justify-between gap-6">
+            <div>
+              <div className="flex items-center gap-3">
+                <span className="h-2 w-2 bg-[#27d59b]" />
 
-        <div className="relative space-y-7">
-          {/* Icon */}
-          <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-signal/20 bg-signal/[0.08] text-signal-dark">
-            <CheckIcon className="h-6 w-6" />
+                <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.2em] text-[#007c67]">
+                  Message received
+                </span>
+              </div>
+
+              <h3 className="mt-5 max-w-lg font-heading text-3xl font-semibold leading-[1.05] tracking-[-0.04em] text-[#081b24] sm:text-4xl">
+                It is with the
+                <br />
+                <span className="text-[#879399]">
+                  founding team.
+                </span>
+              </h3>
+            </div>
+
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center border border-[#27d59b]/40 bg-white">
+              <CheckIcon className="h-5 w-5 text-[#007c67]" />
+            </div>
           </div>
+        </div>
 
-          {/* Message */}
-          <div className="space-y-3">
-            <span className="block font-mono text-[10px] font-medium uppercase tracking-[0.2em] text-signal-dark">
-              Message Received
-            </span>
+        <div className="py-7">
+          <p className="max-w-xl text-sm leading-7 text-[#607078]">
+            {status.message}
+          </p>
+        </div>
 
-            <h3 className="max-w-md font-heading text-2xl font-semibold leading-tight tracking-[-0.02em] text-ink sm:text-3xl">
-              It is with the founding team.
-            </h3>
-
-            <p className="max-w-lg text-sm leading-6 text-muted">
-              {status.message}
-            </p>
-          </div>
-
-          {/* Divider */}
-          <div className="h-px w-full bg-line" />
-
-          {/* Send another */}
+        <div className="border-t border-[#cdd5d2] pt-6">
           <button
             type="button"
             onClick={() =>
@@ -166,11 +171,13 @@ export function ContactForm({
                 message: "",
               })
             }
-            className="group inline-flex items-center gap-2 text-sm font-semibold text-signal-dark transition-colors hover:text-ink"
+            className="group inline-flex items-center gap-3 text-sm font-semibold text-[#007c67] transition-colors hover:text-[#081b24]"
           >
             <span>Send another message</span>
 
-            <ArrowIcon className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-1" />
+            <span className="flex h-8 w-8 items-center justify-center border border-[#cdd5d2] transition-all duration-300 group-hover:border-[#007c67] group-hover:bg-[#007c67] group-hover:text-white">
+              <ArrowIcon className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
+            </span>
           </button>
         </div>
       </div>
@@ -183,13 +190,14 @@ export function ContactForm({
 
   return (
     <form
-      className="space-y-6"
+      className="space-y-7"
       onSubmit={handleSubmit}
       noValidate
     >
       {/* ========================================================
           HONEYPOT
       ======================================================== */}
+
       <div className="hidden" aria-hidden="true">
         <label htmlFor="website">Website</label>
 
@@ -202,9 +210,24 @@ export function ContactForm({
       </div>
 
       {/* ========================================================
+          FORM PROGRESS / INTRO
+      ======================================================== */}
+
+      <div className="flex items-center justify-between border-b border-[#cdd5d2] pb-5">
+        <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-[#8a969a]">
+          Enquiry details
+        </span>
+
+        <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-[#007c67]">
+          01 — 03
+        </span>
+      </div>
+
+      {/* ========================================================
           BASIC DETAILS
       ======================================================== */}
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <FormField
           id="name"
           name="name"
@@ -228,6 +251,7 @@ export function ContactForm({
       {/* ========================================================
           COMPANY
       ======================================================== */}
+
       <FormField
         id="company"
         name="company"
@@ -239,6 +263,7 @@ export function ContactForm({
       {/* ========================================================
           MESSAGE
       ======================================================== */}
+
       <FormField
         id="message"
         name="message"
@@ -253,27 +278,33 @@ export function ContactForm({
       {/* ========================================================
           PRIVACY
       ======================================================== */}
-      <div className="flex items-start gap-2.5 border-t border-line pt-5">
-        <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-signal-dark" />
 
-        <p className="max-w-xl text-[11px] leading-5 text-muted">
-          Your message goes directly to the VIoT founding team. By
-          sending it, you agree to our{" "}
-          <Link
-            href="/privacy"
-            className="font-medium text-ink underline decoration-line underline-offset-2 transition-colors hover:text-signal-dark hover:decoration-signal"
-          >
-            privacy notice
-          </Link>
-          .
-        </p>
+      <div className="border-t border-[#cdd5d2] pt-5">
+        <div className="flex items-start gap-3">
+          <span className="mt-1.5 h-1.5 w-1.5 shrink-0 bg-[#27d59b]" />
+
+          <p className="max-w-xl text-[10px] leading-5 text-[#8a969a]">
+            Your message goes directly to the VIoT founding team. By
+            sending it, you agree to our{" "}
+            <Link
+              href="/privacy"
+              className="font-medium text-[#607078] underline decoration-[#cdd5d2] underline-offset-2 transition-colors hover:text-[#007c67] hover:decoration-[#27d59b]"
+            >
+              privacy notice
+            </Link>
+            .
+          </p>
+        </div>
       </div>
 
       {/* ========================================================
           ACTION AREA
       ======================================================== */}
-      <div className="flex flex-col gap-4 pt-1 sm:flex-row sm:items-center sm:justify-between">
+
+      <div className="flex flex-col gap-5 border-t border-[#cdd5d2] pt-6 sm:flex-row sm:items-center sm:justify-between">
+
         {/* Submit */}
+
         <button
           type="submit"
           disabled={status.kind === "sending"}
@@ -283,26 +314,24 @@ export function ContactForm({
             inline-flex
             w-full
             items-center
-            justify-center
-            gap-3
-            rounded-xl
-            bg-ink
-            px-7
-            py-3.5
+            justify-between
+            gap-8
+            border
+            border-[#081b24]
+            bg-[#081b24]
+            px-6
+            py-4
             text-sm
             font-semibold
-            whitespace-nowrap
             text-white
-            shadow-[0_8px_24px_rgba(8,27,36,0.12)]
             transition-all
-            duration-200
-            hover:-translate-y-0.5
-            hover:bg-[#102d39]
-            hover:shadow-[0_12px_30px_rgba(8,27,36,0.18)]
-            active:translate-y-0
+            duration-300
+            hover:border-[#007c67]
+            hover:bg-[#007c67]
             disabled:cursor-not-allowed
             disabled:opacity-60
             sm:w-auto
+            sm:min-w-[190px]
           "
         >
           <span>
@@ -312,36 +341,55 @@ export function ContactForm({
           </span>
 
           {status.kind === "sending" ? (
-            <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+            <span className="h-3.5 w-3.5 animate-spin rounded-full border border-white/30 border-t-white" />
           ) : (
-            <ArrowIcon className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-1" />
+            <span className="flex h-7 w-7 items-center justify-center border border-white/20 transition-all duration-300 group-hover:border-white/50">
+              <ArrowIcon className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
+            </span>
           )}
         </button>
 
         {/* Status */}
-        {status.kind === "error" && status.message && (
-          <div
-            className="flex items-center gap-2 text-xs font-medium text-amber"
-            role="status"
-            aria-live="polite"
-          >
-            <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-amber" />
 
-            <span>{status.message}</span>
-          </div>
-        )}
+        <div className="min-h-5">
+          {status.kind === "error" && status.message && (
+            <div
+              className="flex items-center gap-2 text-xs font-medium text-[#b45309]"
+              role="status"
+              aria-live="polite"
+            >
+              <span className="h-1.5 w-1.5 shrink-0 bg-[#ffb321]" />
 
-        {status.kind === "sending" && (
-          <div
-            className="flex items-center gap-2 text-xs text-muted"
-            role="status"
-            aria-live="polite"
-          >
-            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-signal-dark" />
+              <span>{status.message}</span>
+            </div>
+          )}
 
-            <span>{status.message}</span>
-          </div>
-        )}
+          {status.kind === "sending" && (
+            <div
+              className="flex items-center gap-2 text-xs text-[#607078]"
+              role="status"
+              aria-live="polite"
+            >
+              <span className="h-1.5 w-1.5 animate-pulse bg-[#007c67]" />
+
+              <span>{status.message}</span>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* ========================================================
+          TECHNICAL FOOTER
+      ======================================================== */}
+
+      <div className="flex items-center justify-between border-t border-[#cdd5d2] pt-4">
+        <span className="font-mono text-[7px] uppercase tracking-[0.16em] text-[#a0aaae]">
+          VIoT / Direct enquiry
+        </span>
+
+        <span className="font-mono text-[7px] uppercase tracking-[0.16em] text-[#007c67]">
+          Secure submission
+        </span>
       </div>
     </form>
   );
