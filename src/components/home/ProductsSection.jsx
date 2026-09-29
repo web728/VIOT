@@ -2,8 +2,13 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import {
+  AnimatePresence,
+  motion,
+  useMotionValue,
+  useSpring,
+} from "framer-motion";
 
 import {
   ArrowIcon,
@@ -16,7 +21,6 @@ import {
 const products = [
   {
     id: "vehicle-telematics",
-    number: "01",
     title: "Vehicle Telematics",
     meta: "Fleet Intelligence",
     summary: "Real-time location, ignition & diagnostic tracking.",
@@ -36,7 +40,6 @@ const products = [
   },
   {
     id: "video-telematics",
-    number: "02",
     title: "Video Telematics",
     meta: "Fleet Intelligence",
     summary: "Dashcams turning footage into evidence & coaching.",
@@ -56,7 +59,6 @@ const products = [
   },
   {
     id: "smart-locks",
-    number: "03",
     title: "Smart Locks (E-Lock)",
     meta: "Asset Intelligence",
     summary: "Tamper-evident electronic locking for cargo.",
@@ -76,7 +78,6 @@ const products = [
   },
   {
     id: "asset-tracking",
-    number: "04",
     title: "Asset Tracking",
     meta: "Asset Intelligence",
     summary: "Long-standby trackers for non-motorised assets.",
@@ -96,7 +97,6 @@ const products = [
   },
   {
     id: "iot-sensors",
-    number: "05",
     title: "IoT Sensors",
     meta: "Asset Intelligence",
     summary: "Temperature, fuel, load & Bluetooth sensors.",
@@ -116,75 +116,387 @@ const products = [
   },
 ];
 
+/* =========================================================
+   SECTION BACKGROUND
+   Different from the Hero:
+   flowing physical-world / engineering ecosystem
+========================================================= */
+
+function ProductsEcosystemBackground() {
+  return (
+    <div className="pointer-events-none absolute inset-0 overflow-hidden">
+      {/* Soft atmospheric depth */}
+      <div className="absolute -left-48 top-[12%] h-[520px] w-[520px] rounded-full bg-signal-dark/[0.025] blur-3xl" />
+
+      <div className="absolute -right-56 bottom-[8%] h-[650px] w-[650px] rounded-full bg-ink/[0.025] blur-3xl" />
+
+      {/* Large flowing ecosystem paths */}
+      <svg
+        viewBox="0 0 1600 1000"
+        preserveAspectRatio="none"
+        className="absolute inset-0 h-full w-full"
+        fill="none"
+      >
+        {/* Upper path */}
+        <motion.path
+          d="M-160 260 C120 50 390 100 620 285 S1050 610 1760 235"
+          stroke="rgba(8,27,36,0.09)"
+          strokeWidth="1"
+          initial={{ pathLength: 0 }}
+          whileInView={{ pathLength: 1 }}
+          viewport={{ once: true }}
+          transition={{
+            duration: 2.4,
+            ease: "easeOut",
+          }}
+        />
+
+        {/* Main green flow */}
+        <motion.path
+          d="M-180 700 C120 470 390 525 680 685 S1130 880 1780 560"
+          stroke="rgba(0,124,103,0.13)"
+          strokeWidth="1.2"
+          strokeDasharray="3 15"
+          animate={{
+            strokeDashoffset: [0, -180],
+          }}
+          transition={{
+            duration: 12,
+            repeat: Infinity,
+            ease: "linear",
+          }}
+        />
+
+        {/* Diagonal engineering path */}
+        <path
+          d="M80 1080 C260 740 520 700 780 450 S1240 120 1620 -90"
+          stroke="rgba(8,27,36,0.055)"
+          strokeWidth="1"
+        />
+
+        {/* Lower flowing path */}
+        <motion.path
+          d="M-120 470 C230 340 420 420 650 515 S1060 700 1730 455"
+          stroke="rgba(0,124,103,0.065)"
+          strokeWidth="1"
+          strokeDasharray="2 20"
+          animate={{
+            strokeDashoffset: [0, 180],
+          }}
+          transition={{
+            duration: 15,
+            repeat: Infinity,
+            ease: "linear",
+          }}
+        />
+      </svg>
+
+      {/* =====================================================
+          ENGINEERING RINGS
+      ===================================================== */}
+
+      <motion.div
+        className="absolute right-[4%] top-[12%] h-[430px] w-[430px] rounded-full border border-ink/[0.045]"
+        animate={{
+          rotate: 360,
+        }}
+        transition={{
+          duration: 60,
+          repeat: Infinity,
+          ease: "linear",
+        }}
+      />
+
+      <motion.div
+        className="absolute right-[9%] top-[18%] h-[300px] w-[300px] rounded-full border border-signal-dark/[0.06]"
+        animate={{
+          rotate: -360,
+        }}
+        transition={{
+          duration: 42,
+          repeat: Infinity,
+          ease: "linear",
+        }}
+      />
+
+      <div className="absolute right-[17%] top-[27%] h-[150px] w-[150px] rounded-full border border-ink/[0.035]" />
+
+      {/* Left subtle arc */}
+      <div className="absolute -left-[180px] bottom-[18%] h-[460px] w-[460px] rounded-full border border-ink/[0.035]" />
+
+      {/* =====================================================
+          MOVING SIGNAL POINTS
+      ===================================================== */}
+
+      <motion.span
+        className="absolute left-[19%] top-[31%] h-1.5 w-1.5 bg-signal-dark"
+        animate={{
+          x: [0, 90, 180],
+          y: [0, 20, 0],
+          opacity: [0.1, 0.65, 0],
+        }}
+        transition={{
+          duration: 5.5,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
+
+      <motion.span
+        className="absolute left-[46%] top-[69%] h-1.5 w-1.5 bg-signal-dark"
+        animate={{
+          x: [0, -70, -150],
+          y: [0, -25, 0],
+          opacity: [0, 0.7, 0],
+        }}
+        transition={{
+          duration: 6,
+          delay: 1,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
+
+      <motion.span
+        className="absolute right-[18%] top-[38%] h-1.5 w-1.5 bg-signal-dark"
+        animate={{
+          x: [0, -55, -120],
+          opacity: [0.1, 0.65, 0],
+        }}
+        transition={{
+          duration: 5,
+          delay: 1.8,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
+
+      {/* Small ambient points */}
+      {[
+        ["12%", "20%"],
+        ["25%", "78%"],
+        ["39%", "16%"],
+        ["58%", "84%"],
+        ["68%", "22%"],
+        ["79%", "72%"],
+        ["91%", "52%"],
+      ].map(([left, top], index) => (
+        <motion.span
+          key={`${left}-${top}`}
+          className="absolute h-1 w-1 bg-ink/20"
+          style={{
+            left,
+            top,
+          }}
+          animate={{
+            opacity: [0.1, 0.4, 0.1],
+          }}
+          transition={{
+            duration: 3 + index * 0.25,
+            delay: index * 0.3,
+            repeat: Infinity,
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
+/* =========================================================
+   PRODUCT IMAGE
+========================================================= */
+
+function ProductImage({ product }) {
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const imageX = useSpring(mouseX, {
+    stiffness: 90,
+    damping: 22,
+  });
+
+  const imageY = useSpring(mouseY, {
+    stiffness: 90,
+    damping: 22,
+  });
+
+  const handleMove = (event) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+
+    const x = (event.clientX - rect.left) / rect.width - 0.5;
+    const y = (event.clientY - rect.top) / rect.height - 0.5;
+
+    mouseX.set(x * 4);
+    mouseY.set(y * 4);
+  };
+
+  const handleLeave = () => {
+    mouseX.set(0);
+    mouseY.set(0);
+  };
+
+  return (
+    <div
+      className="relative h-full w-full overflow-hidden bg-ink"
+      onMouseMove={handleMove}
+      onMouseLeave={handleLeave}
+    >
+      {/* Real product image */}
+      <motion.div
+        style={{
+          x: imageX,
+          y: imageY,
+        }}
+        className="absolute inset-[-1%]"
+      >
+        <Image
+          src={product.image}
+          alt={product.title}
+          fill
+          sizes="(max-width: 1024px) 100vw, 65vw"
+          className="object-cover"
+        />
+
+        {/* Extremely subtle treatment */}
+        <div className="absolute inset-0 bg-black/[0.06]" />
+      </motion.div>
+
+      {/* Minimal framing */}
+      <span className="absolute left-5 top-5 h-5 w-5 border-l border-t border-white/50" />
+
+      <span className="absolute right-5 top-5 h-5 w-5 border-r border-t border-white/50" />
+
+      <span className="absolute bottom-5 left-5 h-5 w-5 border-b border-l border-white/50" />
+
+      <span className="absolute bottom-5 right-5 h-5 w-5 border-b border-r border-white/50" />
+
+      {/* Product information */}
+      <div className="absolute bottom-7 left-7">
+        <div className="flex items-center gap-2">
+          <motion.span
+            animate={{
+              opacity: [0.35, 1, 0.35],
+            }}
+            transition={{
+              duration: 1.8,
+              repeat: Infinity,
+            }}
+            className="h-1.5 w-1.5 bg-signal"
+          />
+
+          <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-white/75">
+            {product.meta}
+          </span>
+        </div>
+
+        <h3 className="mt-2 font-heading text-2xl font-semibold tracking-[-0.035em] text-white sm:text-3xl">
+          {product.title}
+        </h3>
+      </div>
+    </div>
+  );
+}
+
+/* =========================================================
+   MAIN SECTION
+========================================================= */
+
 export function ProductsSection() {
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const activeProduct = products[selectedIndex];
 
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "ArrowRight") {
+        setSelectedIndex((current) =>
+          current === products.length - 1 ? 0 : current + 1
+        );
+      }
+
+      if (event.key === "ArrowLeft") {
+        setSelectedIndex((current) =>
+          current === 0 ? products.length - 1 : current - 1
+        );
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
   return (
     <section
       id="products"
-      className="overflow-hidden border-t border-line bg-paper"
+      className="relative overflow-hidden border-t border-line bg-paper"
     >
-      <div className="mx-auto max-w-7xl px-6 py-14 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
-        {/* ================================================= */}
-        {/* HEADER */}
-        {/* ================================================= */}
+      {/* Entire section background */}
+      <ProductsEcosystemBackground />
+
+      {/* Main content */}
+      <div className="relative z-10 mx-auto max-w-7xl px-6 py-16 sm:px-8 lg:px-12 lg:py-24">
+        {/* =================================================
+            HEADER
+        ================================================= */}
 
         <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
+          initial={{
+            opacity: 0,
+            y: 15,
+          }}
+          whileInView={{
+            opacity: 1,
+            y: 0,
+          }}
+          viewport={{
+            once: true,
+            amount: 0.2,
+          }}
           transition={{
-            duration: 0.55,
+            duration: 0.65,
             ease: [0.16, 1, 0.3, 1],
           }}
-          className="grid gap-4 border-b border-line pb-7 lg:grid-cols-12 lg:items-end"
+          className="grid gap-5 border-b border-line pb-8 lg:grid-cols-12 lg:items-end"
         >
           <div className="lg:col-span-7">
             <div className="mb-4 flex items-center gap-3">
-              <span className="h-px w-7 bg-signal-dark" />
+              <span className="h-px w-8 bg-signal-dark" />
 
               <span className="font-mono text-[8px] font-semibold uppercase tracking-[0.2em] text-signal-dark">
                 Products
               </span>
             </div>
 
-            <h2 className="max-w-3xl font-heading text-3xl font-semibold leading-[1.05] tracking-[-0.045em] text-ink sm:text-4xl lg:text-[48px]">
+            <h2 className="max-w-3xl font-heading text-3xl font-semibold leading-[1.02] tracking-[-0.045em] text-ink sm:text-4xl lg:text-[50px]">
               Hardware built for the
               <br />
-              <span className="text-muted">real world.</span>
+              <span className="text-muted">
+                real world.
+              </span>
             </h2>
           </div>
 
-          <div className="lg:col-span-5 lg:pb-1">
-            <p className="max-w-md text-[13px] leading-5.5 text-muted sm:text-sm sm:leading-6">
+          <div className="lg:col-span-5">
+            <p className="max-w-md text-[13px] leading-6 text-muted sm:text-sm">
               Connected devices for vehicles, assets and physical security —
               bringing field data into one operating platform.
             </p>
           </div>
         </motion.div>
 
-        {/* ================================================= */}
-        {/* PRODUCT EXPERIENCE */}
-        {/* ================================================= */}
+        {/* =================================================
+            PRODUCT EXPERIENCE
+        ================================================= */}
 
-        <div className="mt-7 grid gap-7 lg:grid-cols-12 lg:gap-10">
-          {/* ================================================= */}
-          {/* PRODUCT INDEX */}
-          {/* ================================================= */}
+        <div className="mt-10 grid gap-8 lg:grid-cols-12 lg:gap-12">
+          {/* =================================================
+              PRODUCT NAVIGATION
+          ================================================= */}
 
           <div className="lg:col-span-4">
-            <div className="mb-3 flex items-center justify-between">
-              <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-muted">
-                Product lines
-              </span>
-
-              <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-muted">
-                05 / 05
-              </span>
-            </div>
-
             <div className="border-t border-line">
               {products.map((product, index) => {
                 const isActive = selectedIndex === index;
@@ -203,29 +515,31 @@ export function ProductsSection() {
                         scaleY: isActive ? 1 : 0,
                         opacity: isActive ? 1 : 0,
                       }}
-                      transition={{ duration: 0.25 }}
+                      transition={{
+                        duration: 0.3,
+                      }}
                       className="absolute left-0 top-0 h-full w-[2px] origin-top bg-signal-dark"
                     />
 
                     <div
-                      className={`flex items-start gap-4 py-4 pl-4 transition-colors duration-300 sm:py-[18px] ${
+                      className={`flex items-center gap-4 py-5 pl-5 pr-3 transition-all duration-300 ${
                         isActive
                           ? "bg-white"
                           : "bg-transparent group-hover:bg-white/60"
                       }`}
                     >
-                      {/* Number */}
+                      {/* Icon */}
                       <span
-                        className={`pt-1 font-mono text-[9px] tracking-[0.12em] ${
+                        className={`flex h-8 w-8 shrink-0 items-center justify-center border transition-colors ${
                           isActive
-                            ? "text-signal-dark"
-                            : "text-muted/50"
+                            ? "border-signal-dark text-signal-dark"
+                            : "border-line text-muted group-hover:border-signal-dark group-hover:text-signal-dark"
                         }`}
                       >
-                        {product.number}
+                        {product.icon}
                       </span>
 
-                      {/* Product information */}
+                      {/* Name */}
                       <div className="min-w-0 flex-1">
                         <span
                           className={`font-mono text-[8px] uppercase tracking-[0.16em] ${
@@ -238,67 +552,71 @@ export function ProductsSection() {
                         </span>
 
                         <h3
-                          className={`mt-0.5 font-heading text-[15px] font-medium tracking-[-0.02em] sm:text-base ${
-                            isActive ? "text-ink" : "text-ink/70"
+                          className={`mt-1 font-heading text-[15px] font-medium tracking-[-0.02em] ${
+                            isActive
+                              ? "text-ink"
+                              : "text-ink/65"
                           }`}
                         >
                           {product.title}
                         </h3>
-
-                        <AnimatePresence initial={false}>
-                          {isActive && (
-                            <motion.p
-                              initial={{
-                                opacity: 0,
-                                height: 0,
-                              }}
-                              animate={{
-                                opacity: 1,
-                                height: "auto",
-                              }}
-                              exit={{
-                                opacity: 0,
-                                height: 0,
-                              }}
-                              transition={{
-                                duration: 0.25,
-                                ease: [0.16, 1, 0.3, 1],
-                              }}
-                              className="max-w-sm overflow-hidden pr-4 pt-1.5 text-[11px] leading-[18px] text-muted"
-                            >
-                              {product.subDesc}
-                            </motion.p>
-                          )}
-                        </AnimatePresence>
                       </div>
 
                       {/* Arrow */}
-                      <span
-                        className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center border transition-all duration-300 ${
+                      <motion.span
+                        animate={{
+                          x: isActive ? 2 : 0,
+                          rotate: isActive ? 0 : -45,
+                        }}
+                        transition={{
+                          duration: 0.25,
+                        }}
+                        className={`flex h-7 w-7 shrink-0 items-center justify-center border ${
                           isActive
                             ? "border-signal-dark bg-signal-dark text-white"
                             : "border-line text-muted group-hover:border-signal-dark group-hover:text-signal-dark"
                         }`}
                       >
-                        <motion.span
-                          animate={{
-                            rotate: isActive ? 0 : -45,
-                          }}
-                          transition={{ duration: 0.25 }}
-                        >
-                          <ArrowIcon className="h-2.5 w-2.5" />
-                        </motion.span>
-                      </span>
+                        <ArrowIcon className="h-2.5 w-2.5" />
+                      </motion.span>
                     </div>
+
+                    {/* Active description */}
+                    <AnimatePresence initial={false}>
+                      {isActive && (
+                        <motion.div
+                          initial={{
+                            opacity: 0,
+                            height: 0,
+                          }}
+                          animate={{
+                            opacity: 1,
+                            height: "auto",
+                          }}
+                          exit={{
+                            opacity: 0,
+                            height: 0,
+                          }}
+                          transition={{
+                            duration: 0.3,
+                          }}
+                          className="overflow-hidden bg-white pl-[68px] pr-8"
+                        >
+                          <p className="pb-5 text-[11px] leading-[18px] text-muted">
+                            {product.subDesc}
+                          </p>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </button>
                 );
               })}
             </div>
           </div>
 
-          {/* ================================================= */}
-          {/* PRODUCT DETAIL */}
-          {/* ================================================= */}
+          {/* =================================================
+              PRODUCT VISUAL
+          ================================================= */}
 
           <div className="lg:col-span-8">
             <AnimatePresence mode="wait">
@@ -306,7 +624,7 @@ export function ProductsSection() {
                 key={activeProduct.id}
                 initial={{
                   opacity: 0,
-                  y: 8,
+                  y: 12,
                 }}
                 animate={{
                   opacity: 1,
@@ -314,69 +632,25 @@ export function ProductsSection() {
                 }}
                 exit={{
                   opacity: 0,
-                  y: -8,
+                  y: -12,
                 }}
                 transition={{
-                  duration: 0.3,
+                  duration: 0.35,
                   ease: [0.16, 1, 0.3, 1],
                 }}
               >
-                {/* ================================================= */}
-                {/* PRODUCT IMAGE */}
-                {/* ================================================= */}
-
-                <div className="relative overflow-hidden border border-line bg-white">
-                  <div className="relative aspect-[16/7] min-h-[220px] sm:min-h-[250px] lg:min-h-[285px]">
-                    <Image
-                      src={activeProduct.image}
-                      alt={activeProduct.title}
-                      fill
-                      sizes="(max-width: 1024px) 100vw, 66vw"
-                      className="object-cover"
-                      priority={selectedIndex === 0}
-                    />
-
-                    {/* Subtle image overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-ink/45 via-ink/5 to-transparent" />
-
-                    {/* Top identifier */}
-                    <div className="absolute left-5 top-5 flex items-center gap-3 sm:left-6 sm:top-6">
-                      <span className="font-mono text-[9px] tracking-[0.16em] text-white/70">
-                        {activeProduct.number}
-                      </span>
-
-                      <span className="h-px w-6 bg-white/40" />
-
-                      <span className="font-mono text-[8px] uppercase tracking-[0.16em] text-white">
-                        {activeProduct.meta}
-                      </span>
-                    </div>
-
-                    {/* Product name */}
-                    <div className="absolute bottom-5 left-5 sm:bottom-6 sm:left-6">
-                      <p className="font-mono text-[7px] uppercase tracking-[0.2em] text-white/55">
-                        VIoT hardware
-                      </p>
-
-                      <h3 className="mt-0.5 font-heading text-lg font-medium tracking-[-0.03em] text-white sm:text-xl">
-                        {activeProduct.title}
-                      </h3>
-                    </div>
-
-                    {/* Technical corner marks */}
-                    <span className="absolute right-5 top-5 h-5 w-5 border-r border-t border-white/45 sm:right-6 sm:top-6" />
-
-                    <span className="absolute bottom-5 right-5 h-5 w-5 border-b border-r border-white/45 sm:bottom-6 sm:right-6" />
-                  </div>
+                {/* Image */}
+                <div className="relative h-[330px] overflow-hidden border border-ink/10 sm:h-[390px] lg:h-[460px]">
+                  <ProductImage product={activeProduct} />
                 </div>
 
-                {/* ================================================= */}
-                {/* INFORMATION */}
-                {/* ================================================= */}
+                {/* =================================================
+                    PRODUCT INFORMATION
+                ================================================= */}
 
                 <div className="grid border-b border-line lg:grid-cols-12">
                   {/* Description */}
-                  <div className="border-b border-line py-5 sm:py-6 lg:col-span-7 lg:border-b-0 lg:border-r lg:pr-8">
+                  <div className="border-b border-line py-6 lg:col-span-7 lg:border-b-0 lg:border-r lg:pr-8">
                     <div className="flex items-center gap-3">
                       <span className="h-px w-5 bg-signal-dark" />
 
@@ -389,33 +663,25 @@ export function ProductsSection() {
                       {activeProduct.summary}
                     </h3>
 
-                    <p className="mt-3 max-w-xl text-xs leading-5.5 text-muted sm:text-[13px] sm:leading-6">
+                    <p className="mt-3 max-w-xl text-xs leading-6 text-muted sm:text-[13px]">
                       {activeProduct.details}
                     </p>
 
-                    <div className="mt-5">
-                      <Link
-                        href={activeProduct.href}
-                        className="group inline-flex items-center gap-3 border-b border-ink pb-1.5 text-[11px] font-semibold text-ink transition-colors hover:border-signal-dark hover:text-signal-dark"
-                      >
-                        Explore product
+                    <Link
+                      href={activeProduct.href}
+                      className="group mt-5 inline-flex items-center gap-3 border-b border-ink pb-1.5 text-[11px] font-semibold text-ink transition-colors hover:border-signal-dark hover:text-signal-dark"
+                    >
+                      Explore product
 
-                        <ArrowIcon className="h-2.5 w-2.5 transition-transform duration-300 group-hover:translate-x-1" />
-                      </Link>
-                    </div>
+                      <ArrowIcon className="h-2.5 w-2.5 transition-transform duration-300 group-hover:translate-x-1" />
+                    </Link>
                   </div>
 
                   {/* Specifications */}
-                  <div className="py-5 sm:py-6 lg:col-span-5 lg:pl-8">
-                    <div className="flex items-center justify-between">
-                      <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-muted">
-                        Key specifications
-                      </span>
-
-                      <span className="font-mono text-[8px] text-muted">
-                        {activeProduct.number} / 05
-                      </span>
-                    </div>
+                  <div className="py-6 lg:col-span-5 lg:pl-8">
+                    <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-muted">
+                      Key specifications
+                    </span>
 
                     <div className="mt-3">
                       {activeProduct.points.map((point, index) => (
@@ -423,7 +689,7 @@ export function ProductsSection() {
                           key={point}
                           initial={{
                             opacity: 0,
-                            x: 6,
+                            x: 8,
                           }}
                           animate={{
                             opacity: 1,
@@ -431,7 +697,7 @@ export function ProductsSection() {
                           }}
                           transition={{
                             duration: 0.25,
-                            delay: index * 0.04,
+                            delay: index * 0.05,
                           }}
                           className="flex items-start gap-3 border-t border-line py-2.5 first:border-t-0"
                         >
@@ -446,71 +712,25 @@ export function ProductsSection() {
                   </div>
                 </div>
 
-                {/* ================================================= */}
-                {/* PRODUCT FOOTER */}
-                {/* ================================================= */}
-
-                <div className="flex flex-col gap-3 pt-4 sm:flex-row sm:items-center sm:justify-between">
-                  <div className="flex items-center gap-3">
-                    <span className="font-mono text-[8px] uppercase tracking-[0.16em] text-muted">
-                      Connected to VIoT platform
-                    </span>
-
-                    <span className="h-1 w-1 bg-signal" />
-                  </div>
+                {/* Bottom action */}
+                <div className="flex flex-col gap-3 pt-5 sm:flex-row sm:items-center sm:justify-between">
+                  <span className="font-mono text-[8px] uppercase tracking-[0.16em] text-muted">
+                    Connected hardware · Unified platform
+                  </span>
 
                   <Link
                     href="/contact"
-                    className="inline-flex w-fit items-center gap-3 border border-ink bg-ink px-4 py-2 text-[11px] font-semibold text-white transition-colors hover:border-signal-dark hover:bg-signal-dark"
+                    className="inline-flex w-fit items-center gap-3 border border-ink bg-ink px-4 py-2.5 text-[11px] font-semibold !text-white transition-colors hover:border-signal-dark hover:bg-signal-dark"
                   >
                     Talk to our team
 
-                    <ArrowIcon className="h-2.5 w-2.5" />
+                    <ArrowIcon className="h-2.5 w-2.5 !text-white" />
                   </Link>
                 </div>
               </motion.div>
             </AnimatePresence>
           </div>
         </div>
-
-        {/* ================================================= */}
-        {/* SYSTEM STRIP */}
-        {/* ================================================= */}
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{
-            duration: 0.5,
-            delay: 0.1,
-          }}
-          className="mt-10 border-t border-line pt-4 sm:mt-12"
-        >
-          <div className="flex flex-col gap-2.5 sm:flex-row sm:items-center sm:justify-between">
-            <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-muted">
-              One hardware ecosystem
-            </span>
-
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 font-mono text-[8px] uppercase tracking-[0.14em] text-muted">
-              <span>Fleet</span>
-
-              <span className="h-1 w-1 bg-signal" />
-
-              <span>Asset</span>
-
-              <span className="h-1 w-1 bg-signal" />
-
-              <span>Access</span>
-
-              <span className="hidden h-px w-7 bg-line sm:block" />
-
-              <span className="text-signal-dark">
-                Unified platform
-              </span>
-            </div>
-          </div>
-        </motion.div>
       </div>
     </section>
   );
