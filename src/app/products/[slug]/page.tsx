@@ -121,6 +121,78 @@ function getProductFlow(slug: string) {
   }
 }
 
+const premiumStyles = `
+  @keyframes viotPulse {
+    0%, 100% {
+      transform: scale(.8);
+      opacity: .35;
+    }
+
+    50% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes viotScan {
+    0% {
+      transform: translateX(-120%);
+    }
+
+    100% {
+      transform: translateX(120%);
+    }
+  }
+
+  @keyframes viotFloat {
+    0%, 100% {
+      transform: translate3d(0, 0, 0);
+    }
+
+    50% {
+      transform: translate3d(0, -8px, 0);
+    }
+  }
+
+  .viot-premium-grid {
+    background-image:
+      linear-gradient(rgba(8,27,36,.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(8,27,36,.045) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  .viot-scan::after {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 28%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(39,213,155,.12),
+      transparent
+    );
+    animation: viotScan 4s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  .viot-float {
+    animation: viotFloat 5s ease-in-out infinite;
+  }
+
+  .viot-pulse {
+    animation: viotPulse 2s ease-in-out infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .viot-scan::after,
+    .viot-float,
+    .viot-pulse {
+      animation: none;
+    }
+  }
+`;
+
 /* ============================================================
    PAGE
 ============================================================ */
@@ -160,6 +232,7 @@ export default async function ProductPage({
 
   return (
     <main className="overflow-hidden bg-[#f4f6f2] text-[#081b24]">
+       <style dangerouslySetInnerHTML={{ __html: premiumStyles }} />
       <StructuredData data={productSchema} />
 
       <StructuredData
@@ -183,12 +256,17 @@ export default async function ProductPage({
           01 — HERO
       ===================================================== */}
 
-      <section className="border-b border-[#cdd5d2] bg-[#f4f6f2]">
-        <PageHero
-          breadcrumb={`Products / ${product.shortName}`}
-          title={product.headline}
-          lede={product.lede}
-        />
+      <section className="relative overflow-hidden border-b border-[#cdd5d2] bg-[#f4f6f2] viot-premium-grid">
+        <div className="pointer-events-none absolute -right-32 -top-40 h-[520px] w-[520px] rounded-full bg-[#27d59b]/[0.055] blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-40 left-[12%] h-[360px] w-[360px] rounded-full bg-[#007c67]/[0.035] blur-3xl" />
+        <div className="relative z-10">
+          <PageHero
+            breadcrumb={`Products / ${product.shortName}`}
+            title={product.headline}
+            lede={product.lede}
+          />
+        </div>
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#007c67]/30 to-transparent" />
       </section>
 
       {/* =====================================================
@@ -201,7 +279,7 @@ export default async function ProductPage({
             {/* Product image */}
 
             <div className="lg:col-span-7">
-              <div className="relative overflow-hidden border border-[#dce3e0] bg-[#eef2ef]">
+              <div className="group viot-scan relative overflow-hidden border border-[#dce3e0] bg-[#eef2ef] shadow-[0_30px_80px_-45px_rgba(8,27,36,.45)]">
                 <div className="relative aspect-[4/3]">
                   <Image
                     src={productImage}
@@ -209,7 +287,7 @@ export default async function ProductPage({
                     fill
                     priority
                     sizes="(max-width: 1024px) 100vw, 58vw"
-                    className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-[1.02]"
+                    className="object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.045]"
                   />
 
                   {/* Image technical label */}
@@ -237,78 +315,93 @@ export default async function ProductPage({
                       </span>
                     </div>
                   </div>
+
+                  <div className="pointer-events-none absolute left-4 top-4 h-7 w-7 border-l border-t border-[#27d59b]/50" />
+                  <div className="pointer-events-none absolute right-4 top-4 h-7 w-7 border-r border-t border-white/30" />
+                  <div className="pointer-events-none absolute bottom-16 right-5 flex items-center gap-2 border border-white/15 bg-[#081b24]/75 px-2.5 py-1.5 backdrop-blur-md">
+                    <span className="viot-pulse h-1.5 w-1.5 rounded-full bg-[#27d59b]" />
+                    <span className="font-mono text-[7px] uppercase tracking-[0.16em] text-white/65">
+                      Edge signal
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
 
             {/* Product narrative */}
 
-            <div className="lg:col-span-5">
-              <div className="max-w-xl">
-                <div className="flex items-center gap-3">
-                  <span className="font-mono text-[8px] uppercase tracking-[0.2em] text-[#007c67]">
-                    {product.number} / Product
-                  </span>
+         <div className="lg:col-span-5">
+  <div className="max-w-xl lg:pl-2">
 
-                  <span className="h-px w-8 bg-[#cdd5d2]" />
-                </div>
+    {/* Product label */}
+    <div className="flex items-center gap-3">
+      <span className="font-mono text-[8px] uppercase tracking-[0.2em] text-[#007c67]">
+        {product.number} / Product
+      </span>
 
-                <h1 className="mt-5 font-heading text-3xl font-semibold leading-[1.08] tracking-[-0.04em] sm:text-4xl lg:text-[46px]">
-                  {product.name}
-                </h1>
+      <span className="h-px w-8 bg-[#cdd5d2]" />
+    </div>
 
-                <p className="mt-6 text-[14px] leading-7 text-[#607078]">
-                  {product.description}
-                </p>
+    {/* Product title */}
+    <h1 className="mt-5 font-heading text-3xl font-semibold leading-[1.02] tracking-[-0.045em] text-[#081b24] sm:text-4xl lg:text-[50px]">
+      {product.name}
+    </h1>
 
-                {/* Key points */}
+    {/* Description */}
+    <p className="mt-6 max-w-lg text-[14px] leading-7 text-[#607078]">
+      {product.description}
+    </p>
 
-                <div className="mt-8 border-t border-[#cdd5d2]">
-                  {product.points.map((point, index) => (
-                    <div
-                      key={point}
-                      className="flex gap-4 border-b border-[#e5eae7] py-3.5"
-                    >
-                      <span className="pt-[2px] font-mono text-[8px] text-[#007c67]">
-                        {String(index + 1).padStart(2, "0")}
-                      </span>
+    {/* Key points */}
+    <div className="mt-9 border-t border-[#cdd5d2]">
+      {product.points.map((point, index) => (
+        <div
+          key={point}
+          className="group flex items-start gap-4 border-b border-[#e5eae7] py-4 transition-all duration-300 hover:border-[#c5d4ce] hover:bg-[#f8faf9]"
+        >
+          {/* Number */}
+          <span className="w-5 shrink-0 pt-0.5 font-mono text-[8px] font-medium tracking-[0.08em] text-[#9aa5a1] transition-colors duration-300 group-hover:text-[#007c67]">
+            {String(index + 1).padStart(2, "0")}
+          </span>
 
-                      <div className="flex items-start gap-2">
-                        <CheckIcon />
+          {/* Small check */}
+          <span className="mt-[2px] flex h-[17px] w-[17px] shrink-0 items-center justify-center rounded-full border border-[#b9d8cd] bg-[#f1f8f5]">
+            <CheckIcon className="h-[9px] w-[9px] text-[#007c67]" />
+          </span>
 
-                        <span className="text-[12px] leading-5 text-[#24353d]">
-                          {point}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+          {/* Point text */}
+          <span className="pr-2 text-[12px] leading-[1.6] text-[#24353d] transition-colors duration-300 group-hover:text-[#081b24]">
+            {point}
+          </span>
+        </div>
+      ))}
+    </div>
 
-                {/* Actions */}
+    {/* Actions */}
+    <div className="mt-9 flex flex-wrap items-center gap-5">
+      <a
+        href="#specifications"
+        className="group inline-flex items-center gap-2 border-b border-[#081b24] pb-1.5 text-[10px] font-semibold uppercase tracking-[0.08em] text-[#081b24] transition-all duration-300 hover:border-[#007c67] hover:text-[#007c67]"
+      >
+        View specifications
 
-                <div className="mt-8 flex flex-wrap items-center gap-5">
-                  <a
-                    href="#specifications"
-                    className="group inline-flex items-center gap-2 border-b border-[#081b24] pb-1 text-[10px] font-semibold uppercase tracking-[0.08em] text-[#081b24] transition-colors hover:border-[#007c67] hover:text-[#007c67]"
-                  >
-                    View specifications
+        <span className="text-[12px] transition-transform duration-300 group-hover:translate-y-0.5">
+          ↓
+        </span>
+      </a>
 
-                    <span className="transition-transform duration-200 group-hover:translate-y-0.5">
-                      ↓
-                    </span>
-                  </a>
+      <Link
+        href="/contact"
+        className="group inline-flex min-h-11 items-center gap-3 bg-[#081b24] px-5 text-[10px] font-semibold uppercase tracking-[0.08em] text-white! transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#007c67] hover:shadow-[0_12px_25px_-12px_rgba(0,124,103,0.45)]"
+      >
+        Get in touch
 
-                  <Link
-                    href="/contact"
-                    className="group inline-flex items-center gap-3 bg-[#081b24] px-5 py-3.5 text-[10px] font-semibold uppercase tracking-[0.08em] text-white transition-colors duration-300 hover:bg-[#007c67]"
-                  >
-                    Get in touch
+        <ArrowIcon className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-1" />
+      </Link>
+    </div>
 
-                    <ArrowIcon className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-1" />
-                  </Link>
-                </div>
-              </div>
-            </div>
+  </div>
+</div>
           </div>
         </div>
       </section>
@@ -317,7 +410,11 @@ export default async function ProductPage({
           03 — DATA JOURNEY
       ===================================================== */}
 
-      <section className="border-b border-white/[0.10] bg-[#081b24] text-white">
+      <section className="relative overflow-hidden border-b border-white/[0.10] bg-[#081b24] text-white">
+        <div className="pointer-events-none absolute inset-0 opacity-50">
+          <div className="absolute left-[8%] top-[18%] h-72 w-72 rounded-full border border-[#27d59b]/[0.07]" />
+          <div className="absolute right-[4%] bottom-[8%] h-96 w-96 rounded-full border border-white/[0.035]" />
+        </div>
         <div className="mx-auto max-w-[1440px] px-6 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-24 xl:px-16">
           <div className="grid gap-10 lg:grid-cols-12 lg:items-end">
             <div className="lg:col-span-7">
@@ -450,7 +547,7 @@ export default async function ProductPage({
                 {product.specs.map(([name, value], index) => (
                   <div
                     key={name}
-                    className="group grid gap-3 border-b border-[#cdd5d2] py-5 sm:grid-cols-[220px_1fr]"
+                    className="group relative grid gap-3 border-b border-[#cdd5d2] py-5 pl-0 pr-2 transition-all duration-300 hover:pl-3 hover:bg-white/60 sm:grid-cols-[220px_1fr]"
                   >
                     <div className="flex items-center gap-3">
                       <span className="font-mono text-[8px] text-[#9aa5a1]">
@@ -516,7 +613,7 @@ export default async function ProductPage({
               <Link
                 key={item.slug}
                 href={`/products/${item.slug}`}
-                className={`group flex min-h-[145px] flex-col justify-between border-b border-[#cdd5d2] p-5 transition-colors hover:bg-[#f4f6f2] sm:min-h-[165px] lg:border-b-0 ${
+                className={`group relative flex min-h-[145px] flex-col justify-between border-b border-[#cdd5d2] p-5 transition-all duration-400 hover:-translate-y-1 hover:bg-[#f4f6f2] hover:shadow-[0_20px_45px_-35px_rgba(8,27,36,.45)] sm:min-h-[165px] lg:border-b-0 ${
                   index < related.length - 1
                     ? "lg:border-r"
                     : ""

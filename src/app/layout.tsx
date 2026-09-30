@@ -6,6 +6,7 @@ import { Header } from "@/components/header";
 import { StructuredData } from "@/components/structured-data";
 
 import "./globals.css";
+import { SmoothScroll } from "@/components/SmoothScroll";
 
 const poppins = Poppins({
   variable: "--viot-heading",
@@ -131,15 +132,17 @@ export default function RootLayout({
       lang="en"
       className={`${poppins.variable} ${inter.variable} ${jetbrainsMono.variable}`}
     >
-      <body className="bg-paper text-ink antialiased">
-        <StructuredData data={organizationSchema} />
+  <body className="bg-paper text-ink antialiased">
+  <StructuredData data={organizationSchema} />
 
-        <Header />
+  <Header />
 
-        <div id="main-content">{children}</div>
+  <SmoothScroll />
 
-        <Footer />
-      </body>
+  <div id="main-content">{children}</div>
+
+  <Footer />
+</body>
     </html>
   );
 }
