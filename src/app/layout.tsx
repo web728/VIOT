@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Poppins, Inter, JetBrains_Mono } from "next/font/google";
+import { Manrope, Inter, JetBrains_Mono } from "next/font/google";
 
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
@@ -8,10 +8,10 @@ import { StructuredData } from "@/components/structured-data";
 import "./globals.css";
 import { SmoothScroll } from "@/components/SmoothScroll";
 
-const poppins = Poppins({
+const manrope = Manrope({
   variable: "--viot-heading",
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
+  weight: ["500", "600", "700", "800"],
   display: "swap",
 });
 
@@ -31,6 +31,7 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://viot.in"),
+
   applicationName: "VIoT",
 
   title: {
@@ -130,19 +131,19 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${poppins.variable} ${inter.variable} ${jetbrainsMono.variable}`}
+      className={`${manrope.variable} ${inter.variable} ${jetbrainsMono.variable}`}
     >
-  <body className="bg-paper text-ink antialiased">
-  <StructuredData data={organizationSchema} />
+      <body className="bg-paper text-ink antialiased">
+        <StructuredData data={organizationSchema} />
 
-  <Header />
+        <Header />
 
-  <SmoothScroll />
+        <SmoothScroll />
 
-  <div id="main-content">{children}</div>
+        <div id="main-content">{children}</div>
 
-  <Footer />
-</body>
+        <Footer />
+      </body>
     </html>
   );
 }

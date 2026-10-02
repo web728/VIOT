@@ -1,611 +1,762 @@
 "use client";
 
-import Image from "next/image";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 import { ArrowIcon } from "@/components/icons";
 
-function ConnectedVehicleVisual() {
+/* =========================================================
+   FORM CONFIG
+========================================================= */
+
+const lookingForOptions = [
+  "Vehicle Telematics",
+  "Video Telematics / Dash Cams",
+  "Smart Locks (E-Lock)",
+  "Asset Tracking",
+  "IoT Sensors (Temperature, Fuel, Load)",
+  "Building Access Management",
+  "Platform Demo",
+  "Other",
+];
+
+const fleetSizes = ["1–10", "11–50", "51–200", "200+"];
+
+const followUps = {
+  "Vehicle Telematics": [
+    {
+      name: "fleetSize",
+      label: "Number of vehicles",
+      type: "select",
+      options: fleetSizes,
+    },
+    {
+      name: "vehicleType",
+      label: "Vehicle type",
+      type: "select",
+      options: [
+        "Trucks",
+        "Buses",
+        "Cars",
+        "Heavy / construction vehicles",
+        "Mixed fleet",
+      ],
+    },
+  ],
+
+  "Video Telematics / Dash Cams": [
+    {
+      name: "fleetSize",
+      label: "Number of vehicles",
+      type: "select",
+      options: fleetSizes,
+    },
+    {
+      name: "cameraSetup",
+      label: "Camera setup",
+      type: "select",
+      options: [
+        "Front camera",
+        "Front + cabin camera",
+        "Not sure yet",
+      ],
+    },
+  ],
+
+  "Smart Locks (E-Lock)": [
+    {
+      name: "lockQuantity",
+      label: "Number of locks",
+      type: "select",
+      options: ["1–10", "11–50", "51–200", "200+"],
+    },
+    {
+      name: "lockUse",
+      label: "Where will they be used",
+      type: "select",
+      options: [
+        "Container / cargo trucks",
+        "Warehouses",
+        "Infrastructure",
+        "Other",
+      ],
+    },
+  ],
+
+  "Asset Tracking": [
+    {
+      name: "assetType",
+      label: "Type of assets",
+      type: "text",
+      placeholder: "e.g. generators, trailers, machinery",
+    },
+    {
+      name: "assetCount",
+      label: "Number of assets",
+      type: "select",
+      options: ["1–25", "26–100", "101–500", "500+"],
+    },
+  ],
+
+  "IoT Sensors (Temperature, Fuel, Load)": [
+    {
+      name: "sensorType",
+      label: "Sensor type",
+      type: "select",
+      options: ["Temperature", "Fuel", "Load", "More than one"],
+    },
+    {
+      name: "fleetSize",
+      label: "Number of vehicles",
+      type: "select",
+      options: fleetSizes,
+    },
+  ],
+
+  "Building Access Management": [
+    {
+      name: "siteType",
+      label: "Type of site",
+      type: "select",
+      options: [
+        "Data centre",
+        "Corporate building",
+        "Residential / premium property",
+        "Other",
+      ],
+    },
+    {
+      name: "accessPoints",
+      label: "Number of doors / access points",
+      type: "select",
+      options: ["1–10", "11–50", "51–200", "200+"],
+    },
+  ],
+
+  "Platform Demo": [
+    {
+      name: "demoFocus",
+      label: "What would you like to see",
+      type: "select",
+      options: [
+        "Fleet Management",
+        "EV Management",
+        "E-Lock Security",
+        "Video Telematics",
+        "Fuel Monitoring",
+        "Access Control",
+        "Full platform",
+      ],
+    },
+  ],
+
+  Other: [],
+};
+
+const timelines = [
+  "As soon as possible",
+  "Within 1 month",
+  "1–3 months",
+  "Just exploring",
+];
+
+/* =========================================================
+   COMPACT FORM STYLES
+========================================================= */
+
+const inputClass =
+  "h-10 w-full border-b border-[#c7d8d2] bg-transparent px-0 text-[12px] text-[#081b24] placeholder:text-[#607078]/50 transition-colors focus:border-[#27d59b] focus:outline-none";
+
+const labelClass =
+  "mb-1.5 block font-mono text-[8px] font-semibold uppercase tracking-[0.15em] text-[#007c67]";
+
+/* =========================================================
+   CLIENT-APPROVED SVG BACKGROUND
+   Flowing paths + engineering rings + signal points
+========================================================= */
+
+function CtaBackgroundAnimation() {
   return (
-    <div className="relative h-full min-h-[390px] overflow-hidden bg-[#e9eeeb]">
-      {/* =================================================
-          SOFT ATMOSPHERE
-      ================================================= */}
+    <div className="pointer-events-none absolute inset-0 overflow-hidden">
+      {/* Soft atmosphere */}
 
-      <div className="absolute inset-0">
-        <div className="absolute left-[15%] top-[12%] h-[280px] w-[280px] rounded-full bg-signal-dark/[0.045] blur-3xl" />
+      <div className="absolute -left-40 top-[15%] h-[360px] w-[360px] rounded-full bg-signal-dark/[0.025] blur-3xl" />
 
-        <div className="absolute bottom-[-20%] right-[-10%] h-[300px] w-[300px] rounded-full bg-ink/[0.035] blur-3xl" />
-      </div>
+      <div className="absolute -right-40 bottom-[5%] h-[480px] w-[480px] rounded-full bg-ink/[0.02] blur-3xl" />
 
-      {/* =================================================
-          TECHNICAL SVG
-      ================================================= */}
+      {/* =====================================================
+          FLOWING SVG NETWORK
+      ===================================================== */}
 
-      <svg
-        viewBox="0 0 700 500"
-        className="absolute inset-0 h-full w-full"
-        fill="none"
-        preserveAspectRatio="xMidYMid slice"
-      >
-        {/* Road / trajectory */}
-        <path
-          d="M-40 405 C110 330 180 350 300 365 S510 405 740 260"
-          stroke="rgba(8,27,36,0.10)"
-          strokeWidth="1"
-        />
+   <svg
+  viewBox="0 0 1600 900"
+  preserveAspectRatio="none"
+  className="absolute inset-0 h-full w-full"
+  fill="none"
+>
+  <motion.path
+    d="M-160 250 C120 45 390 95 620 270 S1050 580 1760 225"
+    stroke="rgba(8,27,36,0.10)"
+    strokeWidth="1"
+  />
 
-        <path
-          d="M-40 425 C110 350 190 370 310 385 S520 425 740 280"
-          stroke="rgba(8,27,36,0.045)"
-          strokeWidth="16"
-        />
+  <motion.path
+    d="M-180 680 C120 455 390 510 680 665 S1130 850 1780 545"
+    stroke="rgba(39,213,155,0.18)"
+    strokeWidth="1.2"
+    strokeDasharray="3 15"
+    animate={{
+      strokeDashoffset: [0, -180],
+    }}
+    transition={{
+      duration: 12,
+      repeat: Infinity,
+      ease: "linear",
+    }}
+  />
 
-        {/* Signal route */}
-        <motion.path
-          d="M55 170 C180 120 250 205 355 180 S530 90 660 125"
-          stroke="rgba(0,124,103,0.20)"
-          strokeWidth="1"
-          strokeDasharray="3 12"
-          animate={{
-            strokeDashoffset: [0, -180],
-          }}
-          transition={{
-            duration: 10,
-            repeat: Infinity,
-            ease: "linear",
-          }}
-        />
+  <path
+    d="M70 980 C250 710 510 675 780 435 S1240 105 1630 -80"
+    stroke="rgba(8,27,36,0.06)"
+    strokeWidth="1"
+  />
 
-        {/* Vertical connection */}
-        <path
-          d="M355 65 V180"
-          stroke="rgba(8,27,36,0.07)"
-          strokeWidth="1"
-          strokeDasharray="2 8"
-        />
+  <motion.path
+    d="M-120 460 C230 330 420 405 650 500 S1060 680 1730 445"
+    stroke="rgba(0,124,103,0.12)"
+    strokeWidth="1"
+    strokeDasharray="2 20"
+    animate={{
+      strokeDashoffset: [0, 180],
+    }}
+    transition={{
+      duration: 15,
+      repeat: Infinity,
+      ease: "linear",
+    }}
+  />
+</svg>
 
-        {/* Satellite signal arcs */}
-        <path
-          d="M305 105 C325 80 355 80 380 105"
-          stroke="rgba(0,124,103,0.16)"
-          strokeWidth="1"
-        />
+      {/* =====================================================
+          ENGINEERING RINGS
+      ===================================================== */}
 
-        <path
-          d="M285 85 C325 40 370 40 400 85"
-          stroke="rgba(0,124,103,0.08)"
-          strokeWidth="1"
-        />
+  <motion.div
+  className="absolute right-[3%] top-[8%] h-[330px] w-[330px] rounded-full border border-[#081b24]/[0.06]"
+  animate={{ rotate: 360 }}
+  transition={{
+    duration: 60,
+    repeat: Infinity,
+    ease: "linear",
+  }}
+/>
 
-        {/* Small network nodes */}
-        <circle
-          cx="355"
-          cy="62"
-          r="3"
-          fill="#007c67"
-          fillOpacity="0.7"
-        />
+<motion.div
+  className="absolute right-[7%] top-[14%] h-[235px] w-[235px] rounded-full border border-[#27d59b]/[0.12]"
+  animate={{ rotate: -360 }}
+  transition={{
+    duration: 42,
+    repeat: Infinity,
+    ease: "linear",
+  }}
+/>
 
-        <circle
-          cx="55"
-          cy="170"
-          r="2"
-          fill="#007c67"
-          fillOpacity="0.5"
-        />
+      <div className="absolute right-[13%] top-[23%] h-[115px] w-[115px] rounded-full border border-ink/[0.03]" />
 
-        <circle
-          cx="660"
-          cy="125"
-          r="2"
-          fill="#007c67"
-          fillOpacity="0.5"
-        />
+      {/* Left arc */}
 
-        {/* Route marker */}
-        <circle
-          cx="510"
-          cy="350"
-          r="3"
-          fill="#007c67"
-          fillOpacity="0.55"
-        />
+      <div className="absolute -left-[170px] bottom-[10%] h-[370px] w-[370px] rounded-full border border-ink/[0.03]" />
 
-        {/* Fine technical marks */}
-        <path
-          d="M90 115h45M112 93v45"
-          stroke="rgba(8,27,36,0.07)"
-        />
+      {/* =====================================================
+          MOVING SIGNAL POINTS
+      ===================================================== */}
 
-        <path
-          d="M570 375h55M597 348v55"
-          stroke="rgba(8,27,36,0.06)"
-        />
+    <motion.span
+  className="absolute left-[17%] top-[27%] h-1 w-1 bg-[#27d59b]"
+  animate={{
+    x: [0, 80, 170],
+    y: [0, 18, 0],
+    opacity: [0.15, 0.8, 0],
+  }}
+  transition={{
+    duration: 5.5,
+    repeat: Infinity,
+    ease: "easeInOut",
+  }}
+/>
 
-        {/* Moving signal */}
-        <motion.circle
-          r="3"
-          fill="#007c67"
-          animate={{
-            cx: [55, 180, 355, 520, 660],
-            cy: [170, 145, 180, 105, 125],
-            opacity: [0, 1, 1, 1, 0],
-          }}
-          transition={{
-            duration: 5,
-            repeat: Infinity,
-            ease: "linear",
-          }}
-        />
-      </svg>
-
-      {/* =================================================
-          TOP LABEL
-      ================================================= */}
-
-      <div className="absolute left-6 top-6 right-6 flex items-start justify-between">
-        <div>
-          <span className="font-mono text-[8px] uppercase tracking-[0.2em] text-signal-dark">
-            Connected mobility
-          </span>
-
-          <h3 className="mt-2 max-w-[250px] font-heading text-xl font-semibold leading-tight tracking-[-0.035em] text-ink sm:text-2xl">
-            From the road
-            <br />
-            to the platform.
-          </h3>
-        </div>
-
-        <motion.span
-          animate={{
-            opacity: [0.3, 1, 0.3],
-          }}
-          transition={{
-            duration: 2,
-            repeat: Infinity,
-          }}
-          className="mt-1 h-2 w-2 bg-signal-dark"
-        />
-      </div>
-
-      {/* =================================================
-          VEHICLE
-      ================================================= */}
-
-      <motion.div
-        initial={{
-          opacity: 0,
-          y: 18,
-        }}
-        whileInView={{
-          opacity: 1,
-          y: 0,
-        }}
-        viewport={{
-          once: true,
-          amount: 0.3,
-        }}
+      <motion.span
+        className="absolute left-[43%] top-[70%] h-1 w-1 bg-signal-dark"
         animate={{
-          y: [0, -4, 0],
+          x: [0, -65, -135],
+          y: [0, -20, 0],
+          opacity: [0, 0.55, 0],
         }}
         transition={{
-          opacity: {
-            duration: 0.8,
-          },
-          y: {
-            duration: 5,
-            repeat: Infinity,
-            ease: "easeInOut",
-          },
-        }}
-        className="absolute bottom-[19%] left-[7%] right-[7%] h-[170px] sm:h-[190px]"
-      >
-        <Image
-          src="/image/truck-pn.png"
-          alt="Connected VIoT vehicle"
-          fill
-          sizes="(max-width: 1024px) 100vw, 40vw"
-          className="object-contain"
-        />
-      </motion.div>
-
-      {/* =================================================
-          VEHICLE SIGNAL
-      ================================================= */}
-
-      <motion.div
-        className="absolute bottom-[31%] left-[48%] flex items-center gap-2"
-        animate={{
-          opacity: [0.3, 1, 0.3],
-        }}
-        transition={{
-          duration: 2.4,
+          duration: 6,
+          delay: 1,
           repeat: Infinity,
+          ease: "easeInOut",
         }}
-      >
-        <span className="h-2 w-2 bg-signal-dark" />
+      />
 
-        <span className="font-mono text-[7px] uppercase tracking-[0.16em] text-ink/45">
-          Telemetry active
-        </span>
-      </motion.div>
+      <motion.span
+        className="absolute right-[18%] top-[37%] h-1 w-1 bg-signal-dark"
+        animate={{
+          x: [0, -50, -110],
+          opacity: [0.08, 0.55, 0],
+        }}
+        transition={{
+          duration: 5,
+          delay: 1.8,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
 
-      {/* =================================================
-          BOTTOM INFO
-      ================================================= */}
+      {/* Ambient points */}
 
-      <div className="absolute bottom-6 left-6 right-6">
-        <div className="flex items-center gap-3">
-          <span className="h-px w-8 bg-signal-dark" />
-
-          <span className="font-mono text-[7px] uppercase tracking-[0.18em] text-muted">
-            Vehicle → Network → VIoT
-          </span>
-        </div>
-
-        <p className="mt-2 max-w-sm text-[11px] leading-5 text-muted">
-          Location, diagnostics and events move from connected hardware into
-          one operational view.
-        </p>
-      </div>
-
-      {/* Corner marks */}
-      <span className="absolute left-4 top-4 h-5 w-5 border-l border-t border-ink/10" />
-      <span className="absolute right-4 top-4 h-5 w-5 border-r border-t border-ink/10" />
-      <span className="absolute bottom-4 left-4 h-5 w-5 border-b border-l border-ink/10" />
-      <span className="absolute bottom-4 right-4 h-5 w-5 border-b border-r border-ink/10" />
+      {[
+        ["12%", "20%"],
+        ["24%", "76%"],
+        ["38%", "14%"],
+        ["57%", "82%"],
+        ["67%", "20%"],
+        ["78%", "70%"],
+        ["90%", "50%"],
+      ].map(([left, top], index) => (
+        <motion.span
+          key={`${left}-${top}`}
+          className="absolute h-0.5 w-0.5 bg-ink/20"
+          style={{
+            left,
+            top,
+          }}
+          animate={{
+            opacity: [0.08, 0.35, 0.08],
+          }}
+          transition={{
+            duration: 3 + index * 0.25,
+            delay: index * 0.3,
+            repeat: Infinity,
+          }}
+        />
+      ))}
     </div>
   );
 }
 
+/* =========================================================
+   FIELD
+========================================================= */
+
+function FieldInput({ field }) {
+  const id = `cta-${field.name}`;
+
+  return (
+    <div className="min-w-0">
+      <label htmlFor={id} className={labelClass}>
+        {field.label}
+      </label>
+
+      {field.type === "select" ? (
+        <select
+          id={id}
+          name={field.name}
+          required
+          defaultValue=""
+          className={inputClass}
+        >
+          <option value="" disabled>
+            Select
+          </option>
+
+          {field.options?.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
+      ) : (
+        <input
+          id={id}
+          name={field.name}
+          required
+          type="text"
+          placeholder={field.placeholder}
+          className={inputClass}
+        />
+      )}
+    </div>
+  );
+}
+
+/* =========================================================
+   CTA BAND
+========================================================= */
+
 export function CtaBand() {
   const [submitted, setSubmitted] = useState(false);
+  const [lookingFor, setLookingFor] = useState("");
+
+  const extraFields = lookingFor
+    ? followUps[lookingFor] ?? []
+    : [];
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const payload = Object.fromEntries(
+      new FormData(e.currentTarget)
+    );
+
+    // TODO:
+    // Send payload to your enquiry API / email service.
+    console.debug(payload);
+
     setSubmitted(true);
   };
 
   return (
-    <section className="relative overflow-hidden bg-paper">
-      {/* =================================================
-          SECTION ATMOSPHERE
-      ================================================= */}
+ <section className="relative overflow-hidden bg-[#f4f6f2]">
+      {/* =====================================================
+          CLIENT SVG ANIMATION
+      ===================================================== */}
 
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <motion.div
-          className="absolute -right-40 top-20 h-[420px] w-[420px] rounded-full bg-signal-dark/[0.025] blur-3xl"
-          animate={{
-            scale: [1, 1.08, 1],
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
+      <CtaBackgroundAnimation />
 
-        <svg
-          viewBox="0 0 1600 700"
-          className="absolute inset-0 h-full w-full"
-          fill="none"
-        >
-          <motion.path
-            d="M-100 600 C260 430 430 490 700 540 S1200 650 1700 350"
-            stroke="rgba(0,124,103,0.055)"
-            strokeWidth="1"
-            strokeDasharray="3 18"
-            animate={{
-              strokeDashoffset: [0, -200],
-            }}
-            transition={{
-              duration: 15,
-              repeat: Infinity,
-              ease: "linear",
-            }}
-          />
+      {/* Keep background subtle behind content */}
 
-          <path
-            d="M900 760 C1040 560 1180 490 1360 350 S1510 160 1700 80"
-            stroke="rgba(8,27,36,0.035)"
-            strokeWidth="1"
-          />
-        </svg>
-      </div>
+  <div className="pointer-events-none absolute inset-0 bg-[#f4f6f2]/70" />
 
-      {/* =================================================
-          MAIN
-      ================================================= */}
+      {/* =====================================================
+          CONTENT
+      ===================================================== */}
 
-      <div className="relative z-10 mx-auto max-w-7xl px-6 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-24">
-        {/* HEADER */}
+      <div className="relative z-10 mx-auto max-w-6xl px-5 py-10 sm:px-6 sm:py-12 lg:py-14">
+        {/* ===================================================
+            HEADER
+        =================================================== */}
 
         <motion.div
-          initial={{
-            opacity: 0,
-            y: 20,
-          }}
-          whileInView={{
-            opacity: 1,
-            y: 0,
-          }}
-          viewport={{
-            once: true,
-            amount: 0.2,
-          }}
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
           transition={{
-            duration: 0.7,
+            duration: 0.5,
             ease: [0.16, 1, 0.3, 1],
           }}
-          className="grid gap-7 lg:grid-cols-12 lg:items-end"
+          className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between"
         >
-          <div className="lg:col-span-8">
-            <div className="mb-5 flex items-center gap-3">
-              <span className="h-px w-8 bg-signal-dark" />
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="h-px w-6 bg-signal-dark" />
 
-              <span className="font-mono text-[8px] font-semibold uppercase tracking-[0.2em] text-signal-dark">
+              <span className="font-mono text-[8px] font-semibold uppercase tracking-[0.17em] text-signal-dark">
                 Start a conversation
               </span>
             </div>
 
-            <h2 className="max-w-4xl font-heading text-4xl font-semibold leading-[0.98] tracking-[-0.055em] text-ink sm:text-5xl lg:text-[60px]">
-              Have a vehicle, asset
-              <br />
-              or{" "}
-              <span className="text-muted">
-                access challenge?
-              </span>
-            </h2>
+          <h2 className="mt-2 font-heading text-2xl font-semibold leading-tight tracking-[-0.045em] text-[#081b24] sm:text-3xl">
+  Let&apos;s solve your
+  <span className="text-[#007c67]"> connected challenge.</span>
+</h2>
           </div>
 
-          <div className="lg:col-span-4">
-            <p className="max-w-md text-sm leading-7 text-muted">
-              Tell us what you need to track, monitor or secure. Our team can
-              help identify the right VIoT solution for your operation.
-            </p>
-          </div>
+      <p className="max-w-sm text-[11px] leading-5 text-[#607078]">
+  Tell us what you need to track, monitor or secure.
+</p>
         </motion.div>
 
-        {/* =================================================
-            CTA CARD
-        ================================================= */}
+        {/* ===================================================
+            FORM
+        =================================================== */}
 
         <motion.div
-          initial={{
-            opacity: 0,
-            y: 24,
-          }}
-          whileInView={{
-            opacity: 1,
-            y: 0,
-          }}
-          viewport={{
-            once: true,
-            amount: 0.15,
-          }}
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.08 }}
           transition={{
-            duration: 0.75,
-            delay: 0.08,
+            duration: 0.55,
+            delay: 0.05,
             ease: [0.16, 1, 0.3, 1],
           }}
-          className="mt-12 overflow-hidden bg-white shadow-[0_20px_70px_rgba(8,27,36,0.07)]"
+     className="mt-7 border border-[#c7d8d2] bg-white shadow-[0_12px_45px_rgba(8,27,36,0.055)]"
         >
-          <div className="grid lg:grid-cols-12">
-            {/* =================================================
-                VISUAL
-            ================================================= */}
+          <AnimatePresence mode="wait" initial={false}>
+            {submitted ? (
+              /* =================================================
+                 SUCCESS
+              ================================================= */
 
-            <div className="lg:col-span-5">
-              <ConnectedVehicleVisual />
-            </div>
+              <motion.div
+                key="success"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="flex min-h-[260px] items-center px-6 py-8 sm:px-9"
+              >
+                <div>
+                  <div className="flex h-9 w-9 items-center justify-center bg-signal-dark text-xs font-semibold text-white">
+                    ✓
+                  </div>
 
-            {/* =================================================
-                FORM
-            ================================================= */}
+                  <span className="mt-4 block font-mono text-[8px] uppercase tracking-[0.16em] text-signal-dark">
+                    Request received
+                  </span>
 
-            <div className="lg:col-span-7">
-              <AnimatePresence mode="wait">
-                {submitted ? (
-                  <motion.div
-                    key="success"
-                    initial={{
-                      opacity: 0,
-                      y: 15,
-                    }}
-                    animate={{
-                      opacity: 1,
-                      y: 0,
-                    }}
-                    exit={{
-                      opacity: 0,
-                      y: -10,
-                    }}
-                    className="flex min-h-[390px] items-center px-6 py-10 sm:px-10 lg:px-12"
+                  <h3 className="mt-2 font-heading text-2xl font-semibold tracking-[-0.035em] text-ink">
+                    Thank you for reaching out.
+                  </h3>
+
+                  <p className="mt-2 max-w-md text-xs leading-5 text-muted">
+                    Our team will review your requirement and get back to you
+                    with the next steps.
+                  </p>
+                </div>
+              </motion.div>
+            ) : (
+              /* =================================================
+                 FORM
+              ================================================= */
+
+              <motion.form
+                key="form"
+                onSubmit={handleSubmit}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="p-5 sm:p-7 lg:p-8"
+              >
+                {/* =============================================
+                    TOP ROW
+                ============================================= */}
+
+                <div className="grid gap-x-6 gap-y-5 sm:grid-cols-2 lg:grid-cols-4">
+                  {/* Name */}
+
+                  <div>
+                    <label htmlFor="cta-name" className={labelClass}>
+                      Your name
+                    </label>
+
+                    <input
+                      id="cta-name"
+                      name="name"
+                      required
+                      type="text"
+                      placeholder="Your name"
+                      className={inputClass}
+                    />
+                  </div>
+
+                  {/* Company */}
+
+                  <div>
+                    <label htmlFor="cta-company" className={labelClass}>
+                      Company
+                    </label>
+
+                    <input
+                      id="cta-company"
+                      name="company"
+                      required
+                      type="text"
+                      placeholder="Company name"
+                      className={inputClass}
+                    />
+                  </div>
+
+                  {/* Email */}
+
+                  <div>
+                    <label htmlFor="cta-email" className={labelClass}>
+                      Work email
+                    </label>
+
+                    <input
+                      id="cta-email"
+                      name="email"
+                      required
+                      type="email"
+                      placeholder="name@company.com"
+                      className={inputClass}
+                    />
+                  </div>
+
+                  {/* Phone */}
+
+                  <div>
+                    <label htmlFor="cta-phone" className={labelClass}>
+                      Phone
+                    </label>
+
+                    <input
+                      id="cta-phone"
+                      name="phone"
+                      required
+                      type="tel"
+                      placeholder="+91 98765 43210"
+                      className={inputClass}
+                    />
+                  </div>
+                </div>
+
+                {/* =============================================
+                    REQUIREMENT ROW
+                ============================================= */}
+
+                <div className="mt-5 grid gap-x-6 gap-y-5 sm:grid-cols-2 lg:grid-cols-4">
+                  {/* Looking for */}
+
+                  <div className="lg:col-span-2">
+                    <label
+                      htmlFor="cta-looking"
+                      className={labelClass}
+                    >
+                      Looking for
+                    </label>
+
+                    <select
+                      id="cta-looking"
+                      name="lookingFor"
+                      required
+                      value={lookingFor}
+                      onChange={(e) => setLookingFor(e.target.value)}
+                      className={inputClass}
+                    >
+                      <option value="" disabled>
+                        Select an option
+                      </option>
+
+                      {lookingForOptions.map((option) => (
+                        <option key={option} value={option}>
+                          {option}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Timeline */}
+
+                  <div className="lg:col-span-2">
+                    <label
+                      htmlFor="cta-timeline"
+                      className={labelClass}
+                    >
+                      When do you plan to start
+                    </label>
+
+                    <select
+                      id="cta-timeline"
+                      name="timeline"
+                      required
+                      defaultValue=""
+                      className={inputClass}
+                    >
+                      <option value="" disabled>
+                        Select timeline
+                      </option>
+
+                      {timelines.map((item) => (
+                        <option key={item} value={item}>
+                          {item}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
+                {/* =============================================
+                    CONDITIONAL QUESTIONS
+                ============================================= */}
+
+                <AnimatePresence mode="wait" initial={false}>
+                  {extraFields.length > 0 && (
+                    <motion.div
+                      key={lookingFor}
+                      initial={{
+                        opacity: 0,
+                        height: 0,
+                        y: -4,
+                      }}
+                      animate={{
+                        opacity: 1,
+                        height: "auto",
+                        y: 0,
+                      }}
+                      exit={{
+                        opacity: 0,
+                        height: 0,
+                        y: -4,
+                      }}
+                      transition={{
+                        duration: 0.22,
+                        ease: "easeOut",
+                      }}
+                      className="overflow-hidden"
+                    >
+                      <div className="mt-5 grid gap-x-6 gap-y-5 sm:grid-cols-2">
+                        {extraFields.map((field) => (
+                          <FieldInput
+                            key={field.name}
+                            field={field}
+                          />
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                {/* =============================================
+                    MESSAGE
+                ============================================= */}
+
+                <div className="mt-5">
+                  <label
+                    htmlFor="cta-message"
+                    className={labelClass}
                   >
-                    <div className="max-w-md">
-                      <motion.div
-                        initial={{
-                          scale: 0.7,
-                          opacity: 0,
-                        }}
-                        animate={{
-                          scale: 1,
-                          opacity: 1,
-                        }}
-                        transition={{
-                          duration: 0.45,
-                        }}
-                        className="flex h-11 w-11 items-center justify-center bg-signal-dark text-sm font-semibold text-white"
-                      >
-                        ✓
-                      </motion.div>
+                    Tell us more
+                  </label>
 
-                      <span className="mt-5 block font-mono text-[8px] uppercase tracking-[0.18em] text-signal-dark">
-                        Request received
-                      </span>
+                  <textarea
+                    id="cta-message"
+                    name="message"
+                    rows={2}
+                    placeholder="Briefly describe your requirement..."
+                    className="w-full resize-none border-b border-line bg-transparent py-2 text-[12px] leading-5 text-ink placeholder:text-muted/45 transition-colors focus:border-signal-dark focus:outline-none"
+                  />
+                </div>
 
-                      <h3 className="mt-3 font-heading text-3xl font-semibold leading-tight tracking-[-0.04em] text-ink">
-                        Thank you for reaching out.
-                      </h3>
+                {/* =============================================
+                    BOTTOM
+                ============================================= */}
 
-                      <p className="mt-4 text-sm leading-7 text-muted">
-                        Our team will review your requirement and get back to
-                        you with the next steps.
-                      </p>
+                <div className="mt-6 flex flex-col gap-4 border-t border-line pt-5 sm:flex-row sm:items-center sm:justify-between">
+                  <div>
+               <p className="text-[10px] leading-4 text-[#607078]">
+  Share your requirement and our team will help identify the right connected solution.
+</p>
+                  </div>
 
-                      <div className="mt-7 flex items-center gap-3">
-                        <span className="h-px w-8 bg-signal-dark" />
-
-                        <span className="font-mono text-[8px] uppercase tracking-[0.16em] text-muted">
-                          team@viot.in
-                        </span>
-                      </div>
-                    </div>
-                  </motion.div>
-                ) : (
-                  <motion.form
-                    key="form"
-                    onSubmit={handleSubmit}
-                    initial={{
-                      opacity: 0,
-                    }}
-                    animate={{
-                      opacity: 1,
-                    }}
-                    exit={{
-                      opacity: 0,
-                    }}
-                    className="px-6 py-8 sm:px-10 sm:py-10 lg:px-12 lg:py-11"
+                  <motion.button
+                    type="submit"
+                    whileHover={{ y: -1 }}
+                    whileTap={{ scale: 0.98 }}
+                className="group inline-flex h-10 w-full shrink-0 items-center justify-center gap-2 bg-[#081b24] px-6 text-[10px] font-semibold uppercase tracking-[0.12em] text-white transition-colors duration-300 hover:bg-[#27d59b] hover:text-[#081b24] sm:w-auto"
                   >
-                    <div className="mb-8">
-                      <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-signal-dark">
-                        Enquiry
-                      </span>
+                    Send enquiry
 
-                      <h3 className="mt-2 font-heading text-2xl font-semibold tracking-[-0.035em] text-ink sm:text-3xl">
-                        Tell us what you need.
-                      </h3>
-                    </div>
-
-                    <div className="grid gap-x-7 gap-y-6 sm:grid-cols-2">
-                      <div>
-                        <label
-                          htmlFor="cta-name"
-                          className="mb-2 block font-mono text-[8px] uppercase tracking-[0.16em] text-muted"
-                        >
-                          Your name
-                        </label>
-
-                        <input
-                          id="cta-name"
-                          required
-                          type="text"
-                          placeholder="Your name"
-                          className="w-full border-b border-line bg-transparent px-0 py-2.5 text-sm text-ink placeholder:text-muted/45 transition-colors focus:border-signal-dark focus:outline-none"
-                        />
-                      </div>
-
-                      <div>
-                        <label
-                          htmlFor="cta-email"
-                          className="mb-2 block font-mono text-[8px] uppercase tracking-[0.16em] text-muted"
-                        >
-                          Work email
-                        </label>
-
-                        <input
-                          id="cta-email"
-                          required
-                          type="email"
-                          placeholder="name@company.com"
-                          className="w-full border-b border-line bg-transparent px-0 py-2.5 text-sm text-ink placeholder:text-muted/45 transition-colors focus:border-signal-dark focus:outline-none"
-                        />
-                      </div>
-
-                      <div>
-                        <label
-                          htmlFor="cta-phone"
-                          className="mb-2 block font-mono text-[8px] uppercase tracking-[0.16em] text-muted"
-                        >
-                          Phone number
-                        </label>
-
-                        <input
-                          id="cta-phone"
-                          required
-                          type="tel"
-                          placeholder="+91 98765 43210"
-                          className="w-full border-b border-line bg-transparent px-0 py-2.5 text-sm text-ink placeholder:text-muted/45 transition-colors focus:border-signal-dark focus:outline-none"
-                        />
-                      </div>
-
-                      <div>
-                        <label
-                          htmlFor="cta-looking"
-                          className="mb-2 block font-mono text-[8px] uppercase tracking-[0.16em] text-muted"
-                        >
-                          Looking for
-                        </label>
-
-                        <select
-                          id="cta-looking"
-                          defaultValue="Fleet Intelligence"
-                          className="w-full border-b border-line bg-transparent px-0 py-2.5 text-sm text-ink focus:border-signal-dark focus:outline-none"
-                        >
-                          <option>Fleet Intelligence</option>
-                          <option>Asset Intelligence</option>
-                          <option>Access Control</option>
-                          <option>Platform Demo</option>
-                        </select>
-                      </div>
-                    </div>
-
-                    <div className="mt-9 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
-                      <div>
-                        <p className="max-w-xs text-[11px] leading-5 text-muted">
-                          Share your requirement and our team will help map the
-                          right connected solution.
-                        </p>
-
-                        <span className="mt-2 block font-mono text-[8px] uppercase tracking-[0.14em] text-muted/70">
-                          team@viot.in
-                        </span>
-                      </div>
-
-                      <motion.button
-                        type="submit"
-                        whileHover={{
-                          y: -2,
-                        }}
-                        whileTap={{
-                          scale: 0.98,
-                        }}
-                        className="group inline-flex w-full items-center justify-center gap-3 bg-ink px-6 py-3.5 text-xs font-semibold text-white transition-colors duration-300 hover:bg-signal-dark sm:w-auto"
-                      >
-                        Send enquiry
-
-                        <ArrowIcon className="h-3 w-3 text-white transition-transform duration-300 group-hover:translate-x-1" />
-                      </motion.button>
-                    </div>
-                  </motion.form>
-                )}
-              </AnimatePresence>
-            </div>
-          </div>
+                    <ArrowIcon className="h-3 w-3 text-white transition-transform duration-300 group-hover:translate-x-1" />
+                  </motion.button>
+                </div>
+              </motion.form>
+            )}
+          </AnimatePresence>
         </motion.div>
 
-        {/* Bottom micro line */}
-        <div className="mt-6 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-          <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-muted">
-            Fleet · Asset · Access
-          </span>
-
-          <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-muted">
-            One connected ecosystem
-          </span>
-        </div>
+     
       </div>
     </section>
   );

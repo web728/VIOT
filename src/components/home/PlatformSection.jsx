@@ -47,7 +47,7 @@ const platformModules = [
     title: "Video Telematics",
     eyebrow: "Fleet Intelligence",
     tagline: "AI dashcams & automated clip upload.",
-    desc: "Live streaming on demand and event-triggered clip retrieval from every dashcam in the fleet, without manual SD-card pulls.",
+   desc: "Live streaming on demand and event-triggered clip retrieval from every dashcam in the fleet, with continuous recording stored on the onboard SD card.",
     features: [
       "Live streaming on demand",
       "Event-triggered clip upload",
@@ -469,21 +469,21 @@ export function PlatformSection() {
               </span>
             </div>
 
-            <h2 className="max-w-4xl font-heading text-4xl font-semibold leading-[0.98] tracking-[-0.055em] text-white sm:text-5xl lg:text-[62px]">
-              One operating layer
-              <br />
-              <span className="text-white/35">
-                for every connected system.
-              </span>
-            </h2>
+          <h2 className="max-w-3xl font-heading text-3xl font-semibold leading-[1.1] tracking-[-0.03em] text-white sm:text-4xl lg:text-[44px]">
+  One operating layer
+  <br />
+  <span className="text-signal">
+    for every connected system.
+  </span>
+</h2>
           </div>
 
-          <div className="lg:col-span-4">
+          {/* <div className="lg:col-span-4">
             <p className="max-w-md text-sm leading-7 text-white/45">
               Fleet, vehicle, security and asset data come together in one
               platform so teams can see what is happening and act on it.
             </p>
-          </div>
+          </div> */}
         </motion.div>
 
         {/* =================================================

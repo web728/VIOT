@@ -1,146 +1,280 @@
 "use client";
 
-import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowUpRight,
+  ChevronLeft,
   ChevronRight,
-  Play,
   Radio,
-  ShieldCheck,
-  Truck,
-  Box,
-  LockKeyhole,
   Activity,
+  ShieldCheck,
+  BatteryCharging,
+  Gauge,
+  Cpu,
+  Zap,
 } from "lucide-react";
-import { motion, useInView, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
 
 import { CtaBand } from "@/components/home/CtaBand";
 
-export const metadata: Metadata = {
-  title: "Products — Fleet, Asset & Access Intelligence",
-  description:
-    "Explore VIoT hardware for vehicle telematics, video telematics, smart locks, asset tracking and IoT sensing.",
-  alternates: {
-    canonical: "/products",
-  },
+/* =========================================================
+   TYPES
+========================================================= */
+
+type Feature = {
+  icon: typeof Radio;
+  title: string;
+  text: string;
 };
 
-const productGroups = [
+type MainProduct = {
+  id: string;
+  number: string;
+  title: string;
+  category: string;
+  description: string;
+  image: string;
+  gallery: string[];
+  features: Feature[];
+};
+
+type EcosystemProduct = {
+  id: string;
+  number: string;
+  title: string;
+  category: string;
+  description: string;
+  href: string;
+  gallery: string[];
+};
+
+/* =========================================================
+   MAIN PRODUCTS
+   Client specifically requested these 3 products.
+========================================================= */
+
+const mainProducts: MainProduct[] = [
   {
-    id: "fleet",
-    title: "Fleet Intelligence",
+    id: "basic-tracking-device",
+    number: "01",
+    title: "Basic Tracking Device",
+    category: "Vehicle Tracking",
+
     description:
-      "Connected hardware for understanding vehicle location, movement and operational events.",
-    icon: Truck,
-    products: [
+      "A dependable tracking device for businesses that need essential vehicle visibility, location intelligence and everyday operational monitoring.",
+
+    image: "/image/basic-tracking.png",
+
+    gallery: [
+      "/image/basic-tracking.png",
+      "/image/basic-tracking-2.png",
+      "/image/basic-tracking-3.png",
+    ],
+
+    features: [
       {
-        title: "Vehicle Telematics",
-        description:
-          "Connected vehicle hardware that captures location, movement and operational data for the VIoT platform.",
-        image: "/image/video.png",
-        href: "/products/vehicle-telematics",
-        label: "Vehicle / Telematics",
+        icon: Radio,
+        title: "Live Location",
+        text: "Track vehicle location and movement with connected positioning data.",
       },
       {
-        title: "Video Telematics",
-        description:
-          "A visual layer for vehicle operations, combining vehicle context with camera-based information.",
-        image: "/image/car.jpeg",
-        href: "/products/video-telematics",
-        label: "Vehicle / Video",
+        icon: Activity,
+        title: "Operational Visibility",
+        text: "Understand essential vehicle movement and operating events.",
+      },
+      {
+        icon: ShieldCheck,
+        title: "Reliable Connectivity",
+        text: "Designed for dependable day-to-day field operations.",
       },
     ],
   },
+
   {
-    id: "asset",
-    title: "Asset Intelligence",
+    id: "advanced-tracking-device",
+    number: "02",
+    title: "Advanced Tracking Device",
+    category: "Advanced Vehicle Intelligence",
+
     description:
-      "Hardware for securing, locating and sensing the assets that move through your operation.",
-    icon: Box,
-    products: [
+      "A more capable tracking platform for operations that require deeper vehicle visibility, richer telemetry and greater operational control.",
+
+    image: "/image/advanced-tracking.png",
+
+    gallery: [
+      "/image/advanced-tracking.png",
+      "/image/advanced-tracking-2.png",
+      "/image/advanced-tracking-3.png",
+    ],
+
+    features: [
       {
-        title: "Smart Logistics Locks",
-        description:
-          "Electronic locking technology designed to connect physical cargo security with digital visibility.",
-        image: "/image/lock.png",
-        href: "/products/smart-logistics-locks",
-        label: "Asset / Security",
+        icon: Activity,
+        title: "Advanced Telemetry",
+        text: "Capture richer operational information from connected vehicles.",
       },
       {
-        title: "Smart Infra Locks",
-        description:
-          "Connected locking systems for infrastructure and controlled physical access requirements.",
-        image: "/image/lock.png",
-        href: "/products/smart-infra-locks",
-        label: "Infrastructure / Security",
+        icon: Gauge,
+        title: "Vehicle Intelligence",
+        text: "Turn vehicle activity into useful operational context.",
       },
       {
-        title: "Asset Tracking",
-        description:
-          "Tracking hardware for assets that need visibility even when they are not connected to a vehicle.",
-        image: "/image/lab.jpeg",
-        href: "/products/asset-trackers",
-        label: "Asset / Tracking",
-      },
-      {
-        title: "IoT Sensors",
-        description:
-          "Connected sensing for applications where environmental or operational conditions need to be monitored.",
-        image: "/image/ev.jpeg",
-        href: "/products/iot-sensors",
-        label: "Asset / Sensing",
+        icon: ShieldCheck,
+        title: "Event Visibility",
+        text: "Stay informed when important operational events occur.",
       },
     ],
   },
+
   {
-    id: "access",
-    title: "Access Control",
+    id: "ev-tracking-device",
+    number: "03",
+    title: "EV Tracking Device",
+    category: "Electric Vehicle Intelligence",
+
     description:
-      "Connected systems for controlling and understanding access to physical environments.",
-    icon: LockKeyhole,
-    products: [
+      "Connected tracking designed for electric mobility, bringing vehicle visibility and connected intelligence into EV operations.",
+
+    image: "/image/ev-tracking.png",
+
+    gallery: [
+      "/image/ev-tracking.png",
+      "/image/ev-tracking-2.png",
+      "/image/ev-tracking-3.png",
+    ],
+
+    features: [
       {
-        title: "Access Control",
-        description:
-          "Connected access technology designed to bring physical entry events into a unified operational view.",
-        image: "/image/lock.png",
-        href: "/products/access-control",
-        label: "Access / Control",
+        icon: BatteryCharging,
+        title: "EV Ready",
+        text: "Designed around the requirements of connected electric mobility.",
+      },
+      {
+        icon: Zap,
+        title: "Connected Monitoring",
+        text: "Bring EV movement and operational information into one view.",
+      },
+      {
+        icon: Cpu,
+        title: "Smart Data",
+        text: "Connect vehicle information with the wider VIoT platform.",
       },
     ],
   },
 ];
 
-const flowSteps = [
+/* =========================================================
+   MORE FROM VIOT ECOSYSTEM
+
+   These are separate from the 3 primary products.
+   AIS 140 intentionally NOT included.
+========================================================= */
+
+const ecosystemProducts: EcosystemProduct[] = [
   {
-    title: "Satellite",
-    description: "Location signals begin at the edge.",
-    icon: Radio,
+    id: "vehicle-telematics",
+    number: "01",
+    title: "Vehicle Telematics",
+    category: "Fleet Intelligence",
+    description:
+      "Connected vehicle intelligence for location, movement and operational visibility.",
+    href: "/products/vehicle-telematics",
+    gallery: [
+      "/image/video.png",
+      "/image/video.png",
+    ],
   },
+
   {
-    title: "Device",
-    description: "Connected hardware captures the field event.",
-    icon: Activity,
+    id: "video-telematics",
+    number: "02",
+    title: "Video Telematics",
+    category: "Fleet Intelligence",
+    description:
+      "Camera-based vehicle intelligence combining visual context with connected operations.",
+    href: "/products/video-telematics",
+    gallery: [
+      "/image/car.jpeg",
+      "/image/car.jpeg",
+    ],
   },
+
   {
-    title: "Network",
-    description: "Telemetry travels securely to the platform.",
-    icon: Radio,
+    id: "smart-logistics-locks",
+    number: "03",
+    title: "Smart Logistics Locks",
+    category: "Asset Intelligence",
+    description:
+      "Connected electronic locking technology for cargo security and physical asset protection.",
+    href: "/products/smart-logistics-locks",
+    gallery: [
+      "/image/lock.png",
+      "/image/lock.png",
+    ],
   },
+
   {
-    title: "VIoT Platform",
-    description: "Raw signals become useful operational context.",
-    icon: Activity,
+    id: "smart-infra-locks",
+    number: "04",
+    title: "Smart Infra Locks",
+    category: "Access & Infrastructure",
+    description:
+      "Connected locking systems for controlled physical infrastructure.",
+    href: "/products/smart-infra-locks",
+    gallery: [
+      "/image/lock.png",
+      "/image/lock.png",
+    ],
   },
+
   {
-    title: "Action",
-    description: "Teams respond with the information they need.",
-    icon: ShieldCheck,
+    id: "asset-tracking",
+    number: "05",
+    title: "Asset Tracking",
+    category: "Asset Intelligence",
+    description:
+      "Connected tracking for equipment, cargo and assets operating beyond vehicles.",
+    href: "/products/asset-trackers",
+    gallery: [
+      "/image/lab.jpeg",
+      "/image/lab.jpeg",
+    ],
+  },
+
+  {
+    id: "iot-sensors",
+    number: "06",
+    title: "IoT Sensors",
+    category: "Asset Intelligence",
+    description:
+      "Connected sensing for environmental and operational conditions.",
+    href: "/products/iot-sensors",
+    gallery: [
+      "/image/ev.jpeg",
+      "/image/ev.jpeg",
+    ],
+  },
+
+  {
+    id: "access-control",
+    number: "07",
+    title: "Access Control",
+    category: "Access Intelligence",
+    description:
+      "Connected access technology for physical entry and security events.",
+    href: "/products/access-control",
+    gallery: [
+      "/image/lock.png",
+      "/image/lock.png",
+    ],
   },
 ];
+
+/* =========================================================
+   SCROLL REVEAL
+========================================================= */
 
 function Reveal({
   children,
@@ -151,114 +285,120 @@ function Reveal({
   className?: string;
   delay?: number;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, {
-    once: true,
-    amount: 0.15,
-  });
-
   return (
     <motion.div
-      ref={ref}
-      className={className}
-      initial={{ opacity: 0, y: 28 }}
-      animate={
-        isInView
-          ? {
-              opacity: 1,
-              y: 0,
-            }
-          : undefined
-      }
+      initial={{
+        opacity: 0,
+        y: 28,
+      }}
+      whileInView={{
+        opacity: 1,
+        y: 0,
+      }}
+      viewport={{
+        once: true,
+        amount: 0.12,
+      }}
       transition={{
         duration: 0.7,
         delay,
         ease: [0.16, 1, 0.3, 1],
       }}
+      className={className}
     >
       {children}
     </motion.div>
   );
 }
 
-function PremiumCursor() {
-  const x = useMotionValue(-100);
-  const y = useMotionValue(-100);
-  const smoothX = useSpring(x, { stiffness: 500, damping: 35, mass: 0.35 });
-  const smoothY = useSpring(y, { stiffness: 500, damping: 35, mass: 0.35 });
-  const [active, setActive] = useState(false);
+/* =========================================================
+   APPROVED VIOT SVG ANIMATION
 
-  useEffect(() => {
-    const move = (event: MouseEvent) => {
-      x.set(event.clientX);
-      y.set(event.clientY);
-      const target = event.target as HTMLElement | null;
-      setActive(Boolean(target?.closest("a, button, [data-cursor]")));
-    };
-    window.addEventListener("mousemove", move, { passive: true });
-    return () => window.removeEventListener("mousemove", move);
-  }, [x, y]);
+   KEEP THIS VISUAL LANGUAGE:
+   - flowing paths
+   - dashed green data flow
+   - rotating engineering rings
+   - moving signal points
+========================================================= */
 
+function VIoTSVGBackground({
+  dark = false,
+}: {
+  dark?: boolean;
+}) {
   return (
-    <motion.div
+    <div
+      className={`pointer-events-none absolute inset-0 overflow-hidden ${
+        dark ? "opacity-100" : "opacity-90"
+      }`}
       aria-hidden="true"
-      style={{ x: smoothX, y: smoothY }}
-      className="pointer-events-none fixed left-0 top-0 z-[100] hidden -translate-x-1/2 -translate-y-1/2 md:block"
     >
-      <motion.div
-        animate={{ width: active ? 44 : 8, height: active ? 44 : 8, opacity: active ? 0.9 : 0.65 }}
-        transition={{ duration: 0.2, ease: "easeOut" }}
-        className="flex items-center justify-center rounded-full border border-[#27d59b]/70 bg-[#27d59b]/[0.06] backdrop-blur-sm"
-      >
-        {active && <span className="font-mono text-[7px] font-semibold uppercase tracking-[0.16em] text-[#27d59b]">View</span>}
-      </motion.div>
-    </motion.div>
-  );
-}
+      {/* atmospheric depth */}
 
-function ProductsAtmosphere() {
-  return (
-    <div className="pointer-events-none absolute inset-0 overflow-hidden">
-      <motion.div
-        className="absolute -left-32 top-32 h-96 w-96 rounded-full bg-[#27d59b]/[0.045] blur-3xl"
-        animate={{
-          x: [0, 60, 0],
-          y: [0, 30, 0],
-        }}
-        transition={{
-          duration: 14,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
+      <div
+        className={`absolute -left-48 top-[12%] h-[520px] w-[520px] rounded-full blur-3xl ${
+          dark
+            ? "bg-[#27d59b]/[0.025]"
+            : "bg-[#27d59b]/[0.025]"
+        }`}
       />
 
-      <motion.div
-        className="absolute -right-40 bottom-20 h-[500px] w-[500px] rounded-full bg-[#081b24]/[0.035] blur-3xl"
-        animate={{
-          x: [0, -50, 0],
-          y: [0, -25, 0],
-        }}
-        transition={{
-          duration: 18,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
+      <div
+        className={`absolute -right-56 bottom-[8%] h-[650px] w-[650px] rounded-full blur-3xl ${
+          dark
+            ? "bg-white/[0.012]"
+            : "bg-[#081b24]/[0.025]"
+        }`}
       />
+
+      {/* =====================================================
+          FLOWING SVG PATHS
+      ===================================================== */}
 
       <svg
         viewBox="0 0 1600 1000"
-        className="absolute inset-0 h-full w-full opacity-60"
-        fill="none"
         preserveAspectRatio="none"
+        className="absolute inset-0 h-full w-full"
+        fill="none"
       >
+        {/* Upper path */}
+
         <motion.path
-          d="M-100 690 C220 470 420 520 690 690 S1150 890 1700 590"
-          stroke="#007c67"
-          strokeOpacity="0.08"
+          d="M-160 260 C120 50 390 100 620 285 S1050 610 1760 235"
+          stroke={
+            dark
+              ? "rgba(255,255,255,0.055)"
+              : "rgba(8,27,36,0.09)"
+          }
           strokeWidth="1"
-          strokeDasharray="3 16"
+          initial={{
+            pathLength: 0,
+          }}
+          whileInView={{
+            pathLength: 1,
+          }}
+          viewport={{
+            once: true,
+          }}
+          transition={{
+            duration: 2.4,
+            ease: "easeOut",
+          }}
+        />
+
+        {/* MAIN GREEN FLOW */}
+
+        <motion.path
+          d="M-180 700 C120 470 390 525 680 685 S1130 880 1780 560"
+          stroke={
+            dark
+              ? "rgba(39,213,155,0.15)"
+              : "rgba(0,124,103,0.13)"
+          }
+          strokeWidth="1.2"
+          strokeDasharray="3 15"
           animate={{
-            strokeDashoffset: [0, -160],
+            strokeDashoffset: [0, -180],
           }}
           transition={{
             duration: 12,
@@ -267,48 +407,115 @@ function ProductsAtmosphere() {
           }}
         />
 
-        <motion.path
-          d="M-120 270 C180 80 440 100 680 320 S1120 610 1710 230"
-          stroke="#081b24"
-          strokeOpacity="0.055"
-          strokeWidth="1"
-          animate={{
-            pathLength: [0.65, 1, 0.65],
-          }}
-          transition={{
-            duration: 9,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
+        {/* diagonal engineering path */}
 
         <path
-          d="M150 1020 C300 720 520 700 760 460 S1220 120 1570 -40"
-          stroke="#081b24"
-          strokeOpacity="0.035"
+          d="M80 1080 C260 740 520 700 780 450 S1240 120 1620 -90"
+          stroke={
+            dark
+              ? "rgba(255,255,255,0.035)"
+              : "rgba(8,27,36,0.055)"
+          }
           strokeWidth="1"
+        />
+
+        {/* lower flow */}
+
+        <motion.path
+          d="M-120 470 C230 340 420 420 650 515 S1060 700 1730 455"
+          stroke={
+            dark
+              ? "rgba(39,213,155,0.075)"
+              : "rgba(0,124,103,0.065)"
+          }
+          strokeWidth="1"
+          strokeDasharray="2 20"
+          animate={{
+            strokeDashoffset: [0, 180],
+          }}
+          transition={{
+            duration: 15,
+            repeat: Infinity,
+            ease: "linear",
+          }}
         />
       </svg>
 
+      {/* =====================================================
+          ENGINEERING RINGS
+      ===================================================== */}
+
       <motion.div
-        className="absolute left-[22%] top-[24%] h-1.5 w-1.5 rounded-full bg-[#007c67]"
+        className={`absolute right-[4%] top-[12%] h-[430px] w-[430px] rounded-full border ${
+          dark
+            ? "border-white/[0.035]"
+            : "border-[#081b24]/[0.045]"
+        }`}
         animate={{
-          x: [0, 100, 190],
-          y: [0, 25, 5],
-          opacity: [0, 0.8, 0],
+          rotate: 360,
         }}
         transition={{
-          duration: 5,
+          duration: 60,
+          repeat: Infinity,
+          ease: "linear",
+        }}
+      />
+
+      <motion.div
+        className={`absolute right-[9%] top-[18%] h-[300px] w-[300px] rounded-full border ${
+          dark
+            ? "border-[#27d59b]/[0.055]"
+            : "border-[#007c67]/[0.06]"
+        }`}
+        animate={{
+          rotate: -360,
+        }}
+        transition={{
+          duration: 42,
+          repeat: Infinity,
+          ease: "linear",
+        }}
+      />
+
+      <div
+        className={`absolute right-[17%] top-[27%] h-[150px] w-[150px] rounded-full border ${
+          dark
+            ? "border-white/[0.025]"
+            : "border-[#081b24]/[0.035]"
+        }`}
+      />
+
+      <div
+        className={`absolute -left-[180px] bottom-[18%] h-[460px] w-[460px] rounded-full border ${
+          dark
+            ? "border-white/[0.025]"
+            : "border-[#081b24]/[0.035]"
+        }`}
+      />
+
+      {/* =====================================================
+          MOVING SIGNAL POINTS
+      ===================================================== */}
+
+      <motion.span
+        className="absolute left-[19%] top-[31%] h-1.5 w-1.5 bg-[#27d59b]"
+        animate={{
+          x: [0, 90, 180],
+          y: [0, 20, 0],
+          opacity: [0.1, 0.65, 0],
+        }}
+        transition={{
+          duration: 5.5,
           repeat: Infinity,
           ease: "easeInOut",
         }}
       />
 
-      <motion.div
-        className="absolute left-[61%] top-[70%] h-1.5 w-1.5 rounded-full bg-[#27d59b]"
+      <motion.span
+        className="absolute left-[46%] top-[69%] h-1.5 w-1.5 bg-[#27d59b]"
         animate={{
-          x: [0, -90, -170],
-          y: [0, -20, 10],
+          x: [0, -70, -150],
+          y: [0, -25, 0],
           opacity: [0, 0.7, 0],
         }}
         transition={{
@@ -318,594 +525,1007 @@ function ProductsAtmosphere() {
           ease: "easeInOut",
         }}
       />
+
+      <motion.span
+        className="absolute right-[18%] top-[38%] h-1.5 w-1.5 bg-[#27d59b]"
+        animate={{
+          x: [0, -55, -120],
+          opacity: [0.1, 0.65, 0],
+        }}
+        transition={{
+          duration: 5,
+          delay: 1.8,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
+
+      {/* ambient points */}
+
+      {[
+        ["12%", "20%"],
+        ["25%", "78%"],
+        ["39%", "16%"],
+        ["58%", "84%"],
+        ["68%", "22%"],
+        ["79%", "72%"],
+        ["91%", "52%"],
+      ].map(([left, top], index) => (
+        <motion.span
+          key={`${left}-${top}`}
+          className={`absolute h-1 w-1 ${
+            dark
+              ? "bg-white/20"
+              : "bg-[#081b24]/20"
+          }`}
+          style={{
+            left,
+            top,
+          }}
+          animate={{
+            opacity: [0.1, 0.4, 0.1],
+          }}
+          transition={{
+            duration: 3 + index * 0.25,
+            delay: index * 0.3,
+            repeat: Infinity,
+          }}
+        />
+      ))}
     </div>
   );
 }
 
+/* =========================================================
+   HERO
+========================================================= */
+
 function ProductHero() {
-  const ref = useRef<HTMLElement>(null);
-  const pointerX = useMotionValue(0);
-  const pointerY = useMotionValue(0);
-  const smoothX = useSpring(pointerX, { stiffness: 80, damping: 20 });
-  const smoothY = useSpring(pointerY, { stiffness: 80, damping: 20 });
+  return (
+    <section className="relative mx-auto h-[84vh] min-h-[560px] max-h-[720px] overflow-hidden bg-[#081b24] text-white">
+      {/* =====================================================
+          APPROVED VIOT SVG BACKGROUND
+      ===================================================== */}
 
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"],
-  });
+      <VIoTSVGBackground dark />
 
-  const imageY = useTransform(scrollYProgress, [0, 1], [0, 80]);
-  const textY = useTransform(scrollYProgress, [0, 1], [0, -35]);
+      {/* =====================================================
+          TECHNICAL GRID
+      ===================================================== */}
 
-  const handlePointerMove = (event: React.MouseEvent<HTMLElement>) => {
-    const rect = event.currentTarget.getBoundingClientRect();
-    pointerX.set((event.clientX - rect.left) / rect.width - 0.5);
-    pointerY.set((event.clientY - rect.top) / rect.height - 0.5);
+      <div className="pointer-events-none absolute inset-0 z-[1] opacity-[0.025]">
+        <div
+          className="h-full w-full"
+          style={{
+            backgroundImage: `
+              linear-gradient(
+                rgba(255,255,255,0.5) 1px,
+                transparent 1px
+              ),
+              linear-gradient(
+                90deg,
+                rgba(255,255,255,0.5) 1px,
+                transparent 1px
+              )
+            `,
+            backgroundSize: "90px 90px",
+          }}
+        />
+      </div>
+
+      {/* =====================================================
+          VIDEO — BACKGROUND VISUAL
+      ===================================================== */}
+
+      <motion.div
+        initial={{
+          opacity: 0,
+          scale: 1.025,
+        }}
+        animate={{
+          opacity: 1,
+          scale: 1,
+        }}
+        transition={{
+          duration: 1.1,
+          ease: [0.16, 1, 0.3, 1],
+        }}
+        className="absolute inset-0 z-[2] overflow-hidden"
+      >
+        <video
+          className="absolute inset-0 h-full w-full object-cover"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          poster="/image/video.png"
+        >
+          <source
+            src="/video/products-hero.mp4"
+            type="video/mp4"
+          />
+        </video>
+
+        {/* =================================================
+            GLOBAL VIDEO OVERLAY
+        ================================================= */}
+
+        <div className="absolute inset-0 bg-[#081b24]/30" />
+
+        {/* =================================================
+            LEFT DARK GRADIENT
+            This keeps text readable
+        ================================================= */}
+
+        <div className="absolute inset-y-0 left-0 w-full bg-gradient-to-r from-[#081b24] via-[#081b24]/95 via-[42%] to-[#081b24]/15" />
+
+        {/* =================================================
+            BOTTOM CINEMATIC BLEND
+        ================================================= */}
+
+        <div className="absolute inset-x-0 bottom-0 h-[32%] bg-gradient-to-t from-[#081b24] to-transparent" />
+
+        {/* =================================================
+            TOP BLEND
+        ================================================= */}
+
+        <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[#081b24]/45 to-transparent" />
+      </motion.div>
+
+      {/* =====================================================
+          ANIMATED TELEMETRY POINT
+      ===================================================== */}
+
+      <motion.span
+        className="pointer-events-none absolute left-[48%] top-[43%] z-[4] h-2 w-2 bg-[#27d59b] shadow-[0_0_18px_rgba(39,213,155,0.7)]"
+        animate={{
+          x: [0, 100, 220, 380],
+          y: [0, -15, 20, 0],
+          opacity: [0, 1, 1, 0],
+        }}
+        transition={{
+          duration: 5,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
+
+      {/* =====================================================
+          MAIN CONTENT
+      ===================================================== */}
+
+      <div className="relative z-[10] mx-auto flex h-full max-w-[1440px] items-center px-7 sm:px-10 lg:px-14 xl:px-16">
+        <motion.div
+          initial={{
+            opacity: 0,
+            y: 32,
+          }}
+          animate={{
+            opacity: 1,
+            y: 0,
+          }}
+          transition={{
+            duration: 0.8,
+            delay: 0.12,
+            ease: [0.16, 1, 0.3, 1],
+          }}
+          className="w-full max-w-[680px]"
+        >
+          {/* =================================================
+              KICKER
+          ================================================= */}
+
+          <div className="flex items-center gap-3">
+            <span className="h-px w-9 bg-[#27d59b]" />
+
+            <span className="font-mono text-[9px] font-medium uppercase tracking-[0.2em] text-[#27d59b]">
+              VIoT / Products
+            </span>
+          </div>
+
+          {/* =================================================
+              HEADING
+          ================================================= */}
+
+          <h1 className="mt-7 max-w-[650px] font-heading text-[clamp(3rem,5.3vw,5.25rem)] font-semibold leading-[0.94] tracking-[-0.065em] text-white">
+            <span className="block whitespace-nowrap">
+              Hardware that moves
+            </span>
+
+            <span className="mt-2 block whitespace-nowrap text-[#27d59b]">
+              with you.
+            </span>
+          </h1>
+
+          {/* =================================================
+              DESCRIPTION
+          ================================================= */}
+
+          <p className="mt-7 max-w-[500px] text-[14px] leading-[1.8] text-white/55 sm:text-[15px]">
+            Connected tracking hardware designed to capture what is
+            happening in the field and turn vehicle movement into useful
+            operational intelligence.
+          </p>
+
+          {/* =================================================
+              PRODUCT INDICATORS
+          ================================================= */}
+
+          <div className="mt-8 flex flex-wrap items-center gap-x-7 gap-y-3">
+            {[
+              "Basic Tracking",
+              "Advanced Tracking",
+              "EV Tracking",
+            ].map((item) => (
+              <div
+                key={item}
+                className="flex items-center gap-2"
+              >
+                <span className="h-1.5 w-1.5 bg-[#27d59b]" />
+
+                <span className="font-mono text-[8px] uppercase tracking-[0.15em] text-white/50">
+                  {item}
+                </span>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+      </div>
+
+      {/* =====================================================
+          LIVE DATA LABEL
+      ===================================================== */}
+
+      <div className="absolute bottom-7 right-7 z-[11] border border-white/10 bg-[#081b24]/75 px-4 py-3 backdrop-blur-md sm:right-10 lg:right-14">
+        <div className="flex items-center gap-2">
+          <motion.span
+            animate={{
+              opacity: [0.35, 1, 0.35],
+            }}
+            transition={{
+              duration: 1.8,
+              repeat: Infinity,
+            }}
+            className="h-1.5 w-1.5 bg-[#27d59b]"
+          />
+
+          <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-white/65">
+            Live vehicle data
+          </span>
+        </div>
+      </div>
+
+      {/* =====================================================
+          BOTTOM STATUS LINE
+      ===================================================== */}
+
+      <div className="absolute bottom-0 left-0 right-0 z-[10] px-7 pb-4 sm:px-10 lg:px-14">
+        <div className="h-px w-full bg-white/10" />
+      </div>
+    </section>
+  );
+}
+/* =========================================================
+   PRODUCT CAROUSEL
+========================================================= */
+
+function ProductCarousel({
+  product,
+}: {
+  product: MainProduct;
+}) {
+  const [active, setActive] = useState(0);
+
+  const next = () => {
+    setActive((current) =>
+      current === product.gallery.length - 1
+        ? 0
+        : current + 1
+    );
   };
 
-  const resetPointer = () => {
-    pointerX.set(0);
-    pointerY.set(0);
+  const previous = () => {
+    setActive((current) =>
+      current === 0
+        ? product.gallery.length - 1
+        : current - 1
+    );
   };
 
   return (
-    <section
-      ref={ref}
-      className="relative min-h-[78vh] overflow-hidden bg-[#f4f6f2]"
-      onMouseMove={handlePointerMove}
-      onMouseLeave={resetPointer}
-    >
-      <ProductsAtmosphere />
+    <div>
+      <div className="relative aspect-[4/3] overflow-hidden bg-[#081b24]">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={product.gallery[active]}
+            initial={{
+              opacity: 0,
+              scale: 1.025,
+            }}
+            animate={{
+              opacity: 1,
+              scale: 1,
+            }}
+            exit={{
+              opacity: 0,
+            }}
+            transition={{
+              duration: 0.45,
+            }}
+            className="absolute inset-0"
+          >
+            <Image
+              src={product.gallery[active]}
+              alt={`${product.title} image ${active + 1}`}
+              fill
+              sizes="(max-width: 1024px) 100vw, 55vw"
+              className="object-cover"
+            />
+          </motion.div>
+        </AnimatePresence>
 
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(8,27,36,0.035)_1px,transparent_1px),linear-gradient(to_bottom,rgba(8,27,36,0.035)_1px,transparent_1px)] bg-[size:72px_72px] [mask-image:linear-gradient(to_bottom,black,transparent_88%)]" />
-      <motion.div
-        aria-hidden="true"
-        style={{ x: useTransform(smoothX, [-0.5, 0.5], [-18, 18]), y: useTransform(smoothY, [-0.5, 0.5], [-12, 12]) }}
-        className="pointer-events-none absolute right-[9%] top-[18%] hidden h-32 w-32 rounded-full border border-[#007c67]/10 lg:block"
-      />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#081b24]/45 via-transparent to-transparent" />
 
-      <div className="relative z-10 mx-auto grid min-h-[78vh] max-w-[1440px] items-center gap-12 px-6 py-24 sm:px-8 lg:grid-cols-12 lg:px-12 lg:py-28 xl:px-16">
-        <motion.div
-          style={{ y: textY }}
-          className="lg:col-span-7"
-        >
-          <Reveal>
-            <div className="mb-7 flex items-center gap-3">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#007c67]" />
+        {/* framing */}
 
-              <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.2em] text-[#607078]">
-                VIoT / Products
+        <span className="absolute left-5 top-5 h-5 w-5 border-l border-t border-white/40" />
+
+        <span className="absolute right-5 top-5 h-5 w-5 border-r border-t border-white/40" />
+
+        <span className="absolute bottom-5 left-5 h-5 w-5 border-b border-l border-white/40" />
+
+        <span className="absolute bottom-5 right-5 h-5 w-5 border-b border-r border-white/40" />
+
+        {/* category */}
+
+        <div className="absolute left-5 top-5 flex items-center gap-2 border border-white/10 bg-[#081b24]/60 px-3 py-2 backdrop-blur-md">
+          <span className="h-1.5 w-1.5 bg-[#27d59b]" />
+
+          <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-white/70">
+            {product.category}
+          </span>
+        </div>
+
+        {/* controls */}
+
+        <div className="absolute bottom-5 right-5 flex gap-2">
+          <button
+            type="button"
+            onClick={previous}
+            aria-label="Previous image"
+            className="flex h-9 w-9 items-center justify-center border border-white/15 bg-[#081b24]/75 text-white transition-colors hover:border-[#27d59b] hover:text-[#27d59b]"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </button>
+
+          <button
+            type="button"
+            onClick={next}
+            aria-label="Next image"
+            className="flex h-9 w-9 items-center justify-center border border-white/15 bg-[#081b24]/75 text-white transition-colors hover:border-[#27d59b] hover:text-[#27d59b]"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </button>
+        </div>
+
+        {/* bottom label */}
+
+        <div className="absolute bottom-6 left-7">
+          <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-white/60">
+            Product / {product.number}
+          </span>
+
+          <h3 className="mt-1 font-heading text-xl font-semibold text-white sm:text-2xl">
+            {product.title}
+          </h3>
+        </div>
+      </div>
+
+      {/* thumbnails */}
+
+      <div className="mt-3 grid grid-cols-3 gap-2">
+        {product.gallery.map((image, index) => (
+          <button
+            key={`${image}-${index}`}
+            type="button"
+            onClick={() => setActive(index)}
+            className={`relative aspect-[4/3] overflow-hidden border transition-all ${
+              active === index
+                ? "border-[#27d59b]"
+                : "border-[#cdd5d2] opacity-55 hover:opacity-100"
+            }`}
+          >
+            <Image
+              src={image}
+              alt=""
+              fill
+              sizes="180px"
+              className="object-cover"
+            />
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* =========================================================
+   SPECIFICATIONS BUTTON
+   Future client specs can be inserted into modal.
+========================================================= */
+
+function SpecificationsButton() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        className="group inline-flex items-center gap-3 bg-[#081b24] px-5 py-3 text-[10px] font-bold uppercase tracking-[0.1em] text-white transition-all duration-300 hover:bg-[#007c67]"
+      >
+        Specifications
+
+        <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+      </button>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{
+              opacity: 0,
+            }}
+            animate={{
+              opacity: 1,
+            }}
+            exit={{
+              opacity: 0,
+            }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-[#081b24]/80 px-5 backdrop-blur-sm"
+            onClick={() => setOpen(false)}
+          >
+            <motion.div
+              initial={{
+                opacity: 0,
+                y: 20,
+                scale: 0.98,
+              }}
+              animate={{
+                opacity: 1,
+                y: 0,
+                scale: 1,
+              }}
+              exit={{
+                opacity: 0,
+                y: 20,
+                scale: 0.98,
+              }}
+              transition={{
+                duration: 0.3,
+              }}
+              onClick={(event) => event.stopPropagation()}
+              className="relative w-full max-w-2xl bg-[#f4f6f2] p-7 sm:p-9"
+            >
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                className="absolute right-5 top-5 font-mono text-[9px] uppercase tracking-[0.15em] text-[#607078] hover:text-[#081b24]"
+              >
+                Close
+              </button>
+
+              <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-[#007c67]">
+                Technical profile
               </span>
+
+              <h3 className="mt-3 font-heading text-3xl font-semibold tracking-[-0.04em] text-[#081b24]">
+                Specifications
+              </h3>
+
+              <p className="mt-4 max-w-xl text-sm leading-6 text-[#607078]">
+                Product specifications will be added here once the final
+                technical information is provided by the client.
+              </p>
+
+              <div className="mt-7 grid gap-px border border-[#cdd5d2] bg-[#cdd5d2] sm:grid-cols-2">
+                {[
+                  "Connectivity",
+                  "Power Input",
+                  "Installation",
+                  "Platform",
+                ].map((item) => (
+                  <div
+                    key={item}
+                    className="bg-[#f4f6f2] p-5"
+                  >
+                    <span className="font-mono text-[8px] uppercase tracking-[0.16em] text-[#007c67]">
+                      {item}
+                    </span>
+
+                    <p className="mt-2 text-xs text-[#607078]">
+                      Technical details to be provided.
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}
+
+/* =========================================================
+   MAIN PRODUCT SECTION
+========================================================= */
+
+function MainProductSection({
+  product,
+}: {
+  product: MainProduct;
+}) {
+  return (
+    <section
+      id={product.id}
+      className="relative overflow-hidden border-t border-[#cdd5d2] bg-[#f4f6f2]"
+    >
+      <VIoTSVGBackground />
+
+      <div className="relative z-10 mx-auto max-w-[1440px] px-6 py-20 sm:px-8 lg:px-12 lg:py-24">
+        {/* =====================================================
+            SECTION HEADER
+        ===================================================== */}
+
+        <Reveal>
+          <div className="flex flex-col gap-5 border-b border-[#cdd5d2] pb-7 lg:flex-row lg:items-end lg:justify-between">
+            <div className="flex items-start gap-5">
+              <span className="pt-1 font-mono text-[9px] font-semibold tracking-[0.16em] text-[#007c67]">
+                {product.number}
+              </span>
+
+              <div>
+                <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-[#607078]">
+                  {product.category}
+                </span>
+
+                <h2 className="mt-2 font-heading text-3xl font-semibold leading-[1] tracking-[-0.045em] text-[#081b24] sm:text-4xl lg:text-[48px]">
+                  {product.title}
+                </h2>
+              </div>
             </div>
 
-            <h1 className="max-w-4xl font-heading text-[clamp(3.2rem,7vw,6.9rem)] font-semibold leading-[0.9] tracking-[-0.065em] text-[#081b24]">
-              Hardware built for
-              <span className="block text-[#007c67]">
-                the physical world.
-              </span>
-            </h1>
+            <span className="max-w-xs text-xs leading-5 text-[#607078] lg:text-right">
+              Connected hardware built for real-world operations.
+            </span>
+          </div>
+        </Reveal>
 
-            <p className="mt-8 max-w-2xl text-[15px] leading-7 text-[#607078] sm:text-base">
-              Connected devices for vehicles, assets and controlled access —
-              designed to capture what is happening in the field and make it
-              useful to the people operating it.
-            </p>
-          </Reveal>
-        </motion.div>
+        {/* =====================================================
+            MAIN PRODUCT EXPERIENCE
+        ===================================================== */}
 
-        <motion.div
-          style={{ y: imageY, x: useTransform(smoothX, [-0.5, 0.5], [8, -8]), rotate: useTransform(smoothX, [-0.5, 0.5], [-0.8, 0.8]) }}
-          className="relative lg:col-span-5"
-        >
-          <Reveal delay={0.12}>
-            <div className="group relative mx-auto aspect-[4/3] max-w-[570px] overflow-hidden bg-[#e8eeeb] shadow-[0_30px_90px_rgba(8,27,36,0.12)] ring-1 ring-black/[0.05]">
-              <Image
-                src="/image/video.png"
-                alt="VIoT connected vehicle hardware"
-                fill
-                priority
-                sizes="(max-width: 1024px) 100vw, 42vw"
-                className="object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-[1.025]"
-              />
+        <div className="mt-12 grid gap-12 lg:grid-cols-12 lg:gap-16">
+          {/* =================================================
+              PRODUCT VISUAL
+          ================================================= */}
 
-              <div className="absolute inset-0 bg-gradient-to-t from-[#081b24]/35 via-transparent to-transparent" />
+          <Reveal className="lg:col-span-7">
+            <div className="relative">
+              <ProductCarousel product={product} />
 
-              <div className="absolute bottom-5 left-5 flex items-center gap-2 text-white">
-                <span className="h-2 w-2 rounded-full bg-[#27d59b] shadow-[0_0_12px_rgba(39,213,155,0.7)]" />
-                <span className="font-mono text-[9px] uppercase tracking-[0.16em]">
-                  Connected hardware
+              {/* small technical rail */}
+
+              <div className="mt-3 flex items-center justify-between border-t border-[#cdd5d2] pt-3">
+                <span className="font-mono text-[8px] uppercase tracking-[0.17em] text-[#607078]">
+                  VIoT / Connected Hardware
+                </span>
+
+                <span className="font-mono text-[8px] uppercase tracking-[0.17em] text-[#007c67]">
+                  0{product.number} / 03
                 </span>
               </div>
-
-              <div className="absolute right-5 top-5 flex items-center gap-2 border border-white/20 bg-[#081b24]/45 px-3 py-2 backdrop-blur-md">
-                <span className="h-1.5 w-1.5 rounded-full bg-[#27d59b]" />
-                <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-white/75">Edge / Online</span>
-              </div>
-
-              <div className="absolute inset-x-5 top-1/2 h-px origin-left scale-x-0 bg-[#27d59b]/60 transition-transform duration-700 group-hover:scale-x-100" />
             </div>
           </Reveal>
-        </motion.div>
+
+          {/* =================================================
+              PRODUCT INFORMATION
+          ================================================= */}
+
+          <Reveal
+            delay={0.08}
+            className="flex flex-col justify-center lg:col-span-5"
+          >
+            <div className="max-w-xl">
+              <span className="inline-flex items-center gap-2 font-mono text-[8px] font-semibold uppercase tracking-[0.18em] text-[#007c67]">
+                <span className="h-1.5 w-1.5 bg-[#27d59b]" />
+                Product intelligence
+              </span>
+
+              <p className="mt-5 text-[15px] leading-[1.85] text-[#607078]">
+                {product.description}
+              </p>
+            </div>
+
+            {/* FEATURES */}
+
+            <div className="mt-9 border-t border-[#cdd5d2]">
+              {product.features.map((feature, index) => {
+                const Icon = feature.icon;
+
+                return (
+                  <motion.div
+                    key={feature.title}
+                    initial={{
+                      opacity: 0,
+                      x: 18,
+                    }}
+                    whileInView={{
+                      opacity: 1,
+                      x: 0,
+                    }}
+                    viewport={{
+                      once: true,
+                      amount: 0.25,
+                    }}
+                    transition={{
+                      duration: 0.5,
+                      delay: index * 0.08,
+                      ease: [0.16, 1, 0.3, 1],
+                    }}
+                    className="group flex gap-4 border-b border-[#cdd5d2] py-5"
+                  >
+                    {/* icon */}
+
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center border border-[#007c67]/20 bg-white text-[#007c67] transition-all duration-300 group-hover:border-[#27d59b] group-hover:bg-[#007c67] group-hover:text-white">
+                      <Icon className="h-4 w-4" />
+                    </div>
+
+                    {/* text */}
+
+                    <div>
+                      <h3 className="font-heading text-sm font-semibold tracking-[-0.015em] text-[#081b24]">
+                        {feature.title}
+                      </h3>
+
+                      <p className="mt-1 max-w-sm text-xs leading-5 text-[#607078]">
+                        {feature.text}
+                      </p>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+
+            {/* CTA */}
+
+            <div className="mt-8 flex items-center gap-5">
+              <SpecificationsButton />
+
+              <span className="font-mono text-[8px] uppercase tracking-[0.15em] text-[#607078]">
+                Technical details
+              </span>
+            </div>
+          </Reveal>
+        </div>
       </div>
     </section>
   );
 }
 
-function DataFlowSection() {
-  const [activeStep, setActiveStep] = useState(0);
+/* =========================================================
+   TECHNICAL PROFILE
+   Replaces Connected Journey banner.
+========================================================= */
+
+function TechnicalProfile() {
+  const items = [
+    {
+      number: "01",
+      title: "Connectivity",
+      text: "Communication and network specifications.",
+    },
+    {
+      number: "02",
+      title: "Power Input",
+      text: "Power requirements and operating range.",
+    },
+    {
+      number: "03",
+      title: "Installation",
+      text: "Physical installation and deployment details.",
+    },
+    {
+      number: "04",
+      title: "Platform",
+      text: "Connected platform and data capabilities.",
+    },
+  ];
 
   return (
     <section className="relative overflow-hidden bg-[#081b24] text-white">
-      <div className="absolute inset-0 opacity-30">
-        <motion.div
-          className="absolute left-[15%] top-[18%] h-[420px] w-[420px] rounded-full border border-white/[0.05]"
-          animate={{ rotate: 360 }}
-          transition={{
-            duration: 60,
-            repeat: Infinity,
-            ease: "linear",
-          }}
-        />
+      <VIoTSVGBackground dark />
 
-        <motion.div
-          className="absolute right-[8%] bottom-[5%] h-[320px] w-[320px] rounded-full border border-[#27d59b]/[0.08]"
-          animate={{ rotate: -360 }}
-          transition={{
-            duration: 48,
-            repeat: Infinity,
-            ease: "linear",
-          }}
-        />
-      </div>
-
-      <div className="relative z-10 mx-auto max-w-[1440px] px-6 py-20 sm:px-8 lg:px-12 lg:py-28 xl:px-16">
-        <Reveal>
-          <div className="grid gap-8 lg:grid-cols-12 lg:items-end">
-            <div className="lg:col-span-7">
-              <p className="font-mono text-[9px] font-semibold uppercase tracking-[0.2em] text-[#27d59b]">
-                Connected journey
-              </p>
-
-              <h2 className="mt-5 max-w-3xl font-heading text-4xl font-semibold leading-[1] tracking-[-0.05em] sm:text-5xl lg:text-[4.2rem]">
-                From signal
-                <span className="text-white/35"> to action.</span>
-              </h2>
-            </div>
-
-            <p className="max-w-lg text-sm leading-6 text-white/45 lg:col-span-5 lg:ml-auto">
-              Every connected operation begins at the edge. The device
-              captures what is happening, the network carries it and the VIoT
-              platform turns that signal into operational context.
-            </p>
-          </div>
-        </Reveal>
-
-        <Reveal delay={0.08} className="mt-12 lg:mt-16">
-          <div className="relative overflow-hidden bg-black">
-            <div className="aspect-video">
-              <video
-                className="h-full w-full object-cover"
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="metadata"
-                poster="/image/video.png"
-              >
-                <source
-                  src="/video/products-data-flow.mp4"
-                  type="video/mp4"
-                />
-              </video>
-            </div>
-
-            <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
-            <motion.div
-              aria-hidden="true"
-              className="absolute left-[8%] top-[28%] h-1.5 w-1.5 rounded-full bg-[#27d59b] shadow-[0_0_18px_#27d59b]"
-              animate={{ x: [0, 260, 520, 780], y: [0, 35, -15, 25], opacity: [0, 1, 1, 0] }}
-              transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
-            />
-
-            <div className="absolute bottom-5 left-5 flex items-center gap-2">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#27d59b] text-[#081b24]">
-                <Play className="ml-0.5 h-3.5 w-3.5 fill-current" />
-              </span>
-
-              <span className="font-mono text-[9px] uppercase tracking-[0.16em] text-white/70">
-                Live data journey
-              </span>
-            </div>
-          </div>
-        </Reveal>
-
-        {/* Interactive story */}
-        <div className="mt-10">
-          <div className="grid gap-2 md:grid-cols-5">
-            {flowSteps.map((step, index) => {
-              const Icon = step.icon;
-              const active = index === activeStep;
-
-              return (
-                <button
-                  key={step.title}
-                  type="button"
-                  onClick={() => setActiveStep(index)}
-                  className="group text-left"
-                >
-                  <motion.div
-                    animate={{
-                      backgroundColor: active
-                        ? "rgba(39,213,155,0.08)"
-                        : "rgba(255,255,255,0)",
-                    }}
-                    transition={{ duration: 0.25 }}
-                    className="relative h-full px-4 py-5"
-                  >
-                    <div className="mb-5 flex items-center justify-between">
-                      <Icon
-                        className={`h-4 w-4 transition-colors ${
-                          active
-                            ? "text-[#27d59b]"
-                            : "text-white/25 group-hover:text-white/55"
-                        }`}
-                      />
-
-                      <ChevronRight
-                        className={`h-3.5 w-3.5 transition-all ${
-                          active
-                            ? "translate-x-0 text-[#27d59b]"
-                            : "-translate-x-1 text-white/15 group-hover:translate-x-0 group-hover:text-white/40"
-                        }`}
-                      />
-                    </div>
-
-                    <h3
-                      className={`font-heading text-sm font-semibold transition-colors ${
-                        active ? "text-white" : "text-white/55"
-                      }`}
-                    >
-                      {step.title}
-                    </h3>
-
-                    <p
-                      className={`mt-2 text-xs leading-5 transition-colors ${
-                        active ? "text-white/55" : "text-white/25"
-                      }`}
-                    >
-                      {step.description}
-                    </p>
-
-                    <motion.div
-                      className="absolute bottom-0 left-0 h-px bg-[#27d59b]"
-                      initial={{ width: 0 }}
-                      animate={{
-                        width: active ? "100%" : "0%",
-                      }}
-                      transition={{ duration: 0.35 }}
-                    />
-                  </motion.div>
-                </button>
-              );
-            })}
-          </div>
-
-          <motion.div
-            key={activeStep}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
-            className="mt-7 max-w-xl text-sm text-white/40"
-          >
-            {flowSteps[activeStep].description}
-          </motion.div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function ProductCard({
-  product,
-  featured = false,
-}: {
-  product: (typeof productGroups)[number]["products"][number];
-  featured?: boolean;
-}) {
-  return (
-    <motion.div
-      whileHover={{ y: -6 }}
-      transition={{
-        duration: 0.35,
-        ease: [0.16, 1, 0.3, 1],
-      }}
-      className={featured ? "lg:col-span-2" : ""}
-    >
-      <Link href={product.href} className="group block">
-        <div
-          className={`relative overflow-hidden bg-[#e8eeeb] shadow-[0_14px_50px_rgba(8,27,36,0.06)] ring-1 ring-black/[0.045] transition-shadow duration-500 group-hover:shadow-[0_24px_70px_rgba(8,27,36,0.12)] ${
-            featured
-              ? "aspect-[2/1] sm:aspect-[2.15/1]"
-              : "aspect-[16/10]"
-          }`}
-        >
-          <Image
-            src={product.image}
-            alt={product.title}
-            fill
-            sizes={
-              featured
-                ? "(max-width: 1024px) 100vw, 90vw"
-                : "(max-width: 1024px) 50vw, 42vw"
-            }
-            className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
-          />
-
-          <div className="absolute inset-0 bg-gradient-to-t from-[#081b24]/55 via-transparent to-transparent opacity-55 transition-opacity duration-500 group-hover:opacity-90" />
-          <div className="absolute left-5 top-5 flex items-center gap-2 border border-white/15 bg-[#081b24]/35 px-2.5 py-1.5 opacity-0 backdrop-blur-md transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100 -translate-y-1">
-            <span className="h-1.5 w-1.5 rounded-full bg-[#27d59b]" />
-            <span className="font-mono text-[7px] uppercase tracking-[0.16em] text-white/75">Connected</span>
-          </div>
-
-          <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between">
-            <span className="font-mono text-[8px] uppercase tracking-[0.15em] text-white/75">
-              {product.label}
+      <div className="relative z-10 mx-auto max-w-[1440px] px-6 py-20 sm:px-8 lg:px-12 lg:py-28">
+        <div className="grid gap-10 lg:grid-cols-12 lg:items-end">
+          <Reveal className="lg:col-span-7">
+            <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.2em] text-[#27d59b]">
+              Technical Profile
             </span>
 
-            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-[#081b24] opacity-0 translate-y-2 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-              <ArrowUpRight className="h-4 w-4" />
-            </span>
-          </div>
-        </div>
-
-        <div className="mt-5 flex items-start justify-between gap-5">
-          <div>
-            <h3 className="font-heading text-xl font-semibold tracking-[-0.03em] text-[#081b24] sm:text-2xl">
-              {product.title}
-            </h3>
-
-            <p className="mt-2 max-w-xl text-[13px] leading-6 text-[#607078]">
-              {product.description}
-            </p>
-          </div>
-
-          <ArrowUpRight className="mt-1 h-4 w-4 shrink-0 text-[#607078] transition-all duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-[#007c67]" />
-        </div>
-      </Link>
-    </motion.div>
-  );
-}
-
-function ProductEcosystem() {
-  const [activeGroup, setActiveGroup] = useState("all");
-
-  const visibleGroups = useMemo(() => {
-    if (activeGroup === "all") return productGroups;
-
-    return productGroups.filter((group) => group.id === activeGroup);
-  }, [activeGroup]);
-
-  return (
-    <section className="relative overflow-hidden bg-[#f4f6f2]">
-      <ProductsAtmosphere />
-
-      <div className="relative z-10 mx-auto max-w-[1440px] px-6 py-20 sm:px-8 lg:px-12 lg:py-28 xl:px-16">
-        <Reveal>
-          <div className="grid gap-8 lg:grid-cols-12 lg:items-end">
-            <div className="lg:col-span-7">
-              <p className="font-mono text-[9px] font-semibold uppercase tracking-[0.2em] text-[#007c67]">
-                Product ecosystem
-              </p>
-
-              <h2 className="mt-5 max-w-3xl font-heading text-4xl font-semibold leading-[1] tracking-[-0.05em] sm:text-5xl lg:text-[4rem]">
-                Hardware for every
-                <span className="text-[#007c67]"> part of the operation.</span>
-              </h2>
-            </div>
-
-            <p className="max-w-lg text-sm leading-6 text-[#607078] lg:col-span-5 lg:ml-auto">
-              Vehicle, asset and access hardware designed to work as one
-              connected ecosystem.
-            </p>
-          </div>
-        </Reveal>
-
-        {/* Category interaction */}
-        <Reveal delay={0.08} className="mt-10">
-          <div className="flex flex-wrap gap-2">
-            {[
-              { id: "all", label: "All products" },
-              { id: "fleet", label: "Fleet Intelligence" },
-              { id: "asset", label: "Asset Intelligence" },
-              { id: "access", label: "Access Control" },
-            ].map((filter) => {
-              const active = activeGroup === filter.id;
-
-              return (
-                <button
-                  key={filter.id}
-                  type="button"
-                  data-cursor
-                  onClick={() => setActiveGroup(filter.id)}
-                  className={`rounded-full px-4 py-2.5 text-[11px] font-semibold transition-all duration-300 ${
-                    active
-                      ? "bg-[#081b24] text-white"
-                      : "bg-white text-[#607078] hover:bg-[#e7ece9] hover:text-[#081b24]"
-                  }`}
-                >
-                  {filter.label}
-                </button>
-              );
-            })}
-          </div>
-        </Reveal>
-
-        <div className="mt-14 space-y-20 lg:mt-20">
-          {visibleGroups.map((group, groupIndex) => {
-            const Icon = group.icon;
-
-            return (
-              <motion.div
-                key={group.id}
-                layout
-                initial={{ opacity: 0, y: 25 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{
-                  duration: 0.55,
-                  delay: groupIndex * 0.06,
-                  ease: [0.16, 1, 0.3, 1],
-                }}
-              >
-                <div className="mb-9 grid gap-6 lg:grid-cols-12 lg:items-end">
-                  <div className="lg:col-span-5">
-                    <div className="flex items-center gap-3">
-                      <Icon className="h-4 w-4 text-[#007c67]" />
-
-                      <h3 className="font-heading text-2xl font-semibold tracking-[-0.035em] sm:text-3xl">
-                        {group.title}
-                      </h3>
-                    </div>
-                  </div>
-
-                  <p className="max-w-xl text-sm leading-6 text-[#607078] lg:col-span-5 lg:col-start-8">
-                    {group.description}
-                  </p>
-                </div>
-
-                <div
-                  className={`grid gap-10 ${
-                    group.products.length === 1
-                      ? "lg:grid-cols-1"
-                      : group.products.length === 2
-                        ? "lg:grid-cols-2"
-                        : "lg:grid-cols-2"
-                  }`}
-                >
-                  {group.products.map((product, index) => (
-                    <ProductCard
-                      key={product.title}
-                      product={product}
-                      featured={
-                        group.products.length > 2 && index === 0
-                      }
-                    />
-                  ))}
-                </div>
-              </motion.div>
-            );
-          })}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function HardwareToPlatform() {
-  const ref = useRef<HTMLDivElement>(null);
-
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
-
-  const lineScale = useTransform(
-    scrollYProgress,
-    [0.2, 0.55, 0.85],
-    [0, 1, 1],
-  );
-
-  return (
-    <section
-      ref={ref}
-      className="relative overflow-hidden bg-[#0d2935] text-white"
-    >
-      <div className="mx-auto max-w-[1440px] px-6 py-20 sm:px-8 lg:px-12 lg:py-28 xl:px-16">
-        <div className="grid gap-14 lg:grid-cols-12 lg:items-center">
-          <Reveal className="lg:col-span-6">
-            <p className="font-mono text-[9px] font-semibold uppercase tracking-[0.2em] text-[#27d59b]">
-              Beyond the device
-            </p>
-
-            <h2 className="mt-5 max-w-2xl font-heading text-4xl font-semibold leading-[1] tracking-[-0.05em] sm:text-5xl lg:text-[4rem]">
-              Hardware is only
-              <span className="text-white/35"> the beginning.</span>
+            <h2 className="mt-5 max-w-3xl font-heading text-4xl font-semibold leading-[1] tracking-[-0.05em] sm:text-5xl lg:text-[4.2rem]">
+              The details behind
+              <br />
+              <span className="text-[#27d59b]">
+                the hardware.
+              </span>
             </h2>
-
-            <p className="mt-6 max-w-xl text-sm leading-7 text-white/45">
-              The value of connected hardware comes from what happens to its
-              data. VIoT connects the edge with the platform so teams can move
-              from physical events to operational context.
-            </p>
           </Reveal>
 
-          <div className="relative lg:col-span-5 lg:col-start-8">
-            <div className="relative">
-              <motion.div
-                style={{ scaleX: lineScale }}
-                className="absolute left-0 right-0 top-[27px] h-px origin-left bg-[#27d59b]/50"
-              />
+          <Reveal
+            delay={0.08}
+            className="lg:col-span-5"
+          >
+            <p className="max-w-lg text-sm leading-7 text-white/45 lg:ml-auto">
+              Detailed technical content for each product will be placed here
+              once the final specifications are supplied.
+            </p>
+          </Reveal>
+        </div>
 
-              <div className="relative grid grid-cols-4 gap-4">
-                {[
-                  {
-                    title: "Capture",
-                    icon: Activity,
-                  },
-                  {
-                    title: "Transmit",
-                    icon: Radio,
-                  },
-                  {
-                    title: "Understand",
-                    icon: Activity,
-                  },
-                  {
-                    title: "Act",
-                    icon: ShieldCheck,
-                  },
-                ].map((item) => {
-                  const Icon = item.icon;
+        <div className="mt-14 grid gap-px border border-white/10 bg-white/10 sm:grid-cols-2 lg:grid-cols-4">
+          {items.map((item, index) => (
+            <motion.div
+              key={item.number}
+              initial={{
+                opacity: 0,
+                y: 18,
+              }}
+              whileInView={{
+                opacity: 1,
+                y: 0,
+              }}
+              viewport={{
+                once: true,
+              }}
+              transition={{
+                duration: 0.5,
+                delay: index * 0.08,
+              }}
+              className="group bg-[#081b24] p-6 transition-colors duration-300 hover:bg-[#0d2935]"
+            >
+              <span className="font-mono text-[9px] text-[#27d59b]">
+                {item.number}
+              </span>
 
-                  return (
-                    <motion.div
-                      key={item.title}
-                      initial={{ opacity: 0, y: 15 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, amount: 0.3 }}
-                      transition={{ duration: 0.5 }}
-                      className="relative"
-                    >
-                      <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#0d2935] ring-1 ring-white/[0.10]">
-                        <Icon className="h-4 w-4 text-[#27d59b]" />
-                      </div>
+              <h3 className="mt-8 font-heading text-base font-semibold">
+                {item.title}
+              </h3>
 
-                      <p className="mt-5 text-xs font-semibold text-white/75">
-                        {item.title}
-                      </p>
-                    </motion.div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
+              <div className="mt-4 h-px w-8 bg-[#27d59b]/60 transition-all duration-300 group-hover:w-14" />
+
+              <p className="mt-4 text-xs leading-6 text-white/35">
+                {item.text}
+              </p>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>
   );
 }
 
-export default function ProductsPage() {
+/* =========================================================
+   ECOSYSTEM CAROUSEL
+========================================================= */
+
+function EcosystemCarousel({
+  product,
+}: {
+  product: EcosystemProduct;
+}) {
+  const [active, setActive] = useState(0);
+
+  const next = () => {
+    setActive((current) =>
+      current === product.gallery.length - 1
+        ? 0
+        : current + 1
+    );
+  };
+
+  const previous = () => {
+    setActive((current) =>
+      current === 0
+        ? product.gallery.length - 1
+        : current - 1
+    );
+  };
+
+  return (
+    <div className="group">
+      <div className="relative aspect-[4/3] overflow-hidden bg-[#081b24]">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={`${product.id}-${active}`}
+            initial={{
+              opacity: 0,
+              scale: 1.025,
+            }}
+            animate={{
+              opacity: 1,
+              scale: 1,
+            }}
+            exit={{
+              opacity: 0,
+            }}
+            transition={{
+              duration: 0.45,
+            }}
+            className="absolute inset-0"
+          >
+            <Image
+              src={product.gallery[active]}
+              alt={`${product.title} image`}
+              fill
+              sizes="(max-width: 768px) 100vw, 33vw"
+              className="object-cover transition-transform duration-700 group-hover:scale-[1.025]"
+            />
+          </motion.div>
+        </AnimatePresence>
+
+        <div className="absolute inset-0 bg-gradient-to-t from-[#081b24]/80 via-transparent to-transparent" />
+
+        <div className="absolute left-4 top-4">
+          <span className="font-mono text-[8px] uppercase tracking-[0.17em] text-[#27d59b]">
+            {product.category}
+          </span>
+        </div>
+
+        {/* carousel buttons */}
+
+        <div className="absolute right-4 top-4 flex gap-1.5 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+          <button
+            type="button"
+            onClick={previous}
+            aria-label={`Previous ${product.title} image`}
+            className="flex h-8 w-8 items-center justify-center border border-white/15 bg-[#081b24]/75 text-white hover:border-[#27d59b] hover:text-[#27d59b]"
+          >
+            <ChevronLeft className="h-3.5 w-3.5" />
+          </button>
+
+          <button
+            type="button"
+            onClick={next}
+            aria-label={`Next ${product.title} image`}
+            className="flex h-8 w-8 items-center justify-center border border-white/15 bg-[#081b24]/75 text-white hover:border-[#27d59b] hover:text-[#27d59b]"
+          >
+            <ChevronRight className="h-3.5 w-3.5" />
+          </button>
+        </div>
+
+        <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between gap-4">
+          <div>
+            <span className="font-mono text-[8px] tracking-[0.16em] text-white/45">
+              {product.number}
+            </span>
+
+            <h3 className="mt-1 font-heading text-xl font-semibold tracking-[-0.025em] text-white">
+              {product.title}
+            </h3>
+          </div>
+
+          <Link
+            href={product.href}
+            aria-label={`Explore ${product.title}`}
+            className="flex h-9 w-9 shrink-0 items-center justify-center border border-white/20 text-white transition-colors hover:border-[#27d59b] hover:text-[#27d59b]"
+          >
+            <ArrowUpRight className="h-4 w-4" />
+          </Link>
+        </div>
+      </div>
+
+      <div className="mt-4">
+        <p className="text-xs leading-6 text-[#607078]">
+          {product.description}
+        </p>
+
+        <div className="mt-3 flex gap-1.5">
+          {product.gallery.map((_, index) => (
+            <button
+              key={index}
+              type="button"
+              onClick={() => setActive(index)}
+              aria-label={`Show image ${index + 1}`}
+              className={`h-1 transition-all ${
+                active === index
+                  ? "w-7 bg-[#27d59b]"
+                  : "w-3 bg-[#cdd5d2]"
+              }`}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* =========================================================
+   MORE FROM ECOSYSTEM
+========================================================= */
+
+function MoreFromEcosystem() {
+  return (
+    <section className="relative overflow-hidden border-t border-[#cdd5d2] bg-[#f4f6f2]">
+      <VIoTSVGBackground />
+
+      <div className="relative z-10 mx-auto max-w-[1440px] px-6 py-20 sm:px-8 lg:px-12 lg:py-28">
+        <Reveal>
+          <div className="grid gap-8 lg:grid-cols-12 lg:items-end">
+            <div className="lg:col-span-8">
+              <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.2em] text-[#007c67]">
+                More from the VIoT ecosystem
+              </span>
+
+              <h2 className="mt-5 max-w-4xl font-heading text-4xl font-semibold leading-[1] tracking-[-0.05em] text-[#081b24] sm:text-5xl lg:text-[4.2rem]">
+                Connected products for
+                <br />
+                <span className="text-[#007c67]">
+                  every operating environment.
+                </span>
+              </h2>
+            </div>
+
+            <p className="max-w-lg text-sm leading-7 text-[#607078] lg:col-span-4 lg:ml-auto">
+              Explore the wider VIoT ecosystem across fleet intelligence,
+              asset intelligence and connected access.
+            </p>
+          </div>
+        </Reveal>
+
+        <div className="mt-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+          {ecosystemProducts.map((product, index) => (
+            <Reveal
+              key={product.id}
+              delay={index * 0.05}
+            >
+              <EcosystemCarousel product={product} />
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+export default function ProductsClient() {
   return (
     <main className="overflow-hidden bg-[#f4f6f2] text-[#081b24]">
-      <PremiumCursor />
+      {/* 01 */}
       <ProductHero />
 
-      <DataFlowSection />
+      {/* 02 / 03 / 04 */}
+      {mainProducts.map((product) => (
+        <MainProductSection
+          key={product.id}
+          product={product}
+        />
+      ))}
 
-      <ProductEcosystem />
+      {/* Connected Journey removed.
+          Technical Profile takes its place. */}
 
-      <HardwareToPlatform />
+      <TechnicalProfile />
 
+      {/* More from VIoT Ecosystem */}
+      <MoreFromEcosystem />
+
+      {/* CTA */}
       <CtaBand />
     </main>
   );

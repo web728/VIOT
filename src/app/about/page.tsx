@@ -1,11 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { ArrowUpRight, Mail } from "lucide-react";
 
-import { PageHero } from "@/components/page-hero";
 import { CtaBand } from "@/components/home/CtaBand";
 
 const values = [
@@ -26,155 +23,865 @@ const values = [
   },
 ];
 
-const founders = [
+const disciplines = [
   {
-    name: "Bharat Kapur",
-    role: "Co-Founder",
-    email: "bharat@viot.tech",
-    desc: "Leading core hardware architecture, firmware engineering, and end-to-end telemetry deployment standards across enterprise operations in India.",
+    num: "01",
+    title: "Fleet Intelligence",
+    copy: "Vehicles, journeys and driver activity.",
   },
   {
-    name: "Vyom Malik",
-    role: "Business Head",
-    email: "vyom@viot.tech",
-    desc: "Driving strategic partnerships, go-to-market execution, client integrations, and vendor evaluation frameworks for large-scale logistics fleets.",
+    num: "02",
+    title: "Asset Intelligence",
+    copy: "Cargo, equipment and connected sensors.",
+  },
+  {
+    num: "03",
+    title: "Access Control",
+    copy: "Physical access and security events.",
   },
 ];
+
+/* =========================================================
+   CLIENT-APPROVED VIoT SVG BACKGROUND
+   Same visual language:
+   flowing paths + dashed signal flow + engineering rings
+   + moving signal points.
+========================================================= */
+
+function ApprovedVIoTBackground({
+  dark = false,
+}: {
+  dark?: boolean;
+}) {
+  return (
+    <div
+      className={`pointer-events-none absolute inset-0 overflow-hidden ${
+        dark ? "opacity-100" : "opacity-80"
+      }`}
+      aria-hidden="true"
+    >
+      {/* subtle atmosphere */}
+      <div
+        className={`absolute -left-48 top-[8%] h-[520px] w-[520px] rounded-full blur-3xl ${
+          dark ? "bg-[#27d59b]/[0.025]" : "bg-[#27d59b]/[0.035]"
+        }`}
+      />
+
+      <div
+        className={`absolute -right-56 bottom-[5%] h-[620px] w-[620px] rounded-full blur-3xl ${
+          dark ? "bg-white/[0.015]" : "bg-[#007c67]/[0.025]"
+        }`}
+      />
+
+      {/* =====================================================
+          FLOWING SYSTEM PATHS
+      ===================================================== */}
+
+      <svg
+        viewBox="0 0 1600 1000"
+        preserveAspectRatio="none"
+        className="absolute inset-0 h-full w-full"
+        fill="none"
+      >
+        {/* Upper engineering path */}
+        <motion.path
+          d="M-160 260 C120 50 390 100 620 285 S1050 610 1760 235"
+          stroke={
+            dark
+              ? "rgba(255,255,255,0.055)"
+              : "rgba(8,27,36,0.075)"
+          }
+          strokeWidth="1"
+          initial={{ pathLength: 0 }}
+          whileInView={{ pathLength: 1 }}
+          viewport={{ once: true }}
+          transition={{
+            duration: 2.4,
+            ease: "easeOut",
+          }}
+        />
+
+        {/* Main green data flow */}
+        <motion.path
+          d="M-180 700 C120 470 390 525 680 685 S1130 880 1780 560"
+          stroke={
+            dark
+              ? "rgba(39,213,155,0.14)"
+              : "rgba(0,124,103,0.13)"
+          }
+          strokeWidth="1.2"
+          strokeDasharray="3 15"
+          animate={{
+            strokeDashoffset: [0, -180],
+          }}
+          transition={{
+            duration: 12,
+            repeat: Infinity,
+            ease: "linear",
+          }}
+        />
+
+        {/* diagonal engineering path */}
+        <path
+          d="M80 1080 C260 740 520 700 780 450 S1240 120 1620 -90"
+          stroke={
+            dark
+              ? "rgba(255,255,255,0.035)"
+              : "rgba(8,27,36,0.05)"
+          }
+          strokeWidth="1"
+        />
+
+        {/* lower flowing path */}
+        <motion.path
+          d="M-120 470 C230 340 420 420 650 515 S1060 700 1730 455"
+          stroke={
+            dark
+              ? "rgba(39,213,155,0.075)"
+              : "rgba(0,124,103,0.065)"
+          }
+          strokeWidth="1"
+          strokeDasharray="2 20"
+          animate={{
+            strokeDashoffset: [0, 180],
+          }}
+          transition={{
+            duration: 15,
+            repeat: Infinity,
+            ease: "linear",
+          }}
+        />
+      </svg>
+
+      {/* =====================================================
+          ENGINEERING RINGS
+      ===================================================== */}
+
+      <motion.div
+        className={`absolute right-[4%] top-[12%] h-[430px] w-[430px] rounded-full border ${
+          dark
+            ? "border-white/[0.035]"
+            : "border-[#081b24]/[0.045]"
+        }`}
+        animate={{
+          rotate: 360,
+        }}
+        transition={{
+          duration: 60,
+          repeat: Infinity,
+          ease: "linear",
+        }}
+      />
+
+      <motion.div
+        className={`absolute right-[9%] top-[18%] h-[300px] w-[300px] rounded-full border ${
+          dark
+            ? "border-[#27d59b]/[0.055]"
+            : "border-[#007c67]/[0.06]"
+        }`}
+        animate={{
+          rotate: -360,
+        }}
+        transition={{
+          duration: 42,
+          repeat: Infinity,
+          ease: "linear",
+        }}
+      />
+
+      <div
+        className={`absolute right-[17%] top-[27%] h-[150px] w-[150px] rounded-full border ${
+          dark
+            ? "border-white/[0.025]"
+            : "border-[#081b24]/[0.035]"
+        }`}
+      />
+
+      <div
+        className={`absolute -left-[180px] bottom-[18%] h-[460px] w-[460px] rounded-full border ${
+          dark
+            ? "border-white/[0.025]"
+            : "border-[#081b24]/[0.035]"
+        }`}
+      />
+
+      {/* =====================================================
+          MOVING SIGNAL POINTS
+      ===================================================== */}
+
+      <motion.span
+        className="absolute left-[19%] top-[31%] h-1.5 w-1.5 bg-[#27d59b]"
+        animate={{
+          x: [0, 90, 180],
+          y: [0, 20, 0],
+          opacity: [0.1, 0.65, 0],
+        }}
+        transition={{
+          duration: 5.5,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
+
+      <motion.span
+        className="absolute left-[46%] top-[69%] h-1.5 w-1.5 bg-[#27d59b]"
+        animate={{
+          x: [0, -70, -150],
+          y: [0, -25, 0],
+          opacity: [0, 0.7, 0],
+        }}
+        transition={{
+          duration: 6,
+          delay: 1,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
+
+      <motion.span
+        className="absolute right-[18%] top-[38%] h-1.5 w-1.5 bg-[#27d59b]"
+        animate={{
+          x: [0, -55, -120],
+          opacity: [0.1, 0.65, 0],
+        }}
+        transition={{
+          duration: 5,
+          delay: 1.8,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
+
+      {/* ambient points */}
+      {[
+        ["12%", "20%"],
+        ["25%", "78%"],
+        ["39%", "16%"],
+        ["58%", "84%"],
+        ["68%", "22%"],
+        ["79%", "72%"],
+        ["91%", "52%"],
+      ].map(([left, top], index) => (
+        <motion.span
+          key={`${left}-${top}`}
+          className={`absolute h-1 w-1 ${
+            dark ? "bg-white/20" : "bg-[#081b24]/20"
+          }`}
+          style={{ left, top }}
+          animate={{
+            opacity: [0.1, 0.4, 0.1],
+          }}
+          transition={{
+            duration: 3 + index * 0.25,
+            delay: index * 0.3,
+            repeat: Infinity,
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
+/* =========================================================
+   WHY VIOT IMAGE VISUAL
+========================================================= */
+
+function WhyVIoTVisual() {
+  return (
+    <div className="relative mx-auto w-full max-w-[600px]">
+      {/* outer technical frame */}
+      <div className="absolute -inset-5 hidden border border-[#007c67]/10 sm:block" />
+
+      <div className="absolute -inset-10 hidden opacity-60 sm:block">
+        <div className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-[#007c67]/10" />
+        <div className="absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-[#007c67]/10" />
+      </div>
+
+      {/* image */}
+      <div className="relative overflow-hidden border border-[#cdd5d2] bg-[#081b24]">
+        <div className="relative aspect-[4/3]">
+          <Image
+            src="/image/about.png"
+            alt="VIoT connected technology"
+            fill
+            priority
+            className="object-cover"
+          />
+
+          <div className="absolute inset-0 bg-[#081b24]/10" />
+
+          {/* scanning line */}
+          <motion.div
+            className="absolute left-0 right-0 h-px bg-[#27d59b]/50"
+            animate={{
+              top: ["8%", "92%", "8%"],
+              opacity: [0, 0.8, 0],
+            }}
+            transition={{
+              duration: 5,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          />
+        </div>
+
+        {/* bottom information strip */}
+        <div className="absolute bottom-0 left-0 right-0 border-t border-white/10 bg-[#081b24]/85 px-5 py-4 backdrop-blur-sm">
+          <div className="flex items-center justify-between">
+            <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/55">
+              Field technology
+            </span>
+
+            <span className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.18em] text-[#27d59b]">
+              <motion.span
+                className="h-1.5 w-1.5 bg-[#27d59b]"
+                animate={{
+                  opacity: [0.35, 1, 0.35],
+                }}
+                transition={{
+                  duration: 1.8,
+                  repeat: Infinity,
+                }}
+              />
+              Connected
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* =====================================================
+          TECHNICAL POINTS AROUND IMAGE
+      ===================================================== */}
+
+      <motion.div
+        initial={{ opacity: 0, x: -10 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.5 }}
+        className="absolute -left-3 top-[16%] hidden sm:block"
+      >
+        <div className="flex items-center gap-2">
+          <span className="h-2 w-2 border border-[#27d59b] bg-[#081b24]" />
+          <span className="h-px w-12 bg-[#27d59b]/50" />
+
+          <div className="border border-[#007c67]/20 bg-[#f4f6f2]/95 px-3 py-2">
+            <span className="font-mono text-[8px] uppercase tracking-[0.16em] text-[#007c67]">
+              Field signal
+            </span>
+          </div>
+        </div>
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, x: 10 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.5, delay: 0.08 }}
+        className="absolute -right-3 top-[31%] hidden sm:block"
+      >
+        <div className="flex items-center gap-2">
+          <div className="border border-[#007c67]/20 bg-[#f4f6f2]/95 px-3 py-2">
+            <span className="font-mono text-[8px] uppercase tracking-[0.16em] text-[#007c67]">
+              Connected data
+            </span>
+          </div>
+
+          <span className="h-px w-12 bg-[#27d59b]/50" />
+          <span className="h-2 w-2 border border-[#27d59b] bg-[#081b24]" />
+        </div>
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, x: -10 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.5, delay: 0.14 }}
+        className="absolute -left-3 bottom-[22%] hidden sm:block"
+      >
+        <div className="flex items-center gap-2">
+          <span className="h-2 w-2 border border-[#27d59b] bg-[#081b24]" />
+          <span className="h-px w-12 bg-[#27d59b]/50" />
+
+          <div className="border border-[#007c67]/20 bg-[#f4f6f2]/95 px-3 py-2">
+            <span className="font-mono text-[8px] uppercase tracking-[0.16em] text-[#007c67]">
+              Real-time
+            </span>
+          </div>
+        </div>
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, x: 10 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        className="absolute -right-3 bottom-[14%] hidden sm:block"
+      >
+        <div className="flex items-center gap-2">
+          <div className="border border-[#007c67]/20 bg-[#f4f6f2]/95 px-3 py-2">
+            <span className="font-mono text-[8px] uppercase tracking-[0.16em] text-[#007c67]">
+              Secure layer
+            </span>
+          </div>
+
+          <span className="h-px w-12 bg-[#27d59b]/50" />
+          <span className="h-2 w-2 border border-[#27d59b] bg-[#081b24]" />
+        </div>
+      </motion.div>
+
+      {/* central moving signal */}
+      <motion.span
+        className="absolute left-[50%] top-[50%] h-2 w-2 bg-[#27d59b] shadow-[0_0_0_5px_rgba(39,213,155,0.12)]"
+        animate={{
+          scale: [0.8, 1.15, 0.8],
+          opacity: [0.45, 1, 0.45],
+        }}
+        transition={{
+          duration: 2.2,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
+    </div>
+  );
+}
+
+/* =========================================================
+   COMPANY OPERATING MODEL
+========================================================= */
+
+const CYCLE = 4;
+
+const vizNodes = [
+  { id: "fleet", x: 66, label: "Fleet", sub: "Vehicles · Trips" },
+  { id: "asset", x: 200, label: "Asset", sub: "Cargo · Equipment" },
+  { id: "access", x: 334, label: "Access", sub: "Doors · Locks" },
+];
+
+const vizPaths = [
+  "M66,72 C66,140 150,130 150,192",
+  "M200,72 L200,192",
+  "M334,72 C334,140 250,130 250,192",
+];
+
+const outPath = "M200,248 L200,332";
+
+function OperatingModelIllustration() {
+  return (
+    <div className="mx-auto w-full max-w-[460px] border border-[#cdd5d2] bg-[#f4f6f2] p-6 sm:p-8">
+      <svg
+        viewBox="0 0 400 410"
+        className="h-auto w-full"
+        role="img"
+        aria-label="Fleet, Asset and Access intelligence feeding one VIoT platform and one operating view"
+      >
+        <defs>
+          <marker
+            id="about-arrow"
+            viewBox="0 0 8 8"
+            refX="7"
+            refY="4"
+            markerWidth="6"
+            markerHeight="6"
+            orient="auto"
+          >
+            <path d="M0 0L8 4L0 8z" fill="rgba(8,27,36,0.35)" />
+          </marker>
+        </defs>
+
+        {[...vizPaths, outPath].map((d) => (
+          <path
+            key={d}
+            d={d}
+            fill="none"
+            stroke="rgba(8,27,36,0.2)"
+            strokeWidth="1.2"
+            markerEnd="url(#about-arrow)"
+          />
+        ))}
+
+        {vizPaths.map((d) => (
+          <rect
+            key={`dot-${d}`}
+            x="-3.5"
+            y="-3.5"
+            width="7"
+            height="7"
+            fill="#27d59b"
+          >
+            <animateMotion
+              path={d}
+              dur={`${CYCLE}s`}
+              repeatCount="indefinite"
+              calcMode="linear"
+              keyPoints="0;1;1"
+              keyTimes="0;0.4;1"
+            />
+
+            <animate
+              attributeName="opacity"
+              values="1;1;0;0"
+              keyTimes="0;0.4;0.401;1"
+              dur={`${CYCLE}s`}
+              repeatCount="indefinite"
+            />
+          </rect>
+        ))}
+
+        <rect x="-3.5" y="-3.5" width="7" height="7" fill="#27d59b">
+          <animateMotion
+            path={outPath}
+            dur={`${CYCLE}s`}
+            begin={`${0.4 * CYCLE}s`}
+            repeatCount="indefinite"
+            calcMode="linear"
+          />
+
+          <animate
+            attributeName="opacity"
+            values="1;1;0;0"
+            keyTimes="0;0.4;0.401;1"
+            dur={`${CYCLE}s`}
+            begin={`${0.4 * CYCLE}s`}
+            repeatCount="indefinite"
+          />
+        </rect>
+
+        {vizNodes.map((n) => (
+          <g key={n.id}>
+            <rect
+              x={n.x - 58}
+              y="8"
+              width="116"
+              height="64"
+              fill="#ffffff"
+              stroke="#007c67"
+              strokeOpacity="0.25"
+            />
+
+            <text
+              x={n.x}
+              y="36"
+              textAnchor="middle"
+              fill="#081b24"
+              fontSize="15"
+              fontWeight="600"
+            >
+              {n.label}
+            </text>
+
+            <text
+              x={n.x}
+              y="55"
+              textAnchor="middle"
+              fill="#607078"
+              fontSize="11"
+            >
+              {n.sub}
+            </text>
+          </g>
+        ))}
+
+        <rect x="140" y="192" width="120" height="56" fill="#081b24" />
+
+        <rect
+          x="140"
+          y="192"
+          width="120"
+          height="56"
+          fill="none"
+          stroke="#27d59b"
+          strokeOpacity="0.7"
+        />
+
+        <text
+          x="200"
+          y="217"
+          textAnchor="middle"
+          fill="#ffffff"
+          fontSize="20"
+          fontWeight="700"
+        >
+          V<tspan fill="#27d59b">I</tspan>oT
+        </text>
+
+        <text
+          x="200"
+          y="236"
+          textAnchor="middle"
+          fill="rgba(255,255,255,0.6)"
+          fontSize="11"
+        >
+          Platform
+        </text>
+
+        <rect
+          x="100"
+          y="332"
+          width="200"
+          height="64"
+          fill="#ffffff"
+          stroke="#007c67"
+          strokeOpacity="0.25"
+        />
+
+        <text
+          x="200"
+          y="361"
+          textAnchor="middle"
+          fill="#081b24"
+          fontSize="15"
+          fontWeight="600"
+        >
+          One operating view
+        </text>
+
+        <text
+          x="200"
+          y="380"
+          textAnchor="middle"
+          fill="#607078"
+          fontSize="11"
+        >
+          Alerts · Decisions
+        </text>
+      </svg>
+    </div>
+  );
+}
+
+/* =========================================================
+   PAGE
+========================================================= */
 
 export default function AboutPage() {
   return (
     <main className="overflow-hidden bg-[#f4f6f2] text-[#081b24] selection:bg-[#27d59b] selection:text-[#081b24]">
-      {/* =========================================================
+      {/* =====================================================
           01 — HERO
-      ========================================================= */}
-      <PageHero
-        breadcrumb="Company / Incorporated May 2026"
-        title="A new company."
-        titleHighlight="Not a new team."
-        lede="VIoT Technologies LLP is headquartered in Noida and built on years in fleet technology, telematics, operations, go-to-market, vendor evaluation and compliance."
-      />
+      ===================================================== */}
 
-      {/* =========================================================
-          02 — WHY VIOT EXISTS
-      ========================================================= */}
-      <section className="border-b border-[#cdd5d2] bg-white">
-        <div className="mx-auto max-w-[1440px] px-6 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-24">
-          <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-center lg:gap-16">
-            {/* Statement */}
+      <section className="relative min-h-[620px] overflow-hidden bg-[#081b24] text-white sm:min-h-[680px]">
+        <ApprovedVIoTBackground dark />
+
+        {/* subtle technical grid */}
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.025]"
+          style={{
+            backgroundImage: `
+              linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)
+            `,
+            backgroundSize: "90px 90px",
+          }}
+        />
+
+        <div className="relative z-10 mx-auto flex min-h-[620px] max-w-[1440px] items-center px-6 py-24 sm:min-h-[680px] sm:px-8 lg:px-12">
+          <div className="w-full max-w-4xl">
             <motion.div
               initial={{ opacity: 0, y: 18 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.25 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{
-                duration: 0.65,
+                duration: 0.7,
                 ease: [0.16, 1, 0.3, 1],
               }}
-              className="lg:col-span-7"
+              className="flex items-center gap-3"
+            >
+              <span className="h-px w-10 bg-[#27d59b]" />
+
+              <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.2em] text-[#27d59b]">
+                Company / About VIoT
+              </span>
+            </motion.div>
+
+            <motion.h1
+              initial={{ opacity: 0, y: 28 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.8,
+                delay: 0.08,
+                ease: [0.16, 1, 0.3, 1],
+              }}
+              className="mt-7 max-w-4xl font-heading text-[48px] font-semibold leading-[0.96] tracking-[-0.055em] text-white sm:text-6xl lg:text-[78px]"
+            >
+              Technology that connects
+              <br />
+              <span className="text-[#27d59b]">
+                the physical world.
+              </span>
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.65,
+                delay: 0.18,
+                ease: [0.16, 1, 0.3, 1],
+              }}
+              className="mt-7 max-w-2xl text-sm leading-7 text-white/55 sm:text-base"
+            >
+              VIoT brings dependable hardware, connected intelligence and
+              operational technology together across vehicles, assets and
+              physical spaces.
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.6,
+                delay: 0.28,
+              }}
+              className="mt-9 flex flex-wrap items-center gap-x-8 gap-y-4"
+            >
+              <div className="flex items-center gap-3">
+                <span className="h-1.5 w-1.5 bg-[#27d59b]" />
+
+                <span className="font-mono text-[9px] uppercase tracking-[0.16em] text-white/50">
+                  Hardware
+                </span>
+              </div>
+
+              <div className="h-4 w-px bg-white/10" />
+
+              <div className="flex items-center gap-3">
+                <span className="h-1.5 w-1.5 bg-[#27d59b]" />
+
+                <span className="font-mono text-[9px] uppercase tracking-[0.16em] text-white/50">
+                  Intelligence
+                </span>
+              </div>
+
+              <div className="h-4 w-px bg-white/10" />
+
+              <div className="flex items-center gap-3">
+                <span className="h-1.5 w-1.5 bg-[#27d59b]" />
+
+                <span className="font-mono text-[9px] uppercase tracking-[0.16em] text-white/50">
+                  Action
+                </span>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+
+        {/* bottom system marker */}
+        <div className="absolute bottom-7 left-6 right-6 z-10 sm:left-8 sm:right-8 lg:left-12 lg:right-12">
+          <div className="mx-auto flex max-w-[1440px] items-center justify-between border-t border-white/10 pt-4">
+            <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-white/30">
+              VIoT Technologies LLP
+            </span>
+
+            <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-[#27d59b]/70">
+              Connected systems / 01
+            </span>
+          </div>
+        </div>
+      </section>
+
+      {/* =====================================================
+          02 — WHY VIOT
+      ===================================================== */}
+
+      <section className="relative overflow-hidden border-b border-[#cdd5d2] bg-[#f4f6f2]">
+        <ApprovedVIoTBackground />
+
+        <div className="relative z-10 mx-auto max-w-[1440px] px-6 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-24">
+          <div className="grid grid-cols-1 gap-14 lg:grid-cols-12 lg:items-center lg:gap-16">
+            {/* Copy */}
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{
+                duration: 0.7,
+                ease: [0.16, 1, 0.3, 1],
+              }}
+              className="relative z-10 lg:col-span-6"
             >
               <div className="mb-6 flex items-center gap-3">
                 <span className="h-px w-10 bg-[#27d59b]" />
 
-                <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.2em] text-[#007c67]">
+                <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.18em] text-[#007c67]">
                   01 / Why VIoT exists
                 </span>
               </div>
 
-              <blockquote className="max-w-3xl font-heading text-3xl font-semibold leading-[1.08] tracking-[-0.045em] text-[#081b24] sm:text-4xl lg:text-[48px]">
-                “This industry trained customers to accept unreliable
-                telematics data as normal.”
+              <h2 className="max-w-2xl font-heading text-3xl font-semibold leading-[1.03] tracking-[-0.045em] text-[#081b24] sm:text-4xl lg:text-[48px]">
+                Connected systems should
+                <br />
+                <span className="text-[#007c67]">
+                  work when it matters.
+                </span>
+              </h2>
+
+              <blockquote className="mt-7 max-w-xl border-l-2 border-[#27d59b] pl-5 font-heading text-xl font-medium leading-[1.35] tracking-[-0.025em] text-[#081b24] sm:text-2xl">
+                “Connected systems earn trust only when they keep working at
+                the moment it matters most.”
               </blockquote>
 
-              <p className="mt-7 max-w-2xl text-base leading-7 text-[#607078]">
-                Power cuts, tampering and remote zones are exactly when a
-                fleet manager needs a signal — and exactly when cheap hardware
-                drops it. We started VIoT to bridge that exact reliability
-                gap.
+              <p className="mt-7 max-w-xl text-sm leading-7 text-[#607078] sm:text-[15px]">
+                Power cuts, tampering and remote operating environments are
+                exactly when dependable technology matters most. VIoT was
+                built to close that reliability gap across vehicles, assets
+                and controlled physical access.
               </p>
 
               <div className="mt-8 flex items-center gap-3">
                 <span className="h-px w-8 bg-[#27d59b]" />
 
-                <span className="font-mono text-[8px] font-semibold uppercase tracking-[0.18em] text-[#879399]">
-                  Built for Indian road & network conditions
+                <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.16em] text-[#007c67]">
+                  Built for real operating conditions
                 </span>
               </div>
             </motion.div>
 
-            {/* Image */}
+            {/* Existing image + premium points */}
             <motion.div
-              initial={{ opacity: 0, y: 18 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.25 }}
+              initial={{ opacity: 0, scale: 0.97 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, amount: 0.2 }}
               transition={{
-                duration: 0.65,
-                delay: 0.1,
+                duration: 0.8,
                 ease: [0.16, 1, 0.3, 1],
               }}
-              className="lg:col-span-5"
+              className="relative z-10 lg:col-span-6"
             >
-              <div className="relative overflow-hidden border border-[#cdd5d2] bg-[#081b24]">
-                <div className="relative aspect-[4/3]">
-                  <Image
-                    src="/image/about.png"
-                    alt="VIoT telematics and connected technology"
-                    fill
-                    className="object-cover transition-transform duration-700 hover:scale-[1.02]"
-                  />
-
-                  {/* Quiet image treatment */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#081b24]/45 to-transparent" />
-
-                  {/* Image label */}
-                  <div className="absolute bottom-0 left-0 right-0 border-t border-white/15 bg-[#081b24]/75 px-5 py-4">
-                    <div className="flex items-center justify-between">
-                      <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-white/50">
-                        VIoT / Field technology
-                      </span>
-
-                      <span className="flex items-center gap-2 font-mono text-[8px] uppercase tracking-[0.18em] text-[#27d59b]">
-                        <span className="h-1.5 w-1.5 bg-[#27d59b]" />
-                        Connected
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <WhyVIoTVisual />
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* =========================================================
+      {/* =====================================================
           03 — WHAT WE VALUE
-      ========================================================= */}
-      <section className="border-b border-white/[0.08] bg-[#081b24] text-white">
-        <div className="mx-auto max-w-[1440px] px-6 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-24">
+      ===================================================== */}
+
+      <section className="relative overflow-hidden border-b border-white/10 bg-[#081b24] text-white">
+        <ApprovedVIoTBackground dark />
+
+        <div className="relative z-10 mx-auto max-w-[1440px] px-6 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-24">
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
-            {/* Intro */}
             <motion.div
-              initial={{ opacity: 0, y: 18 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.25 }}
-              transition={{
-                duration: 0.6,
-                ease: [0.16, 1, 0.3, 1],
-              }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.65 }}
               className="lg:col-span-4"
             >
               <div className="mb-6 flex items-center gap-3">
                 <span className="h-px w-9 bg-[#27d59b]" />
 
-                <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.2em] text-[#27d59b]">
+                <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.18em] text-[#27d59b]">
                   02 / What we value
                 </span>
               </div>
 
-              <h2 className="max-w-sm font-heading text-3xl font-semibold leading-[1.06] tracking-[-0.04em] sm:text-4xl">
+              <h2 className="font-heading text-3xl font-semibold leading-[1.05] tracking-[-0.04em] sm:text-4xl">
                 The way we build
                 <br />
-                <span className="font-normal text-white/40">
-                  matters.
-                </span>
+                <span className="text-[#27d59b]">matters.</span>
               </h2>
 
               <p className="mt-6 max-w-sm text-sm leading-7 text-white/45">
@@ -184,31 +891,29 @@ export default function AboutPage() {
               </p>
             </motion.div>
 
-            {/* Values */}
             <div className="lg:col-span-8">
-              <div className="border-y border-white/[0.1]">
+              <div className="border-y border-white/10">
                 {values.map((value, index) => (
                   <motion.div
                     key={value.num}
-                    initial={{ opacity: 0, x: 15 }}
+                    initial={{ opacity: 0, x: 18 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true, amount: 0.2 }}
                     transition={{
                       duration: 0.55,
                       delay: index * 0.08,
-                      ease: [0.16, 1, 0.3, 1],
                     }}
-                    className="group grid grid-cols-1 gap-4 border-b border-white/[0.1] py-7 last:border-b-0 sm:grid-cols-[60px_180px_1fr] sm:items-start sm:gap-6 sm:py-8"
+                    className="group grid grid-cols-1 gap-4 border-b border-white/10 py-7 last:border-b-0 sm:grid-cols-[60px_180px_1fr] sm:items-start sm:gap-6 sm:py-8"
                   >
-                    <span className="font-mono text-[9px] font-semibold tracking-[0.18em] text-[#27d59b]/70">
+                    <span className="font-mono text-[9px] font-semibold tracking-[0.16em] text-[#27d59b]">
                       {value.num}
                     </span>
 
-                    <h3 className="font-heading text-lg font-semibold tracking-[-0.02em] text-white">
+                    <h3 className="font-heading text-lg font-semibold text-white">
                       {value.title}
                     </h3>
 
-                    <p className="max-w-xl text-sm leading-7 text-white/40 transition-colors duration-300 group-hover:text-white/65">
+                    <p className="max-w-xl text-sm leading-7 text-white/45 transition-colors duration-300 group-hover:text-white/70">
                       {value.copy}
                     </p>
                   </motion.div>
@@ -219,142 +924,97 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* =========================================================
-          04 — PEOPLE
-      ========================================================= */}
-      <section className="border-b border-[#cdd5d2] bg-[#f4f6f2]">
-        <div className="mx-auto max-w-[1440px] px-6 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-24">
-          {/* Heading */}
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.25 }}
-            transition={{
-              duration: 0.6,
-              ease: [0.16, 1, 0.3, 1],
-            }}
-            className="grid grid-cols-1 gap-7 lg:grid-cols-12 lg:items-end"
-          >
-            <div className="lg:col-span-8">
+      {/* =====================================================
+          04 — THE COMPANY
+      ===================================================== */}
+
+      <section className="relative overflow-hidden border-b border-[#cdd5d2] bg-white">
+        <ApprovedVIoTBackground />
+
+        <div className="relative z-10 mx-auto max-w-[1440px] px-6 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-24">
+          <div className="grid grid-cols-1 gap-14 lg:grid-cols-12 lg:items-center lg:gap-16">
+            <motion.div
+              initial={{ opacity: 0, y: 22 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.7 }}
+              className="lg:col-span-7"
+            >
               <div className="mb-6 flex items-center gap-3">
                 <span className="h-px w-9 bg-[#27d59b]" />
 
-                <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.2em] text-[#007c67]">
-                  03 / The team
+                <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.18em] text-[#007c67]">
+                  03 / The company
                 </span>
               </div>
 
-              <h2 className="font-heading text-3xl font-semibold leading-[1.06] tracking-[-0.045em] text-[#081b24] sm:text-4xl lg:text-[48px]">
-                People behind
-                <br />
-                <span className="font-normal text-[#879399]">
-                  the platform.
-                </span>
-              </h2>
-            </div>
-
-            <div className="lg:col-span-4">
-              <p className="max-w-md text-sm leading-7 text-[#607078] lg:ml-auto">
-                Technical depth and commercial execution working together to
-                solve real operational problems.
-              </p>
-            </div>
-          </motion.div>
-
-          {/* Team list */}
-          <div className="mt-12 border-t border-[#cdd5d2]">
-            {founders.map((founder, index) => (
-              <motion.article
-                key={founder.name}
-                initial={{ opacity: 0, y: 18 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{
-                  duration: 0.55,
-                  delay: index * 0.08,
-                  ease: [0.16, 1, 0.3, 1],
-                }}
-                className="group grid grid-cols-1 gap-7 border-b border-[#cdd5d2] py-8 sm:grid-cols-[70px_230px_1fr_auto] sm:items-center sm:gap-8 sm:py-9"
-              >
-                {/* Number */}
-                <span className="font-mono text-[9px] font-semibold tracking-[0.18em] text-[#a0aaae]">
-                  0{index + 1}
-                </span>
-
-                {/* Name */}
-                <div>
-                  <h3 className="font-heading text-xl font-semibold tracking-[-0.025em] text-[#081b24]">
-                    {founder.name}
-                  </h3>
-
-                  <p className="mt-1 font-mono text-[8px] font-semibold uppercase tracking-[0.18em] text-[#007c67]">
-                    {founder.role}
-                  </p>
-                </div>
-
-                {/* Description */}
-                <p className="max-w-xl text-sm leading-7 text-[#607078]">
-                  {founder.desc}
-                </p>
-
-                {/* Contact */}
-                <Link
-                  href={`mailto:${founder.email}`}
-                  className="group/mail inline-flex items-center gap-2 text-xs font-medium text-[#081b24] transition-colors hover:text-[#007c67]"
-                >
-                  <Mail
-                    size={14}
-                    strokeWidth={1.7}
-                    className="text-[#007c67]"
-                  />
-
-                  <span>{founder.email}</span>
-
-                  <ArrowUpRight
-                    size={14}
-                    strokeWidth={1.7}
-                    className="transition-transform duration-300 group-hover/mail:translate-x-0.5 group-hover/mail:-translate-y-0.5"
-                  />
-                </Link>
-              </motion.article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================================
-          05 — CLOSING STATEMENT
-      ========================================================= */}
-      <section className="border-b border-[#cdd5d2] bg-white">
-        <div className="mx-auto max-w-[1440px] px-6 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-24">
-          <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-end">
-            <div className="lg:col-span-8">
-              <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.2em] text-[#007c67]">
-                04 / The company
-              </span>
-
-              <h2 className="mt-5 max-w-4xl font-heading text-3xl font-semibold leading-[1.06] tracking-[-0.045em] text-[#081b24] sm:text-4xl lg:text-5xl">
+              <h2 className="max-w-3xl font-heading text-3xl font-semibold leading-[1.03] tracking-[-0.045em] text-[#081b24] sm:text-4xl lg:text-5xl">
                 Build the system around
                 <br />
-                <span className="font-normal text-[#879399]">
+                <span className="text-[#007c67]">
                   the reality of the operation.
                 </span>
               </h2>
-            </div>
 
-            <div className="lg:col-span-4">
-              <p className="max-w-md text-sm leading-7 text-[#607078]">
-                VIoT brings hardware, telemetry, operational experience and
-                commercial execution together under one connected approach.
-              </p>
-            </div>
+              <div className="mt-7 max-w-2xl space-y-4 text-sm leading-7 text-[#607078] sm:text-[15px]">
+                <p>
+                  VIoT brings hardware, connected intelligence, operational
+                  experience and commercial execution together under one
+                  connected approach.
+                </p>
+
+                <p>
+                  Whether it is a vehicle on the road, an asset in a yard or a
+                  door in a controlled facility, the need is the same:
+                  dependable hardware, data you can trust and a team that stays
+                  accountable from selection through deployment.
+                </p>
+              </div>
+
+              <div className="mt-9 max-w-2xl border-t border-[#cdd5d2]">
+                {disciplines.map((item) => (
+                  <motion.div
+                    key={item.num}
+                    whileHover={{ x: 4 }}
+                    transition={{ duration: 0.25 }}
+                    className="grid grid-cols-[44px_1fr] gap-3 border-b border-[#cdd5d2] py-4 sm:grid-cols-[44px_190px_1fr] sm:items-baseline"
+                  >
+                    <span className="font-mono text-[9px] font-semibold tracking-[0.14em] text-[#007c67]">
+                      {item.num}
+                    </span>
+
+                    <h3 className="font-heading text-base font-semibold text-[#081b24]">
+                      {item.title}
+                    </h3>
+
+                    <p className="col-start-2 text-sm leading-6 text-[#607078] sm:col-start-auto">
+                      {item.copy}
+                    </p>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 22 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{
+                duration: 0.7,
+                delay: 0.08,
+              }}
+              className="lg:col-span-5"
+            >
+              <OperatingModelIllustration />
+            </motion.div>
           </div>
         </div>
       </section>
 
-      {/* =========================================================
-          06 — CTA
-      ========================================================= */}
+      {/* =====================================================
+          05 — CTA
+      ===================================================== */}
+
       <CtaBand />
     </main>
   );

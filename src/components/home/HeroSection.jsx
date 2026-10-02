@@ -1,395 +1,310 @@
 "use client";
 
 import Link from "next/link";
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { ArrowIcon } from "@/components/icons";
-import { HeroVisual } from "./HeroVisual";
+import { useEffect, useRef, useState } from "react";
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 18 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.7,
-      ease: [0.16, 1, 0.3, 1],
-    },
+const heroSlides = [
+  {
+    id: 1,
+    video: "/video/video-1.mp4",
+    eyebrow: "Vehicle Tracking",
+    title: "Track what moves.",
+    description:
+      "Real-time visibility across vehicles, routes and operations through connected telematics.",
+    cta: "Explore Vehicle Tracking",
+    href: "/products/vehicle-telematics",
   },
+  {
+    id: 2,
+    video: "/video/video-2.mp4",
+    eyebrow: "Video Telematics",
+    title: "See what happens on the road.",
+    description:
+      "Video intelligence that adds context to every journey, event and operational decision.",
+    cta: "Explore Video Telematics",
+    href: "/products/video-telematics",
+  },
+  {
+    id: 3,
+    video: "/video/video-3.mp4",
+    eyebrow: "Access & Infrastructure",
+    title: "Secure what matters.",
+    description:
+      "Connected access and infrastructure intelligence designed around people, places and assets.",
+    cta: "Explore Access Control",
+    href: "/products/access-control",
+  },
+];
+
+const contentTransition = {
+  duration: 0.65,
+  ease: [0.16, 1, 0.3, 1],
 };
 
 export function HeroSection() {
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isLoaded, setIsLoaded] = useState(false);
 
-  const backgroundX = useSpring(mouseX, {
-    stiffness: 55,
-    damping: 22,
-  });
+  const videoRefs = useRef([]);
 
-  const backgroundY = useSpring(mouseY, {
-    stiffness: 55,
-    damping: 22,
-  });
+  const activeSlide = heroSlides[activeIndex];
 
-const handleMouseMove = (e) => {
-  const rect = e.currentTarget.getBoundingClientRect();
+  useEffect(() => {
+    videoRefs.current.forEach((video, index) => {
+      if (!video) return;
 
-  const x = (e.clientX - rect.left) / rect.width - 0.5;
-  const y = (e.clientY - rect.top) / rect.height - 0.5;
+      if (index === activeIndex) {
+        video.currentTime = 0;
 
-  mouseX.set(x * 22);
-  mouseY.set(y * 18);
-};
+        const promise = video.play();
 
-  const handleMouseLeave = () => {
-    mouseX.set(0);
-    mouseY.set(0);
+        if (promise !== undefined) {
+          promise.catch(() => {});
+        }
+      } else {
+        video.pause();
+      }
+    });
+  }, [activeIndex]);
+
+  const handleVideoLoaded = (index) => {
+    if (index === 0) {
+      setIsLoaded(true);
+    }
+  };
+
+  const handleVideoEnded = () => {
+    setActiveIndex((current) => (current + 1) % heroSlides.length);
+  };
+
+  const handleIndicatorClick = (index) => {
+    if (index === activeIndex) return;
+
+    setActiveIndex(index);
   };
 
   return (
-    <section
-      className="relative min-h-[calc(100vh-70px)] overflow-hidden bg-[#f4f6f2] text-ink"
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-    >
-      {/* ================================================= */}
-      {/* FULL HERO BACKGROUND                               */}
-      {/* ================================================= */}
+    <section className="relative overflow-hidden bg-[#081b24] text-white">
+      {/* =========================================================
+          HERO VIDEO
+      ========================================================= */}
 
-      <motion.div
-        style={{
-          x: backgroundX,
-          y: backgroundY,
-        }}
-        className="pointer-events-none absolute -inset-8"
-      >
-        {/* Fine technical grid */}
-       <div
-  className="absolute inset-0 opacity-[0.25]"
-  style={{
-    backgroundImage: `
-      linear-gradient(rgba(0,124,103,0.12) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,124,103,0.12) 1px, transparent 1px)
-    `,
-    backgroundSize: "176px 176px",
-  }}
-/>
+      <div className="relative h-[90vh] min-h-[560px] max-h-[760px] w-full">
+        {/* =======================================================
+            VIDEO LAYER
+        ======================================================= */}
 
-        {/* Larger grid */}
-        <div
-          className="absolute inset-0 opacity-[0.18]"
-          style={{
-            backgroundImage: `
-              linear-gradient(rgba(0,124,103,0.08) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(0,124,103,0.08) 1px, transparent 1px)
-            `,
-            backgroundSize: "192px 192px",
-          }}
-        />
-
-        {/* Large technical rings */}
-        <div className="absolute -right-[160px] top-[8%] h-[620px] w-[620px] rounded-full border border-ink/[0.055]" />
-        <div className="absolute -right-[90px] top-[15%] h-[480px] w-[480px] rounded-full border border-signal-dark/[0.09]" />
-        <div className="absolute -right-[20px] top-[23%] h-[330px] w-[330px] rounded-full border border-ink/[0.055]" />
-
-        <div className="absolute -left-[280px] bottom-[-320px] h-[700px] w-[700px] rounded-full border border-ink/[0.045]" />
-        <div className="absolute -left-[180px] bottom-[-220px] h-[500px] w-[500px] rounded-full border border-signal-dark/[0.06]" />
-
-        {/* ================================================= */}
-        {/* NETWORK MAP                                       */}
-        {/* ================================================= */}
-
-        <svg
-          viewBox="0 0 1600 850"
-          preserveAspectRatio="none"
-          className="absolute inset-0 h-full w-full"
-          fill="none"
-        >
-          {/* Main route */}
-          <path
-            d="M-50 570 C190 470 300 640 520 520 S850 250 1080 390 S1350 610 1660 330"
-            stroke="rgba(8,27,36,0.12)"
-            strokeWidth="1"
-          />
-
-          {/* Secondary route */}
-          <path
-            d="M-80 300 C180 210 300 390 510 330 S820 150 1040 250 S1360 400 1680 190"
-            stroke="rgba(0,124,103,0.13)"
-            strokeWidth="1"
-          />
-
-          {/* Vertical signal path */}
-          <path
-            d="M290 -50 C340 160 280 290 410 420 S580 650 720 900"
-            stroke="rgba(8,27,36,0.07)"
-            strokeWidth="1"
-          />
-
-          {/* Long diagonal */}
-          <path
-            d="M-100 780 C260 600 500 700 760 520 S1200 250 1700 150"
-            stroke="rgba(8,27,36,0.055)"
-            strokeWidth="1"
-          />
-
-          {/* Active telemetry route */}
-          <motion.path
-            d="M-40 620 C180 520 320 650 540 520 S850 270 1080 390 S1370 590 1640 320"
-            stroke="#27d59b"
-            strokeWidth="1.5"
-            strokeDasharray="8 14"
-            initial={{
-              pathLength: 0,
-              opacity: 0,
-            }}
-            animate={{
-              pathLength: 1,
-              opacity: [0.15, 0.55, 0.15],
-            }}
-            transition={{
-              pathLength: {
-                duration: 2.8,
-                ease: "easeInOut",
-              },
-              opacity: {
-                duration: 3.5,
-                repeat: Infinity,
-                ease: "easeInOut",
-              },
-            }}
-          />
-
-          {/* Network nodes */}
-          {[
-            [180, 545],
-            [520, 520],
-            [850, 320],
-            [1080, 390],
-            [1380, 535],
-          ].map(([cx, cy], i) => (
-            <g key={i}>
-              <circle
-                cx={cx}
-                cy={cy}
-                r="5"
-                fill="#f4f6f2"
-                stroke="rgba(8,27,36,0.2)"
-              />
-
-              <motion.circle
-                cx={cx}
-                cy={cy}
-                r="2"
-                fill="#27d59b"
-                animate={{
-                  opacity: [0.25, 1, 0.25],
-                  r: [2, 3.5, 2],
-                }}
-                transition={{
-                  duration: 2,
-                  delay: i * 0.4,
-                  repeat: Infinity,
-                }}
-              />
-            </g>
+        <div className="absolute inset-0">
+          {heroSlides.map((slide, index) => (
+            <motion.video
+              key={slide.id}
+              ref={(element) => {
+                videoRefs.current[index] = element;
+              }}
+              src={slide.video}
+              muted
+              playsInline
+              autoPlay={index === 0}
+              preload={index === 0 ? "auto" : "metadata"}
+              onLoadedData={() => handleVideoLoaded(index)}
+              onEnded={index === activeIndex ? handleVideoEnded : undefined}
+              initial={false}
+              animate={{
+                opacity: index === activeIndex ? 1 : 0,
+                scale: index === activeIndex ? 1 : 1.035,
+              }}
+              transition={{
+                opacity: {
+                  duration: 1.2,
+                  ease: "easeInOut",
+                },
+                scale: {
+                  duration: 6,
+                  ease: "linear",
+                },
+              }}
+              className="absolute inset-0 h-full w-full object-cover"
+              aria-hidden={index !== activeIndex}
+            />
           ))}
-        </svg>
-
-        {/* Floating data packets */}
-        {[
-          { left: "12%", top: "63%", delay: 0 },
-          { left: "28%", top: "42%", delay: 0.7 },
-          { left: "43%", top: "58%", delay: 1.4 },
-          { left: "58%", top: "31%", delay: 0.4 },
-          { left: "72%", top: "48%", delay: 1.9 },
-          { left: "86%", top: "35%", delay: 1 },
-        ].map((point, i) => (
-          <motion.div
-            key={i}
-            className="absolute h-1.5 w-1.5 bg-signal-dark"
-            style={{
-              left: point.left,
-              top: point.top,
-            }}
-            animate={{
-              opacity: [0.15, 0.9, 0.15],
-              scale: [0.7, 1.4, 0.7],
-            }}
-            transition={{
-              duration: 2.6,
-              delay: point.delay,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          />
-        ))}
-      </motion.div>
-
-      {/* ================================================= */}
-      {/* BACKGROUND TELEMETRY LABELS                       */}
-      {/* ================================================= */}
-
-      <div className="pointer-events-none absolute inset-0">
-      
-
-     
-
-        {/* Mid left */}
-        <div className="absolute left-[7%] top-[44%] hidden items-center gap-2 lg:flex">
-          <span className="h-1.5 w-1.5 bg-signal-dark" />
-          <span className="font-mono text-[8px] uppercase tracking-[0.16em] text-ink/35">
-            GNSS SIGNAL
-          </span>
         </div>
 
-        {/* Mid right */}
-        <div className="absolute right-[6%] top-[52%] hidden items-center gap-2 lg:flex">
-          <span className="font-mono text-[8px] uppercase tracking-[0.16em] text-ink/35">
-            4G / LTE
-          </span>
-          <span className="h-1.5 w-1.5 bg-signal-dark" />
-        </div>
+        {/* =======================================================
+            CINEMATIC OVERLAY
+        ======================================================= */}
 
-      
-      </div>
+        {/* Overall contrast */}
+        <div className="pointer-events-none absolute inset-0 bg-[#081b24]/30" />
 
-      {/* ================================================= */}
-      {/* CONTENT                                           */}
-      {/* ================================================= */}
+        {/* Center readability */}
+        <div className="pointer-events-none absolute inset-0 bg-[#081b24]/20" />
 
-      <div className="relative z-10 mx-auto flex min-h-[calc(100vh-70px)] max-w-[1440px] items-center px-6 pb-20 pt-28 sm:px-8 lg:px-12 lg:pt-32">
-        <div className="grid w-full items-center gap-14 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
-          {/* LEFT */}
-          <motion.div
-            initial="hidden"
-            animate="show"
-            className="relative z-20 max-w-xl"
-          >
+        {/* Bottom depth */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-52 bg-gradient-to-t from-[#081b24]/85 via-[#081b24]/30 to-transparent" />
+
+        {/* Top depth */}
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-[#081b24]/55 to-transparent" />
+
+        {/* =======================================================
+            LOADING
+        ======================================================= */}
+{/* 
+        <AnimatePresence>
+          {!isLoaded && (
             <motion.div
-              variants={fadeUp}
-              className="mb-6 flex items-center gap-3"
+              initial={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+              className="absolute inset-0 z-30 flex items-center justify-center bg-[#081b24]"
             >
-              <span className="h-px w-8 bg-signal-dark" />
+              <div className="flex items-center gap-3">
+                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#27d59b]" />
 
-              <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.2em] text-signal-dark">
-                Fleet · Asset · Access Intelligence
-              </span>
+                <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/45">
+                  Loading experience
+                </span>
+              </div>
             </motion.div>
+          )}
+        </AnimatePresence> */}
 
-            <motion.h1
-              variants={fadeUp}
-              className="font-heading text-[42px] font-semibold leading-[1.02] tracking-[-0.045em] text-ink sm:text-5xl lg:text-[64px]"
-            >
-              Intelligence for
-              <br />
-              <span className="text-signal-dark">
-                everything that moves.
-              </span>
-            </motion.h1>
+        {/* =======================================================
+            CENTER CONTENT
+        ======================================================= */}
 
-            <motion.p
-              variants={fadeUp}
-              className="mt-7 max-w-lg text-base leading-7 text-muted sm:text-[17px]"
-            >
-              Track vehicles, understand assets and control access through
-              connected technology built around real-world operations.
-            </motion.p>
-
-            <motion.div
-              variants={fadeUp}
-              className="mt-8 flex flex-col gap-3 sm:flex-row"
-            >
-              <Link
-                href="/contact"
-                className="group inline-flex h-11 items-center justify-center gap-2 bg-ink px-5 text-sm font-semibold !text-white transition-colors hover:bg-ink-2"
+        <div className="absolute inset-0 z-10 flex items-center justify-center px-6 pb-10 pt-20 sm:px-8 lg:px-12">
+          <div className="mx-auto w-full max-w-4xl text-center">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeSlide.id}
+                initial={{
+                  opacity: 0,
+                  y: 20,
+                }}
+                animate={{
+                  opacity: 1,
+                  y: 0,
+                }}
+                exit={{
+                  opacity: 0,
+                  y: -15,
+                }}
+                transition={contentTransition}
+                className="flex flex-col items-center"
               >
-                Start a conversation
+                {/* Eyebrow */}
+                <div className="mb-6 flex items-center justify-center gap-3">
+                  <span className="h-px w-8 bg-[#27d59b]" />
 
-                <ArrowIcon className="h-3.5 w-3.5 !text-white transition-transform duration-300 group-hover:translate-x-1" />
-              </Link>
+                  <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.22em] text-[#27d59b]">
+                    {activeSlide.eyebrow}
+                  </span>
 
-              <Link
-                href="/platform"
-                className="inline-flex h-11 items-center justify-center border border-line bg-white/40 px-5 text-sm font-semibold text-ink backdrop-blur-[2px] transition-colors hover:border-ink hover:bg-white"
-              >
-                Explore the platform
-              </Link>
-            </motion.div>
+                  <span className="h-px w-8 bg-[#27d59b]" />
+                </div>
 
-            <motion.div
-              variants={fadeUp}
-              className="mt-10 grid max-w-md grid-cols-3 border-t border-line pt-5"
-            >
-              <div>
-                <span className="font-heading text-xl font-semibold">
-                  Fleet
-                </span>
-                <p className="mt-1 text-[10px] uppercase tracking-[0.12em] text-muted">
-                  Intelligence
+                {/* Heading */}
+                <h1 className="max-w-4xl font-heading text-[clamp(3rem,6vw,5.8rem)] font-semibold leading-[0.92] tracking-[-0.065em] text-white drop-shadow-[0_4px_25px_rgba(0,0,0,0.25)]">
+                  {activeSlide.title}
+                </h1>
+
+                {/* Description */}
+                <p className="mx-auto mt-7 max-w-xl text-sm leading-7 text-white/75 sm:text-base">
+                  {activeSlide.description}
                 </p>
-              </div>
 
-              <div className="border-l border-line pl-4">
-                <span className="font-heading text-xl font-semibold">
-                  Asset
-                </span>
-                <p className="mt-1 text-[10px] uppercase tracking-[0.12em] text-muted">
-                  Intelligence
-                </p>
-              </div>
+                {/* =================================================
+                    PREMIUM BUTTONS
+                ================================================= */}
 
-              <div className="border-l border-line pl-4">
-                <span className="font-heading text-xl font-semibold">
-                  Access
-                </span>
-                <p className="mt-1 text-[10px] uppercase tracking-[0.12em] text-muted">
-                  Control
-                </p>
-              </div>
-            </motion.div>
-          </motion.div>
+                <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
+                  {/* Primary */}
+                  <Link
+                    href={activeSlide.href}
+                    className="group relative inline-flex h-12 items-center gap-3 overflow-hidden bg-[#27d59b] px-6 text-[11px] font-bold uppercase tracking-[0.08em] text-[#081b24] transition-all duration-300 hover:bg-white"
+                  >
+                    <span className="relative z-10">
+                      {activeSlide.cta}
+                    </span>
 
-          {/* RIGHT IMAGE */}
-          <motion.div
-            initial={{ opacity: 0, x: 24 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{
-              duration: 0.85,
-              delay: 0.15,
-              ease: [0.16, 1, 0.3, 1],
-            }}
-            className="relative z-10"
-          >
-            <HeroVisual />
-          </motion.div>
+                    <span className="relative z-10 flex h-6 w-6 items-center justify-center bg-[#081b24]/10 transition-all duration-300 group-hover:bg-[#081b24]">
+                      <ArrowIcon className="h-3.5 w-3.5 text-[#081b24] transition-all duration-300 group-hover:translate-x-0.5 group-hover:text-white" />
+                    </span>
+                  </Link>
+
+                  {/* Secondary */}
+                  <Link
+                    href="/contact"
+                    className="group inline-flex h-12 items-center gap-3 border border-white/25 bg-white/[0.07] px-6 text-[11px] font-bold uppercase tracking-[0.08em] text-white backdrop-blur-md transition-all duration-300 hover:border-white/60 hover:bg-white hover:text-[#081b24]"
+                  >
+                    Talk to us
+
+                    <ArrowIcon className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+                  </Link>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
         </div>
-      </div>
 
-      {/* ================================================= */}
-      {/* BOTTOM SYSTEM STRIP                               */}
-      {/* ================================================= */}
+        {/* =======================================================
+            BOTTOM INDICATORS
+        ======================================================= */}
 
-      <div className="relative z-20 border-t border-line bg-white/75 backdrop-blur-sm">
-        <div className="mx-auto flex max-w-[1440px] flex-col gap-3 px-6 py-4 sm:px-8 lg:flex-row lg:items-center lg:justify-between lg:px-12">
-          <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-muted">
-            Connected operations infrastructure
-          </span>
+        <div className="absolute bottom-7 left-0 right-0 z-20 px-6 sm:px-8 lg:px-12">
+          <div className="mx-auto flex max-w-[1440px] items-center justify-center">
+            <div className="flex items-center gap-3">
+              {heroSlides.map((slide, index) => {
+                const active = index === activeIndex;
 
-          <div className="flex items-center gap-5 font-mono text-[9px] uppercase tracking-[0.14em] text-muted">
-            <span>GPS</span>
-            <span className="h-1 w-1 bg-signal" />
+                return (
+                  <button
+                    key={slide.id}
+                    type="button"
+                    onClick={() => handleIndicatorClick(index)}
+                    aria-label={`Show ${slide.eyebrow}`}
+                    aria-current={active ? "true" : undefined}
+                    className="group flex items-center gap-2 py-2"
+                  >
+                    <span
+                      className={`relative h-[2px] overflow-hidden transition-all duration-500 ${
+                        active
+                          ? "w-14 bg-white/30"
+                          : "w-7 bg-white/20 group-hover:bg-white/40"
+                      }`}
+                    >
+                      {active && (
+                        <motion.span
+                          key={`progress-${activeIndex}`}
+                          initial={{ width: "0%" }}
+                          animate={{ width: "100%" }}
+                          transition={{
+                            duration: 8,
+                            ease: "linear",
+                          }}
+                          className="absolute inset-y-0 left-0 bg-[#27d59b]"
+                        />
+                      )}
+                    </span>
 
-            <span>Network</span>
-            <span className="h-1 w-1 bg-signal" />
-
-            <span>Telemetry</span>
-            <span className="h-1 w-1 bg-signal" />
-
-            <span>Platform</span>
+                    <span
+                      className={`hidden text-[8px] uppercase tracking-[0.14em] transition-colors duration-300 sm:block ${
+                        active ? "text-white/75" : "text-white/25"
+                      }`}
+                    >
+                      {slide.eyebrow}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
+
+    
     </section>
   );
 }

@@ -71,12 +71,12 @@ function AnimatedCounter({ value }: CounterProps) {
 
 const stats = [
   {
-    number: "3",
-    label: "Divisions, one team",
+    number: "6",
+    label: "Products",
   },
   {
-    number: "5",
-    label: "Hardware & sensor product lines",
+    number: "8",
+    label: "Solutions",
   },
   {
     number: "5,000+",
@@ -108,11 +108,7 @@ export function StatsSection() {
               Built across vehicles, assets and access.
             </h2>
           </div>
-
-          <p className="max-w-sm text-sm leading-6 text-muted">
-            One connected ecosystem bringing hardware, data and operations
-            together.
-          </p>
+ 
         </div>
 
         {/* Stats */}
@@ -175,22 +171,7 @@ export function StatsSection() {
         </div>
       </div>
 
-      {/* Bottom technical strip */}
-      <div className="border-t border-line bg-paper">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-3 sm:px-8 lg:px-12">
-          <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-muted sm:text-[9px]">
-            Connected intelligence infrastructure
-          </span>
-
-          <div className="hidden items-center gap-4 font-mono text-[8px] uppercase tracking-[0.14em] text-muted sm:flex">
-            <span>Fleet</span>
-            <span className="h-1 w-1 bg-signal" />
-            <span>Asset</span>
-            <span className="h-1 w-1 bg-signal" />
-            <span>Access</span>
-          </div>
-        </div>
-      </div>
+     
     </section>
   );
 }
