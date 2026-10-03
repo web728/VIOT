@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 import { ArrowIcon } from "@/components/icons";
@@ -34,7 +34,7 @@ const steps = [
   },
 ];
 
-const STEP_DURATION = 3000;
+const STEP_DURATION = 3.2;
 
 /* =========================================================
    FLYWHEEL GEOMETRY
@@ -43,11 +43,6 @@ const STEP_DURATION = 3000;
 const SIZE = 400;
 const CENTER = SIZE / 2;
 
-/*
-  Arc sits slightly inside the step pills.
-  This prevents arrow heads from ever touching / entering
-  the pills and keeps all four gaps visually identical.
-*/
 const ARC_RADIUS = 116;
 const NODE_RADIUS = 148;
 
@@ -75,39 +70,20 @@ function createArc(startAngle: number) {
   `;
 
   /*
-    Tangent direction at the end of clockwise SVG arc.
-  */
-  const tangentX = -Math.sin(toRad(end));
-  const tangentY = Math.cos(toRad(end));
+   * More samples = smoother circular movement.
+   * The previous version only used 5 points, so the pod visibly
+   * travelled through short straight segments and looked jerky.
+   */
+  const motionPoints = Array.from({ length: 41 }).map((_, index) => {
+    const progress = index / 40;
+    const angle = start + (end - start) * progress;
 
-  const arrowLength = 8;
-  const arrowSpread = 0.52;
-
-  const baseX = endPoint.x - tangentX * arrowLength;
-  const baseY = endPoint.y - tangentY * arrowLength;
-
-  const normalX = -tangentY;
-  const normalY = tangentX;
-
-  const halfWidth = arrowLength * arrowSpread;
-
-  const wingOne = {
-    x: baseX + normalX * halfWidth,
-    y: baseY + normalY * halfWidth,
-  };
-
-  const wingTwo = {
-    x: baseX - normalX * halfWidth,
-    y: baseY - normalY * halfWidth,
-  };
+    return getPoint(angle, ARC_RADIUS);
+  });
 
   return {
     arc,
-    arrow: `
-      M ${wingOne.x} ${wingOne.y}
-      L ${endPoint.x} ${endPoint.y}
-      L ${wingTwo.x} ${wingTwo.y}
-    `,
+    motionPoints,
   };
 }
 
@@ -124,19 +100,16 @@ function EcosystemBackground() {
       className="pointer-events-none absolute inset-0 overflow-hidden"
       aria-hidden="true"
     >
-      {/* Atmospheric depth */}
       <div className="absolute -left-48 top-[10%] h-[520px] w-[520px] rounded-full bg-signal-dark/[0.025] blur-3xl" />
 
       <div className="absolute -right-56 bottom-[4%] h-[650px] w-[650px] rounded-full bg-ink/[0.025] blur-3xl" />
 
-      {/* Flowing ecosystem paths */}
       <svg
         viewBox="0 0 1600 1000"
         preserveAspectRatio="none"
         className="absolute inset-0 h-full w-full"
         fill="none"
       >
-        {/* Upper structural path */}
         <motion.path
           d="M-160 260 C120 50 390 100 620 285 S1050 610 1760 235"
           stroke="rgba(8,27,36,0.075)"
@@ -156,7 +129,6 @@ function EcosystemBackground() {
           }}
         />
 
-        {/* Main animated green signal path */}
         <motion.path
           d="M-180 700 C120 470 390 525 680 685 S1130 880 1780 560"
           stroke="rgba(0,124,103,0.14)"
@@ -172,14 +144,12 @@ function EcosystemBackground() {
           }}
         />
 
-        {/* Engineering path */}
         <path
           d="M80 1080 C260 740 520 700 780 450 S1240 120 1620 -90"
           stroke="rgba(8,27,36,0.05)"
           strokeWidth="1"
         />
 
-        {/* Secondary animated flow */}
         <motion.path
           d="M-120 470 C230 340 420 420 650 515 S1060 700 1730 455"
           stroke="rgba(0,124,103,0.07)"
@@ -196,7 +166,6 @@ function EcosystemBackground() {
         />
       </svg>
 
-      {/* Large engineering rings */}
       <motion.div
         className="absolute right-[3%] top-[8%] h-[430px] w-[430px] rounded-full border border-ink/[0.04]"
         animate={{
@@ -223,10 +192,8 @@ function EcosystemBackground() {
 
       <div className="absolute right-[16%] top-[24%] h-[150px] w-[150px] rounded-full border border-ink/[0.03]" />
 
-      {/* Left ambient arc */}
       <div className="absolute -left-[180px] bottom-[12%] h-[460px] w-[460px] rounded-full border border-ink/[0.03]" />
 
-      {/* Moving signals */}
       <motion.span
         className="absolute left-[19%] top-[31%] h-1.5 w-1.5 rounded-full bg-signal-dark"
         animate={{
@@ -270,7 +237,6 @@ function EcosystemBackground() {
         }}
       />
 
-      {/* Ambient points */}
       {[
         ["12%", "20%"],
         ["25%", "78%"],
@@ -299,9 +265,174 @@ function EcosystemBackground() {
         />
       ))}
 
-      {/* Very light readability wash */}
       <div className="absolute inset-0 bg-white/[0.24]" />
     </div>
+  );
+}
+
+/* =========================================================
+   PRODUCT / SERVICE GLYPHS
+
+   Important:
+   These are native SVG groups, not nested <svg> elements.
+   That keeps their size and coordinates stable inside the
+   400 × 400 flywheel SVG.
+========================================================= */
+
+function FlowPodGlyph({ stepIndex }: { stepIndex: number }) {
+  const stroke = "#007c67";
+
+  if (stepIndex === 0) {
+    // Vehicle telematics
+    return (
+      <g
+        fill="none"
+        stroke={stroke}
+        strokeWidth="1.15"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M-5.5 1.8h7.6l1.7-2.9h2.1l2.4 2.9v2.4H6.8" />
+        <path d="M-4.4 1.8v-2.9h6.6" />
+        <circle cx="-2.9" cy="4.4" r="1.35" />
+        <circle cx="5.2" cy="4.4" r="1.35" />
+        <path d="M-0.8-4.2v2M1.6-4.8v2.6" />
+      </g>
+    );
+  }
+
+  if (stepIndex === 1) {
+    // Connectivity
+    return (
+      <g
+        fill="none"
+        stroke={stroke}
+        strokeWidth="1.15"
+        strokeLinecap="round"
+      >
+        <circle cx="0" cy="4.4" r="1.25" fill="#007c67" stroke="none" />
+        <path d="M-3 1.5a4.4 4.4 0 0 1 6 0" />
+        <path d="M-5.3-0.8a7.7 7.7 0 0 1 10.6 0" />
+        <path d="M-7.2-3a10.3 10.3 0 0 1 14.4 0" />
+      </g>
+    );
+  }
+
+  if (stepIndex === 2) {
+    // Platform / analytics
+    return (
+      <g
+        fill="none"
+        stroke={stroke}
+        strokeWidth="1.1"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <rect x="-7" y="-5.5" width="14" height="11" rx="2.3" />
+        <path d="M-4.5 2.8l2.4-2.8 2.4 1.9 4-4.7" />
+        <path d="M-4.5-2.8h3.8" />
+      </g>
+    );
+  }
+
+  // Security / operational response
+  return (
+    <g
+      fill="none"
+      stroke={stroke}
+      strokeWidth="1.1"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M0-6.5l5.5 2.2v4.2c0 3.6-2.1 6-5.5 7.3-3.4-1.3-5.5-3.7-5.5-7.3v-4.2L0-6.5z" />
+      <path d="M-2.6.1l1.8 1.8 3.7-4" />
+    </g>
+  );
+}
+
+/* =========================================================
+   MOVING PRODUCT SIGNAL
+
+   - Small fixed size
+   - Native SVG coordinates
+   - 41-point arc sampling
+   - Linear timing
+   - No nested repeat loop
+   - Step advances only after the movement completes
+========================================================= */
+
+function MovingProductSignal({
+  points,
+  stepIndex,
+  onComplete,
+}: {
+  points: { x: number; y: number }[];
+  stepIndex: number;
+  onComplete: () => void;
+}) {
+  const x = points.map((point) => point.x);
+  const y = points.map((point) => point.y);
+
+  const times = points.map((_, index) => index / (points.length - 1));
+
+  return (
+    <motion.g
+      key={`product-signal-${stepIndex}`}
+      initial={{
+        x: x[0],
+        y: y[0],
+        opacity: 0,
+      }}
+      animate={{
+        x,
+        y,
+        opacity: [0.25, ...Array(points.length - 2).fill(1), 0.7],
+      }}
+      transition={{
+        x: {
+          duration: STEP_DURATION,
+          ease: "linear",
+          times,
+        },
+        y: {
+          duration: STEP_DURATION,
+          ease: "linear",
+          times,
+        },
+        opacity: {
+          duration: STEP_DURATION,
+          ease: "linear",
+          times,
+        },
+      }}
+      onAnimationComplete={onComplete}
+    >
+      {/* very restrained halo */}
+      <circle r="11" fill="rgba(39,213,155,0.07)" />
+
+      {/* compact product capsule */}
+      <rect
+        x="-10"
+        y="-8"
+        width="20"
+        height="16"
+        rx="6"
+        fill="#ffffff"
+        stroke="rgba(0,124,103,0.7)"
+        strokeWidth="1"
+      />
+
+      <rect
+        x="-7.5"
+        y="-5.5"
+        width="15"
+        height="11"
+        rx="4"
+        fill="rgba(39,213,155,0.045)"
+      />
+
+      <FlowPodGlyph stepIndex={stepIndex} />
+    </motion.g>
   );
 }
 
@@ -312,27 +443,18 @@ function EcosystemBackground() {
 export function PlatformFlywheel() {
   const [active, setActive] = useState(0);
 
-  useEffect(() => {
-    const intervalId = window.setInterval(() => {
-      setActive((current) => (current + 1) % steps.length);
-    }, STEP_DURATION);
-
-    return () => {
-      window.clearInterval(intervalId);
-    };
-  }, []);
-
   const currentStep = steps[active];
+
+  const advanceStep = () => {
+    setActive((current) => (current + 1) % steps.length);
+  };
 
   return (
     <section className="relative overflow-hidden border-t border-line bg-white">
       <EcosystemBackground />
 
       <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-14 px-6 py-16 sm:px-8 sm:py-20 lg:grid-cols-[0.92fr_1.08fr] lg:gap-20 lg:px-12 lg:py-24">
-        {/* =====================================================
-            LEFT CONTENT
-        ===================================================== */}
-
+        {/* LEFT CONTENT */}
         <div>
           <div className="mb-5 flex items-center gap-3">
             <span className="h-px w-8 bg-signal-dark" />
@@ -371,7 +493,7 @@ export function PlatformFlywheel() {
                   y: -8,
                 }}
                 transition={{
-                  duration: 0.32,
+                  duration: 0.3,
                   ease: [0.16, 1, 0.3, 1],
                 }}
               >
@@ -397,7 +519,7 @@ export function PlatformFlywheel() {
             <div className="absolute bottom-0 left-6 h-px w-[calc(100%-1.5rem)] overflow-hidden bg-ink/[0.08]">
               <motion.div
                 key={`progress-${active}`}
-                className="h-full bg-signal-dark"
+                className="h-full origin-left bg-signal-dark"
                 initial={{
                   scaleX: 0,
                 }}
@@ -405,36 +527,27 @@ export function PlatformFlywheel() {
                   scaleX: 1,
                 }}
                 transition={{
-                  duration: STEP_DURATION / 1000,
+                  duration: STEP_DURATION,
                   ease: "linear",
-                }}
-                style={{
-                  transformOrigin: "left center",
                 }}
               />
             </div>
           </div>
 
-        <Link
-  href="/platform"
-className="group mt-9 inline-flex h-12 items-center gap-4 rounded-lg bg-ink px-6 text-[10px] font-bold uppercase tracking-[0.1em] !text-white transition-all duration-300 hover:bg-signal-dark hover:!text-white"
->
-  <span className="!text-white">
-    Explore platform
-  </span>
+          <Link
+            href="/platform"
+            className="group mt-9 inline-flex h-12 items-center gap-4 rounded-lg bg-ink px-6 text-[10px] font-bold uppercase tracking-[0.1em] !text-white transition-all duration-300 hover:bg-signal-dark hover:!text-white"
+          >
+            <span className="!text-white">Explore platform</span>
 
- <span className="flex h-6 w-6 items-center justify-center rounded-md border border-white/20 text-white">
-    <ArrowIcon className="h-2.5 w-2.5 !text-white transition-transform duration-300 group-hover:translate-x-0.5" />
-  </span>
-</Link>
+            <span className="flex h-6 w-6 items-center justify-center rounded-md border border-white/20 text-white">
+              <ArrowIcon className="h-2.5 w-2.5 !text-white transition-transform duration-300 group-hover:translate-x-0.5" />
+            </span>
+          </Link>
         </div>
 
-        {/* =====================================================
-            RIGHT FLYWHEEL
-        ===================================================== */}
-
+        {/* RIGHT FLYWHEEL */}
         <div className="relative mx-auto flex w-full max-w-[520px] items-center justify-center py-4 sm:py-8">
-          {/* Ambient glow */}
           <div className="pointer-events-none absolute left-1/2 top-1/2 h-[300px] w-[300px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-signal/[0.035] blur-[85px]" />
 
           <div className="relative aspect-square w-full max-w-[480px]">
@@ -467,10 +580,7 @@ className="group mt-9 inline-flex h-12 items-center gap-4 rounded-lg bg-ink px-6
             {/* Inner orbit */}
             <div className="absolute inset-[25%] rounded-full border border-ink/[0.045]" />
 
-            {/* -------------------------------------------------
-                FLYWHEEL SVG
-            ------------------------------------------------- */}
-
+            {/* Flywheel SVG */}
             <svg
               viewBox={`0 0 ${SIZE} ${SIZE}`}
               className="absolute inset-0 h-full w-full overflow-visible"
@@ -490,60 +600,46 @@ className="group mt-9 inline-flex h-12 items-center gap-4 rounded-lg bg-ink px-6
                       strokeLinecap="round"
                     />
 
-                    {/* Inactive / active arrow */}
-                    <motion.path
-                      d={arc.arrow}
-                      stroke={
-                        isActive
-                          ? "#27d59b"
-                          : "rgba(8,27,36,0.28)"
-                      }
-                      strokeWidth={isActive ? 1.9 : 1.45}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      animate={{
-                        opacity: isActive ? 1 : 0.7,
-                      }}
-                      transition={{
-                        duration: 0.3,
-                        ease: "easeOut",
-                      }}
-                    />
-
-                    {/* Active arc */}
+                    {/* Active route */}
                     {isActive && (
                       <motion.path
                         key={`active-arc-${active}`}
                         d={arc.arc}
                         stroke="#27d59b"
-                        strokeWidth="2.6"
+                        strokeWidth="2.1"
                         strokeLinecap="round"
                         initial={{
                           pathLength: 0,
-                          opacity: 0.35,
+                          opacity: 0.45,
                         }}
                         animate={{
                           pathLength: 1,
-                          opacity: 1,
+                          opacity: 0.95,
                         }}
                         transition={{
-                          duration: 0.75,
-                          ease: [0.16, 1, 0.3, 1],
+                          duration: STEP_DURATION,
+                          ease: "linear",
                         }}
+                      />
+                    )}
+
+                    {/* Small smooth product signal */}
+                    {isActive && (
+                      <MovingProductSignal
+                        points={arc.motionPoints}
+                        stepIndex={index}
+                        onComplete={advanceStep}
                       />
                     )}
                   </g>
                 );
               })}
 
-              {/* Inner subtle technical ticks */}
+              {/* Inner technical ticks */}
               {Array.from({ length: 24 }).map((_, index) => {
                 const angle = index * 15;
                 const inner = getPoint(angle, 91);
-                const outer = getPoint(
-                  angle,
-                  index % 3 === 0 ? 97 : 94
-                );
+                const outer = getPoint(angle, index % 3 === 0 ? 97 : 94);
 
                 return (
                   <line
@@ -563,10 +659,7 @@ className="group mt-9 inline-flex h-12 items-center gap-4 rounded-lg bg-ink px-6
               })}
             </svg>
 
-            {/* -------------------------------------------------
-                CENTER
-            ------------------------------------------------- */}
-
+            {/* CENTER */}
             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
               <motion.div
                 className="relative flex h-[92px] w-[92px] items-center justify-center rounded-full bg-white shadow-[0_14px_50px_rgba(8,27,36,0.08)] sm:h-[104px] sm:w-[104px]"
@@ -584,7 +677,6 @@ className="group mt-9 inline-flex h-12 items-center gap-4 rounded-lg bg-ink px-6
                 }}
               >
                 <div className="absolute inset-0 rounded-full border border-ink/[0.075]" />
-
                 <div className="absolute inset-[8px] rounded-full border border-signal-dark/[0.08]" />
 
                 <Image
@@ -597,10 +689,7 @@ className="group mt-9 inline-flex h-12 items-center gap-4 rounded-lg bg-ink px-6
               </motion.div>
             </div>
 
-            {/* -------------------------------------------------
-                FOUR IDENTICAL STEP NODES
-            ------------------------------------------------- */}
-
+            {/* FOUR STEP NODES */}
             {steps.map((step, index) => {
               const position = getPoint(step.angle, NODE_RADIUS);
               const isActive = active === index;
@@ -633,7 +722,6 @@ className="group mt-9 inline-flex h-12 items-center gap-4 rounded-lg bg-ink px-6
                       }
                     `}
                   >
-                    {/* Pulse */}
                     {isActive && (
                       <motion.span
                         className="pointer-events-none absolute inset-0 rounded-full border border-signal-dark/40"
@@ -653,7 +741,6 @@ className="group mt-9 inline-flex h-12 items-center gap-4 rounded-lg bg-ink px-6
                       />
                     )}
 
-                    {/* Status dot */}
                     <span
                       className={`
                         relative h-1.5 w-1.5 shrink-0 rounded-full
@@ -666,7 +753,6 @@ className="group mt-9 inline-flex h-12 items-center gap-4 rounded-lg bg-ink px-6
                       `}
                     />
 
-                    {/* Number */}
                     <span
                       className={`
                         hidden font-mono text-[8px] font-semibold
@@ -681,10 +767,8 @@ className="group mt-9 inline-flex h-12 items-center gap-4 rounded-lg bg-ink px-6
                       {step.number}
                     </span>
 
-                    {/* Divider */}
                     <span className="hidden h-3 w-px bg-ink/10 sm:block" />
 
-                    {/* Title */}
                     <span className="whitespace-nowrap font-heading text-[12px] font-semibold tracking-[-0.01em] sm:text-[13px]">
                       {step.title}
                     </span>
