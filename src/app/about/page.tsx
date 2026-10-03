@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 
 
 import { CtaBand } from "@/components/home/CtaBand";
+import { PlatformFlywheel } from "@/components/home/PlatformFlywheel";
 
 
 const values = [
@@ -1406,6 +1407,9 @@ export default function AboutPage() {
 
       </section>
 
+
+
+   <PlatformFlywheel/>
 
       {/* =====================================================
           03 — WHAT WE VALUE
