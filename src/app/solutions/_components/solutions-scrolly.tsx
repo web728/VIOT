@@ -8,97 +8,153 @@ import type { Solution } from "@/lib/solutions";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
+/* =========================================================
+   BACKGROUND
+========================================================= */
+
 function SolutionsBackground() {
   return (
     <div
       aria-hidden="true"
       className="pointer-events-none absolute inset-0 overflow-hidden"
     >
-      {/* Subtle grid */}
-      <div
-        className="absolute inset-0 opacity-[0.025]"
-        style={{
-          backgroundImage: `
-            linear-gradient(rgba(255,255,255,0.7) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,0.7) 1px, transparent 1px)
-          `,
-          backgroundSize: "96px 96px",
-        }}
-      />
+      {/* Atmospheric depth */}
+      <div className="absolute -left-48 top-[12%] h-[500px] w-[500px] rounded-full bg-[#27d59b]/[0.018] blur-3xl" />
 
-      {/* Green atmosphere */}
-      <div className="absolute -right-[12%] top-[8%] h-[520px] w-[520px] rounded-full bg-[#27d59b]/[0.035] blur-3xl" />
+      <div className="absolute -right-56 bottom-[8%] h-[620px] w-[620px] rounded-full bg-white/[0.01] blur-3xl" />
 
-      {/* Signal path */}
+      {/* Flow system */}
       <svg
-        viewBox="0 0 1600 900"
+        viewBox="0 0 1600 1000"
         preserveAspectRatio="none"
         className="absolute inset-0 h-full w-full"
         fill="none"
       >
-        <path
-          d="M-120 650 C180 590 330 330 610 390 S980 710 1260 520 S1510 300 1730 360"
+        <motion.path
+          d="M-160 260 C120 50 390 100 620 285 S1050 610 1760 235"
           stroke="rgba(255,255,255,0.045)"
+          strokeWidth="1"
+          initial={{ pathLength: 0 }}
+          whileInView={{ pathLength: 1 }}
+          viewport={{ once: true }}
+          transition={{
+            duration: 2.4,
+            ease: "easeOut",
+          }}
+        />
+
+        <motion.path
+          d="M-180 700 C120 470 390 525 680 685 S1130 880 1780 560"
+          stroke="rgba(39,213,155,0.14)"
+          strokeWidth="1.2"
+          strokeDasharray="3 15"
+          animate={{
+            strokeDashoffset: [0, -180],
+          }}
+          transition={{
+            duration: 12,
+            repeat: Infinity,
+            ease: "linear",
+          }}
+        />
+
+        <path
+          d="M80 1080 C260 740 520 700 780 450 S1240 120 1620 -90"
+          stroke="rgba(255,255,255,0.03)"
           strokeWidth="1"
         />
 
         <motion.path
-          d="M-120 650 C180 590 330 330 610 390 S980 710 1260 520 S1510 300 1730 360"
-          stroke="rgba(39,213,155,0.18)"
+          d="M-120 470 C230 340 420 420 650 515 S1060 700 1730 455"
+          stroke="rgba(39,213,155,0.07)"
           strokeWidth="1"
-          strokeDasharray="3 22"
+          strokeDasharray="2 20"
           animate={{
-            strokeDashoffset: [0, -260],
+            strokeDashoffset: [0, 180],
           }}
           transition={{
-            duration: 18,
+            duration: 15,
             repeat: Infinity,
             ease: "linear",
           }}
         />
       </svg>
 
-      {/* Signal point */}
-      <motion.span
-        className="absolute left-[14%] top-[28%] h-1.5 w-1.5 rounded-full bg-[#27d59b]"
+      {/* Rings */}
+      <motion.div
+        className="absolute right-[4%] top-[12%] h-[420px] w-[420px] rounded-full border border-white/[0.03]"
         animate={{
-          x: [0, 180, 360],
-          opacity: [0, 0.9, 0],
+          rotate: 360,
         }}
         transition={{
-          duration: 6,
+          duration: 60,
           repeat: Infinity,
           ease: "linear",
         }}
       />
 
-      <motion.span
-        className="absolute right-[18%] top-[62%] h-1.5 w-1.5 rounded-full bg-[#27d59b]"
+      <motion.div
+        className="absolute right-[9%] top-[18%] h-[290px] w-[290px] rounded-full border border-[#27d59b]/[0.05]"
         animate={{
-          x: [0, -140, -280],
+          rotate: -360,
+        }}
+        transition={{
+          duration: 42,
+          repeat: Infinity,
+          ease: "linear",
+        }}
+      />
+
+      {/* Signals */}
+      <motion.span
+        className="absolute left-[19%] top-[31%] h-1.5 w-1.5 rounded-full bg-[#27d59b]"
+        animate={{
+          x: [0, 90, 180],
+          y: [0, 20, 0],
+          opacity: [0.1, 0.65, 0],
+        }}
+        transition={{
+          duration: 5.5,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
+
+      <motion.span
+        className="absolute left-[46%] top-[69%] h-1.5 w-1.5 rounded-full bg-[#27d59b]"
+        animate={{
+          x: [0, -70, -150],
+          y: [0, -25, 0],
           opacity: [0, 0.7, 0],
         }}
         transition={{
-          duration: 7,
-          delay: 1.5,
+          duration: 6,
+          delay: 1,
           repeat: Infinity,
-          ease: "linear",
+          ease: "easeInOut",
         }}
       />
 
-      {/* Technical ring */}
-      <motion.div
-        className="absolute -right-[120px] top-[8%] h-[520px] w-[520px] rounded-full border border-[#27d59b]/[0.055]"
-        animate={{ rotate: 360 }}
+      <motion.span
+        className="absolute right-[18%] top-[38%] h-1.5 w-1.5 rounded-full bg-[#27d59b]"
+        animate={{
+          x: [0, -55, -120],
+          opacity: [0.1, 0.65, 0],
+        }}
         transition={{
-          duration: 75,
+          duration: 5,
+          delay: 1.8,
           repeat: Infinity,
-          ease: "linear",
+          ease: "easeInOut",
         }}
       />
     </div>
   );
 }
+
+/* =========================================================
+   SOLUTIONS SCROLLY
+========================================================= */
 
 export function SolutionsScrolly({
   solutions,
@@ -109,138 +165,207 @@ export function SolutionsScrolly({
     <section className="relative overflow-hidden bg-[#081b24] text-white">
       <SolutionsBackground />
 
-      <div className="relative z-10 mx-auto max-w-[1440px] px-6 sm:px-8 lg:px-12">
-        {/* HEADER */}
-        <div className="border-b border-white/10 py-16 sm:py-20 lg:py-24">
-          <div className="max-w-4xl">
-            <div className="mb-6 flex items-center gap-3">
-              <span className="h-px w-9 bg-[#27d59b]" />
+      <div className="relative z-10 mx-auto max-w-[1440px]">
+        {/* =====================================================
+            HEADER
+        ===================================================== */}
 
-              <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.2em] text-[#27d59b]">
-                Solutions
-              </span>
+        <div className="px-1 pb-7 pt-1 sm:pb-8">
+          <div className="grid gap-5 lg:grid-cols-12 lg:items-end">
+            <div className="lg:col-span-8">
+              <div className="mb-4 flex items-center gap-3">
+                <span className="h-px w-8 bg-[#27d59b]" />
+
+                <span className="font-mono text-[8px] font-semibold uppercase tracking-[0.2em] text-[#27d59b]">
+                  Solutions
+                </span>
+              </div>
+
+              <h2 className="max-w-3xl font-heading text-3xl font-semibold leading-[1] tracking-[-0.045em] text-white sm:text-4xl lg:text-[46px]">
+                Built around{" "}
+                <span className="font-normal text-[#27d59b]">
+                  the way work moves.
+                </span>
+              </h2>
             </div>
 
-            <h2 className="font-heading text-[clamp(2.8rem,5vw,5rem)] font-semibold leading-[0.94] tracking-[-0.055em] text-white">
-              Built around
-              <br />
-              <span className="font-normal text-[#27d59b]">
-                the way work moves.
-              </span>
-            </h2>
-
-            <p className="mt-7 max-w-xl text-sm leading-7 text-white/65 sm:text-base">
-              Connected technology designed around the real conditions of your
-              operation.
-            </p>
+            <div className="lg:col-span-4">
+              <p className="max-w-md text-[13px] leading-6 text-white/50 lg:ml-auto lg:text-right">
+                Connected technology designed around the real conditions of
+                your operation.
+              </p>
+            </div>
           </div>
         </div>
 
-        {/* SOLUTIONS */}
-        <div className="divide-y divide-white/10">
-          {solutions.map((solution, index) => {
-            /*
-             * IMPORTANT:
-             * priorities may not exist for every solution.
-             * Never call .slice() directly on it.
-             */
-            const priorities = Array.isArray(solution.priorities)
-              ? solution.priorities.slice(0, 4)
-              : [];
+        {/* =====================================================
+            OUTER SOLUTIONS FRAME
+        ===================================================== */}
 
-            return (
-              <motion.article
-                key={solution.slug}
-                initial={{ opacity: 0, y: 18 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{
-                  once: true,
-                  amount: 0.08,
-                }}
-                transition={{
-                  duration: 0.55,
-                  delay: Math.min(index * 0.035, 0.18),
-                  ease,
-                }}
-                className="group relative"
-              >
-                <Link
-                  href={`/solutions/${solution.slug}`}
-                  className="relative block outline-none"
+        <div
+          className="
+            overflow-hidden rounded-2xl
+            border border-white/[0.09]
+            bg-white/[0.018]
+            shadow-[0_18px_50px_rgba(0,0,0,0.10)]
+            backdrop-blur-[2px]
+          "
+        >
+          {/* ===================================================
+              SOLUTIONS
+          =================================================== */}
+
+          <div className="divide-y divide-white/[0.08]">
+            {solutions.map((solution, index) => {
+              const priorities = Array.isArray(solution.priorities)
+                ? solution.priorities.slice(0, 3)
+                : [];
+
+              return (
+                <motion.article
+                  id={`solution-${solution.slug}`}
+                  key={solution.slug}
+                  initial={{
+                    opacity: 0,
+                    y: 14,
+                  }}
+                  whileInView={{
+                    opacity: 1,
+                    y: 0,
+                  }}
+                  viewport={{
+                    once: true,
+                    amount: 0.08,
+                  }}
+                  transition={{
+                    duration: 0.5,
+                    delay: Math.min(index * 0.03, 0.14),
+                    ease,
+                  }}
+                  className="group relative"
                 >
-                  {/* Green hover line */}
-                  <span className="absolute left-0 top-0 h-0 w-[2px] bg-[#27d59b] transition-all duration-500 group-hover:h-full" />
+                  <Link
+                    href={`/solutions/${solution.slug}`}
+                    className="
+                      relative block px-5 py-6
+                      outline-none
+                      transition-colors duration-300
+                      hover:bg-white/[0.025]
+                      focus-visible:bg-white/[0.025]
+                      sm:px-6
+                      lg:px-7 lg:py-7
+                    "
+                  >
+                    {/* subtle active edge */}
+                    <span
+                      className="
+                        absolute bottom-4 left-0 top-4
+                        w-[2px] rounded-full bg-[#27d59b]
+                        opacity-0
+                        transition-all duration-300
+                        group-hover:opacity-100
+                      "
+                    />
 
-                  <div className="grid grid-cols-1 gap-8 py-10 transition-all duration-500 group-hover:pl-5 sm:py-12 lg:grid-cols-12 lg:items-center lg:gap-10 lg:py-14">
-                    {/* Number */}
-                    <div className="lg:col-span-1">
-                      <span className="font-mono text-[10px] font-semibold tracking-[0.18em] text-[#27d59b]">
-                        {solution.number}
-                      </span>
-                    </div>
+                    <div className="grid gap-5 lg:grid-cols-12 lg:items-center lg:gap-7">
+                      {/* NUMBER */}
 
-                    {/* Title */}
-                    <div className="lg:col-span-4">
-                      <h3 className="font-heading text-2xl font-semibold leading-none tracking-[-0.04em] text-white transition-transform duration-500 group-hover:translate-x-1 sm:text-[28px]">
-                        {solution.name}
-                      </h3>
-
-                      <p className="mt-4 max-w-md text-sm leading-6 text-white/65">
-                        {solution.headline}
-                      </p>
-                    </div>
-
-                    {/* Priorities */}
-                    <div className="lg:col-span-5">
-                      {priorities.length > 0 ? (
-                        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-1">
-                          {priorities.map((priority) => (
-                            <div
-                              key={priority}
-                              className="flex items-start gap-3 text-sm leading-5 text-white/70"
-                            >
-                              <span className="mt-[3px] flex h-4 w-4 shrink-0 items-center justify-center text-[#27d59b]">
-                                <CheckIcon />
-                              </span>
-
-                              <span>{priority}</span>
-                            </div>
-                          ))}
-                        </div>
-                      ) : (
-                        <div className="h-px w-full bg-white/[0.06]" />
-                      )}
-                    </div>
-
-                    {/* Action */}
-                    <div className="lg:col-span-2 lg:flex lg:justify-end">
-                      <div className="flex items-center gap-4">
-                        <span className="font-mono text-[8px] font-semibold uppercase tracking-[0.18em] text-[#27d59b]">
-                          Explore
+                      <div className="flex items-center justify-between lg:col-span-1 lg:block">
+                        <span className="font-mono text-[9px] font-semibold tracking-[0.18em] text-[#27d59b]">
+                          {solution.number}
                         </span>
 
-                        <span className="flex h-11 w-11 items-center justify-center border border-white/20 text-white transition-all duration-300 group-hover:border-[#27d59b] group-hover:bg-[#27d59b] group-hover:text-[#081b24]">
-                          <ArrowIcon className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                        <span className="font-mono text-[7px] uppercase tracking-[0.16em] text-white/20 lg:hidden">
+                          Solution
                         </span>
                       </div>
+
+                      {/* TITLE */}
+
+                      <div className="lg:col-span-4">
+                        <h3
+                          className="
+                            font-heading text-xl font-semibold
+                            leading-[1.05] tracking-[-0.03em]
+                            text-white
+                            transition-transform duration-300
+                            group-hover:translate-x-0.5
+                            sm:text-[23px]
+                          "
+                        >
+                          {solution.name}
+                        </h3>
+
+                        <p className="mt-2 max-w-md text-[13px] leading-6 text-white/52">
+                          {solution.headline}
+                        </p>
+                      </div>
+
+                      {/* PRIORITIES */}
+
+                      <div className="lg:col-span-5">
+                        {priorities.length > 0 ? (
+                          <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-1">
+                            {priorities.map((priority) => (
+                              <div
+                                key={priority}
+                                className="flex items-start gap-2.5 text-[12px] leading-5 text-white/58"
+                              >
+                                <span
+                                  className="
+                                    mt-[2px] flex h-4 w-4 shrink-0
+                                    items-center justify-center
+                                    rounded-md
+                                    border border-[#27d59b]/20
+                                    bg-[#27d59b]/[0.035]
+                                    text-[#27d59b]
+                                  "
+                                >
+                                  <CheckIcon />
+                                </span>
+
+                                <span>{priority}</span>
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <div className="h-px w-full bg-white/[0.05]" />
+                        )}
+                      </div>
+
+                      {/* ACTION */}
+
+                      <div className="lg:col-span-2 lg:flex lg:justify-end">
+                        <div className="flex items-center justify-between gap-4 lg:justify-end">
+                          <span className="font-mono text-[8px] font-semibold uppercase tracking-[0.18em] text-[#27d59b]">
+                            Explore
+                          </span>
+
+                          <span
+                            className="
+                              flex h-9 w-9 items-center justify-center
+                              rounded-lg
+                              border border-white/15
+                              bg-white/[0.02]
+                              text-white
+                              transition-all duration-300
+                              group-hover:border-[#27d59b]
+                              group-hover:bg-[#27d59b]
+                              group-hover:text-[#081b24]
+                            "
+                          >
+                            <ArrowIcon className="h-3.5 w-3.5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                          </span>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </Link>
-              </motion.article>
-            );
-          })}
-        </div>
+                  </Link>
+                </motion.article>
+              );
+            })}
+          </div>
 
-        {/* BOTTOM */}
-        <div className="flex items-center justify-between border-t border-white/10 py-7">
-          <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/50">
-            {String(solutions.length).padStart(2, "0")} solutions
-          </span>
-
-          <span className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.18em] text-[#27d59b]">
-            <span className="h-1.5 w-1.5 bg-[#27d59b]" />
-            VIoT
-          </span>
+        
         </div>
       </div>
     </section>

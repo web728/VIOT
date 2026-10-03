@@ -1,250 +1,14 @@
 "use client";
 
-"use client";
-
+import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import type { Metadata } from "next";
 
 import { ArrowIcon } from "@/components/icons";
+import { CtaBand } from "@/components/home/CtaBand";
 import { PlatformDataFlow } from "./_components/platform-data-flow";
 
-/*
-  NOTE:
-  This page is intentionally client-side because the approved
-  VIoT SVG background contains Framer Motion animation.
-*/
-
-/* ============================================================
-   METADATA
-============================================================ */
-
-export const metadata: Metadata = {
-  title: "VIoT Platform | Connected Intelligence",
-  description:
-    "One connected platform for vehicle, asset, security and sensor intelligence.",
-  alternates: {
-    canonical: "/platform",
-  },
-};
-
-/* ============================================================
-   EASING
-============================================================ */
-
 const ease = [0.16, 1, 0.3, 1] as const;
-
-/* ============================================================
-   APPROVED VIoT SVG BACKGROUND
-============================================================ */
-
-function VIoTSVGBackground() {
-  return (
-    <div
-      aria-hidden="true"
-      className="pointer-events-none absolute inset-0 overflow-hidden"
-    >
-      {/* Atmospheric light */}
-      <div className="absolute -right-[18%] top-[-12%] h-[620px] w-[620px] rounded-full bg-[#27d59b]/[0.035] blur-3xl" />
-
-      <div className="absolute -left-[18%] bottom-[-20%] h-[520px] w-[520px] rounded-full bg-[#007c67]/[0.06] blur-3xl" />
-
-      {/* Technical grid */}
-      <div
-        className="absolute inset-0 opacity-[0.025]"
-        style={{
-          backgroundImage: `
-            linear-gradient(rgba(255,255,255,0.55) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,0.55) 1px, transparent 1px)
-          `,
-          backgroundSize: "90px 90px",
-        }}
-      />
-
-      {/* ========================================================
-          SYSTEM PATHS
-      ======================================================== */}
-
-      <svg
-        viewBox="0 0 1600 1000"
-        preserveAspectRatio="none"
-        className="absolute inset-0 h-full w-full"
-        fill="none"
-      >
-        {/* Static system path */}
-        <path
-          d="M-120 190 C190 160 270 430 520 430 S900 150 1210 270 S1510 470 1720 390"
-          stroke="rgba(255,255,255,0.055)"
-          strokeWidth="1"
-        />
-
-        {/* Animated signal path */}
-        <motion.path
-          d="M-120 720 C180 670 330 510 580 560 S930 790 1190 650 S1480 430 1730 500"
-          stroke="rgba(39,213,155,0.16)"
-          strokeWidth="1"
-          strokeDasharray="3 18"
-          animate={{
-            strokeDashoffset: [0, -220],
-          }}
-          transition={{
-            duration: 16,
-            repeat: Infinity,
-            ease: "linear",
-          }}
-        />
-
-        {/* Secondary path */}
-        <path
-          d="M140 1040 C290 760 480 730 690 510 S1050 190 1460 -80"
-          stroke="rgba(255,255,255,0.035)"
-          strokeWidth="1"
-        />
-
-        {/* Second animated signal */}
-        <motion.path
-          d="M-80 550 C230 520 410 310 670 330 S1050 640 1700 310"
-          stroke="rgba(39,213,155,0.12)"
-          strokeWidth="1"
-          strokeDasharray="2 22"
-          animate={{
-            strokeDashoffset: [0, 180],
-          }}
-          transition={{
-            duration: 18,
-            repeat: Infinity,
-            ease: "linear",
-          }}
-        />
-
-        {/* Third subtle path */}
-        <path
-          d="M-100 830 C260 760 380 820 620 680 S1020 420 1740 620"
-          stroke="rgba(255,255,255,0.025)"
-          strokeWidth="1"
-        />
-      </svg>
-
-      {/* ========================================================
-          MOVING SIGNALS
-      ======================================================== */}
-
-      <motion.span
-        className="absolute left-[15%] top-[28%] h-1.5 w-1.5 rounded-full bg-[#27d59b]"
-        animate={{
-          x: [0, 140, 280],
-          opacity: [0, 0.9, 0],
-        }}
-        transition={{
-          duration: 5,
-          repeat: Infinity,
-          ease: "linear",
-        }}
-      />
-
-      <motion.span
-        className="absolute left-[55%] top-[65%] h-1.5 w-1.5 rounded-full bg-[#27d59b]"
-        animate={{
-          x: [0, -120, -240],
-          opacity: [0, 0.75, 0],
-        }}
-        transition={{
-          duration: 6,
-          delay: 1.2,
-          repeat: Infinity,
-          ease: "linear",
-        }}
-      />
-
-      <motion.span
-        className="absolute right-[17%] top-[26%] h-1 w-1 rounded-full bg-[#27d59b]"
-        animate={{
-          y: [0, 80, 160],
-          opacity: [0, 0.8, 0],
-        }}
-        transition={{
-          duration: 5.5,
-          delay: 2,
-          repeat: Infinity,
-          ease: "linear",
-        }}
-      />
-
-      {/* ========================================================
-          ROTATING TECHNICAL RINGS
-      ======================================================== */}
-
-      <motion.div
-        className="absolute right-[2%] top-[5%] h-[560px] w-[560px] rounded-full border border-white/[0.045]"
-        animate={{
-          rotate: 360,
-        }}
-        transition={{
-          duration: 80,
-          repeat: Infinity,
-          ease: "linear",
-        }}
-      />
-
-      <motion.div
-        className="absolute right-[8%] top-[13%] h-[410px] w-[410px] rounded-full border border-[#27d59b]/[0.07]"
-        animate={{
-          rotate: -360,
-        }}
-        transition={{
-          duration: 55,
-          repeat: Infinity,
-          ease: "linear",
-        }}
-      />
-
-      <motion.div
-        className="absolute right-[15%] top-[21%] h-[270px] w-[270px] rounded-full border border-white/[0.05]"
-        animate={{
-          rotate: 360,
-        }}
-        transition={{
-          duration: 32,
-          repeat: Infinity,
-          ease: "linear",
-        }}
-      >
-        <span className="absolute right-0 top-1/2 h-1.5 w-1.5 -translate-y-1/2 rounded-full bg-[#27d59b]" />
-      </motion.div>
-
-      {/* ========================================================
-          AMBIENT NODES
-      ======================================================== */}
-
-      {[
-        ["12%", "22%"],
-        ["27%", "69%"],
-        ["42%", "16%"],
-        ["55%", "81%"],
-        ["72%", "24%"],
-        ["86%", "69%"],
-      ].map(([left, top], index) => (
-        <motion.span
-          key={`${left}-${top}`}
-          className="absolute h-1 w-1 rounded-full bg-white/20"
-          style={{ left, top }}
-          animate={{
-            opacity: [0.06, 0.35, 0.06],
-          }}
-          transition={{
-            duration: 3 + index * 0.4,
-            delay: index * 0.2,
-            repeat: Infinity,
-          }}
-        />
-      ))}
-    </div>
-  );
-}
-
-/* ============================================================
-   DATA
-============================================================ */
 
 const modules = [
   {
@@ -290,13 +54,13 @@ const operatingSteps = [
     number: "02",
     label: "Network",
     title: "Deliver",
-    copy: "Signals move securely through the network and remain available through interruptions.",
+    copy: "Signals move through the network and stay available through interruptions.",
   },
   {
     number: "03",
     label: "Platform",
     title: "Understand",
-    copy: "VIoT turns incoming signals into a connected picture of the operation.",
+    copy: "VIoT turns incoming signals into one connected operational picture.",
   },
   {
     number: "04",
@@ -339,171 +103,260 @@ const capabilities = [
   },
 ];
 
-/* ============================================================
-   PAGE
-============================================================ */
+function SectionLabel({
+  children,
+  dark = false,
+}: {
+  children: React.ReactNode;
+  dark?: boolean;
+}) {
+  return (
+    <div className="flex items-center gap-3">
+      <span className={`h-px w-8 ${dark ? "bg-[#27d59b]" : "bg-[#007c67]"}`} />
+      <span
+        className={`font-mono text-[8px] font-semibold uppercase tracking-[0.2em] ${
+          dark ? "text-[#27d59b]" : "text-[#007c67]"
+        }`}
+      >
+        {children}
+      </span>
+    </div>
+  );
+}
 
-export default function PlatformPage() {
+function VIoTSVGBackground({ dark = false }: { dark?: boolean }) {
+  return (
+    <div
+      aria-hidden="true"
+      className={`pointer-events-none absolute inset-0 overflow-hidden ${
+        dark ? "opacity-100" : "opacity-90"
+      }`}
+    >
+      <div
+        className={`absolute -left-48 top-[10%] h-[520px] w-[520px] rounded-full blur-3xl ${
+          dark ? "bg-[#27d59b]/[0.025]" : "bg-[#27d59b]/[0.025]"
+        }`}
+      />
+
+      <div
+        className={`absolute -right-56 bottom-[8%] h-[650px] w-[650px] rounded-full blur-3xl ${
+          dark ? "bg-white/[0.012]" : "bg-[#081b24]/[0.025]"
+        }`}
+      />
+
+      <svg
+        viewBox="0 0 1600 1000"
+        preserveAspectRatio="none"
+        className="absolute inset-0 h-full w-full"
+        fill="none"
+      >
+        <motion.path
+          d="M-160 260 C120 50 390 100 620 285 S1050 610 1760 235"
+          stroke={dark ? "rgba(255,255,255,0.055)" : "rgba(8,27,36,0.09)"}
+          strokeWidth="1"
+          initial={{ pathLength: 0 }}
+          whileInView={{ pathLength: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 2.4, ease: "easeOut" }}
+        />
+
+        <motion.path
+          d="M-180 700 C120 470 390 525 680 685 S1130 880 1780 560"
+          stroke={dark ? "rgba(39,213,155,0.15)" : "rgba(0,124,103,0.13)"}
+          strokeWidth="1.2"
+          strokeDasharray="3 15"
+          animate={{ strokeDashoffset: [0, -180] }}
+          transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+        />
+
+        <path
+          d="M80 1080 C260 740 520 700 780 450 S1240 120 1620 -90"
+          stroke={dark ? "rgba(255,255,255,0.035)" : "rgba(8,27,36,0.055)"}
+          strokeWidth="1"
+        />
+
+        <motion.path
+          d="M-120 470 C230 340 420 420 650 515 S1060 700 1730 455"
+          stroke={dark ? "rgba(39,213,155,0.075)" : "rgba(0,124,103,0.065)"}
+          strokeWidth="1"
+          strokeDasharray="2 20"
+          animate={{ strokeDashoffset: [0, 180] }}
+          transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+        />
+      </svg>
+
+      <motion.div
+        className={`absolute right-[4%] top-[12%] h-[430px] w-[430px] rounded-full border ${
+          dark ? "border-white/[0.035]" : "border-[#081b24]/[0.045]"
+        }`}
+        animate={{ rotate: 360 }}
+        transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+      />
+
+      <motion.div
+        className={`absolute right-[9%] top-[18%] h-[300px] w-[300px] rounded-full border ${
+          dark ? "border-[#27d59b]/[0.055]" : "border-[#007c67]/[0.06]"
+        }`}
+        animate={{ rotate: -360 }}
+        transition={{ duration: 42, repeat: Infinity, ease: "linear" }}
+      />
+
+      <div
+        className={`absolute right-[17%] top-[27%] h-[150px] w-[150px] rounded-full border ${
+          dark ? "border-white/[0.025]" : "border-[#081b24]/[0.035]"
+        }`}
+      />
+
+      <div
+        className={`absolute -left-[180px] bottom-[18%] h-[460px] w-[460px] rounded-full border ${
+          dark ? "border-white/[0.025]" : "border-[#081b24]/[0.035]"
+        }`}
+      />
+
+      <motion.span
+        className="absolute left-[19%] top-[31%] h-1.5 w-1.5 rounded-full bg-[#27d59b]"
+        animate={{ x: [0, 90, 180], y: [0, 20, 0], opacity: [0.1, 0.65, 0] }}
+        transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+      <motion.span
+        className="absolute left-[46%] top-[69%] h-1.5 w-1.5 rounded-full bg-[#27d59b]"
+        animate={{ x: [0, -70, -150], y: [0, -25, 0], opacity: [0, 0.7, 0] }}
+        transition={{ duration: 6, delay: 1, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+      <motion.span
+        className="absolute right-[18%] top-[38%] h-1.5 w-1.5 rounded-full bg-[#27d59b]"
+        animate={{ x: [0, -55, -120], opacity: [0.1, 0.65, 0] }}
+        transition={{ duration: 5, delay: 1.8, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+      {[
+        ["12%", "20%"],
+        ["25%", "78%"],
+        ["39%", "16%"],
+        ["58%", "84%"],
+        ["68%", "22%"],
+        ["79%", "72%"],
+        ["91%", "52%"],
+      ].map(([left, top], index) => (
+        <motion.span
+          key={`${left}-${top}`}
+          className={`absolute h-1 w-1 rounded-full ${
+            dark ? "bg-white/20" : "bg-[#081b24]/20"
+          }`}
+          style={{ left, top }}
+          animate={{ opacity: [0.1, 0.4, 0.1] }}
+          transition={{
+            duration: 3 + index * 0.25,
+            delay: index * 0.3,
+            repeat: Infinity,
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
+export default function PlatformClient() {
   return (
     <main className="overflow-hidden bg-[#f4f6f2] text-[#081b24] selection:bg-[#27d59b] selection:text-[#081b24]">
-      {/* ========================================================
-          HERO
-      ======================================================== */}
+      {/* HERO */}
+      <section className="relative min-h-[610px] overflow-hidden bg-[#081b24] text-white sm:min-h-[660px]">
+        <VIoTSVGBackground dark />
 
-      <section className="relative isolate min-h-[680px] overflow-hidden bg-[#081b24] text-white lg:min-h-[760px]">
-        <VIoTSVGBackground />
-
-        {/* Hero content */}
-        <div className="relative z-10 mx-auto flex min-h-[680px] max-w-[1440px] flex-col px-6 pb-8 pt-8 sm:px-8 lg:min-h-[760px] lg:px-12 lg:pt-10">
-          {/* top line */}
+        <div className="relative z-10 mx-auto flex min-h-[610px] max-w-[1440px] flex-col justify-between px-6 pb-8 pt-8 sm:min-h-[660px] sm:px-8 lg:px-12 lg:pt-10">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <span className="h-px w-8 bg-[#27d59b]" />
+            <SectionLabel dark>VIoT Platform</SectionLabel>
 
-              <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.22em] text-[#27d59b]">
-                VIoT Platform
-              </span>
-            </div>
-
-            <span className="hidden font-mono text-[9px] uppercase tracking-[0.18em] text-white/35 sm:block">
+            <span className="hidden font-mono text-[8px] uppercase tracking-[0.18em] text-white/35 sm:block">
               Connected intelligence
             </span>
           </div>
 
-          {/* main hero */}
-          <div className="flex flex-1 items-center py-20 lg:py-24">
-            <div className="grid w-full grid-cols-1 items-center lg:grid-cols-12 lg:gap-12">
-              {/* heading */}
-              <motion.div
-                initial={{
-                  opacity: 0,
-                  y: 28,
-                }}
-                animate={{
-                  opacity: 1,
-                  y: 0,
-                }}
-                transition={{
-                  duration: 0.9,
-                  ease,
-                }}
-                className="relative z-20 lg:col-span-8"
-              >
-                <h1 className="max-w-5xl font-heading text-[clamp(3.5rem,7vw,7.4rem)] font-semibold leading-[0.86] tracking-[-0.07em] text-white">
-                  One connected
-                  <br />
-                  <span className="font-normal text-[#27d59b]">
-                    layer for the operation.
+          <div className="grid items-center gap-10 py-12 lg:grid-cols-12 lg:py-16">
+            <motion.div
+              initial={{ opacity: 0, y: 26 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease }}
+              className="lg:col-span-8"
+            >
+              <h1 className="max-w-5xl font-heading text-[clamp(3rem,6vw,6.2rem)] font-semibold leading-[0.9] tracking-[-0.06em] text-white">
+                One connected
+                <br />
+                <span className="font-normal text-[#27d59b]">
+                  layer for the operation.
+                </span>
+              </h1>
+
+              <p className="mt-7 max-w-xl text-sm leading-7 text-white/58 sm:text-base">
+                From connected hardware to clear operational decisions.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.9, delay: 0.12, ease }}
+              className="hidden lg:col-span-4 lg:block"
+            >
+              <div className="ml-auto w-full max-w-[300px] rounded-2xl border border-white/[0.08] bg-white/[0.025] p-6 backdrop-blur-sm">
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-white/35">
+                    Platform core
                   </span>
-                </h1>
+                  <span className="h-2 w-2 rounded-full bg-[#27d59b] shadow-[0_0_12px_rgba(39,213,155,0.5)]" />
+                </div>
 
-                <p className="mt-9 max-w-xl text-sm leading-7 text-white/55 sm:text-base">
-                  From connected hardware to clear operational decisions.
-                </p>
-              </motion.div>
+                <div className="relative mt-6 aspect-square rounded-full border border-white/[0.06]">
+                  <div className="absolute inset-8 rounded-full border border-white/[0.05]" />
+                  <div className="absolute inset-16 rounded-full border border-[#27d59b]/20" />
 
-              {/* technical visual */}
-              <motion.div
-                initial={{
-                  opacity: 0,
-                  scale: 0.9,
-                }}
-                animate={{
-                  opacity: 1,
-                  scale: 1,
-                }}
-                transition={{
-                  duration: 1.1,
-                  delay: 0.15,
-                  ease,
-                }}
-                className="relative hidden h-[360px] lg:col-span-4 lg:block"
-              >
-                <div className="absolute right-0 top-1/2 h-[300px] w-[300px] -translate-y-1/2">
-                  {/* outer */}
-                  <div className="absolute inset-0 rounded-full border border-white/[0.07]" />
-
-                  {/* inner */}
-                  <div className="absolute inset-8 rounded-full border border-[#27d59b]/[0.12]" />
-
-                  <div className="absolute inset-16 rounded-full border border-white/[0.05]" />
-
-                  {/* crosshair */}
-                  <div className="absolute left-1/2 top-0 h-full w-px bg-white/[0.05]" />
-
-                  <div className="absolute left-0 top-1/2 h-px w-full bg-white/[0.05]" />
-
-                  {/* rotating marker */}
                   <motion.div
                     className="absolute inset-5"
-                    animate={{
-                      rotate: 360,
-                    }}
-                    transition={{
-                      duration: 18,
-                      repeat: Infinity,
-                      ease: "linear",
-                    }}
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
                   >
                     <span className="absolute left-1/2 top-0 h-2 w-2 -translate-x-1/2 rounded-full bg-[#27d59b]" />
                   </motion.div>
 
-                  {/* center */}
-                  <div className="absolute left-1/2 top-1/2 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-[#27d59b]/30 bg-[#081b24]">
-                    <span className="h-2.5 w-2.5 rounded-full bg-[#27d59b]" />
+                  <div className="absolute left-1/2 top-1/2 flex h-[74px] w-[74px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-2xl border border-[#27d59b]/30 bg-[#081b24]/95 shadow-[0_10px_28px_rgba(0,0,0,0.18)]">
+                    <Image
+                      src="/logo/logo-bg.png"
+                      alt="VIoT"
+                      width={64}
+                      height={64}
+                      className="h-11 w-11 object-contain"
+                    />
                   </div>
-
-                  {/* nodes */}
-                  <span className="absolute -right-1 top-[22%] h-1.5 w-1.5 rounded-full bg-[#27d59b]" />
-
-                  <span className="absolute -bottom-1 left-[34%] h-1.5 w-1.5 rounded-full bg-[#27d59b]" />
-
-                  <span className="absolute bottom-[18%] right-[12%] h-1 w-1 rounded-full bg-white/50" />
                 </div>
-              </motion.div>
-            </div>
+              </div>
+            </motion.div>
           </div>
 
-          {/* bottom signal */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{
-              duration: 0.8,
-              delay: 0.5,
-            }}
-            className="flex items-center justify-between border-t border-white/[0.1] pt-5"
-          >
+          <div className="flex items-center justify-between border-t border-white/[0.09] pt-5">
             <div className="flex items-center gap-3">
-              <span className="h-1.5 w-1.5 bg-[#27d59b]" />
-
-              <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/35">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#27d59b]" />
+              <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-white/35">
                 Hardware · Data · Intelligence
               </span>
             </div>
 
             <ArrowIcon className="h-3.5 w-3.5 text-[#27d59b]" />
-          </motion.div>
+          </div>
         </div>
       </section>
 
-      {/* ========================================================
-          DATA FLOW
-      ======================================================== */}
-
+      {/* DATA FLOW */}
       <section className="relative overflow-hidden bg-[#081b24] text-white">
-        <div className="mx-auto max-w-[1440px] px-6 pb-20 sm:px-8 lg:px-12 lg:pb-28">
-          <div className="grid grid-cols-1 gap-8 border-b border-white/10 pb-12 lg:grid-cols-12 lg:items-end">
+        <VIoTSVGBackground dark />
+
+        <div className="relative z-10 mx-auto max-w-[1440px] px-6 py-16 sm:px-8 sm:py-20 lg:px-12">
+          <div className="grid gap-7 lg:grid-cols-12 lg:items-end">
             <div className="lg:col-span-8">
-              <div className="mb-5 flex items-center gap-3">
-                <span className="h-px w-8 bg-[#27d59b]" />
+              <SectionLabel dark>Data flow</SectionLabel>
 
-                <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-[#27d59b]">
-                  Data flow
-                </span>
-              </div>
-
-              <h2 className="max-w-4xl font-heading text-4xl font-semibold leading-[0.94] tracking-[-0.05em] sm:text-5xl lg:text-[60px]">
+              <h2 className="mt-5 max-w-4xl font-heading text-3xl font-semibold leading-[1] tracking-[-0.045em] sm:text-4xl lg:text-[50px]">
                 From physical signals
                 <br />
                 <span className="font-normal text-[#27d59b]">
@@ -513,36 +366,29 @@ export default function PlatformPage() {
             </div>
 
             <div className="lg:col-span-4">
-              <p className="max-w-md text-sm leading-7 text-white/50 lg:ml-auto lg:text-right">
+              <p className="max-w-md text-sm leading-7 text-white/48 lg:ml-auto lg:text-right">
                 Hardware captures the signal. The platform connects the data,
                 adds context and makes it useful.
               </p>
             </div>
           </div>
 
-          <div className="pt-10">
+          <div className="mt-9 overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.018] p-4 shadow-[0_18px_48px_rgba(0,0,0,0.12)] sm:p-5">
             <PlatformDataFlow />
           </div>
         </div>
       </section>
 
-      {/* ========================================================
-          PLATFORM LAYERS
-      ======================================================== */}
+      {/* PLATFORM LAYERS */}
+      <section className="relative overflow-hidden border-b border-[#cdd5d2] bg-[#f4f6f2]">
+        <VIoTSVGBackground />
 
-      <section className="bg-[#f4f6f2]">
-        <div className="mx-auto max-w-[1440px] px-6 py-20 sm:px-8 lg:px-12 lg:py-28">
-          <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:items-end">
+        <div className="relative z-10 mx-auto max-w-[1440px] px-6 py-16 sm:px-8 sm:py-20 lg:px-12">
+          <div className="grid gap-8 lg:grid-cols-12 lg:items-end">
             <div className="lg:col-span-8">
-              <div className="mb-5 flex items-center gap-3">
-                <span className="h-px w-8 bg-[#007c67]" />
+              <SectionLabel>Platform</SectionLabel>
 
-                <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.2em] text-[#007c67]">
-                  Platform
-                </span>
-              </div>
-
-              <h2 className="max-w-5xl font-heading text-4xl font-semibold leading-[0.94] tracking-[-0.055em] text-[#081b24] sm:text-5xl lg:text-[62px]">
+              <h2 className="mt-5 max-w-4xl font-heading text-3xl font-semibold leading-[1] tracking-[-0.045em] text-[#081b24] sm:text-4xl lg:text-[50px]">
                 Five intelligence layers.
                 <br />
                 <span className="font-normal text-[#007c67]">
@@ -552,78 +398,66 @@ export default function PlatformPage() {
             </div>
 
             <div className="lg:col-span-4">
-              <p className="max-w-md text-sm leading-7 text-[#081b24]/60 lg:ml-auto lg:text-right">
+              <p className="max-w-md text-sm leading-7 text-[#607078] lg:ml-auto lg:text-right">
                 Connect vehicles, assets, security and sensor data through one
                 operating layer.
               </p>
             </div>
           </div>
 
-          <div className="mt-16 border-t border-[#007c67]/15">
-            {modules.map((module) => (
-              <Link
-                key={module.id}
-                href={`/contact?interest=${module.id}`}
-                className="group relative grid grid-cols-1 gap-7 border-b border-[#007c67]/10 py-9 transition-all duration-500 hover:bg-[#27d59b]/[0.035] sm:grid-cols-12 sm:items-center sm:gap-8 sm:py-11"
-              >
-                <span className="absolute left-0 top-0 h-0 w-[2px] bg-[#27d59b] transition-all duration-500 group-hover:h-full" />
+          <div className="mt-10 overflow-hidden rounded-2xl border border-[#c8d5d0] bg-white/80 shadow-[0_16px_45px_rgba(8,27,36,0.05)] backdrop-blur-sm">
+            <div className="divide-y divide-[#d8e2de]">
+              {modules.map((module) => (
+                <Link
+                  key={module.id}
+                  href={`/contact?interest=${module.id}`}
+                  className="group relative grid gap-4 px-5 py-5 transition-colors duration-300 hover:bg-[#27d59b]/[0.035] sm:grid-cols-12 sm:items-center sm:gap-6 sm:px-6"
+                >
+                  <span className="absolute bottom-3 left-0 top-3 w-[2px] rounded-full bg-[#27d59b] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
-                <div className="sm:col-span-1">
-                  <span className="font-mono text-[10px] font-semibold tracking-[0.18em] text-[#007c67]">
-                    {module.number}
-                  </span>
-                </div>
+                  <div className="sm:col-span-1">
+                    <span className="font-mono text-[9px] font-semibold tracking-[0.18em] text-[#007c67]">
+                      {module.number}
+                    </span>
+                  </div>
 
-                <div className="sm:col-span-5">
-                  <h3 className="font-heading text-2xl font-semibold tracking-[-0.04em] text-[#081b24] transition-transform duration-500 group-hover:translate-x-1 sm:text-[30px]">
-                    {module.name}
-                  </h3>
-                </div>
+                  <div className="sm:col-span-4">
+                    <h3 className="font-heading text-xl font-semibold tracking-[-0.03em] text-[#081b24] sm:text-[22px]">
+                      {module.name}
+                    </h3>
+                  </div>
 
-                <div className="sm:col-span-5">
-                  <p className="max-w-xl text-sm leading-7 text-[#081b24]/60">
-                    {module.copy}
-                  </p>
-                </div>
+                  <div className="sm:col-span-6">
+                    <p className="max-w-xl text-[13px] leading-6 text-[#607078]">
+                      {module.copy}
+                    </p>
+                  </div>
 
-                <div className="sm:col-span-1 sm:flex sm:justify-end">
-                  <span className="flex h-10 w-10 items-center justify-center border border-[#007c67]/20 text-[#007c67] transition-all duration-300 group-hover:border-[#27d59b] group-hover:bg-[#27d59b] group-hover:text-[#081b24]">
-                    <ArrowIcon className="h-3.5 w-3.5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-                  </span>
-                </div>
-              </Link>
-            ))}
+                  <div className="sm:col-span-1 sm:flex sm:justify-end">
+                    <span className="flex h-9 w-9 items-center justify-center rounded-lg border border-[#007c67]/15 text-[#007c67] transition-all duration-300 group-hover:border-[#27d59b] group-hover:bg-[#27d59b] group-hover:text-[#081b24]">
+                      <ArrowIcon className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ========================================================
-          OPERATING LOOP
-      ======================================================== */}
-
+      {/* OPERATING LOOP */}
       <section className="relative overflow-hidden bg-[#06171f] text-white">
-        <div
-          aria-hidden="true"
-          className="absolute right-[-12%] top-[-10%] h-[650px] w-[650px] rounded-full border border-[#27d59b]/[0.04]"
-        />
+        <VIoTSVGBackground dark />
 
-        <div className="relative mx-auto max-w-[1440px] px-6 py-20 sm:px-8 lg:px-12 lg:py-28">
-          <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:items-end">
+        <div className="relative z-10 mx-auto max-w-[1440px] px-6 py-16 sm:px-8 sm:py-20 lg:px-12">
+          <div className="grid gap-8 lg:grid-cols-12 lg:items-end">
             <div className="lg:col-span-8">
-              <div className="mb-5 flex items-center gap-3">
-                <span className="h-px w-8 bg-[#27d59b]" />
+              <SectionLabel dark>Operating loop</SectionLabel>
 
-                <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.2em] text-[#27d59b]">
-                  Operating loop
-                </span>
-              </div>
-
-              <h2 className="font-heading text-4xl font-semibold leading-[0.94] tracking-[-0.05em] sm:text-5xl lg:text-[60px]">
-                Capture.
-                <span className="text-white/25"> Deliver.</span>
+              <h2 className="mt-5 font-heading text-3xl font-semibold leading-[1] tracking-[-0.045em] sm:text-4xl lg:text-[50px]">
+                Capture. <span className="text-[#27d59b]">Deliver.</span>
                 <br />
-                Understand.
-                <span className="text-[#27d59b]"> Respond.</span>
+                Understand. <span className="text-[#27d59b]">Respond.</span>
               </h2>
             </div>
 
@@ -635,57 +469,40 @@ export default function PlatformPage() {
             </div>
           </div>
 
-          <div className="relative mt-16 lg:mt-24">
-            <div className="absolute left-0 right-0 top-[42px] hidden h-px bg-white/[0.1] lg:block" />
-
-            <div className="absolute left-0 top-[42px] hidden h-px w-[72%] bg-[#27d59b]/50 lg:block" />
-
-            <div className="grid grid-cols-1 lg:grid-cols-4">
+          <div className="mt-10 overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.018]">
+            <div className="grid lg:grid-cols-4">
               {operatingSteps.map((step, index) => (
                 <motion.div
                   key={step.number}
-                  initial={{
-                    opacity: 0,
-                    y: 20,
-                  }}
-                  whileInView={{
-                    opacity: 1,
-                    y: 0,
-                  }}
-                  viewport={{
-                    once: true,
-                    amount: 0.2,
-                  }}
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.2 }}
                   transition={{
-                    duration: 0.65,
-                    delay: index * 0.08,
+                    duration: 0.55,
+                    delay: index * 0.07,
                     ease,
                   }}
-                  className={`group relative min-h-[280px] py-10 lg:px-8 lg:py-0 ${
-                    index !== 0
-                      ? "border-t border-white/[0.1] lg:border-l lg:border-t-0"
+                  className={`group min-h-[190px] p-5 sm:p-6 ${
+                    index !== operatingSteps.length - 1
+                      ? "border-b border-white/[0.08] lg:border-b-0 lg:border-r"
                       : ""
                   }`}
                 >
-                  <div className="flex h-full flex-col">
-                    <div className="flex items-center justify-between">
-                      <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.2em] text-[#27d59b]">
-                        {step.number} / {step.label}
-                      </span>
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-[8px] font-semibold uppercase tracking-[0.18em] text-[#27d59b]">
+                      {step.number} / {step.label}
+                    </span>
 
-                      <span className="h-2 w-2 rounded-full border border-[#27d59b] bg-[#06171f] transition-colors duration-300 group-hover:bg-[#27d59b]" />
-                    </div>
-
-                    <div className="mt-14">
-                      <h3 className="font-heading text-3xl font-semibold tracking-[-0.04em] text-white transition-colors duration-300 group-hover:text-[#27d59b] sm:text-4xl">
-                        {step.title}
-                      </h3>
-
-                      <p className="mt-5 max-w-xs text-sm leading-7 text-white/45">
-                        {step.copy}
-                      </p>
-                    </div>
+                    <span className="h-1.5 w-1.5 rounded-full border border-[#27d59b] transition-colors duration-300 group-hover:bg-[#27d59b]" />
                   </div>
+
+                  <h3 className="mt-8 font-heading text-2xl font-semibold tracking-[-0.035em] text-white transition-colors duration-300 group-hover:text-[#27d59b]">
+                    {step.title}
+                  </h3>
+
+                  <p className="mt-3 max-w-xs text-[13px] leading-6 text-white/42">
+                    {step.copy}
+                  </p>
                 </motion.div>
               ))}
             </div>
@@ -693,91 +510,59 @@ export default function PlatformPage() {
         </div>
       </section>
 
-      {/* ========================================================
-          CAPABILITIES
-      ======================================================== */}
+      {/* CAPABILITIES */}
+      <section className="relative overflow-hidden bg-white">
+        <VIoTSVGBackground />
 
-      <section className="bg-white">
-        <div className="mx-auto max-w-[1440px] px-6 py-20 sm:px-8 lg:px-12 lg:py-28">
-          <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:items-end">
-            <div className="lg:col-span-8">
-              <div className="mb-5 flex items-center gap-3">
-                <span className="h-px w-8 bg-[#007c67]" />
+        <div className="relative z-10 mx-auto max-w-[1440px] px-6 py-16 sm:px-8 sm:py-20 lg:px-12">
+          <SectionLabel>Capabilities</SectionLabel>
 
-                <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.2em] text-[#007c67]">
-                  Capabilities
-                </span>
-              </div>
+          <h2 className="mt-5 max-w-4xl font-heading text-3xl font-semibold leading-[1] tracking-[-0.045em] text-[#081b24] sm:text-4xl lg:text-[50px]">
+            Information that
+            <br />
+            <span className="font-normal text-[#007c67]">
+              helps teams act.
+            </span>
+          </h2>
 
-              <h2 className="max-w-4xl font-heading text-4xl font-semibold leading-[0.94] tracking-[-0.055em] text-[#081b24] sm:text-5xl lg:text-[60px]">
-                Information that
-                <br />
-                <span className="font-normal text-[#007c67]">
-                  helps teams act.
-                </span>
-              </h2>
-            </div>
-          </div>
+          <div className="mt-10 overflow-hidden rounded-2xl border border-[#c8d5d0] bg-white/85 shadow-[0_14px_40px_rgba(8,27,36,0.045)]">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3">
+              {capabilities.map((item, index) => (
+                <div
+                  key={item.number}
+                  className={`group min-h-[180px] p-5 transition-colors duration-300 hover:bg-[#27d59b]/[0.03] sm:p-6 ${
+                    index < capabilities.length - 3
+                      ? "border-b border-[#d8e2de]"
+                      : ""
+                  } ${
+                    index % 3 !== 2 ? "lg:border-r lg:border-[#d8e2de]" : ""
+                  } ${
+                    index % 2 === 0 ? "sm:border-r sm:border-[#d8e2de] lg:border-r" : ""
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-[8px] font-semibold tracking-[0.18em] text-[#007c67]">
+                      {item.number}
+                    </span>
 
-          <div className="mt-16 grid grid-cols-1 border-t border-[#007c67]/10 sm:grid-cols-2 lg:grid-cols-3">
-            {capabilities.map((item) => (
-              <div
-                key={item.number}
-                className="group min-h-[210px] border-b border-[#007c67]/10 p-7 transition-colors duration-500 hover:bg-[#27d59b]/[0.035] sm:p-8 lg:min-h-[230px] lg:p-10"
-              >
-                <div className="flex items-center justify-between">
-                  <span className="font-mono text-[9px] font-semibold tracking-[0.2em] text-[#007c67]">
-                    {item.number}
-                  </span>
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#27d59b]/60 transition-opacity duration-300 group-hover:opacity-100" />
+                  </div>
 
-                  <span className="h-1.5 w-1.5 bg-[#27d59b] opacity-60 transition-opacity group-hover:opacity-100" />
+                  <h3 className="mt-7 font-heading text-lg font-semibold tracking-[-0.025em] text-[#081b24] transition-colors duration-300 group-hover:text-[#007c67] sm:text-xl">
+                    {item.title}
+                  </h3>
+
+                  <p className="mt-2 max-w-sm text-[13px] leading-6 text-[#607078]">
+                    {item.copy}
+                  </p>
                 </div>
-
-                <h3 className="mt-12 font-heading text-xl font-semibold tracking-[-0.03em] text-[#081b24] transition-colors duration-300 group-hover:text-[#007c67] sm:text-2xl">
-                  {item.title}
-                </h3>
-
-                <p className="mt-4 max-w-sm text-sm leading-6 text-[#081b24]/55">
-                  {item.copy}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ========================================================
-          CTA
-      ======================================================== */}
-
-      <section className="bg-[#081b24] text-white">
-        <div className="mx-auto max-w-[1440px] px-6 py-20 sm:px-8 lg:px-12 lg:py-28">
-          <div className="flex flex-col gap-10 border-t border-white/10 pt-12 lg:flex-row lg:items-end lg:justify-between">
-            <div>
-              <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.2em] text-[#27d59b]">
-                VIoT Platform
-              </span>
-
-              <h2 className="mt-5 max-w-4xl font-heading text-4xl font-semibold leading-[0.94] tracking-[-0.05em] sm:text-5xl lg:text-[60px]">
-                One connected view.
-                <br />
-                <span className="font-normal text-white/45">
-                  Built around your operation.
-                </span>
-              </h2>
+              ))}
             </div>
-
-            <Link
-              href="/contact"
-              className="group inline-flex min-h-12 shrink-0 items-center justify-between gap-8 border border-[#27d59b] bg-[#27d59b] px-6 text-sm font-semibold text-[#081b24] transition-all duration-300 hover:border-white hover:bg-white sm:min-w-[190px]"
-            >
-              <span>Talk to VIoT</span>
-
-              <ArrowIcon className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" />
-            </Link>
           </div>
         </div>
       </section>
+
+      <CtaBand />
     </main>
   );
 }
