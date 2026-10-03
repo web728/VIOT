@@ -161,132 +161,119 @@ const timelines = [
 ];
 
 /* =========================================================
-   COMPACT FORM STYLES
+   PREMIUM FORM STYLES
 ========================================================= */
 
 const inputClass =
-  "h-10 w-full border-b border-[#c7d8d2] bg-transparent px-0 text-[12px] text-[#081b24] placeholder:text-[#607078]/50 transition-colors focus:border-[#27d59b] focus:outline-none";
+  "h-11 w-full rounded-lg border border-[#c7d8d2] bg-white/80 px-3.5 text-[12px] text-[#081b24] placeholder:text-[#607078]/45 outline-none transition-all duration-300 hover:border-[#9ebbb2] focus:border-[#007c67] focus:bg-white focus:ring-2 focus:ring-[#007c67]/10";
 
 const labelClass =
-  "mb-1.5 block font-mono text-[8px] font-semibold uppercase tracking-[0.15em] text-[#007c67]";
+  "mb-2 block font-mono text-[8px] font-semibold uppercase tracking-[0.15em] text-[#007c67]";
 
 /* =========================================================
    CLIENT-APPROVED SVG BACKGROUND
-   Flowing paths + engineering rings + signal points
 ========================================================= */
 
 function CtaBackgroundAnimation() {
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden">
       {/* Soft atmosphere */}
-
       <div className="absolute -left-40 top-[15%] h-[360px] w-[360px] rounded-full bg-signal-dark/[0.025] blur-3xl" />
 
       <div className="absolute -right-40 bottom-[5%] h-[480px] w-[480px] rounded-full bg-ink/[0.02] blur-3xl" />
 
-      {/* =====================================================
-          FLOWING SVG NETWORK
-      ===================================================== */}
+      {/* Flowing SVG network */}
+      <svg
+        viewBox="0 0 1600 900"
+        preserveAspectRatio="none"
+        className="absolute inset-0 h-full w-full"
+        fill="none"
+      >
+        <motion.path
+          d="M-160 250 C120 45 390 95 620 270 S1050 580 1760 225"
+          stroke="rgba(8,27,36,0.10)"
+          strokeWidth="1"
+        />
 
-   <svg
-  viewBox="0 0 1600 900"
-  preserveAspectRatio="none"
-  className="absolute inset-0 h-full w-full"
-  fill="none"
->
-  <motion.path
-    d="M-160 250 C120 45 390 95 620 270 S1050 580 1760 225"
-    stroke="rgba(8,27,36,0.10)"
-    strokeWidth="1"
-  />
+        <motion.path
+          d="M-180 680 C120 455 390 510 680 665 S1130 850 1780 545"
+          stroke="rgba(39,213,155,0.18)"
+          strokeWidth="1.2"
+          strokeDasharray="3 15"
+          animate={{
+            strokeDashoffset: [0, -180],
+          }}
+          transition={{
+            duration: 12,
+            repeat: Infinity,
+            ease: "linear",
+          }}
+        />
 
-  <motion.path
-    d="M-180 680 C120 455 390 510 680 665 S1130 850 1780 545"
-    stroke="rgba(39,213,155,0.18)"
-    strokeWidth="1.2"
-    strokeDasharray="3 15"
-    animate={{
-      strokeDashoffset: [0, -180],
-    }}
-    transition={{
-      duration: 12,
-      repeat: Infinity,
-      ease: "linear",
-    }}
-  />
+        <path
+          d="M70 980 C250 710 510 675 780 435 S1240 105 1630 -80"
+          stroke="rgba(8,27,36,0.06)"
+          strokeWidth="1"
+        />
 
-  <path
-    d="M70 980 C250 710 510 675 780 435 S1240 105 1630 -80"
-    stroke="rgba(8,27,36,0.06)"
-    strokeWidth="1"
-  />
+        <motion.path
+          d="M-120 460 C230 330 420 405 650 500 S1060 680 1730 445"
+          stroke="rgba(0,124,103,0.12)"
+          strokeWidth="1"
+          strokeDasharray="2 20"
+          animate={{
+            strokeDashoffset: [0, 180],
+          }}
+          transition={{
+            duration: 15,
+            repeat: Infinity,
+            ease: "linear",
+          }}
+        />
+      </svg>
 
-  <motion.path
-    d="M-120 460 C230 330 420 405 650 500 S1060 680 1730 445"
-    stroke="rgba(0,124,103,0.12)"
-    strokeWidth="1"
-    strokeDasharray="2 20"
-    animate={{
-      strokeDashoffset: [0, 180],
-    }}
-    transition={{
-      duration: 15,
-      repeat: Infinity,
-      ease: "linear",
-    }}
-  />
-</svg>
+      {/* Engineering rings */}
+      <motion.div
+        className="absolute right-[3%] top-[8%] h-[330px] w-[330px] rounded-full border border-[#081b24]/[0.06]"
+        animate={{ rotate: 360 }}
+        transition={{
+          duration: 60,
+          repeat: Infinity,
+          ease: "linear",
+        }}
+      />
 
-      {/* =====================================================
-          ENGINEERING RINGS
-      ===================================================== */}
-
-  <motion.div
-  className="absolute right-[3%] top-[8%] h-[330px] w-[330px] rounded-full border border-[#081b24]/[0.06]"
-  animate={{ rotate: 360 }}
-  transition={{
-    duration: 60,
-    repeat: Infinity,
-    ease: "linear",
-  }}
-/>
-
-<motion.div
-  className="absolute right-[7%] top-[14%] h-[235px] w-[235px] rounded-full border border-[#27d59b]/[0.12]"
-  animate={{ rotate: -360 }}
-  transition={{
-    duration: 42,
-    repeat: Infinity,
-    ease: "linear",
-  }}
-/>
+      <motion.div
+        className="absolute right-[7%] top-[14%] h-[235px] w-[235px] rounded-full border border-[#27d59b]/[0.12]"
+        animate={{ rotate: -360 }}
+        transition={{
+          duration: 42,
+          repeat: Infinity,
+          ease: "linear",
+        }}
+      />
 
       <div className="absolute right-[13%] top-[23%] h-[115px] w-[115px] rounded-full border border-ink/[0.03]" />
 
-      {/* Left arc */}
-
       <div className="absolute -left-[170px] bottom-[10%] h-[370px] w-[370px] rounded-full border border-ink/[0.03]" />
 
-      {/* =====================================================
-          MOVING SIGNAL POINTS
-      ===================================================== */}
-
-    <motion.span
-  className="absolute left-[17%] top-[27%] h-1 w-1 bg-[#27d59b]"
-  animate={{
-    x: [0, 80, 170],
-    y: [0, 18, 0],
-    opacity: [0.15, 0.8, 0],
-  }}
-  transition={{
-    duration: 5.5,
-    repeat: Infinity,
-    ease: "easeInOut",
-  }}
-/>
+      {/* Moving signal points */}
+      <motion.span
+        className="absolute left-[17%] top-[27%] h-1 w-1 rounded-full bg-[#27d59b]"
+        animate={{
+          x: [0, 80, 170],
+          y: [0, 18, 0],
+          opacity: [0.15, 0.8, 0],
+        }}
+        transition={{
+          duration: 5.5,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
 
       <motion.span
-        className="absolute left-[43%] top-[70%] h-1 w-1 bg-signal-dark"
+        className="absolute left-[43%] top-[70%] h-1 w-1 rounded-full bg-signal-dark"
         animate={{
           x: [0, -65, -135],
           y: [0, -20, 0],
@@ -301,7 +288,7 @@ function CtaBackgroundAnimation() {
       />
 
       <motion.span
-        className="absolute right-[18%] top-[37%] h-1 w-1 bg-signal-dark"
+        className="absolute right-[18%] top-[37%] h-1 w-1 rounded-full bg-signal-dark"
         animate={{
           x: [0, -50, -110],
           opacity: [0.08, 0.55, 0],
@@ -315,7 +302,6 @@ function CtaBackgroundAnimation() {
       />
 
       {/* Ambient points */}
-
       {[
         ["12%", "20%"],
         ["24%", "76%"],
@@ -327,7 +313,7 @@ function CtaBackgroundAnimation() {
       ].map(([left, top], index) => (
         <motion.span
           key={`${left}-${top}`}
-          className="absolute h-0.5 w-0.5 bg-ink/20"
+          className="absolute h-0.5 w-0.5 rounded-full bg-ink/20"
           style={{
             left,
             top,
@@ -418,22 +404,21 @@ export function CtaBand() {
   };
 
   return (
- <section className="relative overflow-hidden bg-[#f4f6f2]">
+    <section className="relative overflow-hidden bg-[#f4f6f2]">
       {/* =====================================================
-          CLIENT SVG ANIMATION
+          SVG BACKGROUND ANIMATION
       ===================================================== */}
 
       <CtaBackgroundAnimation />
 
       {/* Keep background subtle behind content */}
-
-  <div className="pointer-events-none absolute inset-0 bg-[#f4f6f2]/70" />
+      <div className="pointer-events-none absolute inset-0 bg-[#f4f6f2]/68" />
 
       {/* =====================================================
           CONTENT
       ===================================================== */}
 
-      <div className="relative z-10 mx-auto max-w-6xl px-5 py-10 sm:px-6 sm:py-12 lg:py-14">
+      <div className="relative z-10 mx-auto max-w-6xl px-5 py-14 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
         {/* ===================================================
             HEADER
         =================================================== */}
@@ -446,7 +431,7 @@ export function CtaBand() {
             duration: 0.5,
             ease: [0.16, 1, 0.3, 1],
           }}
-          className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between"
+          className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between"
         >
           <div>
             <div className="flex items-center gap-2">
@@ -457,19 +442,21 @@ export function CtaBand() {
               </span>
             </div>
 
-          <h2 className="mt-2 font-heading text-2xl font-semibold leading-tight tracking-[-0.045em] text-[#081b24] sm:text-3xl">
-  Let&apos;s solve your
-  <span className="text-[#007c67]"> connected challenge.</span>
-</h2>
+            <h2 className="mt-3 max-w-2xl font-heading text-3xl font-semibold leading-[1.05] tracking-[-0.045em] text-[#081b24] sm:text-4xl">
+              Let&apos;s solve your{" "}
+              <span className="text-[#007c67]">
+                connected challenge.
+              </span>
+            </h2>
           </div>
 
-      <p className="max-w-sm text-[11px] leading-5 text-[#607078]">
-  Tell us what you need to track, monitor or secure.
-</p>
+          <p className="max-w-sm text-xs leading-5 text-[#607078]">
+            Tell us what you need to track, monitor or secure.
+          </p>
         </motion.div>
 
         {/* ===================================================
-            FORM
+            FORM CARD
         =================================================== */}
 
         <motion.div
@@ -481,7 +468,13 @@ export function CtaBand() {
             delay: 0.05,
             ease: [0.16, 1, 0.3, 1],
           }}
-     className="mt-7 border border-[#c7d8d2] bg-white shadow-[0_12px_45px_rgba(8,27,36,0.055)]"
+          className="
+            mt-8 overflow-hidden rounded-2xl
+            border border-[#bfcfc9]/80
+            bg-white/90
+            shadow-[0_20px_60px_rgba(8,27,36,0.08)]
+            backdrop-blur-md
+          "
         >
           <AnimatePresence mode="wait" initial={false}>
             {submitted ? (
@@ -494,10 +487,10 @@ export function CtaBand() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="flex min-h-[260px] items-center px-6 py-8 sm:px-9"
+                className="flex min-h-[280px] items-center px-6 py-10 sm:px-9"
               >
                 <div>
-                  <div className="flex h-9 w-9 items-center justify-center bg-signal-dark text-xs font-semibold text-white">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-signal-dark text-xs font-semibold text-white shadow-[0_8px_22px_rgba(0,124,103,0.18)]">
                     ✓
                   </div>
 
@@ -526,13 +519,13 @@ export function CtaBand() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="p-5 sm:p-7 lg:p-8"
+                className="p-5 sm:p-7 lg:p-9"
               >
                 {/* =============================================
                     TOP ROW
                 ============================================= */}
 
-                <div className="grid gap-x-6 gap-y-5 sm:grid-cols-2 lg:grid-cols-4">
+                <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
                   {/* Name */}
 
                   <div>
@@ -606,7 +599,7 @@ export function CtaBand() {
                     REQUIREMENT ROW
                 ============================================= */}
 
-                <div className="mt-5 grid gap-x-6 gap-y-5 sm:grid-cols-2 lg:grid-cols-4">
+                <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
                   {/* Looking for */}
 
                   <div className="lg:col-span-2">
@@ -696,7 +689,7 @@ export function CtaBand() {
                       }}
                       className="overflow-hidden"
                     >
-                      <div className="mt-5 grid gap-x-6 gap-y-5 sm:grid-cols-2">
+                      <div className="mt-6 grid gap-5 sm:grid-cols-2">
                         {extraFields.map((field) => (
                           <FieldInput
                             key={field.name}
@@ -712,7 +705,7 @@ export function CtaBand() {
                     MESSAGE
                 ============================================= */}
 
-                <div className="mt-5">
+                <div className="mt-6">
                   <label
                     htmlFor="cta-message"
                     className={labelClass}
@@ -723,9 +716,21 @@ export function CtaBand() {
                   <textarea
                     id="cta-message"
                     name="message"
-                    rows={2}
+                    rows={4}
                     placeholder="Briefly describe your requirement..."
-                    className="w-full resize-none border-b border-line bg-transparent py-2 text-[12px] leading-5 text-ink placeholder:text-muted/45 transition-colors focus:border-signal-dark focus:outline-none"
+                    className="
+                      w-full resize-none rounded-xl
+                      border border-[#c7d8d2]
+                      bg-white/80 px-3.5 py-3
+                      text-[12px] leading-5 text-ink
+                      placeholder:text-muted/45
+                      outline-none
+                      transition-all duration-300
+                      hover:border-[#9ebbb2]
+                      focus:border-signal-dark
+                      focus:bg-white
+                      focus:ring-2 focus:ring-signal-dark/10
+                    "
                   />
                 </div>
 
@@ -733,30 +738,46 @@ export function CtaBand() {
                     BOTTOM
                 ============================================= */}
 
-                <div className="mt-6 flex flex-col gap-4 border-t border-line pt-5 sm:flex-row sm:items-center sm:justify-between">
+                <div className="mt-7 flex flex-col gap-5 border-t border-[#d8e2de] pt-6 sm:flex-row sm:items-center sm:justify-between">
                   <div>
-               <p className="text-[10px] leading-4 text-[#607078]">
-  Share your requirement and our team will help identify the right connected solution.
-</p>
+                    <p className="max-w-xl text-[10px] leading-4 text-[#607078]">
+                      Share your requirement and our team will help identify
+                      the right connected solution.
+                    </p>
                   </div>
 
                   <motion.button
                     type="submit"
                     whileHover={{ y: -1 }}
                     whileTap={{ scale: 0.98 }}
-                className="group inline-flex h-10 w-full shrink-0 items-center justify-center gap-2 bg-[#081b24] px-6 text-[10px] font-semibold uppercase tracking-[0.12em] text-white transition-colors duration-300 hover:bg-[#27d59b] hover:text-[#081b24] sm:w-auto"
+                    className="
+                      group inline-flex h-11 w-full shrink-0
+                      items-center justify-center gap-3
+                      rounded-lg border border-[#081b24]
+                      bg-[#081b24] px-6
+                      text-[10px] font-semibold uppercase
+                      tracking-[0.12em] !text-white
+                      shadow-[0_10px_28px_rgba(8,27,36,0.12)]
+                      transition-all duration-300
+                      hover:border-[#007c67]
+                      hover:bg-[#007c67]
+                      hover:shadow-[0_14px_34px_rgba(0,124,103,0.15)]
+                      sm:w-auto
+                    "
                   >
-                    Send enquiry
+                    <span className="!text-white">
+                      Send enquiry
+                    </span>
 
-                    <ArrowIcon className="h-3 w-3 text-white transition-transform duration-300 group-hover:translate-x-1" />
+                    <span className="flex h-6 w-6 items-center justify-center rounded-md border border-white/15 bg-white/[0.05]">
+                      <ArrowIcon className="h-2.5 w-2.5 !text-white transition-transform duration-300 group-hover:translate-x-0.5" />
+                    </span>
                   </motion.button>
                 </div>
               </motion.form>
             )}
           </AnimatePresence>
         </motion.div>
-
-     
       </div>
     </section>
   );

@@ -432,19 +432,19 @@ export function ProductsSection() {
   const activeSolution = solutions[selectedIndex];
 
   useEffect(() => {
-    const handleKeyDown = (event) => {
-      if (event.key === "ArrowRight") {
-        setSelectedIndex((current) =>
-          current === solutions.length - 1 ? 0 : current + 1
-        );
-      }
+   const handleKeyDown = (event) => {
+  if (event.key === "ArrowRight") {
+    setSelectedIndex((current) =>
+      current === solutions.length - 1 ? 0 : current + 1
+    );
+  }
 
-      if (event.key === "ArrowLeft") {
-        setSelectedIndex((current) =>
-          current === 0 ? solutions.length - 1 : current - 1
-        );
-      }
-    };
+  if (event.key === "ArrowLeft") {
+    setSelectedIndex((current) =>
+      current === 0 ? solutions.length - 1 : current - 1
+    );
+  }
+};
 
     window.addEventListener("keydown", handleKeyDown);
 
@@ -459,7 +459,7 @@ export function ProductsSection() {
       className="relative overflow-hidden border-t border-line bg-paper"
     >
       {/* =====================================================
-          SAME SVG BACKGROUND ANIMATION — DO NOT CHANGE
+          BACKGROUND ANIMATION — UNCHANGED
       ===================================================== */}
 
       <ProductsEcosystemBackground />
@@ -469,7 +469,6 @@ export function ProductsSection() {
       ===================================================== */}
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 py-16 sm:px-8 lg:px-12 lg:py-24">
-
         {/* =================================================
             HEADER
         ================================================= */}
@@ -497,7 +496,7 @@ export function ProductsSection() {
             <div className="mb-4 flex items-center gap-3">
               <span className="h-px w-8 bg-signal-dark" />
 
-              <span className="font-mono text-[8px] font-semibold uppercase tracking-[0.2em] text-signal-dark">
+              <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.2em] text-signal-dark">
                 Solutions
               </span>
             </div>
@@ -506,23 +505,19 @@ export function ProductsSection() {
               8 Solutions
             </h2>
           </div>
-
-         
         </motion.div>
 
         {/* =================================================
             SOLUTION EXPERIENCE
         ================================================= */}
 
-        <div className="mt-10 grid gap-10 lg:grid-cols-12 lg:gap-14">
-
+        <div className="mt-10 grid gap-12 lg:grid-cols-12 lg:items-start lg:gap-16">
           {/* =================================================
               SOLUTION NAVIGATION
           ================================================= */}
 
           <div className="lg:col-span-5">
-            <div className="border-t border-line">
-
+            <div className="space-y-3">
               {solutions.map((solution, index) => {
                 const isActive = selectedIndex === index;
 
@@ -531,50 +526,68 @@ export function ProductsSection() {
                     key={solution.id}
                     type="button"
                     onClick={() => setSelectedIndex(index)}
-                    className="group relative block w-full border-b border-line text-left outline-none"
+                    className={`
+                      group relative block w-full overflow-hidden rounded-xl
+                      border text-left outline-none
+                      transition-all duration-300
+                      focus-visible:ring-2 focus-visible:ring-signal-dark/30
+                      focus-visible:ring-offset-2
+                      ${
+                        isActive
+                          ? "border-signal-dark/25 bg-white shadow-[0_12px_35px_rgba(8,27,36,0.07)]"
+                          : "border-ink/[0.08] bg-white/45 hover:border-ink/[0.14] hover:bg-white/80 hover:shadow-[0_10px_28px_rgba(8,27,36,0.045)]"
+                      }
+                    `}
                   >
-                    {/* Active indicator */}
+                    {/* Active accent */}
 
                     <motion.span
                       initial={false}
                       animate={{
-                        scaleY: isActive ? 1 : 0,
+                        scaleY: isActive ? 1 : 0.25,
                         opacity: isActive ? 1 : 0,
                       }}
                       transition={{
-                        duration: 0.3,
+                        duration: 0.35,
+                        ease: [0.16, 1, 0.3, 1],
                       }}
-                      className="absolute left-0 top-0 h-full w-[2px] origin-top bg-signal-dark"
+                      className="absolute bottom-3 left-0 top-3 w-[3px] origin-center rounded-r-full bg-signal-dark"
                     />
 
-                    <div
-                      className={`flex items-center gap-5 py-7 pl-5 pr-3 transition-all duration-300 ${
-                        isActive
-                          ? "bg-white"
-                          : "bg-transparent group-hover:bg-white/60"
-                      }`}
-                    >
+                    <div className="flex min-h-[84px] items-center gap-4 px-5 py-5 sm:gap-5 sm:px-6">
                       {/* Number */}
 
-                      <span
-                        className={`font-mono text-[9px] tracking-[0.14em] transition-colors ${
-                          isActive
-                            ? "text-signal-dark"
-                            : "text-muted"
-                        }`}
+                      <div
+                        className={`
+                          flex h-8 w-8 shrink-0 items-center justify-center
+                          rounded-lg border font-mono text-[9px]
+                          font-semibold tracking-[0.12em]
+                          transition-all duration-300
+                          ${
+                            isActive
+                              ? "border-signal-dark/20 bg-signal-dark/[0.07] text-signal-dark"
+                              : "border-ink/[0.08] bg-white/60 text-muted group-hover:border-ink/[0.12]"
+                          }
+                        `}
                       >
                         {solution.number}
-                      </span>
+                      </div>
 
                       {/* Heading */}
 
                       <div className="min-w-0 flex-1">
                         <h3
-                          className={`font-heading text-lg font-semibold tracking-[-0.025em] transition-colors sm:text-xl ${
-                            isActive
-                              ? "text-ink"
-                              : "text-ink/60 group-hover:text-ink"
-                          }`}
+                          className={`
+                            font-heading text-lg font-semibold
+                            tracking-[-0.025em]
+                            transition-colors duration-300
+                            sm:text-xl
+                            ${
+                              isActive
+                                ? "text-ink"
+                                : "text-ink/60 group-hover:text-ink"
+                            }
+                          `}
                         >
                           {solution.title}
                         </h3>
@@ -583,36 +596,45 @@ export function ProductsSection() {
                       {/* Arrow */}
 
                       <motion.span
+                        initial={false}
                         animate={{
                           x: isActive ? 2 : 0,
                           rotate: isActive ? 0 : -45,
                         }}
                         transition={{
-                          duration: 0.25,
+                          duration: 0.3,
+                          ease: [0.16, 1, 0.3, 1],
                         }}
-                        className={`flex h-8 w-8 shrink-0 items-center justify-center border transition-colors ${
-                          isActive
-                            ? "border-signal-dark bg-signal-dark text-white"
-                            : "border-line text-muted group-hover:border-signal-dark group-hover:text-signal-dark"
-                        }`}
+                        className={`
+                          flex h-9 w-9 shrink-0 items-center justify-center
+                          rounded-lg border transition-all duration-300
+                          ${
+                            isActive
+                              ? "border-signal-dark bg-signal-dark text-white shadow-[0_6px_18px_rgba(0,124,103,0.18)]"
+                              : "border-ink/[0.10] bg-white/70 text-muted group-hover:border-signal-dark/30 group-hover:bg-white group-hover:text-signal-dark"
+                          }
+                        `}
                       >
-                        <ArrowIcon className="h-2.5 w-2.5" />
+                        <ArrowIcon
+                          className={`h-2.5 w-2.5 ${
+                            isActive ? "!text-white" : ""
+                          }`}
+                        />
                       </motion.span>
                     </div>
                   </button>
                 );
               })}
-
             </div>
 
             {/* Solution count */}
 
-            <div className="mt-7 flex items-center justify-between">
+            <div className="mt-6 flex items-center justify-between px-1">
               <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-muted">
                 Solution portfolio
               </span>
 
-              <span className="font-mono text-[9px] font-semibold tracking-[0.12em] text-signal-dark">
+              <span className="rounded-md bg-signal-dark/[0.07] px-2.5 py-1 font-mono text-[9px] font-semibold tracking-[0.12em] text-signal-dark">
                 08
               </span>
             </div>
@@ -622,35 +644,33 @@ export function ProductsSection() {
               SOLUTION VISUAL
           ================================================= */}
 
-          <div className="lg:col-span-7">
+          <div className="min-w-0 lg:col-span-7">
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeSolution.id}
                 initial={{
                   opacity: 0,
                   y: 12,
+                  scale: 0.995,
                 }}
                 animate={{
                   opacity: 1,
                   y: 0,
+                  scale: 1,
                 }}
                 exit={{
                   opacity: 0,
-                  y: -12,
+                  y: -10,
+                  scale: 0.995,
                 }}
                 transition={{
-                  duration: 0.35,
+                  duration: 0.4,
                   ease: [0.16, 1, 0.3, 1],
                 }}
-                className="relative overflow-hidden border border-ink/10 bg-ink"
+                className="relative overflow-hidden rounded-2xl border border-ink/10 bg-ink shadow-[0_20px_55px_rgba(8,27,36,0.11)]"
               >
-                {/* =================================================
-                    SAME VISUAL LANGUAGE — NO EXTRA ANIMATION
-                ================================================= */}
-
-                <div className="relative min-h-[360px] overflow-hidden sm:min-h-[430px]">
-
-                  {/* Background grid */}
+                <div className="relative min-h-[360px] overflow-hidden rounded-2xl sm:min-h-[430px]">
+                  {/* Existing background grid */}
 
                   <div
                     className="absolute inset-0 opacity-[0.08]"
@@ -669,6 +689,10 @@ export function ProductsSection() {
                       backgroundSize: "56px 56px",
                     }}
                   />
+
+                  {/* Soft depth */}
+
+                  <div className="absolute left-1/2 top-1/2 h-[300px] w-[300px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-signal/[0.035] blur-[90px]" />
 
                   {/* Large technical rings */}
 
@@ -696,12 +720,13 @@ export function ProductsSection() {
                     className="absolute -right-5 top-5 h-[300px] w-[300px] rounded-full border border-signal/[0.12]"
                   />
 
-                  {/* Signal line */}
+                  {/* Signal lines */}
 
                   <svg
                     viewBox="0 0 900 500"
                     className="absolute inset-0 h-full w-full"
                     fill="none"
+                    aria-hidden="true"
                   >
                     <motion.path
                       d="M-80 360 C160 160 290 420 470 245 S720 80 980 190"
@@ -725,7 +750,7 @@ export function ProductsSection() {
                     />
                   </svg>
 
-                  {/* Moving signal */}
+                  {/* Moving signals */}
 
                   <motion.span
                     animate={{
@@ -738,7 +763,7 @@ export function ProductsSection() {
                       repeat: Infinity,
                       ease: "easeInOut",
                     }}
-                    className="absolute left-[18%] top-[58%] h-1.5 w-1.5 bg-signal"
+                    className="absolute left-[18%] top-[58%] h-1.5 w-1.5 rounded-full bg-signal"
                   />
 
                   <motion.span
@@ -752,18 +777,27 @@ export function ProductsSection() {
                       repeat: Infinity,
                       ease: "easeInOut",
                     }}
-                    className="absolute right-[20%] top-[30%] h-1.5 w-1.5 bg-signal"
+                    className="absolute right-[20%] top-[30%] h-1.5 w-1.5 rounded-full bg-signal"
                   />
+
+                  {/* Corner details */}
+
+                  <span className="absolute left-5 top-5 h-5 w-5 rounded-tl-md border-l border-t border-white/25" />
+
+                  <span className="absolute right-5 top-5 h-5 w-5 rounded-tr-md border-r border-t border-white/25" />
+
+                  <span className="absolute bottom-5 left-5 h-5 w-5 rounded-bl-md border-b border-l border-white/25" />
+
+                  <span className="absolute bottom-5 right-5 h-5 w-5 rounded-br-md border-b border-r border-white/25" />
 
                   {/* Central content */}
 
-                  <div className="absolute inset-0 flex items-center justify-center px-8 text-center">
+                  <div className="absolute inset-0 flex items-center justify-center px-6 text-center sm:px-8">
                     <div className="relative z-10 max-w-xl">
-
                       <div className="mb-5 flex items-center justify-center gap-3">
                         <span className="h-px w-7 bg-signal" />
 
-                        <span className="font-mono text-[8px] uppercase tracking-[0.2em] text-signal">
+                        <span className="font-mono text-[8px] font-semibold uppercase tracking-[0.2em] text-signal">
                           Solution {activeSolution.number}
                         </span>
 
@@ -776,18 +810,28 @@ export function ProductsSection() {
 
                       <Link
                         href={activeSolution.href}
-                        className="group mt-8 inline-flex h-11 items-center gap-3 bg-signal px-5 text-[10px] font-bold uppercase tracking-[0.1em] text-ink transition-all duration-300 hover:bg-white"
+                        className="
+                          group mt-8 inline-flex h-11 items-center gap-3
+                          rounded-lg bg-signal px-5
+                          text-[10px] font-bold uppercase tracking-[0.1em]
+                          !text-ink shadow-[0_10px_28px_rgba(39,213,155,0.14)]
+                          transition-all duration-300
+                          hover:-translate-y-0.5 hover:bg-white
+                          hover:shadow-[0_14px_34px_rgba(0,0,0,0.18)]
+                        "
                       >
-                        Explore solution
+                        <span className="!text-ink">
+                          Explore solution
+                        </span>
 
-                        <span className="flex h-6 w-6 items-center justify-center bg-ink/10 transition-colors group-hover:bg-ink">
-                          <ArrowIcon className="h-2.5 w-2.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:text-white" />
+                        <span className="flex h-6 w-6 items-center justify-center rounded-md bg-ink/10 text-ink transition-all duration-300 group-hover:bg-ink group-hover:text-white">
+                          <ArrowIcon className="h-2.5 w-2.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:!text-white" />
                         </span>
                       </Link>
                     </div>
                   </div>
 
-                  {/* Technical corner labels */}
+                  {/* Technical labels */}
 
                   <div className="absolute left-5 top-5">
                     <span className="font-mono text-[7px] uppercase tracking-[0.18em] text-white/40">
@@ -804,7 +848,9 @@ export function ProductsSection() {
               </motion.div>
             </AnimatePresence>
 
-            {/* Bottom CTA */}
+            {/* =================================================
+                BOTTOM CTA
+            ================================================= */}
 
             <div className="flex flex-col gap-4 pt-6 sm:flex-row sm:items-center sm:justify-between">
               <span className="font-mono text-[8px] uppercase tracking-[0.16em] text-muted">
@@ -813,11 +859,25 @@ export function ProductsSection() {
 
               <Link
                 href="/contact"
-                className="group inline-flex w-fit items-center gap-3 border border-ink bg-ink px-5 py-3 text-[10px] font-semibold uppercase tracking-[0.08em] !text-white transition-all duration-300 hover:border-signal-dark hover:bg-signal-dark"
+                className="
+                  group inline-flex w-fit items-center gap-3
+                  rounded-lg border border-ink bg-ink
+                  px-5 py-3 text-[10px] font-semibold uppercase
+                  tracking-[0.08em] !text-white
+                  shadow-[0_8px_24px_rgba(8,27,36,0.09)]
+                  transition-all duration-300
+                  hover:-translate-y-0.5 hover:border-signal-dark
+                  hover:bg-signal-dark hover:!text-white
+                  hover:shadow-[0_12px_30px_rgba(0,124,103,0.14)]
+                "
               >
-                Talk to our team
+                <span className="!text-white">
+                  Talk to our team
+                </span>
 
-                <ArrowIcon className="h-2.5 w-2.5 !text-white transition-transform duration-300 group-hover:translate-x-1" />
+                <span className="flex h-6 w-6 items-center justify-center rounded-md border border-white/15 bg-white/[0.05]">
+                  <ArrowIcon className="h-2.5 w-2.5 !text-white transition-transform duration-300 group-hover:translate-x-0.5" />
+                </span>
               </Link>
             </div>
           </div>

@@ -218,32 +218,99 @@ export function HeroSection() {
                 {/* =================================================
                     PREMIUM BUTTONS
                 ================================================= */}
+<div className="mt-9 flex flex-col items-center justify-center gap-3.5 sm:flex-row">
+  {/* Primary */}
+  <Link
+    href={activeSlide.href}
+    className="
+      group relative inline-flex h-12 items-center gap-3
+      overflow-hidden rounded-lg
+      border border-[#27d59b]
+      bg-[#27d59b] px-6
+      text-[11px] font-bold uppercase tracking-[0.08em]
+      text-[#081b24]
+      shadow-[0_10px_28px_rgba(39,213,155,0.16)]
+      transition-all duration-300
+      hover:-translate-y-0.5
+      hover:border-white
+      hover:bg-white
+      hover:text-[#081b24]
+      hover:shadow-[0_14px_34px_rgba(0,0,0,0.2)]
+    "
+  >
+    <span className="relative z-10 text-[#081b24] transition-colors duration-300 group-hover:text-[#081b24]">
+      {activeSlide.cta}
+    </span>
 
-                <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-                  {/* Primary */}
-                  <Link
-                    href={activeSlide.href}
-                    className="group relative inline-flex h-12 items-center gap-3 overflow-hidden bg-[#27d59b] px-6 text-[11px] font-bold uppercase tracking-[0.08em] text-[#081b24] transition-all duration-300 hover:bg-white"
-                  >
-                    <span className="relative z-10">
-                      {activeSlide.cta}
-                    </span>
+    <span
+      className="
+        relative z-10 flex h-6 w-6 items-center justify-center
+        rounded-md
+        border border-[#081b24]/10
+        bg-[#081b24]/10
+        transition-all duration-300
+        group-hover:border-[#081b24]
+        group-hover:bg-[#081b24]
+      "
+    >
+      <ArrowIcon
+        className="
+          h-3 w-3
+          text-[#081b24]
+          transition-all duration-300
+          group-hover:translate-x-0.5
+          group-hover:text-white
+        "
+      />
+    </span>
+  </Link>
 
-                    <span className="relative z-10 flex h-6 w-6 items-center justify-center bg-[#081b24]/10 transition-all duration-300 group-hover:bg-[#081b24]">
-                      <ArrowIcon className="h-3.5 w-3.5 text-[#081b24] transition-all duration-300 group-hover:translate-x-0.5 group-hover:text-white" />
-                    </span>
-                  </Link>
+  {/* Secondary */}
+  <Link
+    href="/contact"
+    className="
+      group inline-flex h-12 items-center gap-3
+      rounded-lg
+      border border-white/25
+      bg-white/[0.07] px-6
+      text-[11px] font-bold uppercase tracking-[0.08em]
+      text-white
+      backdrop-blur-md
+      transition-all duration-300
+      hover:-translate-y-0.5
+      hover:border-white
+      hover:bg-white
+      hover:text-[#081b24]
+      hover:shadow-[0_14px_34px_rgba(0,0,0,0.18)]
+    "
+  >
+    <span className="text-white transition-colors duration-300 group-hover:text-[#081b24]">
+      Talk to us
+    </span>
 
-                  {/* Secondary */}
-                  <Link
-                    href="/contact"
-                    className="group inline-flex h-12 items-center gap-3 border border-white/25 bg-white/[0.07] px-6 text-[11px] font-bold uppercase tracking-[0.08em] text-white backdrop-blur-md transition-all duration-300 hover:border-white/60 hover:bg-white hover:text-[#081b24]"
-                  >
-                    Talk to us
-
-                    <ArrowIcon className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" />
-                  </Link>
-                </div>
+    <span
+      className="
+        flex h-6 w-6 items-center justify-center
+        rounded-md
+        border border-white/15
+        bg-white/[0.05]
+        transition-all duration-300
+        group-hover:border-[#081b24]/15
+        group-hover:bg-[#081b24]/10
+      "
+    >
+      <ArrowIcon
+        className="
+          h-3 w-3
+          text-white
+          transition-all duration-300
+          group-hover:translate-x-0.5
+          group-hover:text-[#081b24]
+        "
+      />
+    </span>
+  </Link>
+</div>
               </motion.div>
             </AnimatePresence>
           </div>

@@ -193,7 +193,7 @@ export function Header() {
   }, [open]);
 
   return (
-    <header className="fixed left-0 top-0 z-50 w-full px-3 pt-3 sm:px-5">
+  <header className="fixed left-0 top-0 z-50 w-full rounded-xl px-3 pt-3 sm:px-5">
       {/* Main Navbar */}
       <div
         style={{
@@ -202,7 +202,7 @@ export function Header() {
             ? "#d8e0dd"
             : "rgba(255,255,255,0.12)",
         }}
- className="relative mx-auto flex h-[56px] max-w-4xl items-center justify-between rounded-none border px-4 shadow-[0_8px_28px_rgba(0,0,0,0.08)] transition-all duration-300"
+className="relative mx-auto flex h-[56px] max-w-4xl items-center justify-between rounded-[10px] border px-4 shadow-[0_8px_28px_rgba(0,0,0,0.08)] transition-all duration-300"
       >
         {/* Logo */}
       <Link
