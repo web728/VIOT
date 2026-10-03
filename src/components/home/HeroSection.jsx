@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowIcon } from "@/components/icons";
 import { useEffect, useRef, useState } from "react";
+
+import { ArrowIcon } from "@/components/icons";
 
 const heroSlides = [
   {
@@ -45,70 +46,132 @@ const contentTransition = {
 
 export function HeroSection() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isLoaded, setIsLoaded] = useState(false);
 
-  const videoRefs = useRef([]);
+  /*
+   * Intentionally using Map without explicit DOM/React type aliases.
+   * TSX infers the callback element correctly, while this avoids the
+   * HTMLVideoElement / ElementRef typing issue from the previous version.
+   */
+  const videoRefs = useRef(new Map());
 
   const activeSlide = heroSlides[activeIndex];
+
+  const tryPlay = (video = videoRefs.current.get(activeIndex)) => {
+    if (!video) return;
+
+    video.muted = true;
+    video.defaultMuted = true;
+    video.controls = false;
+    video.playsInline = true;
+
+    const playPromise = video.play();
+
+    if (playPromise && typeof playPromise.catch === "function") {
+      playPromise.catch(() => {});
+    }
+  };
 
   useEffect(() => {
     videoRefs.current.forEach((video, index) => {
       if (!video) return;
 
+      video.muted = true;
+      video.defaultMuted = true;
+      video.controls = false;
+      video.playsInline = true;
+
       if (index === activeIndex) {
-        video.currentTime = 0;
+        try {
+          video.currentTime = 0;
+        } catch {}
 
-        const promise = video.play();
-
-        if (promise !== undefined) {
-          promise.catch(() => {});
-        }
+        window.requestAnimationFrame(() => {
+          tryPlay(video);
+        });
       } else {
         video.pause();
       }
     });
   }, [activeIndex]);
 
-  const handleVideoLoaded = (index) => {
-    if (index === 0) {
-      setIsLoaded(true);
+  useEffect(() => {
+    const handleVisibility = () => {
+      if (!document.hidden) {
+        tryPlay();
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibility);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibility);
+    };
+  }, [activeIndex]);
+
+  const handleVideoLoaded = (index = 0) => {
+    if (index === activeIndex) {
+      tryPlay(videoRefs.current.get(index));
     }
+  };
+
+  const handleVideoCanPlay = (index = 0) => {
+    if (index === activeIndex) {
+      tryPlay(videoRefs.current.get(index));
+    }
+  };
+
+  const handleUnexpectedPause = (index = 0) => {
+    if (index !== activeIndex || document.hidden) return;
+
+    const video = videoRefs.current.get(index);
+
+    window.setTimeout(() => {
+      if (video && video.paused && !video.ended) {
+        tryPlay(video);
+      }
+    }, 120);
   };
 
   const handleVideoEnded = () => {
     setActiveIndex((current) => (current + 1) % heroSlides.length);
   };
 
-  const handleIndicatorClick = (index) => {
+  const handleIndicatorClick = (index = 0) => {
     if (index === activeIndex) return;
-
     setActiveIndex(index);
   };
 
   return (
     <section className="relative overflow-hidden bg-[#081b24] text-white">
-      {/* =========================================================
-          HERO VIDEO
-      ========================================================= */}
-
       <div className="relative h-[90vh] min-h-[560px] max-h-[760px] w-full">
-        {/* =======================================================
-            VIDEO LAYER
-        ======================================================= */}
-
+        {/* VIDEO LAYER */}
         <div className="absolute inset-0">
           {heroSlides.map((slide, index) => (
             <motion.video
               key={slide.id}
               ref={(element) => {
-                videoRefs.current[index] = element;
+                if (element) {
+                  videoRefs.current.set(index, element);
+
+                  element.muted = true;
+                  element.defaultMuted = true;
+                  element.controls = false;
+                  element.playsInline = true;
+                } else {
+                  videoRefs.current.delete(index);
+                }
               }}
               src={slide.video}
               muted
+              autoPlay
               playsInline
-              autoPlay={index === 0}
-              preload={index === 0 ? "auto" : "metadata"}
+              controls={false}
+              preload="auto"
+              tabIndex={-1}
+              onContextMenu={(event) => event.preventDefault()}
               onLoadedData={() => handleVideoLoaded(index)}
+              onCanPlay={() => handleVideoCanPlay(index)}
+              onPause={() => handleUnexpectedPause(index)}
               onEnded={index === activeIndex ? handleVideoEnded : undefined}
               initial={false}
               animate={{
@@ -125,55 +188,19 @@ export function HeroSection() {
                   ease: "linear",
                 },
               }}
-              className="absolute inset-0 h-full w-full object-cover"
+              className="pointer-events-none absolute inset-0 h-full w-full select-none object-cover"
               aria-hidden={index !== activeIndex}
             />
           ))}
         </div>
 
-        {/* =======================================================
-            CINEMATIC OVERLAY
-        ======================================================= */}
-
-        {/* Overall contrast */}
+        {/* CINEMATIC OVERLAYS */}
         <div className="pointer-events-none absolute inset-0 bg-[#081b24]/30" />
-
-        {/* Center readability */}
         <div className="pointer-events-none absolute inset-0 bg-[#081b24]/20" />
-
-        {/* Bottom depth */}
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-52 bg-gradient-to-t from-[#081b24]/85 via-[#081b24]/30 to-transparent" />
-
-        {/* Top depth */}
         <div className="pointer-events-none absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-[#081b24]/55 to-transparent" />
 
-        {/* =======================================================
-            LOADING
-        ======================================================= */}
-{/* 
-        <AnimatePresence>
-          {!isLoaded && (
-            <motion.div
-              initial={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
-              className="absolute inset-0 z-30 flex items-center justify-center bg-[#081b24]"
-            >
-              <div className="flex items-center gap-3">
-                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#27d59b]" />
-
-                <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/45">
-                  Loading experience
-                </span>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence> */}
-
-        {/* =======================================================
-            CENTER CONTENT
-        ======================================================= */}
-
+        {/* CENTER CONTENT */}
         <div className="absolute inset-0 z-10 flex items-center justify-center px-6 pb-10 pt-20 sm:px-8 lg:px-12">
           <div className="mx-auto w-full max-w-4xl text-center">
             <AnimatePresence mode="wait">
@@ -194,7 +221,6 @@ export function HeroSection() {
                 transition={contentTransition}
                 className="flex flex-col items-center"
               >
-                {/* Eyebrow */}
                 <div className="mb-6 flex items-center justify-center gap-3">
                   <span className="h-px w-8 bg-[#27d59b]" />
 
@@ -205,126 +231,52 @@ export function HeroSection() {
                   <span className="h-px w-8 bg-[#27d59b]" />
                 </div>
 
-                {/* Heading */}
                 <h1 className="max-w-4xl font-heading text-[clamp(3rem,6vw,5.8rem)] font-semibold leading-[0.92] tracking-[-0.065em] text-white drop-shadow-[0_4px_25px_rgba(0,0,0,0.25)]">
                   {activeSlide.title}
                 </h1>
 
-                {/* Description */}
                 <p className="mx-auto mt-7 max-w-xl text-sm leading-7 text-white/75 sm:text-base">
                   {activeSlide.description}
                 </p>
 
-                {/* =================================================
-                    PREMIUM BUTTONS
-                ================================================= */}
-<div className="mt-9 flex flex-col items-center justify-center gap-3.5 sm:flex-row">
-  {/* Primary */}
-  <Link
-    href={activeSlide.href}
-    className="
-      group relative inline-flex h-12 items-center gap-3
-      overflow-hidden rounded-lg
-      border border-[#27d59b]
-      bg-[#27d59b] px-6
-      text-[11px] font-bold uppercase tracking-[0.08em]
-      text-[#081b24]
-      shadow-[0_10px_28px_rgba(39,213,155,0.16)]
-      transition-all duration-300
-      hover:-translate-y-0.5
-      hover:border-white
-      hover:bg-white
-      hover:text-[#081b24]
-      hover:shadow-[0_14px_34px_rgba(0,0,0,0.2)]
-    "
-  >
-    <span className="relative z-10 text-[#081b24] transition-colors duration-300 group-hover:text-[#081b24]">
-      {activeSlide.cta}
-    </span>
+                <div className="mt-9 flex flex-col items-center justify-center gap-3.5 sm:flex-row">
+                  <Link
+                    href={activeSlide.href}
+                    className="group relative inline-flex h-12 items-center gap-3 overflow-hidden rounded-lg border border-[#27d59b] bg-[#27d59b] px-6 text-[11px] font-bold uppercase tracking-[0.08em] text-[#081b24] shadow-[0_10px_28px_rgba(39,213,155,0.16)] transition-all duration-300 hover:-translate-y-0.5 hover:border-white hover:bg-white hover:text-[#081b24] hover:shadow-[0_14px_34px_rgba(0,0,0,0.2)]"
+                  >
+                    <span className="relative z-10 text-[#081b24] transition-colors duration-300 group-hover:text-[#081b24]">
+                      {activeSlide.cta}
+                    </span>
 
-    <span
-      className="
-        relative z-10 flex h-6 w-6 items-center justify-center
-        rounded-md
-        border border-[#081b24]/10
-        bg-[#081b24]/10
-        transition-all duration-300
-        group-hover:border-[#081b24]
-        group-hover:bg-[#081b24]
-      "
-    >
-      <ArrowIcon
-        className="
-          h-3 w-3
-          text-[#081b24]
-          transition-all duration-300
-          group-hover:translate-x-0.5
-          group-hover:text-white
-        "
-      />
-    </span>
-  </Link>
+                    <span className="relative z-10 flex h-6 w-6 items-center justify-center rounded-md border border-[#081b24]/10 bg-[#081b24]/10 transition-all duration-300 group-hover:border-[#081b24] group-hover:bg-[#081b24]">
+                      <ArrowIcon className="h-3 w-3 text-[#081b24] transition-all duration-300 group-hover:translate-x-0.5 group-hover:text-white" />
+                    </span>
+                  </Link>
 
-  {/* Secondary */}
-  <Link
-    href="/contact"
-    className="
-      group inline-flex h-12 items-center gap-3
-      rounded-lg
-      border border-white/25
-      bg-white/[0.07] px-6
-      text-[11px] font-bold uppercase tracking-[0.08em]
-      text-white
-      backdrop-blur-md
-      transition-all duration-300
-      hover:-translate-y-0.5
-      hover:border-white
-      hover:bg-white
-      hover:text-[#081b24]
-      hover:shadow-[0_14px_34px_rgba(0,0,0,0.18)]
-    "
-  >
-    <span className="text-white transition-colors duration-300 group-hover:text-[#081b24]">
-      Talk to us
-    </span>
+                  <Link
+                    href="/contact"
+                    className="group inline-flex h-12 items-center gap-3 rounded-lg border border-white/25 bg-white/[0.07] px-6 text-[11px] font-bold uppercase tracking-[0.08em] text-white backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:border-white hover:bg-white hover:text-[#081b24] hover:shadow-[0_14px_34px_rgba(0,0,0,0.18)]"
+                  >
+                    <span className="text-white transition-colors duration-300 group-hover:text-[#081b24]">
+                      Talk to us
+                    </span>
 
-    <span
-      className="
-        flex h-6 w-6 items-center justify-center
-        rounded-md
-        border border-white/15
-        bg-white/[0.05]
-        transition-all duration-300
-        group-hover:border-[#081b24]/15
-        group-hover:bg-[#081b24]/10
-      "
-    >
-      <ArrowIcon
-        className="
-          h-3 w-3
-          text-white
-          transition-all duration-300
-          group-hover:translate-x-0.5
-          group-hover:text-[#081b24]
-        "
-      />
-    </span>
-  </Link>
-</div>
+                    <span className="flex h-6 w-6 items-center justify-center rounded-md border border-white/15 bg-white/[0.05] transition-all duration-300 group-hover:border-[#081b24]/15 group-hover:bg-[#081b24]/10">
+                      <ArrowIcon className="h-3 w-3 text-white transition-all duration-300 group-hover:translate-x-0.5 group-hover:text-[#081b24]" />
+                    </span>
+                  </Link>
+                </div>
               </motion.div>
             </AnimatePresence>
           </div>
         </div>
 
-        {/* =======================================================
-            BOTTOM INDICATORS
-        ======================================================= */}
-
+        {/* BOTTOM INDICATORS */}
         <div className="absolute bottom-7 left-0 right-0 z-20 px-6 sm:px-8 lg:px-12">
           <div className="mx-auto flex max-w-[1440px] items-center justify-center">
             <div className="flex items-center gap-3">
               {heroSlides.map((slide, index) => {
-                const active = index === activeIndex;
+                const isActive = index === activeIndex;
 
                 return (
                   <button
@@ -332,17 +284,17 @@ export function HeroSection() {
                     type="button"
                     onClick={() => handleIndicatorClick(index)}
                     aria-label={`Show ${slide.eyebrow}`}
-                    aria-current={active ? "true" : undefined}
+                    aria-current={isActive ? "true" : undefined}
                     className="group flex items-center gap-2 py-2"
                   >
                     <span
                       className={`relative h-[2px] overflow-hidden transition-all duration-500 ${
-                        active
+                        isActive
                           ? "w-14 bg-white/30"
                           : "w-7 bg-white/20 group-hover:bg-white/40"
                       }`}
                     >
-                      {active && (
+                      {isActive && (
                         <motion.span
                           key={`progress-${activeIndex}`}
                           initial={{ width: "0%" }}
@@ -358,7 +310,7 @@ export function HeroSection() {
 
                     <span
                       className={`hidden text-[8px] uppercase tracking-[0.14em] transition-colors duration-300 sm:block ${
-                        active ? "text-white/75" : "text-white/25"
+                        isActive ? "text-white/75" : "text-white/25"
                       }`}
                     >
                       {slide.eyebrow}
@@ -371,7 +323,17 @@ export function HeroSection() {
         </div>
       </div>
 
-    
+      {/* Hide native mobile video UI / play overlay */}
+      <style>{`
+        video::-webkit-media-controls,
+        video::-webkit-media-controls-enclosure,
+        video::-webkit-media-controls-panel,
+        video::-webkit-media-controls-play-button,
+        video::-webkit-media-controls-start-playback-button {
+          display: none !important;
+          -webkit-appearance: none !important;
+        }
+      `}</style>
     </section>
   );
 }

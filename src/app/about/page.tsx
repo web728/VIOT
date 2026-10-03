@@ -1254,18 +1254,7 @@ export default function AboutPage() {
         </div>
 
 
-        {/* bottom system marker */}
-        <div className="absolute bottom-6 left-6 right-6 z-10 sm:left-8 sm:right-8 lg:left-12 lg:right-12">
-          <div className="mx-auto flex max-w-[1440px] flex-col gap-2 rounded-xl border border-white/[0.08] bg-white/[0.025] px-4 py-3 backdrop-blur-sm sm:flex-row sm:items-center sm:justify-between">
-            <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-white/30">
-              VIoT Technologies LLP
-            </span>
-
-            <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-[#27d59b]/70">
-              Connected systems / 01
-            </span>
-          </div>
-        </div>
+       
 
       </section>
 
