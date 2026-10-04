@@ -1,7 +1,5 @@
 "use client";
 
-
-
 import Image from "next/image";
 
 import Link from "next/link";
@@ -9,11 +7,6 @@ import Link from "next/link";
 import {
 
   ArrowUpRight,
-
-  ChevronLeft,
-
-  ChevronRight,
-
   Radio,
 
   Activity,
@@ -24,29 +17,21 @@ import {
 
   Gauge,
 
-  Cpu,
-
-  Zap,
-
 } from "lucide-react";
 
 import { motion, AnimatePresence } from "framer-motion";
 
+import type { ReactNode } from "react";
+
 import { useState } from "react";
-
-
 
 import { CtaBand } from "@/components/home/CtaBand";
 
+/* =========================================================****
 
+*TYPES****
 
-/* =========================================================
-
-   TYPES
-
-========================================================= */
-
-
+****========================================================= */
 
 type Feature = {
 
@@ -57,8 +42,6 @@ type Feature = {
   text: string;
 
 };
-
-
 
 type MainProduct = {
 
@@ -78,9 +61,11 @@ type MainProduct = {
 
   features: Feature[];
 
+  specs: [string, string][];
+
+  note?: string;
+
 };
-
-
 
 type EcosystemProduct = {
 
@@ -100,17 +85,13 @@ type EcosystemProduct = {
 
 };
 
+/* =========================================================****
 
+*MAIN PRODUCTS****
 
-/* =========================================================
+*Client-supplied primary product set.****
 
-   MAIN PRODUCTS
-
-   Client specifically requested these 3 products.
-
-========================================================= */
-
-
+****========================================================= */
 
 const mainProducts: MainProduct[] = [
 
@@ -124,29 +105,17 @@ const mainProducts: MainProduct[] = [
 
     category: "Vehicle Tracking",
 
-
-
     description:
 
-      "A dependable tracking device for businesses that need essential vehicle visibility, location intelligence and everyday operational monitoring.",
-
-
+      "A compact 4G tracking configuration for dependable location reporting, driving-event visibility and remote vehicle immobilisation across a wide range of vehicle power systems.",
 
     image: "/image/basic-tracking.png",
 
-
-
     gallery: [
 
-      "/image/basic-tracking.png",
-
-      "/image/basic-tracking-2.png",
-
-      "/image/basic-tracking-3.png",
+      "/image/basic-tracking.png"
 
     ],
-
-
 
     features: [
 
@@ -154,19 +123,19 @@ const mainProducts: MainProduct[] = [
 
         icon: Radio,
 
-        title: "Live Location",
+        title: "4G Connectivity",
 
-        text: "Track vehicle location and movement with connected positioning data.",
+        text: "4G Cat.1 connectivity keeps vehicle location and operating events connected to the platform.",
 
       },
 
       {
 
-        icon: Activity,
+        icon: Gauge,
 
-        title: "Operational Visibility",
+        title: "9–90V Operating Voltage",
 
-        text: "Understand essential vehicle movement and operating events.",
+        text: "Wide-voltage compatibility supports installation across a broad range of vehicle types.",
 
       },
 
@@ -174,17 +143,47 @@ const mainProducts: MainProduct[] = [
 
         icon: ShieldCheck,
 
-        title: "Reliable Connectivity",
+        title: "Vehicle Immobilisation",
 
-        text: "Designed for dependable day-to-day field operations.",
+        text: "Remote cut-off capability supports controlled vehicle immobilisation when required.",
 
       },
 
     ],
 
+    specs: [
+
+      ["Network", "4G Cat.1"],
+
+      ["Positioning", "GPS + BDS"],
+
+      ["Input voltage", "9–90V DC"],
+
+      ["Standby current", "<5mA"],
+
+      ["Driving events", "Harsh acceleration, braking and cornering"],
+
+      ["Alerts", "Movement, speeding, geo-fence and vehicle battery events"],
+
+      ["Control", "Remote cut-off / immobilisation"],
+
+      ["Interface", "Optional TTL expansion"],
+
+      ["Operating temperature", "-20°C to +70°C"],
+
+      ["Ingress protection", "IPX4"],
+
+      ["Dimensions", "80 × 31 × 13 mm"],
+
+      ["Weight", "28 g"],
+
+    ],
+
+    note:
+
+      "Supplier model names are intentionally not used. Final configuration is confirmed for the deployment.",
+
   },
-
-
 
   {
 
@@ -196,49 +195,37 @@ const mainProducts: MainProduct[] = [
 
     category: "Advanced Vehicle Intelligence",
 
-
-
     description:
 
-      "A more capable tracking platform for operations that require deeper vehicle visibility, richer telemetry and greater operational control.",
-
-
+      "An advanced 4G vehicle-tracking configuration for fleets that need richer telemetry, temperature and fuel integration, SOS workflows and remote operational control.",
 
     image: "/image/advanced-tracking.png",
 
-
-
     gallery: [
 
-      "/image/advanced-tracking.png",
-
-      "/image/advanced-tracking-2.png",
-
-      "/image/advanced-tracking-3.png",
+      "/image/advanced-tracking.png"
 
     ],
-
-
 
     features: [
 
       {
 
-        icon: Activity,
+        icon: Radio,
 
-        title: "Advanced Telemetry",
+        title: "4G Connectivity",
 
-        text: "Capture richer operational information from connected vehicles.",
+        text: "4G LTE connectivity with cellular fallback supports dependable fleet reporting.",
 
       },
 
       {
 
-        icon: Gauge,
+        icon: Activity,
 
-        title: "Vehicle Intelligence",
+        title: "Temperature & Fuel Sensors",
 
-        text: "Turn vehicle activity into useful operational context.",
+        text: "Optional temperature and fuel-level peripherals add deeper operating context.",
 
       },
 
@@ -246,105 +233,249 @@ const mainProducts: MainProduct[] = [
 
         icon: ShieldCheck,
 
-        title: "Event Visibility",
+        title: "Immobilisation + SOS",
 
-        text: "Stay informed when important operational events occur.",
+        text: "Remote cut-off and SOS input support security and emergency-response workflows.",
 
       },
 
     ],
 
-  },
+    specs: [
 
+      ["Network", "4G LTE with GSM fallback"],
 
+      ["Positioning", "GPS + BDS + LBS"],
 
-  {
+      ["Positioning accuracy", "<2.5 m CEP50"],
 
-    id: "ev-tracking-device",
+      ["Input voltage", "9–90V DC"],
 
-    number: "03",
+      ["Backup battery", "500mAh / 3.7V Li-Polymer"],
 
-    title: "EV Tracking Device",
+      ["Interfaces", "2 × TTL + digital input/output"],
 
-    category: "Electric Vehicle Intelligence",
+      ["Sensor support", "Temperature and fuel-level peripherals"],
 
+      ["Safety", "SOS input + multiple event alarms"],
 
+      ["Control", "Remote fuel / power cut-off"],
 
-    description:
+      ["Bluetooth", "BLE 5.0 accessory support"],
 
-      "Connected tracking designed for electric mobility, bringing vehicle visibility and connected intelligence into EV operations.",
+      ["Operating temperature", "-20°C to +70°C"],
 
+      ["Dimensions", "106 × 54.5 × 16.5 mm"],
 
-
-    image: "/image/ev-tracking.png",
-
-
-
-    gallery: [
-
-      "/image/ev-tracking.png",
-
-      "/image/ev-tracking-2.png",
-
-      "/image/ev-tracking-3.png",
+      ["Weight", "90 g"],
 
     ],
 
+    note:
 
+      "Temperature and fuel functions depend on the selected peripheral configuration.",
+
+  },
+
+  {
+
+    id: "video-telematics",
+
+    number: "03",
+
+    title: "Video Telematics",
+
+    category: "AI Dash Camera",
+
+    description:
+
+      "A connected three-channel AI video system that combines road and cabin visibility with driver-safety intelligence, positioning and 4G remote monitoring.",
+
+    image: "/image/video-telementics.png",
+
+    gallery: [
+
+      "/image/video-telementics.png"
+
+    ],
 
     features: [
 
       {
 
-        icon: BatteryCharging,
+        icon: Activity,
 
-        title: "EV Ready",
+        title: "Triple-Channel HD",
 
-        text: "Designed around the requirements of connected electric mobility.",
-
-      },
-
-      {
-
-        icon: Zap,
-
-        title: "Connected Monitoring",
-
-        text: "Bring EV movement and operational information into one view.",
+        text: "One 1080P front camera and two 720P channels provide simultaneous road and cabin coverage.",
 
       },
 
       {
 
-        icon: Cpu,
+        icon: ShieldCheck,
 
-        title: "Smart Data",
+        title: "ADAS · DMS · BSD",
 
-        text: "Connect vehicle information with the wider VIoT platform.",
+        text: "AI-assisted safety functions detect driver and road-risk events for faster review.",
+
+      },
+
+      {
+
+        icon: Radio,
+
+        title: "4G Remote Connectivity",
+
+        text: "Built-in 4G supports live preview, remote monitoring, cloud connectivity and OTA updates.",
 
       },
 
     ],
 
+    specs: [
+
+      ["Camera channels", "3 channels"],
+
+      ["Front camera", "1080P Full HD · 115° wide angle"],
+
+      ["Additional cameras", "2 × 720P HD"],
+
+      ["AI functions", "ADAS, DMS and BSD"],
+
+      ["Cellular network", "Built-in 4G LTE"],
+
+      ["Positioning", "GPS + Beidou"],
+
+      ["Storage", "TF card support up to 512GB"],
+
+      ["Compression", "H.265 / H.264"],
+
+      ["Audio", "Built-in microphone and speaker"],
+
+      ["Live operations", "Live preview + voice intercom"],
+
+      ["Power supply", "DC 10V–36V"],
+
+      ["Power consumption", "<5W"],
+
+      ["Operating temperature", "-25°C to +70°C"],
+
+      ["Dimensions", "120 × 77 × 55 mm"],
+
+      ["Weight", "260 g"],
+
+    ],
+
+    note:
+
+      "Supplier device names are intentionally omitted. Final camera configuration is confirmed before deployment.",
+
+  },
+
+  {
+
+    id: "smart-logistics-locks",
+
+    number: "04",
+
+    title: "Smart Logistics Locks",
+
+    category: "Cargo Security",
+
+    description:
+
+      "A connected logistics lock combining 4G and GNSS positioning with lock-state visibility, long battery life and tamper-aware cargo security workflows.",
+
+    image: "/image/smart-lock.png",
+
+    gallery: [
+
+      "/image/smart-lock.png"
+
+    ],
+
+    features: [
+
+      {
+
+        icon: Radio,
+
+        title: "4G + GNSS",
+
+        text: "Connected positioning keeps lock events tied to location and operational context.",
+
+      },
+
+      {
+
+        icon: BatteryCharging,
+
+        title: "12000mAh Battery",
+
+        text: "A rechargeable high-capacity battery supports long-duration logistics deployments.",
+
+      },
+
+      {
+
+        icon: ShieldCheck,
+
+        title: "Tamper Protection",
+
+        text: "Shell-open, lock-cut and lock-failure events can be reported to the platform.",
+
+      },
+
+    ],
+
+    specs: [
+
+      ["Connectivity", "4G cellular + GNSS positioning"],
+
+      ["Battery", "12000mAh rechargeable lithium battery"],
+
+      ["Access methods", "IC card, BLE, SMS, platform, app, geo-fence and timing"],
+
+      ["Bluetooth", "Bluetooth 5.1"],
+
+      ["RFID", "13.56MHz · ISO14443A"],
+
+      ["Security events", "Shell-open, lock-cut, lock-failure and low-power alerts"],
+
+      ["Positioning", "GNSS + assisted / network positioning"],
+
+      ["Protection", "IP68"],
+
+      ["Power saving", "Moving/static, latent and scheduled wake modes"],
+
+      ["Charging", "DC 12V / 2A"],
+
+      ["Operating temperature", "-30°C to +80°C"],
+
+      ["Dimensions", "140 × 86 × 38 mm"],
+
+      ["Lock formats", "Rope-type and pole-type configurations"],
+
+    ],
+
+    note:
+
+      "Exact lock format and regional communication bands depend on deployment configuration.",
+
   },
 
 ];
 
+/* =========================================================****
 
+*MORE FROM VIOT ECOSYSTEM****
 
-/* =========================================================
+*These are separate from the 4 primary products.****
 
-   MORE FROM VIOT ECOSYSTEM
+*AIS 140 intentionally NOT included.****
 
-
-
-   These are separate from the 3 primary products.
-
-   AIS 140 intentionally NOT included.
-
-========================================================= */
-
-
+****========================================================= */
 
 const ecosystemProducts: EcosystemProduct[] = [
 
@@ -366,15 +497,11 @@ const ecosystemProducts: EcosystemProduct[] = [
 
     gallery: [
 
-      "/image/video.png",
-
-      "/image/video.png",
+      "/image/vehicle-telematics.png"
 
     ],
 
   },
-
-
 
   {
 
@@ -394,15 +521,11 @@ const ecosystemProducts: EcosystemProduct[] = [
 
     gallery: [
 
-      "/image/car.jpeg",
-
-      "/image/car.jpeg",
+      "/image/video-telementics.png"
 
     ],
 
   },
-
-
 
   {
 
@@ -422,15 +545,11 @@ const ecosystemProducts: EcosystemProduct[] = [
 
     gallery: [
 
-      "/image/lock.png",
-
-      "/image/lock.png",
+      "/image/smart-lock.png"
 
     ],
 
   },
-
-
 
   {
 
@@ -450,15 +569,11 @@ const ecosystemProducts: EcosystemProduct[] = [
 
     gallery: [
 
-      "/image/lock.png",
-
-      "/image/lock.png",
+      "/image/smart-infra.png"
 
     ],
 
   },
-
-
 
   {
 
@@ -478,15 +593,11 @@ const ecosystemProducts: EcosystemProduct[] = [
 
     gallery: [
 
-      "/image/lab.jpeg",
-
-      "/image/lab.jpeg",
+      "/image/asset-trackers.png"
 
     ],
 
   },
-
-
 
   {
 
@@ -506,15 +617,11 @@ const ecosystemProducts: EcosystemProduct[] = [
 
     gallery: [
 
-      "/image/ev.jpeg",
-
-      "/image/ev.jpeg",
+      "/image/iot-sensors.png"
 
     ],
 
   },
-
-
 
   {
 
@@ -534,9 +641,7 @@ const ecosystemProducts: EcosystemProduct[] = [
 
     gallery: [
 
-      "/image/lock.png",
-
-      "/image/lock.png",
+      "/image/access-control.png"
 
     ],
 
@@ -544,15 +649,11 @@ const ecosystemProducts: EcosystemProduct[] = [
 
 ];
 
+/* =========================================================****
 
+*SCROLL REVEAL****
 
-/* =========================================================
-
-   SCROLL REVEAL
-
-========================================================= */
-
-
+****========================================================= */
 
 function Reveal({
 
@@ -564,7 +665,7 @@ function Reveal({
 
 }: {
 
-  children: React.ReactNode;
+  children: ReactNode;
 
   className?: string;
 
@@ -622,27 +723,21 @@ function Reveal({
 
 }
 
+/* =========================================================****
 
+*APPROVED VIOT SVG ANIMATION****
 
-/* =========================================================
+*KEEP THIS VISUAL LANGUAGE:****
 
-   APPROVED VIOT SVG ANIMATION
+*- flowing paths****
 
+*- dashed green data flow****
 
+*- rotating engineering rings****
 
-   KEEP THIS VISUAL LANGUAGE:
+*- moving signal points****
 
-   - flowing paths
-
-   - dashed green data flow
-
-   - rotating engineering rings
-
-   - moving signal points
-
-========================================================= */
-
-
+****========================================================= */
 
 function VIoTSVGBackground({
 
@@ -670,8 +765,6 @@ function VIoTSVGBackground({
 
       {/* atmospheric depth */}
 
-
-
       <div
 
         className={`absolute -left-48 top-[12%] h-[520px] w-[520px] rounded-full blur-3xl ${
@@ -685,8 +778,6 @@ function VIoTSVGBackground({
         }`}
 
       />
-
-
 
       <div
 
@@ -702,15 +793,11 @@ function VIoTSVGBackground({
 
       />
 
+      {/* =====================================================****
 
+      FLOWING SVG PATHS****
 
-      {/* =====================================================
-
-          FLOWING SVG PATHS
-
-      ===================================================== */}
-
-
+  ===================================================== */}
 
       <svg
 
@@ -725,8 +812,6 @@ function VIoTSVGBackground({
       >
 
         {/* Upper path */}
-
-
 
         <motion.path
 
@@ -772,11 +857,7 @@ function VIoTSVGBackground({
 
         />
 
-
-
         {/* MAIN GREEN FLOW */}
-
-
 
         <motion.path
 
@@ -814,11 +895,7 @@ function VIoTSVGBackground({
 
         />
 
-
-
         {/* diagonal engineering path */}
-
-
 
         <path
 
@@ -838,11 +915,7 @@ function VIoTSVGBackground({
 
         />
 
-
-
         {/* lower flow */}
-
-
 
         <motion.path
 
@@ -882,15 +955,11 @@ function VIoTSVGBackground({
 
       </svg>
 
+      {/* =====================================================****
 
+      ENGINEERING RINGS****
 
-      {/* =====================================================
-
-          ENGINEERING RINGS
-
-      ===================================================== */}
-
-
+  ===================================================== */}
 
       <motion.div
 
@@ -922,8 +991,6 @@ function VIoTSVGBackground({
 
       />
 
-
-
       <motion.div
 
         className={`absolute right-[9%] top-[18%] h-[300px] w-[300px] rounded-full border ${
@@ -954,8 +1021,6 @@ function VIoTSVGBackground({
 
       />
 
-
-
       <div
 
         className={`absolute right-[17%] top-[27%] h-[150px] w-[150px] rounded-full border ${
@@ -969,8 +1034,6 @@ function VIoTSVGBackground({
         }`}
 
       />
-
-
 
       <div
 
@@ -986,15 +1049,11 @@ function VIoTSVGBackground({
 
       />
 
+      {/* =====================================================****
 
+      MOVING SIGNAL POINTS****
 
-      {/* =====================================================
-
-          MOVING SIGNAL POINTS
-
-      ===================================================== */}
-
-
+  ===================================================== */}
 
       <motion.span
 
@@ -1021,8 +1080,6 @@ function VIoTSVGBackground({
         }}
 
       />
-
-
 
       <motion.span
 
@@ -1052,8 +1109,6 @@ function VIoTSVGBackground({
 
       />
 
-
-
       <motion.span
 
         className="absolute right-[18%] top-[38%] h-1.5 w-1.5 rounded-full bg-[#27d59b]"
@@ -1080,11 +1135,7 @@ function VIoTSVGBackground({
 
       />
 
-
-
       {/* ambient points */}
-
-
 
       {[
 
@@ -1152,15 +1203,11 @@ function VIoTSVGBackground({
 
 }
 
+/* =========================================================****
 
+*HERO****
 
-/* =========================================================
-
-   HERO
-
-========================================================= */
-
-
+****========================================================= */
 
 function ProductHero() {
 
@@ -1168,25 +1215,19 @@ function ProductHero() {
 
     <section className="relative mx-auto h-[84vh] min-h-[560px] max-h-[720px] overflow-hidden bg-[#081b24] text-white">
 
-      {/* =====================================================
+      {/* =====================================================****
 
-          APPROVED VIOT SVG BACKGROUND
+      APPROVED VIOT SVG BACKGROUND****
 
-      ===================================================== */}
-
-
+  ===================================================== */}
 
       <VIoTSVGBackground dark />
 
+      {/* =====================================================****
 
+      TECHNICAL GRID****
 
-      {/* =====================================================
-
-          TECHNICAL GRID
-
-      ===================================================== */}
-
-
+  ===================================================== */}
 
       <div className="pointer-events-none absolute inset-0 z-[1] opacity-[0.025]">
 
@@ -1226,15 +1267,11 @@ function ProductHero() {
 
       </div>
 
+      {/* =====================================================****
 
+      VIDEO — BACKGROUND VISUAL****
 
-      {/* =====================================================
-
-          VIDEO — BACKGROUND VISUAL
-
-      ===================================================== */}
-
-
+  ===================================================== */}
 
       <motion.div
 
@@ -1294,67 +1331,47 @@ function ProductHero() {
 
         </video>
 
+        {/* =================================================****
 
+        GLOBAL VIDEO OVERLAY****
 
-        {/* =================================================
-
-            GLOBAL VIDEO OVERLAY
-
-        ================================================= */}
-
-
+    ================================================= */}
 
         <div className="absolute inset-0 bg-[#081b24]/30" />
 
+        {/* =================================================****
 
+        LEFT DARK GRADIENT****
 
-        {/* =================================================
+        This keeps text readable****
 
-            LEFT DARK GRADIENT
-
-            This keeps text readable
-
-        ================================================= */}
-
-
+    ================================================= */}
 
         <div className="absolute inset-y-0 left-0 w-full bg-gradient-to-r from-[#081b24] via-[#081b24]/95 via-[42%] to-[#081b24]/15" />
 
+        {/* =================================================****
 
+        BOTTOM CINEMATIC BLEND****
 
-        {/* =================================================
-
-            BOTTOM CINEMATIC BLEND
-
-        ================================================= */}
-
-
+    ================================================= */}
 
         <div className="absolute inset-x-0 bottom-0 h-[32%] bg-gradient-to-t from-[#081b24] to-transparent" />
 
+        {/* =================================================****
 
+        TOP BLEND****
 
-        {/* =================================================
-
-            TOP BLEND
-
-        ================================================= */}
-
-
+    ================================================= */}
 
         <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[#081b24]/45 to-transparent" />
 
       </motion.div>
 
+      {/* =====================================================****
 
+      ANIMATED TELEMETRY POINT****
 
-      {/* =====================================================
-
-          ANIMATED TELEMETRY POINT
-
-      ===================================================== */}
-
-
+  ===================================================== */}
 
       <motion.span
 
@@ -1382,15 +1399,11 @@ function ProductHero() {
 
       />
 
+      {/* =====================================================****
 
+      MAIN CONTENT****
 
-      {/* =====================================================
-
-          MAIN CONTENT
-
-      ===================================================== */}
-
-
+  ===================================================== */}
 
       <div className="relative z-[10] mx-auto flex h-full max-w-[1440px] items-center px-7 sm:px-10 lg:px-14 xl:px-16">
 
@@ -1426,19 +1439,15 @@ function ProductHero() {
 
         >
 
-          {/* =================================================
+          {/* =================================================****
 
-              KICKER
+          KICKER****
 
-          ================================================= */}
-
-
+      ================================================= */}
 
           <div className="flex items-center gap-3">
 
             <span className="h-px w-9 bg-[#27d59b]" />
-
-
 
             <span className="font-mono text-[9px] font-medium uppercase tracking-[0.2em] text-[#27d59b]">
 
@@ -1448,15 +1457,11 @@ function ProductHero() {
 
           </div>
 
+          {/* =================================================****
 
+          HEADING****
 
-          {/* =================================================
-
-              HEADING
-
-          ================================================= */}
-
-
+      ================================================= */}
 
           <h1 className="mt-7 max-w-[650px] font-heading text-[clamp(3rem,5.3vw,5.25rem)] font-semibold leading-[0.94] tracking-[-0.065em] text-white">
 
@@ -1466,8 +1471,6 @@ function ProductHero() {
 
             </span>
 
-
-
             <span className="mt-2 block whitespace-nowrap text-[#27d59b]">
 
               with you.
@@ -1476,15 +1479,11 @@ function ProductHero() {
 
           </h1>
 
+          {/* =================================================****
 
+          DESCRIPTION****
 
-          {/* =================================================
-
-              DESCRIPTION
-
-          ================================================= */}
-
-
+      ================================================= */}
 
           <p className="mt-7 max-w-[500px] text-[14px] leading-[1.8] text-white/55 sm:text-[15px]">
 
@@ -1496,15 +1495,11 @@ function ProductHero() {
 
           </p>
 
+          {/* =================================================****
 
+          PRODUCT INDICATORS****
 
-          {/* =================================================
-
-              PRODUCT INDICATORS
-
-          ================================================= */}
-
-
+      ================================================= */}
 
           <div className="mt-8 flex flex-wrap items-center gap-2.5">
 
@@ -1514,18 +1509,21 @@ function ProductHero() {
 
               "Advanced Tracking",
 
-              "EV Tracking",
+              "Video Telematics",
+
+              "Smart Logistics",
 
             ].map((item) => (
 
               <div
+
                 key={item}
+
                 className="flex items-center gap-2 rounded-lg border border-white/[0.08] bg-white/[0.035] px-3 py-2 backdrop-blur-sm"
+
               >
 
                 <span className="h-1.5 w-1.5 rounded-full bg-[#27d59b]" />
-
-
 
                 <span className="font-mono text-[8px] uppercase tracking-[0.15em] text-white/50">
 
@@ -1543,15 +1541,11 @@ function ProductHero() {
 
       </div>
 
+      {/* =====================================================****
 
+      LIVE DATA LABEL****
 
-      {/* =====================================================
-
-          LIVE DATA LABEL
-
-      ===================================================== */}
-
-
+  ===================================================== */}
 
       <div className="absolute bottom-7 right-7 z-[11] rounded-xl border border-white/10 bg-[#081b24]/75 px-4 py-3 shadow-[0_10px_30px_rgba(0,0,0,0.18)] backdrop-blur-md sm:right-10 lg:right-14">
 
@@ -1577,8 +1571,6 @@ function ProductHero() {
 
           />
 
-
-
           <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-white/65">
 
             Live vehicle data
@@ -1589,15 +1581,11 @@ function ProductHero() {
 
       </div>
 
+      {/* =====================================================****
 
+      BOTTOM STATUS LINE****
 
-      {/* =====================================================
-
-          BOTTOM STATUS LINE
-
-      ===================================================== */}
-
-
+  ===================================================== */}
 
       <div className="absolute bottom-0 left-0 right-0 z-[10] px-7 pb-4 sm:px-10 lg:px-14">
 
@@ -1611,122 +1599,145 @@ function ProductHero() {
 
 }
 
-/* =========================================================
+/* =========================================================****
 
-   PRODUCT CAROUSEL
+*PRODUCT CAROUSEL****
 
-========================================================= */
-
-
+****========================================================= */
 
 function ProductCarousel({
+
   product,
+
 }: {
+
   product: MainProduct;
+
 }) {
+
   const [active, setActive] = useState(0);
 
-  const next = () => {
-    setActive((current) =>
-      current === product.gallery.length - 1 ? 0 : current + 1
-    );
-  };
+  const hasMultipleImages = product.gallery.length > 1;
+return (
 
-  const previous = () => {
-    setActive((current) =>
-      current === 0 ? product.gallery.length - 1 : current - 1
-    );
-  };
+    <div className="relative overflow-hidden rounded-2xl border border-[#c8d5d0] bg-[#eef2ef] shadow-[0_18px_45px_rgba(8,27,36,0.09)]">
 
-  return (
-    <div className="relative overflow-hidden rounded-2xl border border-[#c8d5d0] bg-[#081b24] shadow-[0_18px_45px_rgba(8,27,36,0.09)]">
-      <div className="relative aspect-[16/10] sm:aspect-[16/9]">
+      <div className="relative aspect-[4/3] sm:aspect-[16/10] lg:aspect-[4/3]">
+
         <AnimatePresence mode="wait">
+
           <motion.div
+
             key={product.gallery[active]}
+
             initial={{ opacity: 0, scale: 1.015 }}
+
             animate={{ opacity: 1, scale: 1 }}
+
             exit={{ opacity: 0 }}
+
             transition={{ duration: 0.4 }}
-            className="absolute inset-0"
+
+            className="absolute inset-0 flex items-center justify-center p-5 sm:p-7 lg:p-8"
+
           >
+
             <Image
+
               src={product.gallery[active]}
-              alt={`${product.title} image ${active + 1}`}
+
+              alt={product.title}
+
               fill
+
               sizes="(max-width: 1024px) 100vw, 56vw"
-              className="object-cover"
+
+              className="object-contain p-5 sm:p-7 lg:p-8"
+
             />
+
           </motion.div>
+
         </AnimatePresence>
 
-        <div className="absolute inset-0 bg-gradient-to-t from-[#081b24]/55 via-transparent to-[#081b24]/5" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#081b24]/18 via-transparent to-white/[0.04]" />
 
-        <div className="absolute left-4 top-4 rounded-lg border border-white/10 bg-[#081b24]/55 px-3 py-2 backdrop-blur-md sm:left-5 sm:top-5">
-          <span className="font-mono text-[8px] uppercase tracking-[0.17em] text-white/70">
+        <div className="absolute left-4 top-4 rounded-lg border border-[#081b24]/10 bg-white/85 px-3 py-2 shadow-[0_6px_18px_rgba(8,27,36,0.06)] backdrop-blur-md sm:left-5 sm:top-5">
+
+          <span className="font-mono text-[8px] uppercase tracking-[0.17em] text-[#607078]">
+
             {product.category}
+
           </span>
+
         </div>
+<div className="absolute bottom-4 left-4 sm:bottom-5 sm:left-5">
 
-        <div className="absolute bottom-4 right-4 flex gap-2 sm:bottom-5 sm:right-5">
-          <button
-            type="button"
-            onClick={previous}
-            aria-label="Previous image"
-            className="flex h-9 w-9 items-center justify-center rounded-lg border border-white/15 bg-[#081b24]/65 text-white backdrop-blur-md transition-all duration-300 hover:border-[#27d59b] hover:text-[#27d59b]"
-          >
-            <ChevronLeft className="h-4 w-4" />
-          </button>
+          <span className="rounded-md bg-white/75 px-2 py-1 font-mono text-[8px] uppercase tracking-[0.16em] text-[#607078] backdrop-blur-sm">
 
-          <button
-            type="button"
-            onClick={next}
-            aria-label="Next image"
-            className="flex h-9 w-9 items-center justify-center rounded-lg border border-white/15 bg-[#081b24]/65 text-white backdrop-blur-md transition-all duration-300 hover:border-[#27d59b] hover:text-[#27d59b]"
-          >
-            <ChevronRight className="h-4 w-4" />
-          </button>
-        </div>
-
-        <div className="absolute bottom-4 left-4 sm:bottom-5 sm:left-5">
-          <span className="font-mono text-[8px] uppercase tracking-[0.16em] text-white/45">
             Product / {product.number}
+
           </span>
+
         </div>
+
       </div>
 
-      <div className="flex items-center gap-2 border-t border-white/10 bg-[#081b24] px-4 py-3 sm:px-5">
-        {product.gallery.map((_, index) => (
-          <button
-            key={index}
-            type="button"
-            onClick={() => setActive(index)}
-            aria-label={`Show image ${index + 1}`}
-            className={`h-1 rounded-full transition-all duration-300 ${
-              active === index ? "w-8 bg-[#27d59b]" : "w-4 bg-white/15 hover:bg-white/30"
-            }`}
-          />
-        ))}
-      </div>
+      {hasMultipleImages && (
+
+        <div className="flex items-center gap-2 border-t border-[#d7e0dc] bg-white/80 px-4 py-3 sm:px-5">
+
+          {product.gallery.map((_, index) => (
+
+            <button
+
+              key={index}
+
+              type="button"
+
+              onClick={() => setActive(index)}
+
+              aria-label={`Show image ${index + 1}`}
+
+              className={`h-1 rounded-full transition-all duration-300 ${
+
+                active === index ? "w-8 bg-[#007c67]" : "w-4 bg-[#081b24]/12 hover:bg-[#081b24]/25"
+
+              }`}
+
+            />
+
+          ))}
+
+        </div>
+
+      )}
+
     </div>
+
   );
+
 }
 
-/* =========================================================
+/* =========================================================****
 
-   SPECIFICATIONS BUTTON
+*SPECIFICATIONS BUTTON****
 
-   Future client specs can be inserted into modal.
+*Future client specs can be inserted into modal.****
 
-========================================================= */
+****========================================================= */
 
+function SpecificationsButton({
 
+  product,
 
-function SpecificationsButton() {
+}: {
+
+  product: MainProduct;
+
+}) {
 
   const [open, setOpen] = useState(false);
-
-
 
   return (
 
@@ -1742,15 +1753,11 @@ function SpecificationsButton() {
 
       >
 
-        Specifications
+        <span>Specifications</span>
 
-
-
-        <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+        <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
 
       </button>
-
-
 
       <AnimatePresence>
 
@@ -1758,25 +1765,15 @@ function SpecificationsButton() {
 
           <motion.div
 
-            initial={{
+            initial={{ opacity: 0 }}
 
-              opacity: 0,
+            animate={{ opacity: 1 }}
 
-            }}
+            exit={{ opacity: 0 }}
 
-            animate={{
+            transition={{ duration: 0.2 }}
 
-              opacity: 1,
-
-            }}
-
-            exit={{
-
-              opacity: 0,
-
-            }}
-
-            className="fixed inset-0 z-[100] flex items-center justify-center bg-[#081b24]/80 px-5 backdrop-blur-sm"
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-[#081b24]/80 px-4 py-6 backdrop-blur-sm sm:px-6"
 
             onClick={() => setOpen(false)}
 
@@ -1784,129 +1781,109 @@ function SpecificationsButton() {
 
             <motion.div
 
-              initial={{
+              initial={{ opacity: 0, y: 14, scale: 0.985 }}
 
-                opacity: 0,
+              animate={{ opacity: 1, y: 0, scale: 1 }}
 
-                y: 20,
+              exit={{ opacity: 0, y: 14, scale: 0.985 }}
 
-                scale: 0.98,
-
-              }}
-
-              animate={{
-
-                opacity: 1,
-
-                y: 0,
-
-                scale: 1,
-
-              }}
-
-              exit={{
-
-                opacity: 0,
-
-                y: 20,
-
-                scale: 0.98,
-
-              }}
-
-              transition={{
-
-                duration: 0.3,
-
-              }}
+              transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
 
               onClick={(event) => event.stopPropagation()}
 
-              className="relative w-full max-w-2xl rounded-2xl border border-[#c7d5d0] bg-[#f4f6f2] p-7 shadow-[0_24px_70px_rgba(0,0,0,0.22)] sm:p-9"
+              className="relative max-h-[84vh] w-full max-w-xl overflow-hidden rounded-2xl border border-[#c7d5d0] bg-[#f4f6f2] shadow-[0_24px_70px_rgba(0,0,0,0.22)]"
 
             >
 
-              <button
+              {/* HEADER */}
 
-                type="button"
+              <div className="flex items-start justify-between gap-5 border-b border-[#d3ddd9] px-5 py-5 sm:px-6">
 
-                onClick={() => setOpen(false)}
+                <div className="min-w-0">
 
-                className="absolute right-5 top-5 rounded-md border border-[#cdd5d2] bg-white/70 px-3 py-2 font-mono text-[8px] uppercase tracking-[0.15em] text-[#607078] transition-colors hover:border-[#007c67]/30 hover:text-[#081b24]"
+                  <div className="flex items-center gap-3">
 
-              >
+                    <span className="h-px w-7 bg-[#27d59b]" />
 
-                Close
+                    <span className="font-mono text-[8px] font-semibold uppercase tracking-[0.18em] text-[#007c67]">
 
-              </button>
-
-
-
-              <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-[#007c67]">
-
-                Technical profile
-
-              </span>
-
-
-
-              <h3 className="mt-3 font-heading text-3xl font-semibold tracking-[-0.04em] text-[#081b24]">
-
-                Specifications
-
-              </h3>
-
-
-
-              <p className="mt-4 max-w-xl text-sm leading-6 text-[#607078]">
-
-                Product specifications will be added here once the final
-
-                technical information is provided by the client.
-
-              </p>
-
-
-
-              <div className="mt-7 grid gap-3 sm:grid-cols-2">
-
-                {[
-
-                  "Connectivity",
-
-                  "Power Input",
-
-                  "Installation",
-
-                  "Platform",
-
-                ].map((item) => (
-
-                  <div
-
-                    key={item}
-
-                    className="rounded-xl border border-[#cdd5d2] bg-white/65 p-5"
-
-                  >
-
-                    <span className="font-mono text-[8px] uppercase tracking-[0.16em] text-[#007c67]">
-
-                      {item}
+                      Technical profile
 
                     </span>
 
+                  </div>
 
+                  <h3 className="mt-3 font-heading text-2xl font-semibold leading-[1.05] tracking-[-0.035em] text-[#081b24] sm:text-[28px]">
 
-                    <p className="mt-2 text-xs text-[#607078]">
+                    {product.title}
 
-                      Technical details to be provided.
+                  </h3>
 
-                    </p>
+                </div>
+
+                <button
+
+                  type="button"
+
+                  onClick={() => setOpen(false)}
+
+                  className="shrink-0 rounded-lg border border-[#cdd5d2] bg-white/70 px-3 py-2 font-mono text-[8px] uppercase tracking-[0.14em] text-[#607078] transition-colors duration-300 hover:border-[#007c67]/30 hover:text-[#081b24]"
+
+                >
+
+                  Close
+
+                </button>
+
+              </div>
+
+              {/* SPECS */}
+
+              <div className="max-h-[60vh] overflow-y-auto px-5 py-5 sm:px-6">
+
+                <div className="overflow-hidden rounded-xl border border-[#cdd8d4] bg-white/65">
+
+                  <div className="divide-y divide-[#d8e1de]">
+
+                    {product.specs.map(([label, value]) => (
+
+                      <div
+
+                        key={`${label}-${value}`}
+
+                        className="grid gap-1.5 px-4 py-3.5 sm:grid-cols-[150px_1fr] sm:items-start sm:gap-5 sm:px-5"
+
+                      >
+
+                        <span className="font-mono text-[8px] font-semibold uppercase tracking-[0.14em] text-[#007c67]">
+
+                          {label}
+
+                        </span>
+
+                        <span className="text-[12px] leading-5 text-[#42545b]">
+
+                          {value}
+
+                        </span>
+
+                      </div>
+
+                    ))}
 
                   </div>
 
-                ))}
+                </div>
+
+                {product.note && (
+
+                  <p className="mt-4 text-[10px] leading-5 text-[#718087]">
+
+                    {product.note}
+
+                  </p>
+
+                )}
 
               </div>
 
@@ -1924,111 +1901,167 @@ function SpecificationsButton() {
 
 }
 
+/* =========================================================***
 
+MAIN PRODUCT SECTION***
 
-/* =========================================================
-
-   MAIN PRODUCT SECTION
-
-========================================================= */
-
-
+***========================================================= */
 
 function MainProductSection({
+
   product,
+
 }: {
+
   product: MainProduct;
+
 }) {
+
   return (
+
     <section
+
       id={product.id}
+
       className="relative overflow-hidden border-t border-[#d4dfdb] bg-[#f4f6f2]"
+
     >
+
       <VIoTSVGBackground />
 
       <div className="relative z-10 mx-auto max-w-[1320px] px-6 py-14 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
+
         <div className="grid gap-8 lg:grid-cols-12 lg:items-center lg:gap-10">
-          <Reveal className="lg:col-span-7">
+
+          <Reveal className="lg:col-span-7 xl:col-span-7">
+
             <ProductCarousel product={product} />
+
           </Reveal>
 
           <Reveal delay={0.08} className="lg:col-span-5">
+
             <div className="max-w-xl">
+
               <div className="flex items-center gap-3">
+
                 <span className="flex h-8 min-w-8 items-center justify-center rounded-lg border border-[#007c67]/15 bg-white/70 px-2 font-mono text-[8px] font-semibold tracking-[0.14em] text-[#007c67]">
+
                   {product.number}
+
                 </span>
 
                 <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-[#607078]">
+
                   {product.category}
+
                 </span>
+
               </div>
 
               <h2 className="mt-5 font-heading text-3xl font-semibold leading-[1.02] tracking-[-0.045em] text-[#081b24] sm:text-4xl lg:text-[44px]">
+
                 {product.title}
+
               </h2>
 
               <p className="mt-4 max-w-lg text-sm leading-7 text-[#607078] sm:text-[15px]">
+
                 {product.description}
+
               </p>
 
-              <div className="mt-7 grid gap-2.5 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
+              <div className="mt-6 grid gap-2.5 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
+
                 {product.features.map((feature, index) => {
+
                   const Icon = feature.icon;
 
                   return (
+
                     <motion.div
+
                       key={feature.title}
+
                       initial={{ opacity: 0, y: 10 }}
+
                       whileInView={{ opacity: 1, y: 0 }}
+
                       viewport={{ once: true, amount: 0.25 }}
+
                       transition={{
+
                         duration: 0.45,
+
                         delay: index * 0.06,
+
                         ease: [0.16, 1, 0.3, 1],
+
                       }}
+
                       className="group rounded-xl border border-[#cdd8d4] bg-white/65 p-3.5 backdrop-blur-sm transition-all duration-300 hover:border-[#007c67]/25 hover:bg-white"
+
                     >
+
                       <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-[#007c67]/15 bg-[#007c67]/[0.04] text-[#007c67]">
+
                         <Icon className="h-3.5 w-3.5" />
+
                       </div>
 
                       <h3 className="mt-3 font-heading text-[13px] font-semibold text-[#081b24]">
+
                         {feature.title}
+
                       </h3>
 
                       <p className="mt-1 text-[11px] leading-[1.6] text-[#607078]">
+
                         {feature.text}
+
                       </p>
+
                     </motion.div>
+
                   );
+
                 })}
+
               </div>
 
               <div className="mt-7 flex flex-wrap items-center gap-4">
-                <SpecificationsButton />
+
+                <SpecificationsButton product={product} />
 
                 <span className="font-mono text-[8px] uppercase tracking-[0.15em] text-[#607078]">
+
                   Technical details
+
                 </span>
+
               </div>
+
             </div>
+
           </Reveal>
+
         </div>
+
       </div>
+
     </section>
+
   );
+
 }
 
-/* =========================================================
+/* =========================================================****
 
-   TECHNICAL PROFILE
+*TECHNICAL PROFILE****
 
-   Replaces Connected Journey banner.
+*Replaces Connected Journey banner.****
 
-========================================================= */
-
-
+****========================================================= */
 
 function TechnicalProfile() {
 
@@ -2076,29 +2109,23 @@ function TechnicalProfile() {
 
   ];
 
-
-
   return (
 
     <section className="relative overflow-hidden bg-[#081b24] text-white">
 
       <VIoTSVGBackground dark />
 
-
-
       <div className="relative z-10 mx-auto max-w-[1440px] px-6 py-20 sm:px-8 lg:px-12 lg:py-28">
 
         <div className="grid gap-10 lg:grid-cols-12 lg:items-end">
 
-          <Reveal className="lg:col-span-7">
+          <Reveal className="lg:col-span-7 xl:col-span-7">
 
             <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.2em] text-[#27d59b]">
 
               Technical Profile
 
             </span>
-
-
 
             <h2 className="mt-5 max-w-3xl font-heading text-4xl font-semibold leading-[1] tracking-[-0.05em] sm:text-5xl lg:text-[4.2rem]">
 
@@ -2115,8 +2142,6 @@ function TechnicalProfile() {
             </h2>
 
           </Reveal>
-
-
 
           <Reveal
 
@@ -2137,8 +2162,6 @@ function TechnicalProfile() {
           </Reveal>
 
         </div>
-
-
 
         <div className="mt-14 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
 
@@ -2188,19 +2211,13 @@ function TechnicalProfile() {
 
               </span>
 
-
-
               <h3 className="mt-8 font-heading text-base font-semibold">
 
                 {item.title}
 
               </h3>
 
-
-
               <div className="mt-4 h-px w-8 bg-[#27d59b]/60 transition-all duration-300 group-hover:w-14" />
-
-
 
               <p className="mt-4 text-xs leading-6 text-white/35">
 
@@ -2222,187 +2239,241 @@ function TechnicalProfile() {
 
 }
 
+/* =========================================================****
 
+*ECOSYSTEM CAROUSEL****
 
-/* =========================================================
-
-   ECOSYSTEM CAROUSEL
-
-========================================================= */
-
-
+****========================================================= */
 
 function EcosystemCarousel({
+
   product,
+
 }: {
+
   product: EcosystemProduct;
+
 }) {
+
   const [active, setActive] = useState(0);
+return (
 
-  const next = () => {
-    setActive((current) =>
-      current === product.gallery.length - 1 ? 0 : current + 1
-    );
-  };
-
-  const previous = () => {
-    setActive((current) =>
-      current === 0 ? product.gallery.length - 1 : current - 1
-    );
-  };
-
-  return (
     <article className="group overflow-hidden rounded-2xl border border-[#c9d6d1] bg-white/72 shadow-[0_12px_34px_rgba(8,27,36,0.045)] backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-[#007c67]/20 hover:shadow-[0_18px_42px_rgba(8,27,36,0.07)]">
-      <div className="relative aspect-[16/10] overflow-hidden bg-[#081b24]">
+
+      <div className="relative aspect-[4/3] overflow-hidden bg-[#eef2ef]">
+
         <AnimatePresence mode="wait">
+
           <motion.div
+
             key={`${product.id}-${active}`}
+
             initial={{ opacity: 0, scale: 1.015 }}
+
             animate={{ opacity: 1, scale: 1 }}
+
             exit={{ opacity: 0 }}
+
             transition={{ duration: 0.4 }}
+
             className="absolute inset-0"
+
           >
+
             <Image
+
               src={product.gallery[active]}
+
               alt={`${product.title} image`}
+
               fill
+
               sizes="(max-width: 768px) 100vw, 33vw"
-              className="object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+
+              className="object-contain p-5 transition-transform duration-700 group-hover:scale-[1.02] sm:p-6"
+
             />
+
           </motion.div>
+
         </AnimatePresence>
 
-        <div className="absolute inset-0 bg-gradient-to-t from-[#081b24]/55 via-transparent to-transparent" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#081b24]/16 via-transparent to-white/[0.03]" />
 
         <div className="absolute left-4 top-4 rounded-lg border border-white/10 bg-[#081b24]/55 px-3 py-2 backdrop-blur-sm">
+
           <span className="font-mono text-[8px] uppercase tracking-[0.16em] text-[#27d59b]">
+
             {product.category}
+
           </span>
-        </div>
 
-        <div className="absolute right-4 top-4 flex gap-1.5 opacity-100 sm:opacity-0 sm:transition-opacity sm:duration-300 sm:group-hover:opacity-100">
-          <button
-            type="button"
-            onClick={previous}
-            aria-label={`Previous ${product.title} image`}
-            className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/15 bg-[#081b24]/65 text-white backdrop-blur-md transition-colors hover:border-[#27d59b] hover:text-[#27d59b]"
-          >
-            <ChevronLeft className="h-3.5 w-3.5" />
-          </button>
-
-          <button
-            type="button"
-            onClick={next}
-            aria-label={`Next ${product.title} image`}
-            className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/15 bg-[#081b24]/65 text-white backdrop-blur-md transition-colors hover:border-[#27d59b] hover:text-[#27d59b]"
-          >
-            <ChevronRight className="h-3.5 w-3.5" />
-          </button>
         </div>
-      </div>
+</div>
 
       <div className="p-5">
+
         <div className="flex items-start justify-between gap-4">
+
           <div className="min-w-0">
+
             <div className="flex items-center gap-2.5">
+
               <span className="font-mono text-[8px] tracking-[0.16em] text-[#007c67]">
+
                 {product.number}
+
               </span>
+
               <span className="h-px w-5 bg-[#27d59b]/70" />
+
             </div>
 
             <h3 className="mt-2 font-heading text-lg font-semibold tracking-[-0.025em] text-[#081b24] sm:text-xl">
+
               {product.title}
+
             </h3>
+
           </div>
 
           <Link
+
             href={product.href}
+
             aria-label={`Explore ${product.title}`}
+
             className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-[#007c67]/15 bg-[#007c67]/[0.035] text-[#007c67] transition-all duration-300 hover:border-[#007c67] hover:bg-[#007c67] hover:text-white"
+
           >
+
             <ArrowUpRight className="h-4 w-4" />
+
           </Link>
+
         </div>
 
         <p className="mt-3 line-clamp-2 text-xs leading-5 text-[#607078]">
+
           {product.description}
+
         </p>
 
         <div className="mt-4 flex items-center gap-1.5">
+
           {product.gallery.map((_, index) => (
+
             <button
+
               key={index}
+
               type="button"
+
               onClick={() => setActive(index)}
+
               aria-label={`Show image ${index + 1}`}
+
               className={`h-1 rounded-full transition-all duration-300 ${
+
                 active === index ? "w-7 bg-[#27d59b]" : "w-3 bg-[#cdd5d2]"
+
               }`}
+
             />
+
           ))}
+
         </div>
+
       </div>
+
     </article>
+
   );
+
 }
 
-/* =========================================================
+/* =========================================================****
 
-   MORE FROM ECOSYSTEM
+*MORE FROM ECOSYSTEM****
 
-========================================================= */
-
-
+****========================================================= */
 
 function MoreFromEcosystem() {
+
   return (
+
     <section className="relative overflow-hidden border-t border-[#d4dfdb] bg-[#f4f6f2]">
+
       <VIoTSVGBackground />
 
       <div className="relative z-10 mx-auto max-w-[1320px] px-6 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-24">
+
         <Reveal>
+
           <div className="grid gap-6 lg:grid-cols-12 lg:items-end">
+
             <div className="lg:col-span-7">
+
               <div className="flex items-center gap-3">
+
                 <span className="h-px w-8 bg-[#27d59b]" />
+
                 <span className="font-mono text-[8px] font-semibold uppercase tracking-[0.18em] text-[#007c67]">
+
                   VIoT ecosystem
+
                 </span>
+
               </div>
 
               <h2 className="mt-4 max-w-3xl font-heading text-3xl font-semibold leading-[1.04] tracking-[-0.045em] text-[#081b24] sm:text-4xl lg:text-[48px]">
+
                 More connected products,
+
                 <span className="text-[#007c67]"> one ecosystem.</span>
+
               </h2>
+
             </div>
 
             <p className="max-w-md text-sm leading-6 text-[#607078] lg:col-span-5 lg:ml-auto lg:text-right">
+
               Explore products across fleet, asset and access intelligence.
+
             </p>
+
           </div>
+
         </Reveal>
 
         <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+
           {ecosystemProducts.map((product, index) => (
+
             <Reveal key={product.id} delay={index * 0.04}>
+
               <EcosystemCarousel product={product} />
+
             </Reveal>
+
           ))}
+
         </div>
+
       </div>
+
     </section>
+
   );
+
 }
 
-/* =========================================================
+/* =========================================================****
 
-   PAGE
+*PAGE****
 
-========================================================= */
-
-
+****========================================================= */
 
 export default function ProductsClient() {
 
@@ -2413,8 +2484,6 @@ export default function ProductsClient() {
       {/* 01 */}
 
       <ProductHero />
-
-
 
       {/* 02 / 03 / 04 */}
 
@@ -2430,23 +2499,15 @@ export default function ProductsClient() {
 
       ))}
 
+      {/* Connected Journey removed.****
 
-
-      {/* Connected Journey removed.
-
-          Technical Profile takes its place. */}
-
-
+      Technical Profile takes its place. */}
 
       <TechnicalProfile />
-
-
 
       {/* More from VIoT Ecosystem */}
 
       <MoreFromEcosystem />
-
-
 
       {/* CTA */}
 

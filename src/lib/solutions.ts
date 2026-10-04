@@ -8,14 +8,118 @@ export type Solution = {
 };
 
 export const solutions: Solution[] = [
-  { slug: "logistics-supply-chain", number: "01", name: "Logistics & Supply Chain", headline: "Connect vehicle, cargo and exception context.", lede: "Bring fleet movement, cargo-security events and operating exceptions into one accountable data path.", priorities: ["Fleet and trip visibility", "Cargo-security context", "Zone and movement exceptions", "ERP / TMS integration"] },
-  { slug: "pharmaceuticals-chemicals", number: "02", name: "Pharmaceuticals & Chemicals", headline: "Start with the handling event that matters.", lede: "Evaluate connected tracking, security and sensor requirements around the actual handling workflow and compliance context.", priorities: ["Movement visibility", "Access and tamper context", "Application-specific sensing", "Traceable event history"] },
-  { slug: "construction", number: "03", name: "Construction", headline: "See mobile assets across changing sites.", lede: "Structure vehicle and asset visibility around field conditions, movement patterns and site operating zones.", priorities: ["Vehicle and asset location", "Site geofences", "Movement exceptions", "Rugged field evaluation"] },
-  { slug: "mining", number: "04", name: "Mining", headline: "Build for the conditions that expose weak systems.", lede: "Weak signal, unstable power, dust and vibration make mining the first environment VIoT is building for.", priorities: ["Continuous device reporting", "Offline data retention", "Field-ready power range", "Device-health monitoring"] },
-  { slug: "fmcg", number: "05", name: "FMCG", headline: "Keep distribution movement and exceptions connected.", lede: "Evaluate day-to-day fleet, cargo and route workflows without creating another isolated operating tool.", priorities: ["Distribution fleet visibility", "Route and zone exceptions", "Cargo-security context", "Operational integrations"] },
-  { slug: "data-centres", number: "06", name: "Data Centres", headline: "Connect physical access events to an operating view.", lede: "Scope smart-lock and sensor workflows around the infrastructure point, event response and system integration required.", priorities: ["Connected access state", "Exception alerts", "Event context", "Deployment-specific integration"] },
-  { slug: "schools-universities", number: "07", name: "Schools & Universities", headline: "Make transport visibility direct and accountable.", lede: "Evaluate vehicle location, zones and exception workflows around the institution’s actual transport operation.", priorities: ["Vehicle location", "Route and zone visibility", "Exception-led alerts", "Operating-team access"] },
-  { slug: "smart-infrastructure", number: "08", name: "Smart Infrastructure", headline: "Treat each field event as part of a working system.", lede: "Combine connected locks, sensors and platform visibility around the infrastructure workflow—not as disconnected devices.", priorities: ["Lock and sensor events", "Platform visibility", "Exception response", "Application-specific integration"] },
+  {
+    slug: "logistics-supply-chain",
+    number: "01",
+    name: "Logistics & Supply Chain",
+    headline: "Connect movement, cargo security and exceptions.",
+    lede:
+      "Bring vehicle location, cargo-security events and route exceptions into one connected operating view for logistics teams.",
+    priorities: [
+      "Fleet and trip visibility",
+      "Cargo-security and lock events",
+      "Route, zone and movement exceptions",
+      "ERP / TMS integration",
+    ],
+  },
+  {
+    slug: "pharmaceuticals-chemicals",
+    number: "02",
+    name: "Pharmaceuticals & Chemicals",
+    headline: "Protect sensitive movement with traceable context.",
+    lede:
+      "Connect location, access, tamper and application-specific sensor events around the handling workflows that require tighter operational control.",
+    priorities: [
+      "Movement and route visibility",
+      "Access and tamper context",
+      "Temperature and application-specific sensing",
+      "Traceable event history",
+    ],
+  },
+  {
+    slug: "construction",
+    number: "03",
+    name: "Construction",
+    headline: "See vehicles and assets across changing sites.",
+    lede:
+      "Track mobile equipment, vehicles and site movement around changing work zones, operating boundaries and field conditions.",
+    priorities: [
+      "Vehicle and asset location",
+      "Site and project geofences",
+      "Movement and exception alerts",
+      "Field-ready deployment evaluation",
+    ],
+  },
+  {
+    slug: "mining",
+    number: "04",
+    name: "Mining",
+    headline: "Keep field visibility working in demanding conditions.",
+    lede:
+      "Build connected tracking and monitoring around weak signal, power variation, dust, vibration and the operating realities of remote sites.",
+    priorities: [
+      "Continuous device reporting",
+      "Offline data retention",
+      "Wide-voltage field compatibility",
+      "Device and connectivity health",
+    ],
+  },
+  {
+    slug: "fmcg",
+    number: "05",
+    name: "FMCG",
+    headline: "Keep distribution movement and exceptions connected.",
+    lede:
+      "Connect fleet movement, route activity and cargo-security context across high-frequency distribution operations without adding another isolated system.",
+    priorities: [
+      "Distribution fleet visibility",
+      "Route and zone exceptions",
+      "Cargo-security context",
+      "Operational system integration",
+    ],
+  },
+  {
+    slug: "data-centres",
+    number: "06",
+    name: "Data Centres",
+    headline: "Connect physical access events to the operating view.",
+    lede:
+      "Bring lock state, access events and exceptions into a connected workflow around controlled infrastructure and response requirements.",
+    priorities: [
+      "Connected lock-state visibility",
+      "Access and exception alerts",
+      "Event and location context",
+      "Deployment-specific integration",
+    ],
+  },
+  {
+    slug: "schools-universities",
+    number: "07",
+    name: "Schools & Universities",
+    headline: "Make transport visibility clear and accountable.",
+    lede:
+      "Connect vehicle location, route movement and zone exceptions around the institution’s day-to-day transport operation.",
+    priorities: [
+      "Vehicle location visibility",
+      "Route and zone monitoring",
+      "Exception-led alerts",
+      "Operations-team access",
+    ],
+  },
+  {
+    slug: "smart-infrastructure",
+    number: "08",
+    name: "Smart Infrastructure",
+    headline: "Connect field events into one operating system.",
+    lede:
+      "Combine connected locks, sensors and platform visibility around infrastructure workflows so exceptions can be seen and acted on in context.",
+    priorities: [
+      "Lock and sensor events",
+      "Connected platform visibility",
+      "Exception response workflows",
+      "Application-specific integration",
+    ],
+  },
 ];
 
 export function getSolution(slug: string) {

@@ -1,14 +1,12 @@
 "use client";
 
-
 import Image from "next/image";
 
 import { motion } from "framer-motion";
 
-
 import { CtaBand } from "@/components/home/CtaBand";
-import { PlatformFlywheel } from "@/components/home/PlatformFlywheel";
 
+import { PlatformFlywheel } from "@/components/home/PlatformFlywheel";
 
 const values = [
 
@@ -18,7 +16,7 @@ const values = [
 
     title: "Integrity",
 
-    copy: "State what is ready, what is in development, and where the product is not the right fit.",
+    copy: "Be clear about what is ready, what depends on configuration, and where a solution is not the right fit.",
 
   },
 
@@ -28,7 +26,7 @@ const values = [
 
     title: "Accountability",
 
-    copy: "Own the path from hardware to platform instead of sending the customer between vendors.",
+    copy: "Own the connected path from hardware and deployment through platform visibility and support.",
 
   },
 
@@ -38,60 +36,41 @@ const values = [
 
     title: "Follow-through",
 
-    copy: "Monitor deployed devices and stay available after installation—not only before payment.",
+    copy: "Stay accountable through deployment, operation and ongoing support—not only before implementation.",
 
   },
 
 ];
-
 
 const disciplines = [
-
   {
-
     num: "01",
-
-    title: "Fleet Intelligence",
-
-    copy: "Vehicles, journeys and driver activity.",
-
+    title: "Connected Mobility",
+    copy: "Vehicle tracking, video and fleet operations.",
   },
-
   {
-
     num: "02",
-
-    title: "Asset Intelligence",
-
-    copy: "Cargo, equipment and connected sensors.",
-
+    title: "Asset & Sensor Intelligence",
+    copy: "Assets, cargo, fuel, temperature and field sensing.",
   },
-
   {
-
     num: "03",
-
-    title: "Access Control",
-
-    copy: "Physical access and security events.",
-
+    title: "Connected Security",
+    copy: "Smart locks, access state and security events.",
   },
-
 ];
 
+/* =========================================================*
 
-/* =========================================================
+  CLIENT-APPROVED VIoT SVG BACKGROUND*
 
-   CLIENT-APPROVED VIoT SVG BACKGROUND
+  Same visual language:*
 
-   Same visual language:
+  flowing paths + dashed signal flow + engineering rings*
 
-   flowing paths + dashed signal flow + engineering rings
+  + moving signal points.*
 
-   + moving signal points.
-
-========================================================= */
-
+*========================================================= */
 
 function ApprovedVIoTBackground({
 
@@ -129,7 +108,6 @@ function ApprovedVIoTBackground({
 
       />
 
-
       <div
 
         className={`absolute -right-56 bottom-[5%] h-[620px] w-[620px] rounded-full blur-3xl ${
@@ -140,13 +118,11 @@ function ApprovedVIoTBackground({
 
       />
 
+      {/* =====================================================*
 
-      {/* =====================================================
+         FLOWING SYSTEM PATHS*
 
-          FLOWING SYSTEM PATHS
-
-      ===================================================== */}
-
+     ===================================================== */}
 
       <svg
 
@@ -194,7 +170,6 @@ function ApprovedVIoTBackground({
 
         />
 
-
         {/* Main green data flow */}
 
         <motion.path
@@ -233,7 +208,6 @@ function ApprovedVIoTBackground({
 
         />
 
-
         {/* diagonal engineering path */}
 
         <path
@@ -253,7 +227,6 @@ function ApprovedVIoTBackground({
           strokeWidth="1"
 
         />
-
 
         {/* lower flowing path */}
 
@@ -295,13 +268,11 @@ function ApprovedVIoTBackground({
 
       </svg>
 
+      {/* =====================================================*
 
-      {/* =====================================================
+         ENGINEERING RINGS*
 
-          ENGINEERING RINGS
-
-      ===================================================== */}
-
+     ===================================================== */}
 
       <motion.div
 
@@ -333,7 +304,6 @@ function ApprovedVIoTBackground({
 
       />
 
-
       <motion.div
 
         className={`absolute right-[9%] top-[18%] h-[300px] w-[300px] rounded-full border ${
@@ -364,7 +334,6 @@ function ApprovedVIoTBackground({
 
       />
 
-
       <div
 
         className={`absolute right-[17%] top-[27%] h-[150px] w-[150px] rounded-full border ${
@@ -378,7 +347,6 @@ function ApprovedVIoTBackground({
         }`}
 
       />
-
 
       <div
 
@@ -394,13 +362,11 @@ function ApprovedVIoTBackground({
 
       />
 
+      {/* =====================================================*
 
-      {/* =====================================================
+         MOVING SIGNAL POINTS*
 
-          MOVING SIGNAL POINTS
-
-      ===================================================== */}
-
+     ===================================================== */}
 
       <motion.span
 
@@ -427,7 +393,6 @@ function ApprovedVIoTBackground({
         }}
 
       />
-
 
       <motion.span
 
@@ -457,7 +422,6 @@ function ApprovedVIoTBackground({
 
       />
 
-
       <motion.span
 
         className="absolute right-[18%] top-[38%] h-1.5 w-1.5 rounded-full bg-[#27d59b]"
@@ -483,7 +447,6 @@ function ApprovedVIoTBackground({
         }}
 
       />
-
 
       {/* ambient points */}
 
@@ -543,144 +506,233 @@ function ApprovedVIoTBackground({
 
 }
 
+/* =========================================================*
 
-/* =========================================================
+  WHY VIOT IMAGE VISUAL*
 
-   WHY VIOT IMAGE VISUAL
-
-========================================================= */
-
+*========================================================= */
 
 function WhyVIoTVisual() {
+
   const technicalPoints = [
+
     { side: "left", position: "top-[16%]", label: "Field signal", delay: 0 },
+
     { side: "right", position: "top-[31%]", label: "Connected data", delay: 0.08 },
+
     { side: "left", position: "bottom-[22%]", label: "Real-time", delay: 0.14 },
+
     { side: "right", position: "bottom-[14%]", label: "Secure layer", delay: 0.2 },
+
   ];
 
   return (
+
     <div className="relative mx-auto w-full max-w-[600px]">
+
       <div className="absolute -inset-4 hidden rounded-[28px] border border-[#007c67]/10 sm:block" />
 
       <div className="relative overflow-hidden rounded-2xl border border-[#bfcfc9] bg-[#081b24] shadow-[0_22px_60px_rgba(8,27,36,0.12)]">
+
         <div className="relative aspect-[4/3]">
+
           <Image
-            src="/image/about.png"
+
+            src="/image/about-sec.png"
+
             alt="VIoT connected technology"
+
             fill
+
             priority
+
             className="object-cover"
+
           />
 
           <div className="absolute inset-0 bg-[#081b24]/10" />
+
           <div className="absolute inset-0 bg-gradient-to-t from-[#081b24]/35 via-transparent to-transparent" />
 
           <motion.div
+
             className="absolute left-5 right-5 h-px bg-gradient-to-r from-transparent via-[#27d59b]/70 to-transparent"
+
             animate={{
+
               top: ["8%", "88%", "8%"],
+
               opacity: [0, 0.75, 0],
+
             }}
+
             transition={{
+
               duration: 5,
+
               repeat: Infinity,
+
               ease: "easeInOut",
+
             }}
+
           />
 
           <span className="absolute left-4 top-4 h-5 w-5 rounded-tl-md border-l border-t border-white/35" />
+
           <span className="absolute right-4 top-4 h-5 w-5 rounded-tr-md border-r border-t border-white/35" />
 
           <motion.span
+
             className="absolute left-1/2 top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#27d59b]"
+
             animate={{
+
               scale: [0.8, 1.15, 0.8],
+
               opacity: [0.45, 1, 0.45],
+
               boxShadow: [
+
                 "0 0 0 3px rgba(39,213,155,0.08)",
+
                 "0 0 0 8px rgba(39,213,155,0.12)",
+
                 "0 0 0 3px rgba(39,213,155,0.08)",
+
               ],
+
             }}
+
             transition={{
+
               duration: 2.2,
+
               repeat: Infinity,
+
               ease: "easeInOut",
+
             }}
+
           />
+
         </div>
 
         <div className="absolute bottom-0 left-0 right-0 border-t border-white/10 bg-[#081b24]/80 px-5 py-4 backdrop-blur-md">
+
           <div className="flex items-center justify-between gap-4">
+
             <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-white/55 sm:text-[9px]">
+
               Field technology
+
             </span>
 
             <span className="flex items-center gap-2 font-mono text-[8px] uppercase tracking-[0.18em] text-[#27d59b] sm:text-[9px]">
+
               <motion.span
+
                 className="h-1.5 w-1.5 rounded-full bg-[#27d59b]"
+
                 animate={{ opacity: [0.35, 1, 0.35] }}
+
                 transition={{ duration: 1.8, repeat: Infinity }}
+
               />
+
               Connected
+
             </span>
+
           </div>
+
         </div>
+
       </div>
 
       {technicalPoints.map((point) => {
+
         const isLeft = point.side === "left";
 
         return (
+
           <motion.div
+
             key={point.label}
+
             initial={{ opacity: 0, x: isLeft ? -10 : 10 }}
+
             whileInView={{ opacity: 1, x: 0 }}
+
             viewport={{ once: true, amount: 0.3 }}
+
             transition={{ duration: 0.5, delay: point.delay }}
+
             className={`absolute hidden sm:block ${point.position} ${
+
               isLeft ? "-left-3" : "-right-3"
+
             }`}
+
           >
+
             <div className="flex items-center gap-2">
+
               {isLeft && (
+
                 <>
+
                   <span className="h-2 w-2 rounded-full border border-[#27d59b] bg-[#081b24]" />
+
                   <span className="h-px w-8 bg-[#27d59b]/45 lg:w-12" />
+
                 </>
+
               )}
 
               <div className="rounded-lg border border-[#007c67]/15 bg-[#f4f6f2]/95 px-3 py-2 shadow-[0_8px_22px_rgba(8,27,36,0.06)] backdrop-blur-md">
+
                 <span className="whitespace-nowrap font-mono text-[8px] uppercase tracking-[0.16em] text-[#007c67]">
+
                   {point.label}
+
                 </span>
+
               </div>
 
               {!isLeft && (
+
                 <>
+
                   <span className="h-px w-8 bg-[#27d59b]/45 lg:w-12" />
+
                   <span className="h-2 w-2 rounded-full border border-[#27d59b] bg-[#081b24]" />
+
                 </>
+
               )}
+
             </div>
+
           </motion.div>
+
         );
+
       })}
+
     </div>
+
   );
+
 }
 
+/* =========================================================*
 
-/* =========================================================
+  COMPANY OPERATING MODEL*
 
-   COMPANY OPERATING MODEL
-
-========================================================= */
-
+*========================================================= */
 
 const CYCLE = 4;
-
 
 const vizNodes = [
 
@@ -692,7 +744,6 @@ const vizNodes = [
 
 ];
 
-
 const vizPaths = [
 
   "M66,72 C66,140 150,130 150,192",
@@ -703,9 +754,7 @@ const vizPaths = [
 
 ];
 
-
 const outPath = "M200,248 L200,332";
-
 
 function OperatingModelIllustration() {
 
@@ -721,7 +770,7 @@ function OperatingModelIllustration() {
 
         role="img"
 
-        aria-label="Fleet, Asset and Access intelligence feeding one VIoT platform and one operating view"
+        aria-label="Mobility, asset and security intelligence feeding one VIoT platform and one operating view"
 
       >
 
@@ -751,7 +800,6 @@ function OperatingModelIllustration() {
 
         </defs>
 
-
         {[...vizPaths, outPath].map((d) => (
 
           <path
@@ -771,7 +819,6 @@ function OperatingModelIllustration() {
           />
 
         ))}
-
 
         {vizPaths.map((d) => (
 
@@ -807,7 +854,6 @@ function OperatingModelIllustration() {
 
             />
 
-
             <animate
 
               attributeName="opacity"
@@ -826,7 +872,6 @@ function OperatingModelIllustration() {
 
         ))}
 
-
         <rect x="-3.5" y="-3.5" width="7" height="7" fill="#27d59b">
 
           <animateMotion
@@ -842,7 +887,6 @@ function OperatingModelIllustration() {
             calcMode="linear"
 
           />
-
 
           <animate
 
@@ -862,7 +906,6 @@ function OperatingModelIllustration() {
 
         </rect>
 
-
         {vizNodes.map((n) => (
 
           <g key={n.id}>
@@ -876,7 +919,9 @@ function OperatingModelIllustration() {
               width="116"
 
               height="64"
+
               rx="10"
+
               ry="10"
 
               fill="#ffffff"
@@ -886,7 +931,6 @@ function OperatingModelIllustration() {
               strokeOpacity="0.25"
 
             />
-
 
             <text
 
@@ -907,7 +951,6 @@ function OperatingModelIllustration() {
               {n.label}
 
             </text>
-
 
             <text
 
@@ -931,9 +974,7 @@ function OperatingModelIllustration() {
 
         ))}
 
-
         <rect x="140" y="192" width="120" height="56" rx="11" ry="11" fill="#081b24" />
-
 
         <rect
 
@@ -944,7 +985,9 @@ function OperatingModelIllustration() {
           width="120"
 
           height="56"
+
           rx="11"
+
           ry="11"
 
           fill="none"
@@ -954,7 +997,6 @@ function OperatingModelIllustration() {
           strokeOpacity="0.7"
 
         />
-
 
       <image
 
@@ -971,7 +1013,6 @@ function OperatingModelIllustration() {
   preserveAspectRatio="xMidYMid meet"
 
 />
-
 
 <text
 
@@ -991,7 +1032,6 @@ function OperatingModelIllustration() {
 
 </text>
 
-
         <rect
 
           x="100"
@@ -1001,7 +1041,9 @@ function OperatingModelIllustration() {
           width="200"
 
           height="64"
+
           rx="11"
+
           ry="11"
 
           fill="#ffffff"
@@ -1011,7 +1053,6 @@ function OperatingModelIllustration() {
           strokeOpacity="0.25"
 
         />
-
 
         <text
 
@@ -1032,7 +1073,6 @@ function OperatingModelIllustration() {
           One operating view
 
         </text>
-
 
         <text
 
@@ -1060,13 +1100,11 @@ function OperatingModelIllustration() {
 
 }
 
+/* =========================================================*
 
-/* =========================================================
+  PAGE*
 
-   PAGE
-
-========================================================= */
-
+*========================================================= */
 
 export default function AboutPage() {
 
@@ -1074,17 +1112,15 @@ export default function AboutPage() {
 
     <main className="overflow-hidden bg-[#f4f6f2] text-[#081b24] selection:bg-[#27d59b] selection:text-[#081b24]">
 
-      {/* =====================================================
+      {/* =====================================================*
 
-          01 — HERO
+         01 — HERO*
 
-      ===================================================== */}
-
+     ===================================================== */}
 
       <section className="relative min-h-[620px] overflow-hidden bg-[#081b24] text-white sm:min-h-[680px]">
 
         <ApprovedVIoTBackground dark />
-
 
         <div className="relative z-10 mx-auto flex min-h-[620px] max-w-[1440px] items-center px-6 py-24 sm:min-h-[680px] sm:px-8 lg:px-12">
 
@@ -1110,7 +1146,6 @@ export default function AboutPage() {
 
               <span className="h-px w-10 bg-[#27d59b]" />
 
-
               <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.2em] text-[#27d59b]">
 
                 Company / About VIoT
@@ -1118,7 +1153,6 @@ export default function AboutPage() {
               </span>
 
             </motion.div>
-
 
             <motion.h1
 
@@ -1136,7 +1170,7 @@ export default function AboutPage() {
 
               }}
 
-              className="mt-7 max-w-4xl font-heading text-[48px] font-semibold leading-[0.96] tracking-[-0.055em] text-white sm:text-6xl lg:text-[78px]"
+              className="mt-7 max-w-4xl font-heading text-[44px] font-semibold leading-[0.96] tracking-[-0.055em] text-white sm:text-6xl lg:text-[72px]"
 
             >
 
@@ -1151,7 +1185,6 @@ export default function AboutPage() {
               </span>
 
             </motion.h1>
-
 
             <motion.p
 
@@ -1181,7 +1214,6 @@ export default function AboutPage() {
 
             </motion.p>
 
-
             <motion.div
 
               initial={{ opacity: 0, y: 15 }}
@@ -1204,7 +1236,6 @@ export default function AboutPage() {
 
                 <span className="h-1.5 w-1.5 rounded-full bg-[#27d59b]" />
 
-
                 <span className="font-mono text-[9px] uppercase tracking-[0.16em] text-white/50">
 
                   Hardware
@@ -1213,14 +1244,11 @@ export default function AboutPage() {
 
               </div>
 
-
               <div className="h-4 w-px bg-white/10" />
-
 
               <div className="flex items-center gap-3">
 
                 <span className="h-1.5 w-1.5 rounded-full bg-[#27d59b]" />
-
 
                 <span className="font-mono text-[9px] uppercase tracking-[0.16em] text-white/50">
 
@@ -1230,14 +1258,11 @@ export default function AboutPage() {
 
               </div>
 
-
               <div className="h-4 w-px bg-white/10" />
-
 
               <div className="flex items-center gap-3">
 
                 <span className="h-1.5 w-1.5 rounded-full bg-[#27d59b]" />
-
 
                 <span className="font-mono text-[9px] uppercase tracking-[0.16em] text-white/50">
 
@@ -1253,23 +1278,17 @@ export default function AboutPage() {
 
         </div>
 
-
-       
-
       </section>
 
+      {/* =====================================================*
 
-      {/* =====================================================
+         02 — WHY VIOT*
 
-          02 — WHY VIOT
-
-      ===================================================== */}
-
+     ===================================================== */}
 
       <section className="relative overflow-hidden border-b border-[#cdd5d2] bg-[#f4f6f2]">
 
         <ApprovedVIoTBackground />
-
 
         <div className="relative z-10 mx-auto max-w-[1440px] px-6 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-24">
 
@@ -1301,7 +1320,6 @@ export default function AboutPage() {
 
                 <span className="h-px w-10 bg-[#27d59b]" />
 
-
                 <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.18em] text-[#007c67]">
 
                   01 / Why VIoT exists
@@ -1309,7 +1327,6 @@ export default function AboutPage() {
                 </span>
 
               </div>
-
 
               <h2 className="max-w-2xl font-heading text-3xl font-semibold leading-[1.03] tracking-[-0.045em] text-[#081b24] sm:text-4xl lg:text-[48px]">
 
@@ -1325,7 +1342,6 @@ export default function AboutPage() {
 
               </h2>
 
-
               <blockquote className="mt-7 max-w-xl rounded-xl border border-[#007c67]/10 border-l-[3px] border-l-[#27d59b] bg-white/55 px-5 py-4 font-heading text-xl font-medium leading-[1.35] tracking-[-0.025em] text-[#081b24] shadow-[0_10px_30px_rgba(8,27,36,0.035)] backdrop-blur-sm sm:text-2xl">
 
                 “Connected systems earn trust only when they keep working at
@@ -1333,7 +1349,6 @@ export default function AboutPage() {
                 the moment it matters most.”
 
               </blockquote>
-
 
               <p className="mt-7 max-w-xl text-sm leading-7 text-[#607078] sm:text-[15px]">
 
@@ -1347,11 +1362,9 @@ export default function AboutPage() {
 
               </p>
 
-
               <div className="mt-8 flex items-center gap-3">
 
                 <span className="h-px w-8 bg-[#27d59b]" />
-
 
                 <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.16em] text-[#007c67]">
 
@@ -1362,7 +1375,6 @@ export default function AboutPage() {
               </div>
 
             </motion.div>
-
 
             {/* Existing image + premium points */}
 
@@ -1396,92 +1408,139 @@ export default function AboutPage() {
 
       </section>
 
-
-
    <PlatformFlywheel/>
 
-      {/* =====================================================
-          03 — WHAT WE VALUE
-      ===================================================== */}
+      {/* =====================================================*
+
+         03 — WHAT WE VALUE*
+
+     ===================================================== */}
 
       <section className="relative overflow-hidden border-b border-white/10 bg-[#081b24] text-white">
+
         <ApprovedVIoTBackground dark />
 
         <div className="relative z-10 mx-auto max-w-[1440px] px-6 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-24">
+
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
+
             <motion.div
+
               initial={{ opacity: 0, y: 20 }}
+
               whileInView={{ opacity: 1, y: 0 }}
+
               viewport={{ once: true, amount: 0.2 }}
+
               transition={{ duration: 0.65 }}
+
               className="lg:col-span-4"
+
             >
+
               <div className="mb-6 flex items-center gap-3">
+
                 <span className="h-px w-9 bg-[#27d59b]" />
 
                 <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.18em] text-[#27d59b]">
+
                   02 / What we value
+
                 </span>
+
               </div>
 
               <h2 className="font-heading text-3xl font-semibold leading-[1.05] tracking-[-0.04em] sm:text-4xl">
+
                 The way we build
+
                 <br />
+
                 <span className="text-[#27d59b]">matters.</span>
+
               </h2>
 
               <p className="mt-6 max-w-sm text-sm leading-7 text-white/45">
+
                 Technology is only part of the relationship. We care about
+
                 what happens before deployment, during implementation and long
+
                 after the system goes live.
+
               </p>
+
             </motion.div>
 
             <div className="lg:col-span-8">
+
               <div className="border-y border-white/10">
+
                 {values.map((value, index) => (
+
                   <motion.div
+
                     key={value.num}
+
                     initial={{ opacity: 0, x: 18 }}
+
                     whileInView={{ opacity: 1, x: 0 }}
+
                     viewport={{ once: true, amount: 0.2 }}
+
                     transition={{
+
                       duration: 0.55,
+
                       delay: index * 0.08,
+
                     }}
+
                     className="group grid grid-cols-1 gap-4 border-b border-white/10 py-7 last:border-b-0 sm:grid-cols-[60px_180px_1fr] sm:items-start sm:gap-6 sm:py-8"
+
                   >
+
                     <span className="font-mono text-[9px] font-semibold tracking-[0.16em] text-[#27d59b]">
+
                       {value.num}
+
                     </span>
 
                     <h3 className="font-heading text-lg font-semibold text-white">
+
                       {value.title}
+
                     </h3>
 
                     <p className="max-w-xl text-sm leading-7 text-white/45 transition-colors duration-300 group-hover:text-white/70">
+
                       {value.copy}
+
                     </p>
+
                   </motion.div>
+
                 ))}
+
               </div>
+
             </div>
+
           </div>
+
         </div>
+
       </section>
 
+      {/* =====================================================*
 
-      {/* =====================================================
+         04 — THE COMPANY*
 
-          04 — THE COMPANY
-
-      ===================================================== */}
-
+     ===================================================== */}
 
       <section className="relative overflow-hidden border-b border-[#cdd5d2] bg-white">
 
         <ApprovedVIoTBackground />
-
 
         <div className="relative z-10 mx-auto max-w-[1440px] px-6 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-24">
 
@@ -1505,7 +1564,6 @@ export default function AboutPage() {
 
                 <span className="h-px w-9 bg-[#27d59b]" />
 
-
                 <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.18em] text-[#007c67]">
 
                   03 / The company
@@ -1513,7 +1571,6 @@ export default function AboutPage() {
                 </span>
 
               </div>
-
 
               <h2 className="max-w-3xl font-heading text-3xl font-semibold leading-[1.03] tracking-[-0.045em] text-[#081b24] sm:text-4xl lg:text-5xl">
 
@@ -1529,7 +1586,6 @@ export default function AboutPage() {
 
               </h2>
 
-
               <div className="mt-7 max-w-2xl space-y-4 text-sm leading-7 text-[#607078] sm:text-[15px]">
 
                 <p>
@@ -1541,7 +1597,6 @@ export default function AboutPage() {
                   connected approach.
 
                 </p>
-
 
                 <p>
 
@@ -1557,32 +1612,47 @@ export default function AboutPage() {
 
               </div>
 
-
               <div className="mt-9 max-w-2xl space-y-3">
+
                 {disciplines.map((item) => (
+
                   <motion.div
+
                     key={item.num}
+
                     whileHover={{ x: 4 }}
+
                     transition={{ duration: 0.25 }}
+
                     className="group grid grid-cols-[42px_1fr] gap-3 rounded-xl border border-[#cdd5d2] bg-white/65 px-4 py-4 shadow-[0_8px_24px_rgba(8,27,36,0.025)] transition-all duration-300 hover:border-[#007c67]/25 hover:bg-white hover:shadow-[0_12px_30px_rgba(8,27,36,0.05)] sm:grid-cols-[42px_180px_1fr] sm:items-center sm:px-5"
+
                   >
+
                     <span className="flex h-8 w-8 items-center justify-center rounded-lg border border-[#007c67]/10 bg-[#007c67]/[0.04] font-mono text-[8px] font-semibold tracking-[0.14em] text-[#007c67]">
+
                       {item.num}
+
                     </span>
 
                     <h3 className="font-heading text-base font-semibold text-[#081b24]">
+
                       {item.title}
+
                     </h3>
 
                     <p className="col-start-2 text-sm leading-6 text-[#607078] sm:col-start-auto">
+
                       {item.copy}
+
                     </p>
+
                   </motion.div>
+
                 ))}
+
               </div>
 
             </motion.div>
-
 
             <motion.div
 
@@ -1614,13 +1684,11 @@ export default function AboutPage() {
 
       </section>
 
+      {/* =====================================================*
 
-      {/* =====================================================
+         05 — CTA*
 
-          05 — CTA
-
-      ===================================================== */}
-
+     ===================================================== */}
 
       <CtaBand />
 

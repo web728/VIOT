@@ -1,6 +1,6 @@
-
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+
 import ProductPageClient from "./product-page-client";
 
 import {
@@ -16,13 +16,18 @@ export function generateStaticParams() {
 }
 
 /* =========================================================
-   METADATA
+   TYPES
 ========================================================= */
+
 type ProductPageParams = {
   params: Promise<{
     slug: string;
   }>;
 };
+
+/* =========================================================
+   METADATA
+========================================================= */
 
 export async function generateMetadata({
   params,
@@ -56,10 +61,13 @@ function getProductImage(slug: string) {
     case "video-telematics":
       return "/image/car.jpeg";
 
-    case "smart-locks":
+    case "smart-logistics-locks":
       return "/image/lock.png";
 
-    case "asset-tracking":
+    case "smart-infra-locks":
+      return "/image/lock.png";
+
+    case "asset-trackers":
       return "/image/lab.jpeg";
 
     case "iot-sensors":
@@ -75,40 +83,48 @@ function getProductFlow(slug: string) {
     case "vehicle-telematics":
       return {
         source: "Vehicle",
-        device: "Telematics Device",
-        data: "Location · Movement · Vehicle data",
+        device: "Tracking Device",
+        data: "Location · Driving events · Vehicle status",
         output: "Fleet Operations",
       };
 
     case "video-telematics":
       return {
         source: "Vehicle",
-        device: "Video Device",
-        data: "Video · Events · Vehicle context",
+        device: "AI Video Device",
+        data: "Video · Driver events · Position",
         output: "Safety Operations",
       };
 
-    case "smart-locks":
+    case "smart-logistics-locks":
       return {
         source: "Cargo",
-        device: "Electronic Lock",
-        data: "Lock state · Tamper · Access",
+        device: "Smart Logistics Lock",
+        data: "Lock state · Location · Tamper events",
         output: "Cargo Security",
       };
 
-    case "asset-tracking":
+    case "smart-infra-locks":
+      return {
+        source: "Infrastructure",
+        device: "Connected Lock",
+        data: "Lock state · Access · Exceptions",
+        output: "Access Operations",
+      };
+
+    case "asset-trackers":
       return {
         source: "Asset",
         device: "Asset Tracker",
-        data: "Location · Motion · Status",
+        data: "Location · Motion · Geo-fence events",
         output: "Asset Operations",
       };
 
     case "iot-sensors":
       return {
-        source: "Environment",
+        source: "Field Input",
         device: "IoT Sensor",
-        data: "Temperature · Fuel · Load",
+        data: "Temperature · Fuel · Sensor events",
         output: "Operational Monitoring",
       };
 
@@ -122,9 +138,13 @@ function getProductFlow(slug: string) {
   }
 }
 
+/* =========================================================
+   PAGE
+========================================================= */
+
 export default async function ProductPage({
   params,
-}: PageProps<"/products/[slug]">) {
+}: ProductPageParams) {
   const { slug } = await params;
 
   const product = getProduct(slug);
