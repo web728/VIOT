@@ -565,7 +565,7 @@ export default function SolutionsPage() {
 
           <div className="mb-7 flex items-end justify-between">
 
-            <div>
+            {/* <div>
 
               <span className="font-mono text-[8px] font-semibold uppercase tracking-[0.2em] text-[#007c67]">
 
@@ -579,7 +579,7 @@ export default function SolutionsPage() {
 
               </h3>
 
-            </div>
+            </div> */}
 
             {/* <span className="hidden font-mono text-[8px] uppercase tracking-[0.18em] text-[#007c67] sm:block">
 
