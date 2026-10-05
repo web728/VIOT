@@ -23,7 +23,7 @@ export default function Home() {
       <ServiceMapSection />
       {/* <SolutionSection /> */}
       <ProductsShowcase />
-      <PlatformSection />
+      {/* <PlatformSection /> */}
       <CtaBand />
     </main>
   );
