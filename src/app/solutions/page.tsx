@@ -715,7 +715,7 @@ export default function SolutionsPage() {
 
             </div>
 
-            <div className="lg:col-span-4">
+            {/* <div className="lg:col-span-4">
 
               <p className="max-w-sm text-sm leading-7 text-white/55 lg:ml-auto lg:text-right">
 
@@ -725,7 +725,7 @@ export default function SolutionsPage() {
 
               </p>
 
-            </div>
+            </div> */}
 
           </div>
 
