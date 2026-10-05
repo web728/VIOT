@@ -346,9 +346,8 @@ export default function SolutionsPage() {
 
         <VIoTSVGBackground dark />
 
-        <div className="relative z-10 mx-auto flex min-h-[610px] max-w-[1440px] flex-col justify-between px-6 pb-8 pt-8 sm:min-h-[650px] sm:px-8 lg:px-12 lg:pt-10">
-
-          <div className="flex items-center justify-between">
+       <div className="relative z-10 mx-auto flex min-h-[610px] max-w-[1440px] flex-col justify-between px-6 pb-8 pt-24 sm:min-h-[650px] sm:px-8 sm:pt-28 lg:px-12 lg:pt-32">
+          {/* <div className="flex items-center justify-between">
 
             <SectionLabel dark>Solutions</SectionLabel>
 
@@ -358,7 +357,7 @@ export default function SolutionsPage() {
 
             </span>
 
-          </div>
+          </div> */}
 
           <div className="grid items-end gap-10 lg:grid-cols-12">
 
