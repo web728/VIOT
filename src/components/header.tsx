@@ -49,17 +49,15 @@ const solutionLinks = [
 ] as const;
 
 const platformLinks = [
-
-  ["Fleet Management", "/platform/fleet-management"],
-
+  ["Fleet Intelligence", "/platform/fleet-management"],
   ["EV Management", "/platform/ev-management"],
-
-  ["E-Lock", "/platform/e-lock"],
-
-  ["Video", "/platform/video"],
-
+  ["Safe Logistics", "/platform/e-lock"],
+  ["Video Intelligence", "/platform/video"],
+  ["Smart Access Control", "/platform/access-control"],
+  ["Temperature & Humidity Monitoring", "/platform/temperature-humidity-monitoring"],
   ["Fuel Monitoring", "/platform/fuel-monitoring"],
-
+  ["Load & Weight Analytics", "/platform/load-weight-analytics"],
+  ["Industrial Automation", "/platform/industrial-automation"],
 ] as const;
 
 const navItems = [
@@ -76,21 +74,21 @@ const navItems = [
 
   {
 
-    label: "Industries",
-
-    href: "/solutions",
-
-    links: solutionLinks,
-
-  },
-
-  {
-
     label: "Solutions",
 
     href: "/platform",
 
     links: platformLinks,
+
+  },
+
+   {
+
+    label: "Industries",
+
+    href: "/solutions",
+
+    links: solutionLinks,
 
   },
 
