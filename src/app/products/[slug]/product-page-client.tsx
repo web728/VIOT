@@ -879,7 +879,7 @@ function TrackingDeviceSection({
 
                 />
 
-                <div className="absolute left-5 top-5 rounded-lg border border-white/10 bg-[#081b24]/70 px-3 py-2 backdrop-blur-md">
+                {/* <div className="absolute left-5 top-5 rounded-lg border border-white/10 bg-[#081b24]/70 px-3 py-2 backdrop-blur-md">
 
                   <span className="font-mono text-[8px] uppercase tracking-[0.16em] text-[#27d59b]">
 
@@ -887,7 +887,7 @@ function TrackingDeviceSection({
 
                   </span>
 
-                </div>
+                </div> */}
 
               </div>
 
@@ -1595,13 +1595,13 @@ export default function ProductPageClient({
 
               </div>
 
-              <p className="max-w-sm text-xs leading-6 text-white/40">
+              {/* <p className="max-w-sm text-xs leading-6 text-white/40">
 
                 A compact view of how physical-world activity becomes usable
 
                 operational intelligence.
 
-              </p>
+              </p> */}
 
             </div>
 
@@ -1877,11 +1877,11 @@ export default function ProductPageClient({
 
                       <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#081b24]/14 via-transparent to-white/[0.03]" />
 
-                      <span className="absolute left-3 top-3 rounded-md border border-white/10 bg-[#081b24]/60 px-2.5 py-1.5 font-mono text-[7px] text-[#27d59b] backdrop-blur-sm">
+                      {/* <span className="absolute left-3 top-3 rounded-md border border-white/10 bg-[#081b24]/60 px-2.5 py-1.5 font-mono text-[7px] text-[#27d59b] backdrop-blur-sm">
 
                         {item.number}
 
-                      </span>
+                      </span> */}
 
                     </div>
 

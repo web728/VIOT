@@ -43,34 +43,38 @@ const values = [
 ];
 
 const disciplines = [
+
   {
+
     num: "01",
+
     title: "Connected Mobility",
+
     copy: "Vehicle tracking, video and fleet operations.",
+
   },
+
   {
+
     num: "02",
+
     title: "Asset & Sensor Intelligence",
+
     copy: "Assets, cargo, fuel, temperature and field sensing.",
+
   },
+
   {
+
     num: "03",
+
     title: "Connected Security",
+
     copy: "Smart locks, access state and security events.",
+
   },
+
 ];
-
-/* =========================================================*
-
-  CLIENT-APPROVED VIoT SVG BACKGROUND*
-
-  Same visual language:*
-
-  flowing paths + dashed signal flow + engineering rings*
-
-  + moving signal points.*
-
-*========================================================= */
 
 function ApprovedVIoTBackground({
 
@@ -96,8 +100,6 @@ function ApprovedVIoTBackground({
 
     >
 
-      {/* subtle atmosphere */}
-
       <div
 
         className={`absolute -left-48 top-[8%] h-[520px] w-[520px] rounded-full blur-3xl ${
@@ -118,12 +120,6 @@ function ApprovedVIoTBackground({
 
       />
 
-      {/* =====================================================*
-
-         FLOWING SYSTEM PATHS*
-
-     ===================================================== */}
-
       <svg
 
         viewBox="0 0 1600 1000"
@@ -135,8 +131,6 @@ function ApprovedVIoTBackground({
         fill="none"
 
       >
-
-        {/* Upper engineering path */}
 
         <motion.path
 
@@ -169,8 +163,6 @@ function ApprovedVIoTBackground({
           }}
 
         />
-
-        {/* Main green data flow */}
 
         <motion.path
 
@@ -208,8 +200,6 @@ function ApprovedVIoTBackground({
 
         />
 
-        {/* diagonal engineering path */}
-
         <path
 
           d="M80 1080 C260 740 520 700 780 450 S1240 120 1620 -90"
@@ -227,8 +217,6 @@ function ApprovedVIoTBackground({
           strokeWidth="1"
 
         />
-
-        {/* lower flowing path */}
 
         <motion.path
 
@@ -267,12 +255,6 @@ function ApprovedVIoTBackground({
         />
 
       </svg>
-
-      {/* =====================================================*
-
-         ENGINEERING RINGS*
-
-     ===================================================== */}
 
       <motion.div
 
@@ -362,12 +344,6 @@ function ApprovedVIoTBackground({
 
       />
 
-      {/* =====================================================*
-
-         MOVING SIGNAL POINTS*
-
-     ===================================================== */}
-
       <motion.span
 
         className="absolute left-[19%] top-[31%] h-1.5 w-1.5 rounded-full bg-[#27d59b]"
@@ -448,8 +424,6 @@ function ApprovedVIoTBackground({
 
       />
 
-      {/* ambient points */}
-
       {[
 
         ["12%", "20%"],
@@ -506,12 +480,6 @@ function ApprovedVIoTBackground({
 
 }
 
-/* =========================================================*
-
-  WHY VIOT IMAGE VISUAL*
-
-*========================================================= */
-
 function WhyVIoTVisual() {
 
   const technicalPoints = [
@@ -532,7 +500,7 @@ function WhyVIoTVisual() {
 
       <div className="absolute -inset-4 hidden rounded-[28px] border border-[#007c67]/10 sm:block" />
 
-      <div className="relative overflow-hidden rounded-2xl border border-[#bfcfc9] bg-[#081b24] shadow-[0_22px_60px_rgba(8,27,36,0.12)]">
+      <div className="relative overflow-hidden rounded-2xl border border-[#bfcfc9] bg-[#081b24] shadow-[0_24px_64px_rgba(8,27,36,0.12)]">
 
         <div className="relative aspect-[4/3]">
 
@@ -726,12 +694,6 @@ function WhyVIoTVisual() {
 
 }
 
-/* =========================================================*
-
-  COMPANY OPERATING MODEL*
-
-*========================================================= */
-
 const CYCLE = 4;
 
 const vizNodes = [
@@ -760,7 +722,7 @@ function OperatingModelIllustration() {
 
   return (
 
-    <div className="mx-auto w-full max-w-[460px] overflow-hidden rounded-2xl border border-[#c7d5d0] bg-[#f8faf7]/90 p-5 shadow-[0_20px_55px_rgba(8,27,36,0.08)] backdrop-blur-sm sm:p-8">
+    <div className="mx-auto w-full max-w-[450px] overflow-hidden rounded-2xl border border-[#c7d5d0] bg-[#f8faf7]/90 p-5 shadow-[0_20px_55px_rgba(8,27,36,0.08)] backdrop-blur-sm sm:p-7">
 
       <svg
 
@@ -1100,31 +1062,255 @@ function OperatingModelIllustration() {
 
 }
 
-/* =========================================================*
-
-  PAGE*
-
-*========================================================= */
-
 export default function AboutPage() {
 
   return (
 
-    <main className="overflow-hidden bg-[#f4f6f2] text-[#081b24] selection:bg-[#27d59b] selection:text-[#081b24]">
+    <main className="overflow-hidden bg-[#f4f6f2] text-[#081b24] antialiased selection:bg-[#27d59b] selection:text-[#081b24]">
 
-      {/* =====================================================*
-
-         01 — HERO*
-
-     ===================================================== */}
-
-      <section className="relative min-h-[620px] overflow-hidden bg-[#081b24] text-white sm:min-h-[680px]">
+      <section className="relative min-h-[680px] overflow-hidden border-b border-white/10 bg-[#081b24] text-white sm:min-h-[720px]">
 
         <ApprovedVIoTBackground dark />
 
-        <div className="relative z-10 mx-auto flex min-h-[620px] max-w-[1440px] items-center px-6 py-24 sm:min-h-[680px] sm:px-8 lg:px-12">
+        <div className="relative z-10 mx-auto flex min-h-[680px] max-w-[1440px] items-center px-6 pb-20 pt-28 sm:min-h-[720px] sm:px-8 sm:pb-24 sm:pt-32 lg:px-12 lg:pb-24 lg:pt-36">
 
-          <div className="w-full max-w-4xl">
+          <div className="grid w-full grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-14">
+
+            <motion.div
+
+              initial={{ opacity: 0, y: 20 }}
+
+              whileInView={{ opacity: 1, y: 0 }}
+
+              viewport={{ once: true, amount: 0.2 }}
+
+              transition={{ duration: 0.65 }}
+
+              className="lg:col-span-4 lg:pr-4"
+
+            >
+
+              <div className="mb-6 flex items-center gap-3">
+
+                <span className="h-px w-9 bg-[#27d59b]" />
+
+                <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.18em] text-[#27d59b]">
+
+                  01 / What we value
+
+                </span>
+
+              </div>
+
+              <h2 className="font-heading text-3xl font-semibold leading-[1.05] tracking-[-0.04em] sm:text-4xl">
+
+                The way we build
+
+                <br />
+
+                <span className="text-[#27d59b]">matters.</span>
+
+              </h2>
+
+              <p className="mt-6 max-w-sm text-sm leading-7 text-white/45">
+
+                Technology is only part of the relationship. We care about
+
+                what happens before deployment, during implementation and long
+
+                after the system goes live.
+
+              </p>
+
+            </motion.div>
+
+            <div className="lg:col-span-8 lg:pl-2">
+
+              <div className="border-y border-white/10">
+
+                {values.map((value, index) => (
+
+                  <motion.div
+
+                    key={value.num}
+
+                    initial={{ opacity: 0, x: 18 }}
+
+                    whileInView={{ opacity: 1, x: 0 }}
+
+                    viewport={{ once: true, amount: 0.2 }}
+
+                    transition={{
+
+                      duration: 0.55,
+
+                      delay: index * 0.08,
+
+                    }}
+
+                    className="group grid grid-cols-1 gap-4 border-b border-white/10 py-6 last:border-b-0 sm:grid-cols-[52px_170px_1fr] sm:items-start sm:gap-6 sm:py-7"
+
+                  >
+
+                    <span className="font-mono text-[9px] font-semibold tracking-[0.16em] text-[#27d59b]">
+
+                      {value.num}
+
+                    </span>
+
+                    <h3 className="font-heading text-lg font-semibold text-white">
+
+                      {value.title}
+
+                    </h3>
+
+                    <p className="max-w-xl text-sm leading-7 text-white/45 transition-colors duration-300 group-hover:text-white/70">
+
+                      {value.copy}
+
+                    </p>
+
+                  </motion.div>
+
+                ))}
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <section className="relative overflow-hidden border-b border-[#cdd5d2] bg-[#f4f6f2]">
+
+        <ApprovedVIoTBackground />
+
+        <div className="relative z-10 mx-auto max-w-[1440px] px-6 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-24">
+
+          <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-center lg:gap-14">
+
+            <motion.div
+
+              initial={{ opacity: 0, y: 24 }}
+
+              whileInView={{ opacity: 1, y: 0 }}
+
+              viewport={{ once: true, amount: 0.2 }}
+
+              transition={{
+
+                duration: 0.7,
+
+                ease: [0.16, 1, 0.3, 1],
+
+              }}
+
+              className="relative z-10 lg:col-span-6 lg:pr-3"
+
+            >
+
+              <div className="mb-6 flex items-center gap-3">
+
+                <span className="h-px w-10 bg-[#27d59b]" />
+
+                <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.18em] text-[#007c67]">
+
+                  02 / Why VIoT exists
+
+                </span>
+
+              </div>
+
+              <h2 className="max-w-2xl font-heading text-3xl font-semibold leading-[1.03] tracking-[-0.045em] text-[#081b24] sm:text-4xl lg:text-[48px]">
+
+                Connected systems should
+
+                <br />
+
+                <span className="text-[#007c67]">
+
+                  work when it matters.
+
+                </span>
+
+              </h2>
+
+              <blockquote className="mt-7 max-w-xl rounded-xl border border-[#007c67]/10 border-l-[3px] border-l-[#27d59b] bg-white/55 px-5 py-4 font-heading text-xl font-medium leading-[1.35] tracking-[-0.025em] text-[#081b24] shadow-[0_10px_30px_rgba(8,27,36,0.035)] backdrop-blur-sm sm:text-2xl">
+
+                “Connected systems earn trust only when they keep working at
+
+                the moment it matters most.”
+
+              </blockquote>
+
+              <p className="mt-7 max-w-xl text-sm leading-7 text-[#607078] sm:text-[15px]">
+
+                Power cuts, tampering and remote operating environments are
+
+                exactly when dependable technology matters most. VIoT was
+
+                built to close that reliability gap across vehicles, assets
+
+                and controlled physical access.
+
+              </p>
+
+              <div className="mt-8 flex items-center gap-3">
+
+                <span className="h-px w-8 bg-[#27d59b]" />
+
+                <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.16em] text-[#007c67]">
+
+                  Built for real operating conditions
+
+                </span>
+
+              </div>
+
+            </motion.div>
+
+            <motion.div
+
+              initial={{ opacity: 0, scale: 0.97 }}
+
+              whileInView={{ opacity: 1, scale: 1 }}
+
+              viewport={{ once: true, amount: 0.2 }}
+
+              transition={{
+
+                duration: 0.8,
+
+                ease: [0.16, 1, 0.3, 1],
+
+              }}
+
+              className="relative z-10 lg:col-span-6 lg:pl-3"
+
+            >
+
+              <WhyVIoTVisual />
+
+            </motion.div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+   <PlatformFlywheel/>
+
+      <section className="relative min-h-[600px] overflow-hidden bg-[#081b24] text-white sm:min-h-[650px]">
+
+        <ApprovedVIoTBackground dark />
+
+        <div className="relative z-10 mx-auto flex min-h-[600px] max-w-[1440px] items-center px-6 py-20 sm:min-h-[650px] sm:px-8 sm:py-24 lg:px-12">
+
+          <div className="w-full max-w-[920px]">
 
             <motion.div
 
@@ -1170,7 +1356,7 @@ export default function AboutPage() {
 
               }}
 
-              className="mt-7 max-w-4xl font-heading text-[44px] font-semibold leading-[0.96] tracking-[-0.055em] text-white sm:text-6xl lg:text-[72px]"
+              className="mt-7 max-w-[900px] font-heading text-[42px] font-semibold leading-[0.96] tracking-[-0.055em] text-white sm:text-6xl lg:text-[70px]"
 
             >
 
@@ -1280,269 +1466,11 @@ export default function AboutPage() {
 
       </section>
 
-      {/* =====================================================*
-
-         02 — WHY VIOT*
-
-     ===================================================== */}
-
-      <section className="relative overflow-hidden border-b border-[#cdd5d2] bg-[#f4f6f2]">
-
-        <ApprovedVIoTBackground />
-
-        <div className="relative z-10 mx-auto max-w-[1440px] px-6 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-24">
-
-          <div className="grid grid-cols-1 gap-14 lg:grid-cols-12 lg:items-center lg:gap-16">
-
-            {/* Copy */}
-
-            <motion.div
-
-              initial={{ opacity: 0, y: 24 }}
-
-              whileInView={{ opacity: 1, y: 0 }}
-
-              viewport={{ once: true, amount: 0.2 }}
-
-              transition={{
-
-                duration: 0.7,
-
-                ease: [0.16, 1, 0.3, 1],
-
-              }}
-
-              className="relative z-10 lg:col-span-6"
-
-            >
-
-              <div className="mb-6 flex items-center gap-3">
-
-                <span className="h-px w-10 bg-[#27d59b]" />
-
-                <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.18em] text-[#007c67]">
-
-                  01 / Why VIoT exists
-
-                </span>
-
-              </div>
-
-              <h2 className="max-w-2xl font-heading text-3xl font-semibold leading-[1.03] tracking-[-0.045em] text-[#081b24] sm:text-4xl lg:text-[48px]">
-
-                Connected systems should
-
-                <br />
-
-                <span className="text-[#007c67]">
-
-                  work when it matters.
-
-                </span>
-
-              </h2>
-
-              <blockquote className="mt-7 max-w-xl rounded-xl border border-[#007c67]/10 border-l-[3px] border-l-[#27d59b] bg-white/55 px-5 py-4 font-heading text-xl font-medium leading-[1.35] tracking-[-0.025em] text-[#081b24] shadow-[0_10px_30px_rgba(8,27,36,0.035)] backdrop-blur-sm sm:text-2xl">
-
-                “Connected systems earn trust only when they keep working at
-
-                the moment it matters most.”
-
-              </blockquote>
-
-              <p className="mt-7 max-w-xl text-sm leading-7 text-[#607078] sm:text-[15px]">
-
-                Power cuts, tampering and remote operating environments are
-
-                exactly when dependable technology matters most. VIoT was
-
-                built to close that reliability gap across vehicles, assets
-
-                and controlled physical access.
-
-              </p>
-
-              <div className="mt-8 flex items-center gap-3">
-
-                <span className="h-px w-8 bg-[#27d59b]" />
-
-                <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.16em] text-[#007c67]">
-
-                  Built for real operating conditions
-
-                </span>
-
-              </div>
-
-            </motion.div>
-
-            {/* Existing image + premium points */}
-
-            <motion.div
-
-              initial={{ opacity: 0, scale: 0.97 }}
-
-              whileInView={{ opacity: 1, scale: 1 }}
-
-              viewport={{ once: true, amount: 0.2 }}
-
-              transition={{
-
-                duration: 0.8,
-
-                ease: [0.16, 1, 0.3, 1],
-
-              }}
-
-              className="relative z-10 lg:col-span-6"
-
-            >
-
-              <WhyVIoTVisual />
-
-            </motion.div>
-
-          </div>
-
-        </div>
-
-      </section>
-
-   <PlatformFlywheel/>
-
-      {/* =====================================================*
-
-         03 — WHAT WE VALUE*
-
-     ===================================================== */}
-
-      <section className="relative overflow-hidden border-b border-white/10 bg-[#081b24] text-white">
-
-        <ApprovedVIoTBackground dark />
-
-        <div className="relative z-10 mx-auto max-w-[1440px] px-6 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-24">
-
-          <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
-
-            <motion.div
-
-              initial={{ opacity: 0, y: 20 }}
-
-              whileInView={{ opacity: 1, y: 0 }}
-
-              viewport={{ once: true, amount: 0.2 }}
-
-              transition={{ duration: 0.65 }}
-
-              className="lg:col-span-4"
-
-            >
-
-              <div className="mb-6 flex items-center gap-3">
-
-                <span className="h-px w-9 bg-[#27d59b]" />
-
-                <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.18em] text-[#27d59b]">
-
-                  02 / What we value
-
-                </span>
-
-              </div>
-
-              <h2 className="font-heading text-3xl font-semibold leading-[1.05] tracking-[-0.04em] sm:text-4xl">
-
-                The way we build
-
-                <br />
-
-                <span className="text-[#27d59b]">matters.</span>
-
-              </h2>
-
-              <p className="mt-6 max-w-sm text-sm leading-7 text-white/45">
-
-                Technology is only part of the relationship. We care about
-
-                what happens before deployment, during implementation and long
-
-                after the system goes live.
-
-              </p>
-
-            </motion.div>
-
-            <div className="lg:col-span-8">
-
-              <div className="border-y border-white/10">
-
-                {values.map((value, index) => (
-
-                  <motion.div
-
-                    key={value.num}
-
-                    initial={{ opacity: 0, x: 18 }}
-
-                    whileInView={{ opacity: 1, x: 0 }}
-
-                    viewport={{ once: true, amount: 0.2 }}
-
-                    transition={{
-
-                      duration: 0.55,
-
-                      delay: index * 0.08,
-
-                    }}
-
-                    className="group grid grid-cols-1 gap-4 border-b border-white/10 py-7 last:border-b-0 sm:grid-cols-[60px_180px_1fr] sm:items-start sm:gap-6 sm:py-8"
-
-                  >
-
-                    <span className="font-mono text-[9px] font-semibold tracking-[0.16em] text-[#27d59b]">
-
-                      {value.num}
-
-                    </span>
-
-                    <h3 className="font-heading text-lg font-semibold text-white">
-
-                      {value.title}
-
-                    </h3>
-
-                    <p className="max-w-xl text-sm leading-7 text-white/45 transition-colors duration-300 group-hover:text-white/70">
-
-                      {value.copy}
-
-                    </p>
-
-                  </motion.div>
-
-                ))}
-
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </section>
-
-      {/* =====================================================*
-
-         04 — THE COMPANY*
-
-     ===================================================== */}
-
       <section className="relative overflow-hidden border-b border-[#cdd5d2] bg-white">
 
         <ApprovedVIoTBackground />
 
-        <div className="relative z-10 mx-auto max-w-[1440px] px-6 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-24">
+        <div className="relative z-10 mx-auto max-w-[1440px] px-6 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-[88px]">
 
           <div className="grid grid-cols-1 gap-14 lg:grid-cols-12 lg:items-center lg:gap-16">
 
@@ -1624,7 +1552,7 @@ export default function AboutPage() {
 
                     transition={{ duration: 0.25 }}
 
-                    className="group grid grid-cols-[42px_1fr] gap-3 rounded-xl border border-[#cdd5d2] bg-white/65 px-4 py-4 shadow-[0_8px_24px_rgba(8,27,36,0.025)] transition-all duration-300 hover:border-[#007c67]/25 hover:bg-white hover:shadow-[0_12px_30px_rgba(8,27,36,0.05)] sm:grid-cols-[42px_180px_1fr] sm:items-center sm:px-5"
+                    className="group grid grid-cols-[42px_1fr] gap-3 rounded-xl border border-[#cdd5d2] bg-white/70 px-4 py-4 shadow-[0_8px_24px_rgba(8,27,36,0.025)] backdrop-blur-sm transition-all duration-300 hover:border-[#007c67]/25 hover:bg-white hover:shadow-[0_12px_30px_rgba(8,27,36,0.05)] sm:grid-cols-[42px_180px_1fr] sm:items-center sm:px-5"
 
                   >
 
@@ -1683,12 +1611,6 @@ export default function AboutPage() {
         </div>
 
       </section>
-
-      {/* =====================================================*
-
-         05 — CTA*
-
-     ===================================================== */}
 
       <CtaBand />
 

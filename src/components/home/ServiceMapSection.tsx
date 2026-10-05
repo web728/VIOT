@@ -218,7 +218,7 @@ export function ServiceMapSection() {
             </h2>
           </motion.div>
 
-          <motion.div
+          {/* <motion.div
             initial={{ opacity: 0, y: 14 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -237,7 +237,7 @@ export function ServiceMapSection() {
               used by an operations team, VIoT connects the physical world
               with the decisions that follow.
             </p>
-          </motion.div>
+          </motion.div> */}
         </div>
 
         {/* Data-flow illustration */}

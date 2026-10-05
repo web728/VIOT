@@ -108,21 +108,14 @@ const sources: SourceNode[] = [
 
   },
 
-  {
-
-    id: "lock",
-
-    y: 442,
-
-    title: "E-Lock",
-
-    sub: "Lock & tamper state",
-
-    packet: "LOCK · SECURE",
-
-    icon: "lock",
-
-  },
+ {
+  id: "lock",
+  y: 442,
+  title: "BLE Lock",
+  sub: "Secure wireless access",
+  packet: "LOCK · SECURE",
+  icon: "lock",
+},
 
 ];
 

@@ -30,12 +30,6 @@ import { createPortal } from "react-dom";
 
 import { CtaBand } from "@/components/home/CtaBand";
 
-/* =========================================================****
-
-TYPES***
-
-****========================================================= */
-
 type Feature = {
 
   icon: typeof Radio;
@@ -87,14 +81,6 @@ type EcosystemProduct = {
   gallery: string[];
 
 };
-
-/* =========================================================****
-
-*MAIN PRODUCTS****
-
-*Client-supplied primary product set.****
-
-****========================================================= */
 
 const mainProducts: MainProduct[] = [
 
@@ -182,7 +168,6 @@ const mainProducts: MainProduct[] = [
 
     ],
 
-   
   },
 
   {
@@ -467,16 +452,6 @@ const mainProducts: MainProduct[] = [
 
 ];
 
-/* =========================================================****
-
-*MORE FROM VIOT ECOSYSTEM****
-
-*These are separate from the 4 primary products.****
-
-*AIS 140 intentionally NOT included.****
-
-****========================================================= */
-
 const ecosystemProducts: EcosystemProduct[] = [
 
   {
@@ -649,12 +624,6 @@ const ecosystemProducts: EcosystemProduct[] = [
 
 ];
 
-/* =========================================================****
-
-*SCROLL REVEAL****
-
-****========================================================= */
-
 function Reveal({
 
   children,
@@ -723,22 +692,6 @@ function Reveal({
 
 }
 
-/* =========================================================****
-
-*APPROVED VIOT SVG ANIMATION****
-
-*KEEP THIS VISUAL LANGUAGE:****
-
-*- flowing paths****
-
-*- dashed green data flow****
-
-*- rotating engineering rings****
-
-*- moving signal points****
-
-****========================================================= */
-
 function VIoTSVGBackground({
 
   dark = false,
@@ -762,8 +715,6 @@ function VIoTSVGBackground({
       aria-hidden="true"
 
     >
-
-      {/* atmospheric depth */}
 
       <div
 
@@ -793,12 +744,6 @@ function VIoTSVGBackground({
 
       />
 
-      {/* =====================================================****
-
-      FLOWING SVG PATHS****
-
-  ===================================================== */}
-
       <svg
 
         viewBox="0 0 1600 1000"
@@ -810,8 +755,6 @@ function VIoTSVGBackground({
         fill="none"
 
       >
-
-        {/* Upper path */}
 
         <motion.path
 
@@ -857,8 +800,6 @@ function VIoTSVGBackground({
 
         />
 
-        {/* MAIN GREEN FLOW */}
-
         <motion.path
 
           d="M-180 700 C120 470 390 525 680 685 S1130 880 1780 560"
@@ -895,8 +836,6 @@ function VIoTSVGBackground({
 
         />
 
-        {/* diagonal engineering path */}
-
         <path
 
           d="M80 1080 C260 740 520 700 780 450 S1240 120 1620 -90"
@@ -914,8 +853,6 @@ function VIoTSVGBackground({
           strokeWidth="1"
 
         />
-
-        {/* lower flow */}
 
         <motion.path
 
@@ -954,12 +891,6 @@ function VIoTSVGBackground({
         />
 
       </svg>
-
-      {/* =====================================================****
-
-      ENGINEERING RINGS****
-
-  ===================================================== */}
 
       <motion.div
 
@@ -1049,12 +980,6 @@ function VIoTSVGBackground({
 
       />
 
-      {/* =====================================================****
-
-      MOVING SIGNAL POINTS****
-
-  ===================================================== */}
-
       <motion.span
 
         className="absolute left-[19%] top-[31%] h-1.5 w-1.5 rounded-full bg-[#27d59b]"
@@ -1135,8 +1060,6 @@ function VIoTSVGBackground({
 
       />
 
-      {/* ambient points */}
-
       {[
 
         ["12%", "20%"],
@@ -1203,31 +1126,13 @@ function VIoTSVGBackground({
 
 }
 
-/* =========================================================****
-
-HERO***
-
-****========================================================= */
-
 function ProductHero() {
 
   return (
 
     <section className="relative mx-auto h-[84vh] min-h-[560px] max-h-[720px] overflow-hidden bg-[#081b24] text-white">
 
-      {/* =====================================================****
-
-      APPROVED VIOT SVG BACKGROUND****
-
-  ===================================================== */}
-
       <VIoTSVGBackground dark />
-
-      {/* =====================================================****
-
-      TECHNICAL GRID****
-
-  ===================================================== */}
 
       <div className="pointer-events-none absolute inset-0 z-[1] opacity-[0.025]">
 
@@ -1266,12 +1171,6 @@ function ProductHero() {
         />
 
       </div>
-
-      {/* =====================================================****
-
-      VIDEO — BACKGROUND VISUAL****
-
-  ===================================================== */}
 
       <motion.div
 
@@ -1331,47 +1230,15 @@ function ProductHero() {
 
         </video>
 
-        {/* =================================================****
-
-        GLOBAL VIDEO OVERLAY****
-
-    ================================================= */}
-
         <div className="absolute inset-0 bg-[#081b24]/30" />
-
-        {/* =================================================****
-
-        LEFT DARK GRADIENT****
-
-        This keeps text readable****
-
-    ================================================= */}
 
         <div className="absolute inset-y-0 left-0 w-full bg-gradient-to-r from-[#081b24] via-[#081b24]/95 via-[42%] to-[#081b24]/15" />
 
-        {/* =================================================****
-
-        BOTTOM CINEMATIC BLEND****
-
-    ================================================= */}
-
         <div className="absolute inset-x-0 bottom-0 h-[32%] bg-gradient-to-t from-[#081b24] to-transparent" />
-
-        {/* =================================================****
-
-        TOP BLEND****
-
-    ================================================= */}
 
         <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[#081b24]/45 to-transparent" />
 
       </motion.div>
-
-      {/* =====================================================****
-
-      ANIMATED TELEMETRY POINT****
-
-  ===================================================== */}
 
       <motion.span
 
@@ -1398,12 +1265,6 @@ function ProductHero() {
         }}
 
       />
-
-      {/* =====================================================****
-
-      MAIN CONTENT****
-
-  ===================================================== */}
 
       <div className="relative z-[10] mx-auto flex h-full max-w-[1440px] items-center px-7 sm:px-10 lg:px-14 xl:px-16">
 
@@ -1439,12 +1300,6 @@ function ProductHero() {
 
         >
 
-          {/* =================================================****
-
-          KICKER****
-
-      ================================================= */}
-
           <div className="flex items-center gap-3">
 
             <span className="h-px w-9 bg-[#27d59b]" />
@@ -1456,12 +1311,6 @@ function ProductHero() {
             </span>
 
           </div>
-
-          {/* =================================================****
-
-          HEADING****
-
-      ================================================= */}
 
           <h1 className="mt-7 max-w-[650px] font-heading text-[clamp(3rem,5.3vw,5.25rem)] font-semibold leading-[0.94] tracking-[-0.065em] text-white">
 
@@ -1479,12 +1328,6 @@ function ProductHero() {
 
           </h1>
 
-          {/* =================================================****
-
-          DESCRIPTION****
-
-      ================================================= */}
-
           <p className="mt-7 max-w-[500px] text-[14px] leading-[1.8] text-white/55 sm:text-[15px]">
 
             Connected tracking hardware designed to capture what is
@@ -1494,12 +1337,6 @@ function ProductHero() {
             operational intelligence.
 
           </p>
-
-          {/* =================================================****
-
-          PRODUCT INDICATORS****
-
-      ================================================= */}
 
           <div className="mt-8 flex flex-wrap items-center gap-2.5">
 
@@ -1540,53 +1377,7 @@ function ProductHero() {
         </motion.div>
 
       </div>
-
-      {/* =====================================================****
-
-      LIVE DATA LABEL****
-
-  ===================================================== */}
-
-      <div className="absolute bottom-7 right-7 z-[11] rounded-xl border border-white/10 bg-[#081b24]/75 px-4 py-3 shadow-[0_10px_30px_rgba(0,0,0,0.18)] backdrop-blur-md sm:right-10 lg:right-14">
-
-        <div className="flex items-center gap-2">
-
-          <motion.span
-
-            animate={{
-
-              opacity: [0.35, 1, 0.35],
-
-            }}
-
-            transition={{
-
-              duration: 1.8,
-
-              repeat: Infinity,
-
-            }}
-
-            className="h-1.5 w-1.5 rounded-full bg-[#27d59b]"
-
-          />
-
-          <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-white/65">
-
-            Live vehicle data
-
-          </span>
-
-        </div>
-
-      </div>
-
-      {/* =====================================================****
-
-      BOTTOM STATUS LINE****
-
-  ===================================================== */}
-
+ 
       <div className="absolute bottom-0 left-0 right-0 z-[10] px-7 pb-4 sm:px-10 lg:px-14">
 
         <div className="h-px w-full bg-white/10" />
@@ -1598,12 +1389,6 @@ function ProductHero() {
   );
 
 }
-
-/* =========================================================****
-
-*PRODUCT CAROUSEL****
-
-****========================================================= */
 
 function ProductCarousel({
 
@@ -1663,25 +1448,8 @@ return (
 
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#081b24]/18 via-transparent to-white/[0.04]" />
 
-        <div className="absolute left-4 top-4 rounded-lg border border-[#081b24]/10 bg-white/85 px-3 py-2 shadow-[0_6px_18px_rgba(8,27,36,0.06)] backdrop-blur-md sm:left-5 sm:top-5">
-
-          <span className="font-mono text-[8px] uppercase tracking-[0.17em] text-[#607078]">
-
-            {product.category}
-
-          </span>
-
-        </div>
-
-<div className="absolute bottom-4 left-4 sm:bottom-5 sm:left-5">
-
-          <span className="rounded-md bg-white/75 px-2 py-1 font-mono text-[8px] uppercase tracking-[0.16em] text-[#607078] backdrop-blur-sm">
-
-            Product / {product.number}
-
-          </span>
-
-        </div>
+        
+ 
 
       </div>
 
@@ -1721,196 +1489,308 @@ return (
 
 }
 
-/* =========================================================****
-
-*SPECIFICATIONS BUTTON****
-
-*Future client specs can be inserted into modal.****
-
-****========================================================= */
-
 function SpecificationsButton({
+
   product,
+
 }: {
+
   product: MainProduct;
+
 }) {
+
   const [open, setOpen] = useState(false);
+
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+
     setMounted(true);
+
   }, []);
 
   useEffect(() => {
+
     if (!open) return;
 
     const body = document.body;
+
     const html = document.documentElement;
 
     const previousBodyOverflow = body.style.overflow;
+
     const previousBodyPaddingRight = body.style.paddingRight;
+
     const previousHtmlOverflow = html.style.overflow;
 
     const scrollbarWidth =
+
       window.innerWidth - document.documentElement.clientWidth;
 
     body.style.overflow = "hidden";
+
     html.style.overflow = "hidden";
 
     if (scrollbarWidth > 0) {
+
       body.style.paddingRight = `${scrollbarWidth}px`;
+
     }
 
     const handleEscape = (event: KeyboardEvent) => {
+
       if (event.key === "Escape") {
+
         setOpen(false);
+
       }
+
     };
 
     window.addEventListener("keydown", handleEscape);
 
     return () => {
+
       body.style.overflow = previousBodyOverflow;
+
       body.style.paddingRight = previousBodyPaddingRight;
+
       html.style.overflow = previousHtmlOverflow;
+
       window.removeEventListener("keydown", handleEscape);
+
     };
+
   }, [open]);
 
   const modal =
+
     mounted && open
+
       ? createPortal(
+
           <AnimatePresence>
+
             <motion.div
+
               key="specifications-modal"
+
               initial={{ opacity: 0 }}
+
               animate={{ opacity: 1 }}
+
               exit={{ opacity: 0 }}
+
               transition={{ duration: 0.18 }}
+
               className="fixed inset-0 z-[9999] flex items-center justify-center overflow-hidden bg-[#081b24]/95 px-4 py-4 sm:px-6 sm:py-6"
+
               role="dialog"
+
               aria-modal="true"
+
               aria-labelledby={`spec-title-${product.id}`}
+
               onClick={() => setOpen(false)}
+
             >
+
               <motion.div
+
                 initial={{ opacity: 0, y: 16, scale: 0.985 }}
+
                 animate={{ opacity: 1, y: 0, scale: 1 }}
+
                 exit={{ opacity: 0, y: 16, scale: 0.985 }}
+
                 transition={{
+
                   duration: 0.24,
+
                   ease: [0.16, 1, 0.3, 1],
+
                 }}
+
                 onClick={(event) => event.stopPropagation()}
+
                 className="relative flex max-h-[calc(100dvh-2rem)] w-full max-w-xl flex-col overflow-hidden rounded-2xl border border-[#c8d5d0] bg-[#f4f6f2] shadow-[0_28px_90px_rgba(0,0,0,0.45)] sm:max-h-[88dvh]"
+
               >
+
                 <div className="shrink-0 border-b border-[#d3ddd9] bg-[#f4f6f2] px-5 py-5 sm:px-6">
+
                   <div className="flex items-start justify-between gap-5">
+
                     <div className="min-w-0">
+
                       <div className="flex items-center gap-3">
+
                         <span className="h-px w-7 bg-[#27d59b]" />
+
                         <span className="font-mono text-[8px] font-semibold uppercase tracking-[0.18em] text-[#007c67]">
+
                           Specifications
+
                         </span>
+
                       </div>
 
                       <h3
+
                         id={`spec-title-${product.id}`}
+
                         className="mt-3 font-heading text-2xl font-semibold leading-[1.05] tracking-[-0.035em] text-[#081b24] sm:text-[28px]"
+
                       >
+
                         {product.title}
+
                       </h3>
+
                     </div>
 
                     <button
+
                       type="button"
+
                       onClick={() => setOpen(false)}
+
                       className="shrink-0 rounded-lg border border-[#cdd5d2] bg-white px-3 py-2 font-mono text-[8px] uppercase tracking-[0.14em] text-[#607078] transition-colors duration-300 hover:border-[#007c67]/30 hover:text-[#081b24]"
+
                     >
+
                       Close
+
                     </button>
+
                   </div>
+
                 </div>
 
                 <div
+
                   className="min-h-0 flex-1 overflow-y-auto overscroll-contain bg-[#f4f6f2] px-5 py-5 sm:px-6"
+
                   style={{
+
                     WebkitOverflowScrolling: "touch",
+
                     overscrollBehavior: "contain",
+
                   }}
+
                   onWheel={(event) => event.stopPropagation()}
+
                   onTouchMove={(event) => event.stopPropagation()}
+
                 >
+
                   <div className="overflow-hidden rounded-xl border border-[#cdd8d4] bg-white">
+
                     <div className="divide-y divide-[#d8e1de]">
+
                       {product.specs.map(([label, value], index) => (
+
                         <div
+
                           key={`${label}-${value}`}
+
                           className="grid gap-1.5 px-4 py-3.5 sm:grid-cols-[150px_1fr] sm:items-start sm:gap-5 sm:px-5"
+
                         >
+
                           <div className="flex items-center gap-2">
+
                             <span className="font-mono text-[7px] text-[#9aa5a1]">
+
                               {String(index + 1).padStart(2, "0")}
+
                             </span>
 
                             <span className="font-mono text-[8px] font-semibold uppercase tracking-[0.14em] text-[#007c67]">
+
                               {label}
+
                             </span>
+
                           </div>
 
                           <span className="text-[12px] leading-5 text-[#42545b]">
+
                             {value}
+
                           </span>
+
                         </div>
+
                       ))}
+
                     </div>
+
                   </div>
 
                   {product.note && (
+
                     <div className="mt-4 rounded-xl border border-[#d7e0dc] bg-white px-4 py-3.5">
+
                       <p className="text-[10px] leading-5 text-[#607078]">
+
                         {product.note}
+
                       </p>
+
                     </div>
+
                   )}
+
                 </div>
+
               </motion.div>
+
             </motion.div>
+
           </AnimatePresence>,
+
           document.body
+
         )
+
       : null;
 
   return (
+
     <>
+
       <button
+
         type="button"
+
         onClick={() => setOpen(true)}
+
         className="group inline-flex h-11 items-center gap-3 rounded-lg border border-[#081b24] bg-[#081b24] px-5 text-[10px] font-bold uppercase tracking-[0.1em] text-white shadow-[0_10px_28px_rgba(8,27,36,0.10)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#007c67] hover:bg-[#007c67]"
+
       >
+
         <span>Specifications</span>
+
         <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+
       </button>
 
       {modal}
+
     </>
+
   );
+
 }
 
-/* =========================================================***
-
-MAIN PRODUCT SECTION***
-
-***========================================================= */
-
 function MainProductSection({
-
   product,
-
+  index,
 }: {
-
   product: MainProduct;
-
+  index: number;
 }) {
 
   return (
@@ -1929,13 +1809,22 @@ function MainProductSection({
 
         <div className="grid gap-8 lg:grid-cols-12 lg:items-center lg:gap-10">
 
-          <Reveal className="lg:col-span-7 xl:col-span-7">
+          <Reveal
+            className={`lg:col-span-7 xl:col-span-7 ${
+              index % 2 === 0 ? "lg:order-1" : "lg:order-2"
+            }`}
+          >
 
             <ProductCarousel product={product} />
 
           </Reveal>
 
-          <Reveal delay={0.08} className="lg:col-span-5">
+          <Reveal
+            delay={0.08}
+            className={`lg:col-span-5 ${
+              index % 2 === 0 ? "lg:order-2" : "lg:order-1"
+            }`}
+          >
 
             <div className="max-w-xl">
 
@@ -2051,14 +1940,6 @@ function MainProductSection({
 
 }
 
-/* =========================================================****
-
-*TECHNICAL PROFILE****
-
-*Replaces Connected Journey banner.****
-
-****========================================================= */
-
 function TechnicalProfile() {
 
   const items = [
@@ -2139,7 +2020,7 @@ function TechnicalProfile() {
 
           </Reveal>
 
-          <Reveal
+          {/* <Reveal
 
             delay={0.08}
 
@@ -2155,7 +2036,7 @@ function TechnicalProfile() {
 
             </p>
 
-          </Reveal>
+          </Reveal> */}
 
         </div>
 
@@ -2235,12 +2116,6 @@ function TechnicalProfile() {
 
 }
 
-/* =========================================================****
-
-*ECOSYSTEM CAROUSEL****
-
-****========================================================= */
-
 function EcosystemCarousel({
 
   product,
@@ -2297,7 +2172,7 @@ return (
 
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#081b24]/16 via-transparent to-white/[0.03]" />
 
-        <div className="absolute left-4 top-4 rounded-lg border border-white/10 bg-[#081b24]/55 px-3 py-2 backdrop-blur-sm">
+        {/* <div className="absolute left-4 top-4 rounded-lg border border-white/10 bg-[#081b24]/55 px-3 py-2 backdrop-blur-sm">
 
           <span className="font-mono text-[8px] uppercase tracking-[0.16em] text-[#27d59b]">
 
@@ -2305,7 +2180,7 @@ return (
 
           </span>
 
-        </div>
+        </div> */}
 
 </div>
 
@@ -2391,12 +2266,6 @@ return (
 
 }
 
-/* =========================================================****
-
-*MORE FROM ECOSYSTEM****
-
-****========================================================= */
-
 function MoreFromEcosystem() {
 
   return (
@@ -2435,11 +2304,11 @@ function MoreFromEcosystem() {
 
             </div>
 
-            <p className="max-w-md text-sm leading-6 text-[#607078] lg:col-span-5 lg:ml-auto lg:text-right">
+            {/* <p className="max-w-md text-sm leading-6 text-[#607078] lg:col-span-5 lg:ml-auto lg:text-right">
 
               Explore products across fleet, asset and access intelligence.
 
-            </p>
+            </p> */}
 
           </div>
 
@@ -2467,47 +2336,25 @@ function MoreFromEcosystem() {
 
 }
 
-/* =========================================================****
-
-PAGE***
-
-****========================================================= */
-
 export default function ProductsClient() {
 
   return (
 
     <main className="overflow-hidden bg-[#f4f6f2] text-[#081b24] selection:bg-[#27d59b] selection:text-[#081b24]">
 
-      {/* 01 */}
-
       <ProductHero />
 
-      {/* 02 / 03 / 04 */}
-
-      {mainProducts.map((product) => (
-
+      {mainProducts.map((product, index) => (
         <MainProductSection
-
           key={product.id}
-
           product={product}
-
+          index={index}
         />
-
       ))}
-
-      {/* Connected Journey removed.****
-
-      Technical Profile takes its place. */}
 
       <TechnicalProfile />
 
-      {/* More from VIoT Ecosystem */}
-
       <MoreFromEcosystem />
-
-      {/* CTA */}
 
       <CtaBand />
 

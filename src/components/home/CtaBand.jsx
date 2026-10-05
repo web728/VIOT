@@ -450,9 +450,9 @@ export function CtaBand() {
             </h2>
           </div>
 
-          <p className="max-w-sm text-xs leading-5 text-[#607078]">
+          {/* <p className="max-w-sm text-xs leading-5 text-[#607078]">
             Tell us what you need to track, monitor or secure.
-          </p>
+          </p> */}
         </motion.div>
 
         {/* ===================================================
