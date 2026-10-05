@@ -1,3 +1,34 @@
+export type FleetCapability = {
+  name: string;
+  whatItDoes: string;
+  whatItChanges: string;
+};
+
+export type FleetDifference = {
+  title: string;
+  text: string;
+};
+
+export type FleetIntelligenceContent = {
+  problemTitle: string;
+  problemParagraphs: string[];
+  coversIntro: string;
+  capabilityRows: FleetCapability[];
+  capabilityClosing: string;
+  differenceTitle: string;
+  differences: FleetDifference[];
+  engineTitle: string;
+  engineCaption: string;
+  engineText: string;
+  proofTitle: string;
+  proofParagraphs: string[];
+  supportTitle: string;
+  supportParagraphs: string[];
+  productHref: string;
+  ctaHeading: string;
+  ctaSubheading: string;
+};
+
 export type PlatformModule = {
   slug: string;
   number: string;
@@ -9,6 +40,7 @@ export type PlatformModule = {
   capabilities: string[];
   signals: string[];
   outcomes: string[];
+  fleetIntelligence?: FleetIntelligenceContent;
 };
 
 export const platformModules: PlatformModule[] = [
@@ -16,35 +48,100 @@ export const platformModules: PlatformModule[] = [
     slug: "fleet-management",
     number: "01",
     name: "Fleet Intelligence",
-    eyebrow: "Fleet operations",
-    headline: "See the fleet as one connected operation.",
+    eyebrow: "Fleet Intelligence",
+    headline: "Fleet Intelligence, Not Fleet Tracking",
     lede:
-      "Bring vehicle location, movement, driver events and operating context into a single fleet intelligence layer.",
+      "Most platforms show you where a vehicle is. VIoT tells your operations team what to do about it - before a small problem becomes a breakdown, an accident, or a missed delivery.",
     description:
-      "Fleet Intelligence connects live vehicle signals with route, utilisation and exception context so operations teams can understand what is happening across the fleet and act faster.",
+      "This is the gap every generic telematics page glosses over: a live map is a feature, not a fleet management decision. Fleet Intelligence is built to close it.",
     capabilities: [
-      "Live vehicle location and movement visibility",
-      "Route, trip and journey context",
-      "Driving-event and exception visibility",
-      "Vehicle utilisation and operating history",
-      "Geo-fence and movement event monitoring",
-      "Operational alerts and fleet-level oversight",
+      "Driver Behavior Scoring",
+      "Route & Geofence Intelligence",
+      "Maintenance & Health Alerts",
     ],
     signals: [
-      "GPS location",
-      "Vehicle movement",
-      "Trip events",
-      "Driver behaviour events",
-      "Vehicle status",
-      "Geo-fence events",
+      "Driver behaviour",
+      "Route",
+      "Maintenance",
     ],
     outcomes: [
-      "Fleet visibility",
-      "Faster exception response",
-      "Route and utilisation context",
-      "Improved operating accountability",
+      "One Fleet Intelligence score",
+      "One action list",
     ],
+    fleetIntelligence: {
+      problemTitle: "Tracking Tells You Where. Not What To Do About It.",
+      problemParagraphs: [
+        `Most fleet owners already run three separate logins: a GPS tracking app that shows a moving dot, a dashcam app for footage nobody reviews until after an incident, and a paper or Excel log for vehicle servicing. None of the three talk to each other, so the cost of a problem always shows up late - in a breakdown mid-route, an accident the camera recorded but nobody flagged, or a warranty claim denied because "preventive maintenance wasn't documented."`,
+        "The dot on the map is honest about where a vehicle is right now. It says nothing about the driver who has been harsh-braking all morning, the vehicle whose engine fault code tripped two days ago and was never actioned, or the trailer that just left its assigned route. By the time that shows up as a cost, it is already too late to prevent it - only to explain it.",
+        "This is the gap every generic telematics page glosses over: a live map is a feature, not a fleet management decision. Fleet Intelligence is built to close it.",
+      ],
+      coversIntro:
+        "Three capabilities, one score your operations team can act on - not three separate reports from three separate systems.",
+      capabilityRows: [
+        {
+          name: "Driver Behavior Scoring",
+          whatItDoes:
+            "Scores every trip on harsh braking, harsh acceleration, speeding and idling, rolled into one per-driver score",
+          whatItChanges:
+            "Flags the driver trending toward an accident weeks before it happens - not a dashcam clip reviewed after",
+        },
+        {
+          name: "Route & Geofence Intelligence",
+          whatItDoes:
+            "Real-time route-deviation alerts, geofence entry/exit, trip replay, ETA prediction",
+          whatItChanges:
+            "Catches an unauthorised detour or a delivery running late while there is still time to correct it",
+        },
+        {
+          name: "Maintenance & Health Alerts",
+          whatItDoes:
+            "Reads engine diagnostics (OBD), flags service-due intervals, battery and ignition faults",
+          whatItChanges:
+            `Turns "the vehicle broke down" into "the vehicle was due" - days ahead, not after the tow truck`,
+        },
+      ],
+      capabilityClosing:
+        "Each of these exists elsewhere as a standalone product from some vendor. VIoT's position is that none of them is useful in isolation - a driver score with no route context, or a maintenance alert nobody connects to the vehicle's actual usage pattern, is just more data. Fleet Intelligence exists to correlate the three, not just collect them (Section 4).",
+      differenceTitle: "How VIoT Does This Differently",
+      differences: [
+        {
+          title: "One correlated score, not three disconnected reports",
+          text:
+            "Most telematics vendors sell driver scoring, route tracking and maintenance alerts as three separate modules - often three separate logins. Acting on them still depends on someone manually cross-referencing three screens, which is exactly the problem described in Section 2. VIoT's engine correlates behaviour, route and maintenance signals into one per-vehicle and per-driver score, so an ops dashboard shows one number worth acting on, not three charts to interpret before anyone decides anything.",
+        },
+        {
+          title: "Built for Indian road and network conditions, not adapted to them",
+          text:
+            "Much of the telematics hardware sold in India is standard global equipment tuned for stable power and continuous network coverage - conditions most Indian routes don't offer. VIoT's devices retain and queue trip data through dead zones (tunnels, rural stretches, basement parking) and sync it the moment signal returns, so a network drop is a delay in reporting, not a gap in the record. The hardware is also built to handle the voltage spikes and vibration that come with older or poorly-maintained commercial vehicles, rather than failing quietly on exactly the fleets that need monitoring most.",
+        },
+        {
+          title: "We stay in the account after go-live",
+          text:
+            "The standard model in this industry is device plus dashboard, installed once, and the vendor relationship effectively ends there. VIoT's support model is built to stay active after go-live rather than wait for a support ticket - what that looks like in practice is in Section 7.",
+        },
+      ],
+      engineTitle: "One Engine, Not Three Dashboards",
+      engineCaption: "three signals converge into one Fleet Intelligence score",
+      engineText:
+        "Driver behaviour, route, and maintenance signals feed one engine; the fleet manager acts on one score, not three disconnected screens.",
+      proofTitle: "Where This Is Proven",
+      proofParagraphs: [
+        "Fleet Intelligence runs across fleet profiles that fail in different ways - long-haul freight, intra-city last-mile delivery, and mixed commercial fleets running trucks, LCVs, and passenger vehicles side by side. That breadth is the real depth behind this page, more than any single number could show.",
+        "A long-haul fleet's biggest risk is a fatigued driver fourteen hours into a route. A last-mile fleet's biggest risk is a van drifting off its delivery block in dense city traffic. A mixed fleet's biggest risk is a maintenance gap that hides because no two vehicles in it report the same way. Three different failure patterns, one engine that has been tuned against all three - not built once for a single fleet type and resold everywhere else unchanged.",
+      ],
+      supportTitle: "Built to Last: We Don't Leave After Go-Live",
+      supportParagraphs: [
+        "Most vendors in this industry have no real mechanism for making sure a deployed system keeps working well over time - install the device, hand over the dashboard login, move on to the next client. If calibration drifts or a fleet's routes change, nobody notices until the client has quietly stopped trusting the system altogether.",
+        "VIoT's answer isn't a louder warranty claim - it's a standing commitment to stay in the loop. Every Fleet Intelligence client sits on a committed support SLA, not a best-effort inbox, and on a structured cadence of check-ins after go-live where we actively ask what's working and what isn't, instead of waiting for a complaint. The dashboard a client starts with is rarely the one they're using a year in - it gets shaped by what they tell us along the way.",
+        `That's what "lasts long" means here: not a spec claim about hardware, but a relationship that doesn't go quiet after the invoice is paid - something almost nobody else in this category actually does.`,
+      ],
+      productHref: "/products/vehicle-telematics",
+      ctaHeading: "See Fleet Intelligence on your own fleet",
+      ctaSubheading:
+        "Tell us your fleet size and vehicle mix - we'll show you what the correlated score looks like for a fleet like yours, not a generic demo.",
+    },
   },
+
   {
     slug: "ev-management",
     number: "02",
