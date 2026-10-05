@@ -1,494 +1,243 @@
 import type { Metadata } from "next";
-
+import type { ReactNode } from "react";
 import Link from "next/link";
-
-import { PageHero } from "@/components/page-hero";
 
 import { ContactForm } from "./_components/contact-form";
 
 export const metadata: Metadata = {
-
   title: "Contact",
-
   description:
-
-    "Talk directly with the VIoT team about connected vehicles, video, smart locks, assets, sensors, EV operations and platform requirements.",
-
+    "Talk directly with VIoT about connected vehicles, video, smart locks, assets, sensors, EV operations and platform requirements.",
   alternates: {
-
     canonical: "/contact",
-
   },
-
 };
 
 const interestLabels: Record<string, string> = {
-
   "fleet-management": "Fleet Management",
-
   "ev-management": "EV Management",
-
   "e-lock": "E-Lock",
-
   video: "Video",
-
   "fuel-monitoring": "Fuel Monitoring",
-
 };
 
-const contactPoints = [
+function VIoTBackground({ dark = false }: { dark?: boolean }) {
+  const line = dark ? "rgba(255,255,255,0.05)" : "rgba(8,27,36,0.07)";
+  const green = dark ? "rgba(39,213,155,0.15)" : "rgba(0,124,103,0.12)";
+  const softGreen = dark ? "rgba(39,213,155,0.07)" : "rgba(0,124,103,0.06)";
 
-  {
+  return (
+    <div
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0 overflow-hidden"
+    >
+      <div
+        className={`absolute -left-48 top-[10%] h-[520px] w-[520px] rounded-full blur-3xl ${
+          dark ? "bg-[#27d59b]/[0.025]" : "bg-[#27d59b]/[0.028]"
+        }`}
+      />
+      <div
+        className={`absolute -right-56 bottom-[5%] h-[640px] w-[640px] rounded-full blur-3xl ${
+          dark ? "bg-white/[0.012]" : "bg-[#081b24]/[0.018]"
+        }`}
+      />
 
-    number: "01",
+      <svg
+        viewBox="0 0 1600 1000"
+        preserveAspectRatio="none"
+        className="absolute inset-0 h-full w-full"
+        fill="none"
+      >
+        <path
+          d="M-160 260 C120 50 390 100 620 285 S1050 610 1760 235"
+          stroke={line}
+          strokeWidth="1"
+        />
 
-    label: "Direct email",
+        <path
+          d="M-180 700 C120 470 390 525 680 685 S1130 880 1780 560"
+          stroke={green}
+          strokeWidth="1.2"
+          strokeDasharray="3 15"
+        >
+          <animate
+            attributeName="stroke-dashoffset"
+            values="0;-180"
+            dur="12s"
+            repeatCount="indefinite"
+          />
+        </path>
 
-    value: "team\@viot.in",
+        <path
+          d="M-120 470 C230 340 420 420 650 515 S1060 700 1730 455"
+          stroke={softGreen}
+          strokeWidth="1"
+          strokeDasharray="2 20"
+        >
+          <animate
+            attributeName="stroke-dashoffset"
+            values="0;180"
+            dur="15s"
+            repeatCount="indefinite"
+          />
+        </path>
 
-    href: "mailto:team\@viot.in",
+        <path
+          d="M80 1080 C260 740 520 700 780 450 S1240 120 1620 -90"
+          stroke={dark ? "rgba(255,255,255,0.035)" : "rgba(8,27,36,0.045)"}
+          strokeWidth="1"
+        />
+      </svg>
 
-  },
+      <div
+        className={`absolute right-[4%] top-[12%] h-[430px] w-[430px] rounded-full border ${
+          dark ? "border-white/[0.035]" : "border-[#081b24]/[0.04]"
+        }`}
+      />
+      <div
+        className={`absolute right-[9%] top-[18%] h-[300px] w-[300px] rounded-full border ${
+          dark ? "border-[#27d59b]/[0.055]" : "border-[#007c67]/[0.055]"
+        }`}
+      />
+    </div>
+  );
+}
 
-  {
-
-    number: "02",
-
-    label: "Headquarters",
-
-    value: "Sector 104, Noida",
-
-    secondary: "Uttar Pradesh 201301, India",
-
-  },
-
-];
+function SectionLabel({
+  children,
+  dark = false,
+}: {
+  children: ReactNode;
+  dark?: boolean;
+}) {
+  return (
+    <div className="flex items-center gap-3">
+      <span className={`h-px w-9 ${dark ? "bg-[#27d59b]" : "bg-[#007c67]"}`} />
+      <span
+        className={`font-mono text-[9px] font-semibold uppercase tracking-[0.2em] ${
+          dark ? "text-[#27d59b]" : "text-[#007c67]"
+        }`}
+      >
+        {children}
+      </span>
+    </div>
+  );
+}
 
 export default async function ContactPage({
-
   searchParams,
-
 }: PageProps<"/contact">) {
-
   const { interest } = await searchParams;
 
   const selectedInterest =
-
     typeof interest === "string" ? interestLabels[interest] : undefined;
 
   const defaultMessage = selectedInterest
-
     ? `I would like to discuss ${selectedInterest}. Our current requirement is: `
-
     : "";
 
   return (
-
     <main className="overflow-hidden bg-[#f4f6f2] text-[#081b24] selection:bg-[#27d59b] selection:text-[#081b24]">
+      <section className="relative min-h-[560px] overflow-hidden bg-[#081b24] text-white sm:min-h-[620px]">
+        <VIoTBackground dark />
 
-      {/* =========================================================*
+        <div className="relative z-10 mx-auto flex min-h-[560px] max-w-[1440px] flex-col justify-center px-6 pb-16 pt-28 sm:min-h-[620px] sm:px-8 sm:pb-20 sm:pt-32 lg:px-12 lg:pt-36">
+          <SectionLabel dark>Contact / VIoT</SectionLabel>
 
-         01 — HERO*
+          <h1 className="mt-7 max-w-4xl font-heading text-[clamp(2.8rem,5.4vw,5.4rem)] font-semibold leading-[0.93] tracking-[-0.06em]">
+            Start with the operation.
+            <br />
+            <span className="font-normal text-[#27d59b]">
+              Tell us what needs to connect.
+            </span>
+          </h1>
 
-     ========================================================= */}
+          <p className="mt-7 max-w-2xl text-sm leading-7 text-white/60 sm:text-[15px]">
+            Share the operating environment, connected assets, current setup and
+            the requirement you need to solve.
+          </p>
+        </div>
+      </section>
 
-      <PageHero
+      <section className="relative overflow-hidden bg-[#f4f6f2]">
+        <VIoTBackground />
 
-        breadcrumb="Contact / VIoT"
-
-        title="Start with the operation."
-
-        titleHighlight="Tell us what needs to connect."
-
-        lede="Share the operating environment, connected assets, current setup and the gap you need to solve. The more context you provide, the more useful our first response will be."
-
-      />
-
-      {/* =========================================================*
-
-         02 — CONTACT AREA*
-
-     ========================================================= */}
-
-      <section className="border-b border-[#cdd5d2] bg-white">
-
-        <div className="mx-auto max-w-[1440px] px-6 py-20 sm:px-8 lg:px-12 lg:py-28">
-
-          <div className="grid grid-cols-1 lg:grid-cols-12 lg:gap-16">
-
-            {/* ===================================================*
-
-               LEFT — CONTACT INFORMATION*
-
-           =================================================== */}
-
+        <div className="relative z-10 mx-auto max-w-[1440px] px-6 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-24">
+          <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-14">
             <div className="lg:col-span-5">
-
               <div className="lg:sticky lg:top-28">
+                <SectionLabel>Direct contact</SectionLabel>
 
-                {/* Label */}
-
-                <div className="mb-6 flex items-center gap-3">
-
-                  <span className="h-px w-9 bg-[#007c67]" />
-
-                  <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.2em] text-[#007c67]">
-
-                    Direct contact
-
-                  </span>
-
-                </div>
-
-                {/* Heading */}
-
-                <h2 className="max-w-lg font-heading text-3xl font-semibold leading-[1.05] tracking-[-0.04em] text-[#081b24] sm:text-4xl lg:text-5xl">
-
-                  A direct conversation.
-
+                <h2 className="mt-5 max-w-lg font-heading text-3xl font-semibold leading-[1.04] tracking-[-0.045em] sm:text-4xl lg:text-[46px]">
+                  Talk directly with
                   <br />
-
-                  <span className="text-[#8b969a]">
-
-                    Built around the requirement.
-
-                  </span>
-
+                  <span className="font-normal text-[#007c67]">VIoT.</span>
                 </h2>
 
-                <p className="mt-6 max-w-md text-sm leading-7 text-[#607078] sm:text-base">
-
-                  VIoT is a founder-led team. Tell us what you're trying to
-
-                  track, secure or control, and we'll connect you with the
-
-                  person closest to the problem.
-
-                </p>
-
-                {/* =================================================*
-
-                   CONTACT INDEX*
-
-               ================================================= */}
-
-                <div className="mt-12 border-y border-[#cdd5d2]">
-
-                  {contactPoints.map((point) => {
-
-                    const content = (
-
-                      <>
-
-                        <div className="flex items-start gap-5">
-
-                          <span className="pt-1 font-mono text-[9px] font-semibold tracking-[0.15em] text-[#007c67]">
-
-                            {point.number}
-
-                          </span>
-
-                          <div>
-
-                            <span className="block font-mono text-[8px] uppercase tracking-[0.18em] text-[#8a969a]">
-
-                              {point.label}
-
-                            </span>
-
-                            <span className="mt-2 block text-sm font-semibold text-[#081b24]">
-
-                              {point.value}
-
-                            </span>
-
-                            {point.secondary && (
-
-                              <span className="mt-1 block text-xs leading-5 text-[#607078]">
-
-                                {point.secondary}
-
-                              </span>
-
-                            )}
-
-                          </div>
-
-                        </div>
-
-                        {point.href && (
-
-                          <span className="flex h-9 w-9 items-center justify-center rounded-lg border border-[#cdd5d2] text-[#607078] transition-all duration-300 group-hover:border-[#007c67] group-hover:bg-[#007c67] group-hover:text-white">
-
-                            <svg
-
-                              viewBox="0 0 20 20"
-
-                              fill="none"
-
-                              className="h-3.5 w-3.5"
-
-                            >
-
-                              <path
-
-                                d="M4 10H16M10 4L16 10L10 16"
-
-                                stroke="currentColor"
-
-                                strokeWidth="1.5"
-
-                                strokeLinecap="round"
-
-                                strokeLinejoin="round"
-
-                              />
-
-                            </svg>
-
-                          </span>
-
-                        )}
-
-                      </>
-
-                    );
-
-                    if (point.href) {
-
-                      return (
-
-                        <Link
-
-                          key={point.number}
-
-                          href={point.href}
-
-                          className="group flex items-center justify-between border-b border-[#cdd5d2] py-6 last:border-b-0"
-
-                        >
-
-                          {content}
-
-                        </Link>
-
-                      );
-
-                    }
-
-                    return (
-
-                      <div
-
-                        key={point.number}
-
-                        className="flex items-center justify-between border-b border-[#cdd5d2] py-6 last:border-b-0"
-
+                <div className="mt-9 overflow-hidden rounded-2xl border border-[#c8d5d0] bg-white/85 shadow-[0_14px_38px_rgba(8,27,36,0.045)] backdrop-blur-sm">
+                  <Link
+                    href="mailto:team@viot.in"
+                    className="group flex items-center justify-between gap-5 border-b border-[#d8e2de] px-5 py-5 transition-colors duration-300 hover:bg-[#27d59b]/[0.035] sm:px-6"
+                  >
+                    <div>
+                      <span className="block font-mono text-[8px] font-semibold uppercase tracking-[0.18em] text-[#007c67]">
+                        Email
+                      </span>
+                      <span className="mt-2 block text-sm font-semibold text-[#081b24]">
+                        team@viot.in
+                      </span>
+                    </div>
+
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-[#007c67]/15 bg-[#007c67]/[0.035] text-[#007c67] transition-all duration-300 group-hover:border-[#007c67] group-hover:bg-[#007c67] group-hover:text-white">
+                      <svg
+                        viewBox="0 0 20 20"
+                        fill="none"
+                        className="h-3.5 w-3.5"
                       >
+                        <path
+                          d="M4 10H16M10 4L16 10L10 16"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </span>
+                  </Link>
 
-                        {content}
-
-                      </div>
-
-                    );
-
-                  })}
-
-                </div>
-
-                {/* =================================================*
-
-                   RESPONSE NOTE*
-
-               ================================================= */}
-
-                <div className="mt-8 flex gap-4">
-
-                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-[#cdd5d2] bg-[#f4f6f2]">
-
-                    <span className="h-1.5 w-1.5 bg-[#27d59b]" />
-
+                  <div className="px-5 py-5 sm:px-6">
+                    <span className="block font-mono text-[8px] font-semibold uppercase tracking-[0.18em] text-[#007c67]">
+                      Office
+                    </span>
+                    <span className="mt-2 block text-sm font-semibold text-[#081b24]">
+                      Sector 104, Noida
+                    </span>
+                    <span className="mt-1 block text-xs leading-5 text-[#607078]">
+                      Uttar Pradesh 201301, India
+                    </span>
                   </div>
-
-                  <p className="max-w-md text-xs leading-6 text-[#607078]">
-
-                    For technical or deployment enquiries, include your fleet
-
-                    size, operating environment and current setup. It helps us
-
-                    come prepared.
-
-                  </p>
-
                 </div>
-
-                {/* Small technical footer */}
-
-                <div className="mt-12 hidden border-t border-[#cdd5d2] pt-4 lg:flex items-center justify-between">
-
-                  <span className="font-mono text-[7px] uppercase tracking-[0.18em] text-[#a0aaae]">
-
-                    Direct VIoT response
-
-                  </span>
-
-                  <span className="font-mono text-[7px] uppercase tracking-[0.18em] text-[#007c67]">
-
-                    VIoT / India
-
-                  </span>
-
-                </div>
-
               </div>
-
             </div>
 
-            {/* ===================================================*
+            <div className="lg:col-span-7">
+              <div className="overflow-hidden rounded-2xl border border-[#c8d5d0] bg-white/90 shadow-[0_18px_50px_rgba(8,27,36,0.055)] backdrop-blur-sm">
+                <div className="border-b border-[#d8e2de] px-6 py-6 sm:px-8 lg:px-10">
+                  <SectionLabel>Enquiry</SectionLabel>
 
-               RIGHT — FORM*
-
-           =================================================== */}
-
-            <div className="mt-14 lg:col-span-7 lg:mt-0">
-
-              <div className="overflow-hidden rounded-2xl border border-[#cdd5d2] bg-[#f8faf9] shadow-[0_16px_45px_rgba(8,27,36,0.05)]">
-
-                {/* Form header */}
-
-                <div className="border-b border-[#cdd5d2] px-6 py-6 sm:px-8 lg:px-10">
-
-                  <div className="flex items-start justify-between gap-6">
-
-                    <div>
-
-                      <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-[#8a969a]">
-
-                        03 / Start a conversation
-
-                      </span>
-
-                      <h3 className="mt-3 font-heading text-2xl font-semibold tracking-[-0.03em] text-[#081b24] sm:text-3xl">
-
-                        Tell us about the requirement.
-
-                      </h3>
-
-                      <p className="mt-2 max-w-lg text-sm leading-6 text-[#607078]">
-
-                        Share a few details and the VIoT team will get back to
-
-                        you directly.
-
-                      </p>
-
-                    </div>
-
-                    <div className="hidden shrink-0 sm:block">
-
-                      <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-[#cdd5d2] bg-white">
-
-                        <span className="h-2 w-2 bg-[#27d59b]" />
-
-                      </div>
-
-                    </div>
-
-                  </div>
-
+                  <h3 className="mt-4 font-heading text-2xl font-semibold tracking-[-0.035em] text-[#081b24] sm:text-3xl">
+                    Tell us about the requirement.
+                  </h3>
                 </div>
-
-                {/* Form */}
 
                 <div className="px-6 py-7 sm:px-8 sm:py-9 lg:px-10 lg:py-10">
-
                   <ContactForm defaultMessage={defaultMessage} />
-
                 </div>
- 
-
               </div>
-
             </div>
-
           </div>
-
         </div>
-
       </section>
-
-      {/* =========================================================*
-
-         03 — CLOSING STATEMENT*
-
-     ========================================================= */}
-
-      <section className="border-b border-white/[0.08] bg-[#081b24] text-white">
-
-        <div className="mx-auto max-w-[1440px] px-6 py-16 sm:px-8 lg:px-12 lg:py-20">
-
-          <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-end">
-
-            <div className="lg:col-span-8">
-
-              <span className="font-mono text-[8px] uppercase tracking-[0.2em] text-[#27d59b]">
-
-                What happens next
-
-              </span>
-
-              <h2 className="mt-5 max-w-3xl font-heading text-3xl font-semibold leading-[1.04] tracking-[-0.04em] sm:text-4xl lg:text-5xl">
-
-                Start with the operating requirement.
-
-                <span className="text-white/30">
-
-                  {" "}
-
-                  We will align the connected path from there.
-
-                </span>
-
-              </h2>
-
-            </div>
-
-            <div className="lg:col-span-4 lg:flex lg:justify-end">
-
-              <div className="border-l border-white/[0.12] pl-5">
-
-                <span className="block font-mono text-[8px] uppercase tracking-[0.16em] text-white/25">
-
-                  Fleet
-
-                </span>
-
-                <span className="mt-2 block font-mono text-[8px] uppercase tracking-[0.16em] text-white/25">
-
-                  Asset
-
-                </span>
-
-                <span className="mt-2 block font-mono text-[8px] uppercase tracking-[0.16em] text-white/25">
-
-                  Access
-
-                </span>
-
-                <span className="mt-4 block h-px w-8 bg-[#27d59b]" />
-
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </section>
-
     </main>
-
   );
-
 }

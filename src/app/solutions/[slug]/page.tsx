@@ -505,7 +505,7 @@ export default async function SolutionPage({
 
         <VIoTBackground dark />
 
-        <div className="relative z-10 mx-auto flex min-h-[560px] max-w-[1440px] flex-col justify-between px-6 pb-7 pt-8 sm:min-h-[600px] sm:px-8 lg:px-12 lg:pt-10">
+     <div className="relative z-10 mx-auto flex min-h-[560px] max-w-[1440px] flex-col justify-between px-6 pb-7 pt-24 sm:min-h-[600px] sm:px-8 sm:pt-28 lg:px-12 lg:pt-32">
 
           <div className="flex items-center justify-between">
 
@@ -515,11 +515,11 @@ export default async function SolutionPage({
 
             </SectionLabel>
 
-            <span className="hidden font-mono text-[8px] uppercase tracking-[0.18em] text-white/35 sm:block">
+            {/* <span className="hidden font-mono text-[8px] uppercase tracking-[0.18em] text-white/35 sm:block">
 
               VIoT / Connected intelligence
 
-            </span>
+            </span> */}
 
           </div>
 
@@ -545,7 +545,7 @@ export default async function SolutionPage({
 
           </div>
 
-          <div className="flex flex-col gap-3 border-t border-white/[0.09] pt-4 sm:flex-row sm:items-center sm:justify-between">
+          {/* <div className="flex flex-col gap-3 border-t border-white/[0.09] pt-4 sm:flex-row sm:items-center sm:justify-between">
 
             <span className="font-mono text-[8px] uppercase tracking-[0.17em] text-white/35">
 
@@ -561,7 +561,7 @@ export default async function SolutionPage({
 
             </span>
 
-          </div>
+          </div> */}
 
         </div>
 
@@ -621,11 +621,11 @@ export default async function SolutionPage({
 
                   </span>
 
-                  <span className="font-mono text-[8px] uppercase tracking-[0.16em] text-[#607078]">
+                  {/* <span className="font-mono text-[8px] uppercase tracking-[0.16em] text-[#607078]">
 
                     {String(priorities.length).padStart(2, "0")} points
 
-                  </span>
+                  </span> */}
 
                 </div>
 
@@ -709,7 +709,7 @@ export default async function SolutionPage({
 
             </div>
 
-            <div className="lg:col-span-4">
+            {/* <div className="lg:col-span-4">
 
               <p className="max-w-md text-sm leading-7 text-white/48 lg:ml-auto">
 
@@ -717,7 +717,7 @@ export default async function SolutionPage({
 
               </p>
 
-            </div>
+            </div> */}
 
           </div>
 
@@ -807,7 +807,7 @@ export default async function SolutionPage({
 
             </div>
 
-            <div className="lg:col-span-4">
+            {/* <div className="lg:col-span-4">
 
               <p className="max-w-md text-sm leading-7 text-[#607078] lg:ml-auto">
 
@@ -817,7 +817,7 @@ export default async function SolutionPage({
 
               </p>
 
-            </div>
+            </div> */}
 
           </div>
 

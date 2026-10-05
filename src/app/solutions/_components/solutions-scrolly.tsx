@@ -304,7 +304,7 @@ export function SolutionsScrolly({
 
        ===================================================== */}
 
-        <div className="px-1 pb-7 pt-1 sm:pb-8">
+        {/* <div className="px-1 pb-7 pt-1 sm:pb-8">
 
           <div className="grid gap-5 lg:grid-cols-12 lg:items-end">
 
@@ -350,7 +350,7 @@ export function SolutionsScrolly({
 
           </div>
 
-        </div>
+        </div> */}
 
         {/* =====================================================*
 

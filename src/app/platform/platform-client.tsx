@@ -500,17 +500,7 @@ export default function PlatformClient() {
 
         <div className="relative z-10 mx-auto flex min-h-[610px] max-w-[1440px] flex-col justify-between px-6 pb-8 pt-8 sm:min-h-[660px] sm:px-8 lg:px-12 lg:pt-10">
 
-          <div className="flex items-center justify-between">
-
-            <SectionLabel dark>VIoT Platform</SectionLabel>
-
-            <span className="hidden font-mono text-[8px] uppercase tracking-[0.18em] text-white/35 sm:block">
-
-              Connected intelligence
-
-            </span>
-
-          </div>
+       
 
           <div className="grid items-center gap-10 py-12 lg:grid-cols-12 lg:py-16">
 
@@ -690,7 +680,7 @@ export default function PlatformClient() {
 
             </div>
 
-            <div className="lg:col-span-4">
+            {/* <div className="lg:col-span-4">
 
               <p className="max-w-md text-sm leading-7 text-[#607078] lg:ml-auto lg:text-right">
 
@@ -700,7 +690,7 @@ export default function PlatformClient() {
 
               </p>
 
-            </div>
+            </div> */}
 
           </div>
 
@@ -800,7 +790,7 @@ export default function PlatformClient() {
 
             </div>
 
-            <div className="lg:col-span-4">
+            {/* <div className="lg:col-span-4">
 
               <p className="max-w-md text-sm leading-7 text-white/45 lg:ml-auto lg:text-right">
 
@@ -810,7 +800,7 @@ export default function PlatformClient() {
 
               </p>
 
-            </div>
+            </div> */}
 
           </div>
 

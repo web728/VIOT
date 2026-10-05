@@ -538,7 +538,7 @@ export default function SolutionsPage() {
 
             </div>
 
-            <div className="lg:col-span-4">
+            {/* <div className="lg:col-span-4">
 
               <p className="max-w-md text-sm leading-7 text-[#081b24]/62">
 
@@ -548,7 +548,7 @@ export default function SolutionsPage() {
 
               </p>
 
-            </div>
+            </div> */}
 
           </motion.div>
 
@@ -582,11 +582,11 @@ export default function SolutionsPage() {
 
             </div>
 
-            <span className="hidden font-mono text-[8px] uppercase tracking-[0.18em] text-[#007c67] sm:block">
+            {/* <span className="hidden font-mono text-[8px] uppercase tracking-[0.18em] text-[#007c67] sm:block">
 
               {String(solutions.length).padStart(2, "0")} solutions
 
-            </span>
+            </span> */}
 
           </div>
 
@@ -781,7 +781,7 @@ export default function SolutionsPage() {
               </h2>
 
             </div>
-
+{/* 
             <div className="lg:col-span-4">
 
               <p className="max-w-md text-sm leading-7 text-[#081b24]/62">
@@ -792,7 +792,7 @@ export default function SolutionsPage() {
 
               </p>
 
-            </div>
+            </div> */}
 
           </motion.div>
 
