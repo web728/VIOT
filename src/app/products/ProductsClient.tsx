@@ -7,6 +7,7 @@ import Link from "next/link";
 import {
 
   ArrowUpRight,
+
   Radio,
 
   Activity,
@@ -23,13 +24,15 @@ import { motion, AnimatePresence } from "framer-motion";
 
 import type { ReactNode } from "react";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+import { createPortal } from "react-dom";
 
 import { CtaBand } from "@/components/home/CtaBand";
 
 /* =========================================================****
 
-*TYPES****
+TYPES***
 
 ****========================================================= */
 
@@ -179,10 +182,7 @@ const mainProducts: MainProduct[] = [
 
     ],
 
-    note:
-
-      "Supplier model names are intentionally not used. Final configuration is confirmed for the deployment.",
-
+   
   },
 
   {
@@ -1205,7 +1205,7 @@ function VIoTSVGBackground({
 
 /* =========================================================****
 
-*HERO****
+HERO***
 
 ****========================================================= */
 
@@ -1618,6 +1618,7 @@ function ProductCarousel({
   const [active, setActive] = useState(0);
 
   const hasMultipleImages = product.gallery.length > 1;
+
 return (
 
     <div className="relative overflow-hidden rounded-2xl border border-[#c8d5d0] bg-[#eef2ef] shadow-[0_18px_45px_rgba(8,27,36,0.09)]">
@@ -1671,6 +1672,7 @@ return (
           </span>
 
         </div>
+
 <div className="absolute bottom-4 left-4 sm:bottom-5 sm:left-5">
 
           <span className="rounded-md bg-white/75 px-2 py-1 font-mono text-[8px] uppercase tracking-[0.16em] text-[#607078] backdrop-blur-sm">
@@ -1728,177 +1730,171 @@ return (
 ****========================================================= */
 
 function SpecificationsButton({
-
   product,
-
 }: {
-
   product: MainProduct;
-
 }) {
-
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
-  return (
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
-    <>
+  useEffect(() => {
+    if (!open) return;
 
-      <button
+    const body = document.body;
+    const html = document.documentElement;
 
-        type="button"
+    const previousBodyOverflow = body.style.overflow;
+    const previousBodyPaddingRight = body.style.paddingRight;
+    const previousHtmlOverflow = html.style.overflow;
 
-        onClick={() => setOpen(true)}
+    const scrollbarWidth =
+      window.innerWidth - document.documentElement.clientWidth;
 
-        className="group inline-flex h-11 items-center gap-3 rounded-lg border border-[#081b24] bg-[#081b24] px-5 text-[10px] font-bold uppercase tracking-[0.1em] text-white shadow-[0_10px_28px_rgba(8,27,36,0.10)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#007c67] hover:bg-[#007c67]"
+    body.style.overflow = "hidden";
+    html.style.overflow = "hidden";
 
-      >
+    if (scrollbarWidth > 0) {
+      body.style.paddingRight = `${scrollbarWidth}px`;
+    }
 
-        <span>Specifications</span>
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setOpen(false);
+      }
+    };
 
-        <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+    window.addEventListener("keydown", handleEscape);
 
-      </button>
+    return () => {
+      body.style.overflow = previousBodyOverflow;
+      body.style.paddingRight = previousBodyPaddingRight;
+      html.style.overflow = previousHtmlOverflow;
+      window.removeEventListener("keydown", handleEscape);
+    };
+  }, [open]);
 
-      <AnimatePresence>
-
-        {open && (
-
-          <motion.div
-
-            initial={{ opacity: 0 }}
-
-            animate={{ opacity: 1 }}
-
-            exit={{ opacity: 0 }}
-
-            transition={{ duration: 0.2 }}
-
-            className="fixed inset-0 z-[100] flex items-center justify-center bg-[#081b24]/80 px-4 py-6 backdrop-blur-sm sm:px-6"
-
-            onClick={() => setOpen(false)}
-
-          >
-
+  const modal =
+    mounted && open
+      ? createPortal(
+          <AnimatePresence>
             <motion.div
-
-              initial={{ opacity: 0, y: 14, scale: 0.985 }}
-
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-
-              exit={{ opacity: 0, y: 14, scale: 0.985 }}
-
-              transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-
-              onClick={(event) => event.stopPropagation()}
-
-              className="relative max-h-[84vh] w-full max-w-xl overflow-hidden rounded-2xl border border-[#c7d5d0] bg-[#f4f6f2] shadow-[0_24px_70px_rgba(0,0,0,0.22)]"
-
+              key="specifications-modal"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.18 }}
+              className="fixed inset-0 z-[9999] flex items-center justify-center overflow-hidden bg-[#081b24]/95 px-4 py-4 sm:px-6 sm:py-6"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby={`spec-title-${product.id}`}
+              onClick={() => setOpen(false)}
             >
-
-              {/* HEADER */}
-
-              <div className="flex items-start justify-between gap-5 border-b border-[#d3ddd9] px-5 py-5 sm:px-6">
-
-                <div className="min-w-0">
-
-                  <div className="flex items-center gap-3">
-
-                    <span className="h-px w-7 bg-[#27d59b]" />
-
-                    <span className="font-mono text-[8px] font-semibold uppercase tracking-[0.18em] text-[#007c67]">
-
-                      Technical profile
-
-                    </span>
-
-                  </div>
-
-                  <h3 className="mt-3 font-heading text-2xl font-semibold leading-[1.05] tracking-[-0.035em] text-[#081b24] sm:text-[28px]">
-
-                    {product.title}
-
-                  </h3>
-
-                </div>
-
-                <button
-
-                  type="button"
-
-                  onClick={() => setOpen(false)}
-
-                  className="shrink-0 rounded-lg border border-[#cdd5d2] bg-white/70 px-3 py-2 font-mono text-[8px] uppercase tracking-[0.14em] text-[#607078] transition-colors duration-300 hover:border-[#007c67]/30 hover:text-[#081b24]"
-
-                >
-
-                  Close
-
-                </button>
-
-              </div>
-
-              {/* SPECS */}
-
-              <div className="max-h-[60vh] overflow-y-auto px-5 py-5 sm:px-6">
-
-                <div className="overflow-hidden rounded-xl border border-[#cdd8d4] bg-white/65">
-
-                  <div className="divide-y divide-[#d8e1de]">
-
-                    {product.specs.map(([label, value]) => (
-
-                      <div
-
-                        key={`${label}-${value}`}
-
-                        className="grid gap-1.5 px-4 py-3.5 sm:grid-cols-[150px_1fr] sm:items-start sm:gap-5 sm:px-5"
-
-                      >
-
-                        <span className="font-mono text-[8px] font-semibold uppercase tracking-[0.14em] text-[#007c67]">
-
-                          {label}
-
+              <motion.div
+                initial={{ opacity: 0, y: 16, scale: 0.985 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 16, scale: 0.985 }}
+                transition={{
+                  duration: 0.24,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+                onClick={(event) => event.stopPropagation()}
+                className="relative flex max-h-[calc(100dvh-2rem)] w-full max-w-xl flex-col overflow-hidden rounded-2xl border border-[#c8d5d0] bg-[#f4f6f2] shadow-[0_28px_90px_rgba(0,0,0,0.45)] sm:max-h-[88dvh]"
+              >
+                <div className="shrink-0 border-b border-[#d3ddd9] bg-[#f4f6f2] px-5 py-5 sm:px-6">
+                  <div className="flex items-start justify-between gap-5">
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-3">
+                        <span className="h-px w-7 bg-[#27d59b]" />
+                        <span className="font-mono text-[8px] font-semibold uppercase tracking-[0.18em] text-[#007c67]">
+                          Specifications
                         </span>
-
-                        <span className="text-[12px] leading-5 text-[#42545b]">
-
-                          {value}
-
-                        </span>
-
                       </div>
 
-                    ))}
+                      <h3
+                        id={`spec-title-${product.id}`}
+                        className="mt-3 font-heading text-2xl font-semibold leading-[1.05] tracking-[-0.035em] text-[#081b24] sm:text-[28px]"
+                      >
+                        {product.title}
+                      </h3>
+                    </div>
 
+                    <button
+                      type="button"
+                      onClick={() => setOpen(false)}
+                      className="shrink-0 rounded-lg border border-[#cdd5d2] bg-white px-3 py-2 font-mono text-[8px] uppercase tracking-[0.14em] text-[#607078] transition-colors duration-300 hover:border-[#007c67]/30 hover:text-[#081b24]"
+                    >
+                      Close
+                    </button>
                   </div>
-
                 </div>
 
-                {product.note && (
+                <div
+                  className="min-h-0 flex-1 overflow-y-auto overscroll-contain bg-[#f4f6f2] px-5 py-5 sm:px-6"
+                  style={{
+                    WebkitOverflowScrolling: "touch",
+                    overscrollBehavior: "contain",
+                  }}
+                  onWheel={(event) => event.stopPropagation()}
+                  onTouchMove={(event) => event.stopPropagation()}
+                >
+                  <div className="overflow-hidden rounded-xl border border-[#cdd8d4] bg-white">
+                    <div className="divide-y divide-[#d8e1de]">
+                      {product.specs.map(([label, value], index) => (
+                        <div
+                          key={`${label}-${value}`}
+                          className="grid gap-1.5 px-4 py-3.5 sm:grid-cols-[150px_1fr] sm:items-start sm:gap-5 sm:px-5"
+                        >
+                          <div className="flex items-center gap-2">
+                            <span className="font-mono text-[7px] text-[#9aa5a1]">
+                              {String(index + 1).padStart(2, "0")}
+                            </span>
 
-                  <p className="mt-4 text-[10px] leading-5 text-[#718087]">
+                            <span className="font-mono text-[8px] font-semibold uppercase tracking-[0.14em] text-[#007c67]">
+                              {label}
+                            </span>
+                          </div>
 
-                    {product.note}
+                          <span className="text-[12px] leading-5 text-[#42545b]">
+                            {value}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
 
-                  </p>
-
-                )}
-
-              </div>
-
+                  {product.note && (
+                    <div className="mt-4 rounded-xl border border-[#d7e0dc] bg-white px-4 py-3.5">
+                      <p className="text-[10px] leading-5 text-[#607078]">
+                        {product.note}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </motion.div>
             </motion.div>
+          </AnimatePresence>,
+          document.body
+        )
+      : null;
 
-          </motion.div>
+  return (
+    <>
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        className="group inline-flex h-11 items-center gap-3 rounded-lg border border-[#081b24] bg-[#081b24] px-5 text-[10px] font-bold uppercase tracking-[0.1em] text-white shadow-[0_10px_28px_rgba(8,27,36,0.10)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#007c67] hover:bg-[#007c67]"
+      >
+        <span>Specifications</span>
+        <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+      </button>
 
-        )}
-
-      </AnimatePresence>
-
+      {modal}
     </>
-
   );
-
 }
 
 /* =========================================================***
@@ -2256,6 +2252,7 @@ function EcosystemCarousel({
 }) {
 
   const [active, setActive] = useState(0);
+
 return (
 
     <article className="group overflow-hidden rounded-2xl border border-[#c9d6d1] bg-white/72 shadow-[0_12px_34px_rgba(8,27,36,0.045)] backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-[#007c67]/20 hover:shadow-[0_18px_42px_rgba(8,27,36,0.07)]">
@@ -2309,6 +2306,7 @@ return (
           </span>
 
         </div>
+
 </div>
 
       <div className="p-5">
@@ -2471,7 +2469,7 @@ function MoreFromEcosystem() {
 
 /* =========================================================****
 
-*PAGE****
+PAGE***
 
 ****========================================================= */
 

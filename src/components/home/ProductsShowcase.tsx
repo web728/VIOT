@@ -24,7 +24,7 @@ const products: ShowcaseProduct[] = [
     title: "Vehicle Telematics",
     spec: "4G connectivity · 9–90V input · vehicle immobilisation",
     href: "/products/vehicle-telematics",
-    image: "/products/vehicle-telematics.png",
+    image: "/products/vehicle-telem.png",
   },
   {
     id: "video-telematics",
@@ -64,7 +64,7 @@ const products: ShowcaseProduct[] = [
     title: "IoT Sensors",
     spec: "Temperature · fuel · application-specific sensing",
     href: "/products/iot-sensors",
-    image: "/products/iot-sensors.png",
+    image: "/products/iot-sens.png",
   },
 ];
 

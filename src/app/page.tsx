@@ -7,6 +7,7 @@ import { ProductsSection } from "@/components/home/ProductsSection";
 import { ProductsShowcase } from "@/components/home/ProductsShowcase";
 import { PlatformSection } from "@/components/home/PlatformSection";
 import { CtaBand } from "@/components/home/CtaBand";
+import SolutionSection from "@/components/home/SolutionSection";
 
 export const metadata: Metadata = {
   title: "VIoT — Fleet, Asset & Access Intelligence",
@@ -20,7 +21,7 @@ export default function Home() {
       <HeroSection />
       <StatsSection />
       <ServiceMapSection />
-      <ProductsSection />
+      {/* <SolutionSection /> */}
       <ProductsShowcase />
       <PlatformSection />
       <CtaBand />

@@ -76,7 +76,7 @@ const navItems = [
 
   {
 
-    label: "Solutions",
+    label: "Industries",
 
     href: "/solutions",
 
@@ -86,7 +86,7 @@ const navItems = [
 
   {
 
-    label: "Platform",
+    label: "Solutions",
 
     href: "/platform",
 

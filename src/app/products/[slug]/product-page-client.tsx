@@ -2,11 +2,14 @@
 
 import type { ReactNode } from "react";
 
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
+
 import Image from "next/image";
 
 import Link from "next/link";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 import {
 
@@ -36,45 +39,57 @@ import {
 
 import { CtaBand } from "@/components/home/CtaBand";
 
-/* =========================================================**
+/* =========================================================
 
- HELPERS**
+   HELPERS
 
-**========================================================= */
+\========================================================= */
 
 function getProductImage(slug: string) {
+
   switch (slug) {
+
     case "vehicle-telematics":
+
       return "/image/vehicle-telematics.png";
 
     case "video-telematics":
+
       return "/image/video-telementics.png";
 
     case "smart-logistics-locks":
+
       return "/image/smart-lock.png";
 
     case "smart-infra-locks":
+
       return "/image/smart-infra.png";
 
     case "asset-trackers":
+
       return "/image/asset-trackers.png";
 
     case "iot-sensors":
+
       return "/image/iot-sensors.png";
 
     case "access-control":
+
       return "/image/access-control.png";
 
     default:
+
       return "/image/vehicle-telematics.png";
+
   }
+
 }
 
-/* =========================================================**
+/* =========================================================
 
- APPROVED VIOT SVG BACKGROUND**
+   APPROVED VIOT SVG BACKGROUND
 
-**========================================================= */
+\========================================================= */
 
 function VIoTSVGBackground({ dark = false }: { dark?: boolean }) {
 
@@ -130,11 +145,7 @@ function VIoTSVGBackground({ dark = false }: { dark?: boolean }) {
 
           stroke={
 
-            dark
-
-              ? "rgba(255,255,255,0.055)"
-
-              : "rgba(8,27,36,0.07)"
+            dark ? "rgba(255,255,255,0.055)" : "rgba(8,27,36,0.07)"
 
           }
 
@@ -156,11 +167,7 @@ function VIoTSVGBackground({ dark = false }: { dark?: boolean }) {
 
           stroke={
 
-            dark
-
-              ? "rgba(39,213,155,0.15)"
-
-              : "rgba(0,124,103,0.13)"
+            dark ? "rgba(39,213,155,0.15)" : "rgba(0,124,103,0.13)"
 
           }
 
@@ -180,11 +187,7 @@ function VIoTSVGBackground({ dark = false }: { dark?: boolean }) {
 
           stroke={
 
-            dark
-
-              ? "rgba(39,213,155,0.075)"
-
-              : "rgba(0,124,103,0.065)"
+            dark ? "rgba(39,213,155,0.075)" : "rgba(0,124,103,0.065)"
 
           }
 
@@ -204,11 +207,7 @@ function VIoTSVGBackground({ dark = false }: { dark?: boolean }) {
 
           stroke={
 
-            dark
-
-              ? "rgba(255,255,255,0.035)"
-
-              : "rgba(8,27,36,0.045)"
+            dark ? "rgba(255,255,255,0.035)" : "rgba(8,27,36,0.045)"
 
           }
 
@@ -264,7 +263,15 @@ function VIoTSVGBackground({ dark = false }: { dark?: boolean }) {
 
         className="absolute left-[19%] top-[31%] h-1.5 w-1.5 rounded-full bg-[#27d59b]"
 
-        animate={{ x: [0, 90, 180], y: [0, 20, 0], opacity: [0.1, 0.7, 0] }}
+        animate={{
+
+          x: [0, 90, 180],
+
+          y: [0, 20, 0],
+
+          opacity: [0.1, 0.7, 0],
+
+        }}
 
         transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
 
@@ -274,9 +281,27 @@ function VIoTSVGBackground({ dark = false }: { dark?: boolean }) {
 
         className="absolute left-[46%] top-[69%] h-1.5 w-1.5 rounded-full bg-[#27d59b]"
 
-        animate={{ x: [0, -70, -150], y: [0, -25, 0], opacity: [0, 0.7, 0] }}
+        animate={{
 
-        transition={{ duration: 6, delay: 1, repeat: Infinity, ease: "easeInOut" }}
+          x: [0, -70, -150],
+
+          y: [0, -25, 0],
+
+          opacity: [0, 0.7, 0],
+
+        }}
+
+        transition={{
+
+          duration: 6,
+
+          delay: 1,
+
+          repeat: Infinity,
+
+          ease: "easeInOut",
+
+        }}
 
       />
 
@@ -286,55 +311,19 @@ function VIoTSVGBackground({ dark = false }: { dark?: boolean }) {
 
         animate={{ x: [0, -55, -120], opacity: [0.1, 0.7, 0] }}
 
-        transition={{ duration: 5, delay: 1.8, repeat: Infinity, ease: "easeInOut" }}
+        transition={{
+
+          duration: 5,
+
+          delay: 1.8,
+
+          repeat: Infinity,
+
+          ease: "easeInOut",
+
+        }}
 
       />
-
-      {[
-
-        ["12%", "20%"],
-
-        ["25%", "78%"],
-
-        ["39%", "16%"],
-
-        ["58%", "84%"],
-
-        ["68%", "22%"],
-
-        ["79%", "72%"],
-
-        ["91%", "52%"],
-
-      ].map(([left, top], index) => (
-
-        <motion.span
-
-          key={`${left}-${top}`}
-
-          className={`absolute h-1 w-1 rounded-full ${
-
-            dark ? "bg-white/20" : "bg-[#081b24]/15"
-
-          }`}
-
-          style={{ left, top }}
-
-          animate={{ opacity: [0.1, 0.4, 0.1] }}
-
-          transition={{
-
-            duration: 3 + index * 0.25,
-
-            delay: index * 0.3,
-
-            repeat: Infinity,
-
-          }}
-
-        />
-
-      ))}
 
     </div>
 
@@ -342,11 +331,11 @@ function VIoTSVGBackground({ dark = false }: { dark?: boolean }) {
 
 }
 
-/* =========================================================**
+/* =========================================================
 
- REVEAL**
+   REVEAL
 
-**========================================================= */
+\========================================================= */
 
 function Reveal({
 
@@ -390,11 +379,11 @@ function Reveal({
 
 }
 
-/* =========================================================**
+/* =========================================================
 
- TYPES**
+   TYPES
 
-**========================================================= */
+\========================================================= */
 
 type ProductFlow = {
 
@@ -476,11 +465,797 @@ type ProductPageClientProps = {
 
 };
 
-/* =========================================================**
+type TrackingDevice = {
 
- PAGE**
+  id: "basic-tracking-device" | "advanced-tracking-device";
 
-**========================================================= */
+  number: string;
+
+  title: string;
+
+  category: string;
+
+  description: string;
+
+  image: string;
+
+  points: string[];
+
+  specs: [string, string][];
+
+  note?: string;
+
+};
+
+/* =========================================================
+
+   VEHICLE TELEMATICS DEVICES
+
+\========================================================= */
+
+const trackingDevices: TrackingDevice[] = [
+
+  {
+
+    id: "basic-tracking-device",
+
+    number: "01",
+
+    title: "Basic Tracking Device",
+
+    category: "Vehicle Tracking",
+
+    description:
+
+      "A compact 4G tracking configuration for dependable location reporting, driving-event visibility and remote vehicle immobilisation across a wide range of vehicle power systems.",
+
+    image: "/image/basic-tracking.png",
+
+    points: [
+
+      "4G Cat.1 connectivity keeps vehicle location and operating events connected to the platform.",
+
+      "9–90V operating voltage supports installation across a broad range of vehicle types.",
+
+      "Remote cut-off capability supports controlled vehicle immobilisation when required.",
+
+    ],
+
+    specs: [
+
+      ["Network", "4G Cat.1"],
+
+      ["Positioning", "GPS + BDS"],
+
+      ["Input voltage", "9–90V DC"],
+
+      ["Standby current", "<5mA"],
+
+      ["Driving events", "Harsh acceleration, braking and cornering"],
+
+      ["Alerts", "Movement, speeding, geo-fence and vehicle battery events"],
+
+      ["Control", "Remote cut-off / immobilisation"],
+
+      ["Interface", "Optional TTL expansion"],
+
+      ["Operating temperature", "-20°C to +70°C"],
+
+      ["Ingress protection", "IPX4"],
+
+      ["Dimensions", "80 × 31 × 13 mm"],
+
+      ["Weight", "28 g"],
+
+    ],
+
+   
+  },
+
+  {
+
+    id: "advanced-tracking-device",
+
+    number: "02",
+
+    title: "Advanced Tracking Device",
+
+    category: "Advanced Vehicle Intelligence",
+
+    description:
+
+      "An advanced 4G vehicle-tracking configuration for fleets that need richer telemetry, temperature and fuel integration, SOS workflows and remote operational control.",
+
+    image: "/image/advanced-tracking.png",
+
+    points: [
+
+      "4G LTE connectivity with cellular fallback supports dependable fleet reporting.",
+
+      "Temperature and fuel sensor integration adds deeper operating context for configured deployments.",
+
+      "Remote immobilisation and SOS input support security and emergency-response workflows.",
+
+    ],
+
+    specs: [
+
+      ["Network", "4G LTE with GSM fallback"],
+
+      ["Positioning", "GPS + BDS + LBS"],
+
+      ["Positioning accuracy", "<2.5 m CEP50"],
+
+      ["Input voltage", "9–90V DC"],
+
+      ["Backup battery", "500mAh / 3.7V Li-Polymer"],
+
+      ["Interfaces", "2 × TTL + digital input/output"],
+
+      ["Sensor support", "Temperature and fuel-level peripherals"],
+
+      ["Safety", "SOS input + multiple event alarms"],
+
+      ["Control", "Remote fuel / power cut-off"],
+
+      ["Bluetooth", "BLE 5.0 accessory support"],
+
+      ["Operating temperature", "-20°C to +70°C"],
+
+      ["Dimensions", "106 × 54.5 × 16.5 mm"],
+
+      ["Weight", "90 g"],
+
+    ],
+
+   
+
+  },
+
+];
+
+/* =========================================================
+
+   SPECIFICATIONS MODAL
+
+\========================================================= */
+
+function SpecificationsModal({
+  device,
+  onClose,
+}: {
+  device: TrackingDevice | null;
+  onClose: () => void;
+}) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!device) return;
+
+    const body = document.body;
+    const html = document.documentElement;
+
+    const previousBodyOverflow = body.style.overflow;
+    const previousBodyPaddingRight = body.style.paddingRight;
+    const previousHtmlOverflow = html.style.overflow;
+
+    const scrollbarWidth =
+      window.innerWidth - document.documentElement.clientWidth;
+
+    body.style.overflow = "hidden";
+    html.style.overflow = "hidden";
+
+    if (scrollbarWidth > 0) {
+      body.style.paddingRight = `${scrollbarWidth}px`;
+    }
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
+
+    window.addEventListener("keydown", handleEscape);
+
+    return () => {
+      body.style.overflow = previousBodyOverflow;
+      body.style.paddingRight = previousBodyPaddingRight;
+      html.style.overflow = previousHtmlOverflow;
+      window.removeEventListener("keydown", handleEscape);
+    };
+  }, [device, onClose]);
+
+  if (!mounted || !device) {
+    return null;
+  }
+
+  return createPortal(
+    <AnimatePresence>
+      <motion.div
+        key={`specifications-modal-${device.id}`}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.18 }}
+        className="fixed inset-0 z-[9999] flex items-center justify-center overflow-hidden bg-[#081b24]/95 px-4 py-4 sm:px-6 sm:py-6"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={`spec-title-${device.id}`}
+        onClick={onClose}
+      >
+        <motion.div
+          initial={{ opacity: 0, y: 16, scale: 0.985 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: 16, scale: 0.985 }}
+          transition={{
+            duration: 0.24,
+            ease: [0.16, 1, 0.3, 1],
+          }}
+          onClick={(event) => event.stopPropagation()}
+          className="relative flex max-h-[calc(100dvh-2rem)] w-full max-w-2xl flex-col overflow-hidden rounded-2xl border border-[#c8d5d0] bg-[#f4f6f2] shadow-[0_28px_90px_rgba(0,0,0,0.45)] sm:max-h-[88dvh]"
+        >
+          {/* OPAQUE HEADER */}
+          <div className="shrink-0 border-b border-[#d3ddd9] bg-[#f4f6f2] px-5 py-5 sm:px-6">
+            <div className="flex items-start justify-between gap-5">
+              <div className="min-w-0">
+                <div className="flex items-center gap-3">
+                  <span className="h-px w-7 bg-[#27d59b]" />
+                  <span className="font-mono text-[8px] font-semibold uppercase tracking-[0.18em] text-[#007c67]">
+                    Specifications
+                  </span>
+                </div>
+
+                <h3
+                  id={`spec-title-${device.id}`}
+                  className="mt-3 font-heading text-2xl font-semibold leading-[1.05] tracking-[-0.035em] text-[#081b24] sm:text-[28px]"
+                >
+                  {device.title}
+                </h3>
+              </div>
+
+              <button
+                type="button"
+                onClick={onClose}
+                className="shrink-0 rounded-lg border border-[#cdd5d2] bg-white px-3 py-2 font-mono text-[8px] uppercase tracking-[0.14em] text-[#607078] transition-colors duration-300 hover:border-[#007c67]/30 hover:text-[#081b24]"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+
+          {/* ONLY THIS AREA SCROLLS */}
+          <div
+            className="min-h-0 flex-1 overflow-y-auto overscroll-contain bg-[#f4f6f2] px-5 py-5 sm:px-6"
+            style={{
+              WebkitOverflowScrolling: "touch",
+              overscrollBehavior: "contain",
+            }}
+            onWheel={(event) => event.stopPropagation()}
+            onTouchMove={(event) => event.stopPropagation()}
+          >
+            <div className="overflow-hidden rounded-xl border border-[#cdd8d4] bg-white">
+              <div className="divide-y divide-[#d8e1de]">
+                {device.specs.map(([label, value], index) => (
+                  <div
+                    key={`${device.id}-${label}`}
+                    className="grid gap-1.5 px-4 py-3.5 sm:grid-cols-[165px_1fr] sm:items-start sm:gap-5 sm:px-5"
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className="font-mono text-[7px] text-[#9aa5a1]">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+
+                      <span className="font-mono text-[8px] font-semibold uppercase tracking-[0.12em] text-[#007c67]">
+                        {label}
+                      </span>
+                    </div>
+
+                    <span className="text-[12px] leading-5 text-[#42545b]">
+                      {value}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {device.note && (
+              <div className="mt-4 rounded-xl border border-[#d7e0dc] bg-white px-4 py-3.5">
+                <p className="text-[10px] leading-5 text-[#607078]">
+                  {device.note}
+                </p>
+              </div>
+            )}
+          </div>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>,
+    document.body
+  );
+}
+
+/* =========================================================
+
+   TRACKING DEVICE SECTION
+
+\========================================================= */
+
+function TrackingDeviceSection({
+
+  device,
+
+  index,
+
+  onSpecifications,
+
+}: {
+
+  device: TrackingDevice;
+
+  index: number;
+
+  onSpecifications: (device: TrackingDevice) => void;
+
+}) {
+
+  const isAlternate = index % 2 === 1;
+
+  return (
+
+    <section
+
+      id={device.id}
+
+      className={`relative overflow-hidden border-b border-[#d3ddd9] ${
+
+        isAlternate ? "bg-white" : "bg-[#f4f6f2]"
+
+      }`}
+
+    >
+
+      <VIoTSVGBackground />
+
+      <div className="relative z-10 mx-auto max-w-[1360px] px-6 py-14 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
+
+        <div className="grid gap-7 lg:grid-cols-12 lg:items-stretch">
+
+          <Reveal
+
+            className={`lg:col-span-7 ${
+
+              isAlternate ? "lg:order-2" : ""
+
+            }`}
+
+          >
+
+            <div className="group relative h-full overflow-hidden rounded-2xl border border-[#c7d5d0] bg-[#eef2ef] shadow-[0_18px_50px_rgba(8,27,36,0.08)]">
+
+              <div className="relative aspect-[16/10] lg:h-full lg:min-h-[440px] lg:aspect-auto">
+
+                <Image
+
+                  src={device.image}
+
+                  alt={device.title}
+
+                  fill
+
+                  priority={index === 0}
+
+                  sizes="(max-width: 1024px) 100vw, 58vw"
+
+                  className="object-contain p-6 transition-transform duration-700 group-hover:scale-[1.02] sm:p-8 lg:p-10"
+
+                />
+
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#081b24]/12 via-transparent to-white/[0.03]" />
+
+                <motion.div
+
+                  className="absolute left-5 right-5 h-px bg-gradient-to-r from-transparent via-[#27d59b]/55 to-transparent"
+
+                  animate={{
+
+                    top: ["18%", "82%", "18%"],
+
+                    opacity: [0, 0.55, 0],
+
+                  }}
+
+                  transition={{
+
+                    duration: 6,
+
+                    repeat: Infinity,
+
+                    ease: "easeInOut",
+
+                  }}
+
+                />
+
+                <div className="absolute left-5 top-5 rounded-lg border border-white/10 bg-[#081b24]/70 px-3 py-2 backdrop-blur-md">
+
+                  <span className="font-mono text-[8px] uppercase tracking-[0.16em] text-[#27d59b]">
+
+                    {device.category}
+
+                  </span>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </Reveal>
+
+          <Reveal
+
+            delay={0.08}
+
+            className={`lg:col-span-5 ${
+
+              isAlternate ? "lg:order-1" : ""
+
+            }`}
+
+          >
+
+            <div className="flex h-full flex-col rounded-2xl border border-[#c7d5d0] bg-white/80 p-6 shadow-[0_18px_50px_rgba(8,27,36,0.05)] backdrop-blur-sm sm:p-7 lg:p-8">
+
+              <div>
+
+                <div className="flex items-center gap-3">
+
+                  <span className="flex h-7 min-w-7 items-center justify-center rounded-lg border border-[#007c67]/15 bg-[#007c67]/[0.04] px-2 font-mono text-[8px] font-semibold text-[#007c67]">
+
+                    {device.number}
+
+                  </span>
+
+                  <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-[#007c67]">
+
+                    {device.category}
+
+                  </span>
+
+                </div>
+
+                <h2 className="mt-5 font-heading text-3xl font-semibold leading-[1.02] tracking-[-0.045em] text-[#081b24] sm:text-4xl">
+
+                  {device.title}
+
+                </h2>
+
+                <p className="mt-4 max-w-lg text-sm leading-7 text-[#607078]">
+
+                  {device.description}
+
+                </p>
+
+              </div>
+
+              <div className="mt-7 space-y-2.5">
+
+                {device.points.map((point, pointIndex) => (
+
+                  <motion.div
+
+                    key={point}
+
+                    initial={{ opacity: 0, x: 12 }}
+
+                    whileInView={{ opacity: 1, x: 0 }}
+
+                    viewport={{ once: true, amount: 0.25 }}
+
+                    transition={{
+
+                      duration: 0.4,
+
+                      delay: pointIndex * 0.05,
+
+                    }}
+
+                    className="flex items-start gap-3 rounded-xl border border-[#d2ddda] bg-white/65 px-4 py-3.5 transition-all duration-300 hover:border-[#007c67]/20 hover:bg-white"
+
+                  >
+
+                    <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-md border border-[#007c67]/10 bg-[#007c67]/[0.035] font-mono text-[7px] text-[#007c67]">
+
+                      {String(pointIndex + 1).padStart(2, "0")}
+
+                    </span>
+
+                    <span className="text-[13px] leading-5 text-[#081b24]/75">
+
+                      {point}
+
+                    </span>
+
+                  </motion.div>
+
+                ))}
+
+              </div>
+
+              <div className="mt-auto flex flex-wrap items-center gap-3 pt-7">
+
+                <button
+
+                  type="button"
+
+                  onClick={() => onSpecifications(device)}
+
+                  className="group inline-flex h-10 items-center gap-2 rounded-lg border border-[#081b24] bg-[#081b24] px-4 text-[9px] font-semibold uppercase tracking-[0.09em] text-white transition-all duration-300 hover:border-[#007c67] hover:bg-[#007c67]"
+
+                >
+
+                  Specifications
+
+                  <ChevronRight className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-0.5" />
+
+                </button>
+
+             <Link
+  href="/contact"
+  className="
+    group inline-flex h-10 items-center gap-2
+    rounded-lg
+    border border-[#c7d5d0]
+    bg-white
+    px-4
+    text-[9px] font-semibold uppercase tracking-[0.09em]
+    text-[#081b24]
+    shadow-sm
+    transition-all duration-300
+    hover:-translate-y-0.5
+    hover:border-[#007c67]
+    hover:bg-[#f4fffc]
+    hover:text-[#007c67]
+    hover:shadow-[0_8px_20px_rgba(0,124,103,0.12)]
+  "
+>
+  <span className="text-[#081b24] transition-colors duration-300 group-hover:text-[#007c67]">
+    Enquire
+  </span>
+
+  <ArrowUpRight
+    className="
+      h-3 w-3
+      shrink-0
+      text-[#081b24]
+      transition-all duration-300
+      group-hover:translate-x-0.5
+      group-hover:-translate-y-0.5
+      group-hover:text-[#007c67]
+    "
+  />
+</Link>
+
+              </div>
+
+            </div>
+
+          </Reveal>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  );
+
+}
+
+/* =========================================================
+
+   GENERIC PRODUCT OVERVIEW
+
+\========================================================= */
+
+function GenericProductOverview({
+
+  product,
+
+  image,
+
+}: {
+
+  product: ProductPageProduct;
+
+  image: string;
+
+}) {
+
+  return (
+
+    <section
+
+      id="overview"
+
+      className="relative overflow-hidden border-b border-[#d3ddd9] bg-[#f4f6f2]"
+
+    >
+
+      <VIoTSVGBackground />
+
+      <div className="relative z-10 mx-auto max-w-[1360px] px-6 py-14 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
+
+        <div className="grid gap-7 lg:grid-cols-12 lg:items-stretch">
+
+          <Reveal className="lg:col-span-7">
+
+            <div className="group relative h-full overflow-hidden rounded-2xl border border-[#c7d5d0] bg-[#eef2ef] shadow-[0_18px_50px_rgba(8,27,36,0.08)]">
+
+              <div className="relative aspect-[16/10] lg:h-full lg:min-h-[440px] lg:aspect-auto">
+
+                <Image
+
+                  src={image}
+
+                  alt={product.name}
+
+                  fill
+
+                  priority
+
+                  sizes="(max-width: 1024px) 100vw, 58vw"
+
+                  className="object-contain p-6 transition-transform duration-700 group-hover:scale-[1.02] sm:p-8 lg:p-10"
+
+                />
+
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#081b24]/14 via-transparent to-white/[0.03]" />
+
+                <div className="absolute left-5 top-5 rounded-lg border border-white/10 bg-[#081b24]/70 px-3 py-2 backdrop-blur-md">
+
+                  <span className="font-mono text-[8px] uppercase tracking-[0.16em] text-[#27d59b]">
+
+                    Connected hardware
+
+                  </span>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </Reveal>
+
+          <Reveal delay={0.08} className="lg:col-span-5">
+
+            <div className="flex h-full flex-col rounded-2xl border border-[#c7d5d0] bg-white/80 p-6 shadow-[0_18px_50px_rgba(8,27,36,0.05)] backdrop-blur-sm sm:p-7 lg:p-8">
+
+              <div>
+
+                <div className="flex items-center gap-3">
+
+                  <span className="flex h-7 w-7 items-center justify-center rounded-lg border border-[#007c67]/15 bg-[#007c67]/[0.04] font-mono text-[8px] font-semibold text-[#007c67]">
+
+                    {product.number}
+
+                  </span>
+
+                  <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-[#007c67]">
+
+                    Product overview
+
+                  </span>
+
+                </div>
+
+                <h2 className="mt-5 font-heading text-3xl font-semibold leading-[1.02] tracking-[-0.045em] text-[#081b24] sm:text-4xl">
+
+                  {product.name}
+
+                </h2>
+
+                <p className="mt-4 max-w-lg text-sm leading-7 text-[#607078]">
+
+                  {product.description}
+
+                </p>
+
+              </div>
+
+              <div className="mt-7 space-y-2.5">
+
+                {product.points.map((point, index) => (
+
+                  <motion.div
+
+                    key={point}
+
+                    initial={{ opacity: 0, x: 12 }}
+
+                    whileInView={{ opacity: 1, x: 0 }}
+
+                    viewport={{ once: true, amount: 0.25 }}
+
+                    transition={{ duration: 0.4, delay: index * 0.05 }}
+
+                    className="flex items-start gap-3 rounded-xl border border-[#d2ddda] bg-white/65 px-4 py-3.5 transition-all duration-300 hover:border-[#007c67]/20 hover:bg-white"
+
+                  >
+
+                    <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-md border border-[#007c67]/10 bg-[#007c67]/[0.035] font-mono text-[7px] text-[#007c67]">
+
+                      {String(index + 1).padStart(2, "0")}
+
+                    </span>
+
+                    <span className="text-[13px] leading-5 text-[#081b24]/75">
+
+                      {point}
+
+                    </span>
+
+                  </motion.div>
+
+                ))}
+
+              </div>
+
+              <div className="mt-auto flex flex-wrap items-center gap-3 pt-7">
+
+                <a
+
+                  href="#specifications"
+
+                  className="group inline-flex h-10 items-center gap-2 rounded-lg border border-[#c7d5d0] bg-white px-4 text-[9px] font-semibold uppercase tracking-[0.09em] text-[#081b24] transition-all duration-300 hover:border-[#007c67]/30 hover:text-[#007c67]"
+
+                >
+
+                  Specifications
+
+                  <ChevronRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
+
+                </a>
+
+                <Link
+
+                  href="/contact"
+
+                  className="group inline-flex h-10 items-center gap-2 rounded-lg border border-[#081b24] bg-[#081b24] px-4 text-[9px] font-semibold uppercase tracking-[0.09em] text-white! transition-all duration-300 hover:border-[#007c67] hover:bg-[#007c67]"
+
+                >
+
+                  Enquire
+
+                  <ArrowUpRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+
+                </Link>
+
+              </div>
+
+            </div>
+
+          </Reveal>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  );
+
+}
+
+/* =========================================================
+
+   PAGE
+
+\========================================================= */
 
 export default function ProductPageClient({
 
@@ -494,8 +1269,27 @@ export default function ProductPageClient({
 
 }: ProductPageClientProps) {
 
-  const currentProductImage =
-    getProductImage(product.slug) || productImage;
+  const [specDevice, setSpecDevice] = useState<TrackingDevice | null>(null);
+
+  const isVehicleTelematics = product.slug === "vehicle-telematics";
+
+  const currentProductImage = isVehicleTelematics
+
+    ? trackingDevices[0].image
+
+    : productImage || getProductImage(product.slug);
+
+  const heroTitle = isVehicleTelematics
+
+    ? "Vehicle Telematics"
+
+    : product.headline;
+
+  const heroLede = isVehicleTelematics
+
+    ? "Choose the tracking configuration around the level of connectivity, sensing and control required by the fleet."
+
+    : product.lede;
 
   const productSchema = {
 
@@ -527,13 +1321,53 @@ export default function ProductPageClient({
 
   const journey = [
 
-    { number: "01", title: flow.source, label: "Physical world", icon: Activity },
+    {
 
-    { number: "02", title: flow.device, label: "Capture", icon: Radio },
+      number: "01",
 
-    { number: "03", title: flow.data, label: "Connected data", icon: Database },
+      title: flow.source,
 
-    { number: "04", title: flow.output, label: "Operational action", icon: Zap },
+      label: "Physical world",
+
+      icon: Activity,
+
+    },
+
+    {
+
+      number: "02",
+
+      title: flow.device,
+
+      label: "Capture",
+
+      icon: Radio,
+
+    },
+
+    {
+
+      number: "03",
+
+      title: flow.data,
+
+      label: "Connected data",
+
+      icon: Database,
+
+    },
+
+    {
+
+      number: "04",
+
+      title: flow.output,
+
+      label: "Operational action",
+
+      icon: Zap,
+
+    },
 
   ];
 
@@ -633,13 +1467,13 @@ export default function ProductPageClient({
 
             <h1 className="mt-6 max-w-[680px] font-heading text-[clamp(2.65rem,5vw,4.7rem)] font-semibold leading-[0.94] tracking-[-0.06em]">
 
-              {product.headline}
+              {heroTitle}
 
             </h1>
 
-            <p className="mt-6 max-w-[520px] text-sm leading-7 text-white/65 sm:text-[15px]">
+            <p className="mt-6 max-w-[540px] text-sm leading-7 text-white/65 sm:text-[15px]">
 
-              {product.lede}
+              {heroLede}
 
             </p>
 
@@ -647,7 +1481,11 @@ export default function ProductPageClient({
 
               <a
 
-                href="#overview"
+                href={
+
+                  isVehicleTelematics ? "#basic-tracking-device" : "#overview"
+
+                }
 
                 className="inline-flex h-11 items-center gap-2 rounded-lg border border-[#27d59b] bg-[#27d59b] px-5 text-[10px] font-bold uppercase tracking-[0.09em] text-[#081b24] transition-all duration-300 hover:-translate-y-0.5 hover:border-white hover:bg-white"
 
@@ -681,361 +1519,43 @@ export default function ProductPageClient({
 
       </section>
 
-      {/* PRODUCT OVERVIEW */}
+      {/* VEHICLE TELEMATICS = BASIC + ADVANCED DEVICES */}
 
-      <section
+      {isVehicleTelematics ? (
 
-        id="overview"
+        <>
 
-        className="relative overflow-hidden border-b border-[#d3ddd9] bg-[#f4f6f2]"
+          <TrackingDeviceSection
 
-      >
+            device={trackingDevices[0]}
 
-        <VIoTSVGBackground />
+            index={0}
 
-        <div className="relative z-10 mx-auto max-w-[1360px] px-6 py-14 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
+            onSpecifications={setSpecDevice}
 
-          <div className="grid gap-7 lg:grid-cols-12 lg:items-stretch">
+          />
 
-            <Reveal className="lg:col-span-7">
+          <TrackingDeviceSection
 
-              <div className="group relative h-full overflow-hidden rounded-2xl border border-[#c7d5d0] bg-[#eef2ef] shadow-[0_18px_50px_rgba(8,27,36,0.08)]">
+            device={trackingDevices[1]}
 
-                <div className="relative aspect-[16/10] lg:h-full lg:min-h-[440px] lg:aspect-auto">
+            index={1}
 
-                  <Image
+            onSpecifications={setSpecDevice}
 
-                    src={currentProductImage}
+          />
 
-                    alt={product.name}
+        </>
 
-                    fill
+      ) : (
 
-                    priority
+        <GenericProductOverview
 
-                    sizes="(max-width: 1024px) 100vw, 58vw"
+          product={product}
 
-                    className="object-contain p-6 transition-transform duration-700 group-hover:scale-[1.02] sm:p-8 lg:p-10"
+          image={currentProductImage}
 
-                  />
-
-                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#081b24]/14 via-transparent to-white/[0.03]" />
-
-                  <motion.div
-
-                    className="absolute left-5 right-5 h-px bg-gradient-to-r from-transparent via-[#27d59b]/60 to-transparent"
-
-                    animate={{ top: ["18%", "82%", "18%"], opacity: [0, 0.65, 0] }}
-
-                    transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-
-                  />
-
-                  <div className="absolute left-5 top-5 rounded-lg border border-white/10 bg-[#081b24]/70 px-3 py-2 backdrop-blur-md">
-
-                    <span className="font-mono text-[8px] uppercase tracking-[0.16em] text-[#27d59b]">
-
-                      Connected hardware
-
-                    </span>
-
-                  </div>
-
-                </div>
-
-              </div>
-
-            </Reveal>
-
-            <Reveal delay={0.08} className="lg:col-span-5">
-
-              <div className="flex h-full flex-col rounded-2xl border border-[#c7d5d0] bg-white/80 p-6 shadow-[0_18px_50px_rgba(8,27,36,0.05)] backdrop-blur-sm sm:p-7 lg:p-8">
-
-                <div>
-
-                  <div className="flex items-center gap-3">
-
-                    <span className="flex h-7 w-7 items-center justify-center rounded-lg border border-[#007c67]/15 bg-[#007c67]/[0.04] font-mono text-[8px] font-semibold text-[#007c67]">
-
-                      {product.number}
-
-                    </span>
-
-                    <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-[#007c67]">
-
-                      Product overview
-
-                    </span>
-
-                  </div>
-
-                  <h2 className="mt-5 font-heading text-3xl font-semibold leading-[1.02] tracking-[-0.045em] text-[#081b24] sm:text-4xl">
-
-                    {product.name}
-
-                  </h2>
-
-                  <p className="mt-4 max-w-lg text-sm leading-7 text-[#607078]">
-
-                    {product.description}
-
-                  </p>
-
-                </div>
-
-                <div className="mt-7 space-y-2.5">
-
-                  {product.points.map((point, index) => (
-
-                    <motion.div
-
-                      key={point}
-
-                      initial={{ opacity: 0, x: 12 }}
-
-                      whileInView={{ opacity: 1, x: 0 }}
-
-                      viewport={{ once: true, amount: 0.25 }}
-
-                      transition={{ duration: 0.4, delay: index * 0.05 }}
-
-                      className="flex items-start gap-3 rounded-xl border border-[#d2ddda] bg-white/65 px-4 py-3.5 transition-all duration-300 hover:border-[#007c67]/20 hover:bg-white"
-
-                    >
-
-                      <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-md border border-[#007c67]/10 bg-[#007c67]/[0.035] font-mono text-[7px] text-[#007c67]">
-
-                        {String(index + 1).padStart(2, "0")}
-
-                      </span>
-
-                      <span className="text-[13px] leading-5 text-[#081b24]/75">
-
-                        {point}
-
-                      </span>
-
-                    </motion.div>
-
-                  ))}
-
-                </div>
-
-                <div className="mt-auto flex flex-wrap items-center gap-3 pt-7">
-
-                  <a
-
-                    href="#specifications"
-
-                    className="group inline-flex h-10 items-center gap-2 rounded-lg border border-[#c7d5d0] bg-white px-4 text-[9px] font-semibold uppercase tracking-[0.09em] text-[#081b24] transition-all duration-300 hover:border-[#007c67]/30 hover:text-[#007c67]"
-
-                  >
-
-                    Specifications
-
-                    <ChevronRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
-
-                  </a>
-
-                  <Link
-
-                    href="/contact"
-
-                    className="group inline-flex h-10 items-center gap-2 rounded-lg border border-[#081b24] bg-[#081b24] px-4 text-[9px] font-semibold uppercase tracking-[0.09em] text-white! transition-all duration-300 hover:border-[#007c67] hover:bg-[#007c67]"
-
-                  >
-
-                    Enquire
-
-                    <ArrowUpRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-
-                  </Link>
-
-                </div>
-
-              </div>
-
-            </Reveal>
-
-          </div>
-
-        </div>
-
-      </section>
-
-      {product.variants && product.variants.length > 0 && (
-
-        <section className="relative overflow-hidden border-b border-[#d3ddd9] bg-white">
-
-          <VIoTSVGBackground />
-
-          <div className="relative z-10 mx-auto max-w-[1360px] px-6 py-14 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
-
-            <Reveal>
-
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-
-                <div>
-
-                  <div className="flex items-center gap-3">
-
-                    <span className="h-px w-8 bg-[#27d59b]" />
-
-                    <span className="font-mono text-[8px] uppercase tracking-[0.2em] text-[#007c67]">
-
-                      Tracking configurations
-
-                    </span>
-
-                  </div>
-
-                  <h2 className="mt-4 font-heading text-3xl font-semibold leading-[1.03] tracking-[-0.045em] text-[#081b24] sm:text-4xl">
-
-                    Basic and advanced tracking.
-
-                  </h2>
-
-                </div>
-
-                <p className="max-w-md text-xs leading-6 text-[#607078]">
-
-                  Choose the tracking configuration around the level of connectivity,
-
-                  sensing and control required by the fleet.
-
-                </p>
-
-              </div>
-
-            </Reveal>
-
-            <div className="mt-9 overflow-hidden rounded-2xl border border-[#c7d5d0] bg-[#f8faf8] shadow-[0_16px_44px_rgba(8,27,36,0.045)]">
-
-              <div className="divide-y divide-[#d8e1de]">
-
-                {product.variants.map((variant, variantIndex) => (
-
-                  <Reveal key={variant.id} delay={variantIndex * 0.05}>
-
-                    <article className="grid gap-6 px-5 py-6 sm:px-6 lg:grid-cols-12 lg:gap-8 lg:px-7">
-
-                      <div className="lg:col-span-5">
-
-                        <div className="flex items-center gap-3">
-
-                          <span className="flex h-7 w-7 items-center justify-center rounded-lg border border-[#007c67]/15 bg-white font-mono text-[8px] font-semibold text-[#007c67]">
-
-                            {String(variantIndex + 1).padStart(2, "0")}
-
-                          </span>
-
-                          <span className="font-mono text-[8px] uppercase tracking-[0.16em] text-[#607078]">
-
-                            {variant.eyebrow ?? "Vehicle tracking"}
-
-                          </span>
-
-                        </div>
-
-                        <h3 className="mt-4 font-heading text-2xl font-semibold leading-[1.04] tracking-[-0.035em] text-[#081b24]">
-
-                          {variant.name}
-
-                        </h3>
-
-                        <p className="mt-3 max-w-lg text-sm leading-6 text-[#607078]">
-
-                          {variant.description}
-
-                        </p>
-
-                        {variant.note && (
-
-                          <p className="mt-4 text-[10px] leading-5 text-[#718087]">
-
-                            {variant.note}
-
-                          </p>
-
-                        )}
-
-                      </div>
-
-                      <div className="lg:col-span-7">
-
-                        <div className="grid gap-2.5 sm:grid-cols-3">
-
-                          {variant.features.map((feature) => (
-
-                            <div
-
-                              key={feature}
-
-                              className="rounded-xl border border-[#d2ddda] bg-white/80 px-4 py-3.5"
-
-                            >
-
-                              <span className="text-[12px] font-medium leading-5 text-[#081b24]">
-
-                                {feature}
-
-                              </span>
-
-                            </div>
-
-                          ))}
-
-                        </div>
-
-                        <div className="mt-4 overflow-hidden rounded-xl border border-[#d2ddda] bg-white/70">
-
-                          <div className="divide-y divide-[#d8e1de]">
-
-                            {variant.specs.slice(0, 6).map(([name, value]) => (
-
-                              <div
-
-                                key={`${variant.id}-${name}`}
-
-                                className="grid gap-1 px-4 py-3 sm:grid-cols-[145px_1fr] sm:gap-5"
-
-                              >
-
-                                <span className="font-mono text-[7px] uppercase tracking-[0.12em] text-[#007c67]">
-
-                                  {name}
-
-                                </span>
-
-                                <span className="text-[11px] leading-5 text-[#42545b]">
-
-                                  {value}
-
-                                </span>
-
-                              </div>
-
-                            ))}
-
-                          </div>
-
-                        </div>
-
-                      </div>
-
-                    </article>
-
-                  </Reveal>
-
-                ))}
-
-              </div>
-
-            </div>
-
-          </div>
-
-        </section>
+        />
 
       )}
 
@@ -1067,7 +1587,9 @@ export default function ProductPageClient({
 
                 <h2 className="mt-4 font-heading text-3xl font-semibold leading-[1.02] tracking-[-0.045em] sm:text-4xl">
 
-                  From signal to <span className="text-[#27d59b]">action.</span>
+                  From signal to{" "}
+
+                  <span className="text-[#27d59b]">action.</span>
 
                 </h2>
 
@@ -1075,7 +1597,9 @@ export default function ProductPageClient({
 
               <p className="max-w-sm text-xs leading-6 text-white/40">
 
-                A compact view of how physical-world activity becomes usable operational intelligence.
+                A compact view of how physical-world activity becomes usable
+
+                operational intelligence.
 
               </p>
 
@@ -1143,119 +1667,131 @@ export default function ProductPageClient({
 
       </section>
 
-      {/* SPECIFICATIONS */}
+      {/* GENERIC SPECIFICATIONS SECTION */}
 
-      <section
+      {!isVehicleTelematics && (
 
-        id="specifications"
+        <section
 
-        className="relative overflow-hidden border-b border-[#d3ddd9] bg-[#f4f6f2]"
+          id="specifications"
 
-      >
+          className="relative overflow-hidden border-b border-[#d3ddd9] bg-[#f4f6f2]"
 
-        <VIoTSVGBackground />
+        >
 
-        <div className="relative z-10 mx-auto max-w-[1360px] px-6 py-14 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
+          <VIoTSVGBackground />
 
-          <div className="grid gap-8 lg:grid-cols-12 lg:items-start">
+          <div className="relative z-10 mx-auto max-w-[1360px] px-6 py-14 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
 
-            <Reveal className="lg:col-span-4">
+            <div className="grid gap-8 lg:grid-cols-12 lg:items-start">
 
-              <div className="lg:sticky lg:top-28">
+              <Reveal className="lg:col-span-4">
 
-                <div className="flex items-center gap-3">
+                <div className="lg:sticky lg:top-28">
 
-                  <span className="h-px w-8 bg-[#27d59b]" />
+                  <div className="flex items-center gap-3">
 
-                  <span className="font-mono text-[8px] uppercase tracking-[0.2em] text-[#007c67]">
+                    <span className="h-px w-8 bg-[#27d59b]" />
 
-                    Technical profile
+                    <span className="font-mono text-[8px] uppercase tracking-[0.2em] text-[#007c67]">
 
-                  </span>
-
-                </div>
-
-                <h2 className="mt-4 max-w-sm font-heading text-3xl font-semibold leading-[1.04] tracking-[-0.045em] sm:text-4xl">
-
-                  Confirmed product details.
-
-                </h2>
-
-                <p className="mt-4 max-w-sm text-sm leading-7 text-[#607078]">
-
-                  Technical details are based on the supplied product documentation; final configuration can vary by deployment.
-
-                </p>
-
-                <div className="mt-6 inline-flex items-center gap-2 rounded-lg border border-[#c7d5d0] bg-white/65 px-3 py-2.5">
-
-                  <ShieldCheck className="h-4 w-4 text-[#007c67]" />
-
-                  <span className="font-mono text-[7px] uppercase tracking-[0.14em] text-[#607078]">
-
-                    Technical information
-
-                  </span>
-
-                </div>
-
-              </div>
-
-            </Reveal>
-
-            <Reveal delay={0.08} className="lg:col-span-7 lg:col-start-6">
-
-              <div className="overflow-hidden rounded-2xl border border-[#c7d5d0] bg-white/80 shadow-[0_16px_45px_rgba(8,27,36,0.05)] backdrop-blur-sm">
-
-                {product.specs.map(([name, value], index) => (
-
-                  <motion.div
-
-                    key={name}
-
-                    whileHover={{ x: 3 }}
-
-                    transition={{ duration: 0.2 }}
-
-                    className="group grid gap-2 border-b border-[#d8e1de] px-5 py-4 last:border-b-0 sm:grid-cols-[180px_1fr] sm:items-center sm:gap-5 sm:px-6"
-
-                  >
-
-                    <div className="flex items-center gap-3">
-
-                      <span className="font-mono text-[7px] text-[#9aa5a1] transition-colors group-hover:text-[#007c67]">
-
-                        {String(index + 1).padStart(2, "0")}
-
-                      </span>
-
-                      <strong className="font-mono text-[8px] font-medium uppercase tracking-[0.12em] text-[#607078]">
-
-                        {name}
-
-                      </strong>
-
-                    </div>
-
-                    <span className="text-[13px] font-medium leading-6 text-[#081b24] transition-colors group-hover:text-[#007c67]">
-
-                      {value}
+                      Technical profile
 
                     </span>
 
-                  </motion.div>
+                  </div>
 
-                ))}
+                  <h2 className="mt-4 max-w-sm font-heading text-3xl font-semibold leading-[1.04] tracking-[-0.045em] sm:text-4xl">
 
-              </div>
+                    Confirmed product details.
 
-            </Reveal>
+                  </h2>
+
+                  <p className="mt-4 max-w-sm text-sm leading-7 text-[#607078]">
+
+                    Technical details are based on the supplied product
+
+                    documentation; final configuration can vary by deployment.
+
+                  </p>
+
+                  <div className="mt-6 inline-flex items-center gap-2 rounded-lg border border-[#c7d5d0] bg-white/65 px-3 py-2.5">
+
+                    <ShieldCheck className="h-4 w-4 text-[#007c67]" />
+
+                    <span className="font-mono text-[7px] uppercase tracking-[0.14em] text-[#607078]">
+
+                      Technical information
+
+                    </span>
+
+                  </div>
+
+                </div>
+
+              </Reveal>
+
+              <Reveal
+
+                delay={0.08}
+
+                className="lg:col-span-7 lg:col-start-6"
+
+              >
+
+                <div className="overflow-hidden rounded-2xl border border-[#c7d5d0] bg-white/80 shadow-[0_16px_45px_rgba(8,27,36,0.05)] backdrop-blur-sm">
+
+                  {product.specs.map(([name, value], index) => (
+
+                    <motion.div
+
+                      key={name}
+
+                      whileHover={{ x: 3 }}
+
+                      transition={{ duration: 0.2 }}
+
+                      className="group grid gap-2 border-b border-[#d8e1de] px-5 py-4 last:border-b-0 sm:grid-cols-[180px_1fr] sm:items-center sm:gap-5 sm:px-6"
+
+                    >
+
+                      <div className="flex items-center gap-3">
+
+                        <span className="font-mono text-[7px] text-[#9aa5a1] transition-colors group-hover:text-[#007c67]">
+
+                          {String(index + 1).padStart(2, "0")}
+
+                        </span>
+
+                        <strong className="font-mono text-[8px] font-medium uppercase tracking-[0.12em] text-[#607078]">
+
+                          {name}
+
+                        </strong>
+
+                      </div>
+
+                      <span className="text-[13px] font-medium leading-6 text-[#081b24] transition-colors group-hover:text-[#007c67]">
+
+                        {value}
+
+                      </span>
+
+                    </motion.div>
+
+                  ))}
+
+                </div>
+
+              </Reveal>
+
+            </div>
 
           </div>
 
-        </div>
+        </section>
 
-      </section>
+      )}
 
       {/* RELATED PRODUCTS */}
 
@@ -1279,7 +1815,9 @@ export default function ProductPageClient({
 
                 <h2 className="mt-3 font-heading text-3xl font-semibold leading-[1.05] tracking-[-0.04em] sm:text-4xl">
 
-                  More from the <span className="text-[#007c67]">VIoT ecosystem.</span>
+                  More from the{" "}
+
+                  <span className="text-[#007c67]">VIoT ecosystem.</span>
 
                 </h2>
 
@@ -1388,6 +1926,14 @@ export default function ProductPageClient({
       </section>
 
       <CtaBand />
+
+      <SpecificationsModal
+
+        device={specDevice}
+
+        onClose={() => setSpecDevice(null)}
+
+      />
 
     </main>
 

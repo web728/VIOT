@@ -1,908 +1,1904 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 
 /* ------------------------------------------------------------------
-   FLOW
-   Satellite ─┐
-              ├─► Device ─► VIoT Platform ─► Analytics ─► Action
-   Network  ──┘
-------------------------------------------------------------------- */
 
-const CYCLE = 4;
+   VIoT DATA FLOW
 
-type IconName =
-  | "satellite"
-  | "network"
-  | "device"
-  | "platform"
-  | "analytics"
-  | "action";
+   GPS / Video / RFID / E-Lock
 
-type Node = {
+        ↓
+
+   VIoT Platform
+
+        ↓
+
+   Analytics / Alerts / Action
+
+\------------------------------------------------------------------- */
+
+const INK = "#081b24";
+
+const SIGNAL = "#27d59b";
+
+const SIGNAL_DARK = "#007c67";
+
+const MUTED = "#8fa0a7";
+
+type SourceNode = {
+
   id: string;
-  x: number;
+
   y: number;
-  label: string;
+
+  title: string;
+
   sub: string;
-  icon: IconName;
-  arrive: number;
+
+  packet: string;
+
+  icon: "gps" | "video" | "rfid" | "lock";
+
 };
 
-/* ------------------------------------------------------------------
-   DESKTOP NODE POSITIONS
+type OutputNode = {
 
-   Kept visually similar to the original design,
-   but given safer spacing so text always stays inside cards.
-------------------------------------------------------------------- */
+  id: string;
 
-const nodes: Node[] = [
+  y: number;
+
+  title: string;
+
+  sub: string;
+
+  packet: string;
+
+  icon: "analytics" | "alert" | "action";
+
+};
+
+const sources: SourceNode[] = [
+
   {
-    id: "sat",
-    x: 90,
-    y: 40,
-    label: "Satellite",
-    sub: "Position signal",
-    icon: "satellite",
-    arrive: 0,
+
+    id: "gps",
+
+    y: 88,
+
+    title: "GPS",
+
+    sub: "Location & movement",
+
+    packet: "LOC · 28.61, 77.21",
+
+    icon: "gps",
+
   },
+
   {
-    id: "net",
-    x: 90,
-    y: 190,
-    label: "Network",
-    sub: "Cellular link",
-    icon: "network",
-    arrive: 0,
+
+    id: "video",
+
+    y: 206,
+
+    title: "Video",
+
+    sub: "Road & driver events",
+
+    packet: "CAM · EVENT",
+
+    icon: "video",
+
   },
+
   {
-    id: "dev",
-    x: 300,
-    y: 115,
-    label: "Device",
-    sub: "Captures data",
-    icon: "device",
-    arrive: 0.2,
+
+    id: "rfid",
+
+    y: 324,
+
+    title: "RFID",
+
+    sub: "Access identity",
+
+    packet: "RFID · VERIFIED",
+
+    icon: "rfid",
+
   },
+
   {
-    id: "plat",
-    x: 510,
-    y: 115,
-    label: "VIoT Platform",
-    sub: "Receives live data",
-    icon: "platform",
-    arrive: 0.4,
+
+    id: "lock",
+
+    y: 442,
+
+    title: "E-Lock",
+
+    sub: "Lock & tamper state",
+
+    packet: "LOCK · SECURE",
+
+    icon: "lock",
+
   },
+
+];
+
+const outputs: OutputNode[] = [
+
   {
-    id: "ana",
-    x: 720,
-    y: 115,
-    label: "Analytics",
-    sub: "Routes · ETA · events",
+
+    id: "analytics",
+
+    y: 136,
+
+    title: "Analytics",
+
+    sub: "Routes · ETA · utilisation",
+
+    packet: "INSIGHT · ETA 18m",
+
     icon: "analytics",
-    arrive: 0.6,
+
   },
+
   {
-    id: "act",
-    x: 910,
-    y: 115,
-    label: "Action",
-    sub: "Alerts · decisions",
+
+    id: "alerts",
+
+    y: 280,
+
+    title: "Alerts",
+
+    sub: "Exception-led response",
+
+    packet: "ALERT · GEOFENCE",
+
+    icon: "alert",
+
+  },
+
+  {
+
+    id: "action",
+
+    y: 424,
+
+    title: "Action",
+
+    sub: "Workflow & control",
+
+    packet: "ACTION · DISPATCH",
+
     icon: "action",
-    arrive: 0.8,
+
   },
+
 ];
 
-/* ------------------------------------------------------------------
-   CONNECTING PATHS
-------------------------------------------------------------------- */
+function FlowIcon({
 
-const segments = [
-  {
-    d: "M160,40 C200,40 200,115 225,115",
-    start: 0,
-  },
-  {
-    d: "M160,190 C200,190 200,115 225,115",
-    start: 0,
-  },
-  {
-    d: "M375,115 L435,115",
-    start: 0.2,
-  },
-  {
-    d: "M585,115 L645,115",
-    start: 0.4,
-  },
-  {
-    d: "M795,115 L835,115",
-    start: 0.6,
-  },
-];
+  name,
 
-/* ------------------------------------------------------------------
-   ICONS
-------------------------------------------------------------------- */
+  size = 24,
 
-function Icon({ name }: { name: IconName }) {
-  switch (name) {
-    case "satellite":
-      return (
-        <g>
-          <rect
-            x="9.5"
-            y="9.5"
-            width="5"
-            height="5"
-            transform="rotate(45 12 12)"
-          />
-          <path d="M5 5l4 4M15 15l4 4M16 4a6 6 0 0 1 4 4" />
-        </g>
-      );
+}: {
 
-    case "network":
-      return (
-        <g>
-          <path d="M12 10v11M8 21h8M12 10l-3 11M12 10l3 11" />
-          <circle cx="12" cy="8" r="1.5" />
-          <path d="M7.5 5.5a6 6 0 0 0 0 5M16.5 5.5a6 6 0 0 1 0 5" />
-        </g>
-      );
+  name: SourceNode["icon"] | OutputNode["icon"];
 
-    case "device":
-      return (
-        <g>
-          <rect x="4" y="7" width="16" height="10" rx="2" />
-          <circle cx="8.5" cy="12" r="1" />
-          <path d="M12 12h5" />
-        </g>
-      );
+  size?: number;
 
-    case "platform":
-      return (
-        <path d="M12 4l8 4-8 4-8-4 8-4zM4 12l8 4 8-4M4 16l8 4 8-4" />
-      );
+}) {
 
-    case "analytics":
-      return <path d="M5 20V12M12 20V5M19 20V9" />;
+  const common = {
 
-    case "action":
-      return (
-        <path d="M6 16v-5a6 6 0 0 1 12 0v5l1.5 2h-15L6 16zM10 20a2 2 0 0 0 4 0" />
-      );
+    fill: "none",
 
-    default:
-      return null;
-  }
+    stroke: "currentColor",
+
+    strokeWidth: 1.7,
+
+    strokeLinecap: "round" as const,
+
+    strokeLinejoin: "round" as const,
+
+  };
+
+  return (
+
+    <svg
+
+      viewBox="0 0 24 24"
+
+      width={size}
+
+      height={size}
+
+      aria-hidden="true"
+
+      {...common}
+
+    >
+
+      {name === "gps" && (
+
+        <>
+
+          <path d="M12 21s6-5.2 6-11a6 6 0 1 0-12 0c0 5.8 6 11 6 11Z" />
+
+          <circle cx="12" cy="10" r="2.1" />
+
+        </>
+
+      )}
+
+      {name === "video" && (
+
+        <>
+
+          <rect x="3.5" y="6.5" width="12.5" height="11" rx="2" />
+
+          <path d="m16 10 4.5-2.5v9L16 14" />
+
+          <circle cx="9.5" cy="12" r="2.1" />
+
+        </>
+
+      )}
+
+      {name === "rfid" && (
+
+        <>
+
+          <path d="M8 8a5.5 5.5 0 0 0 0 8" />
+
+          <path d="M5 5a9.5 9.5 0 0 0 0 14" />
+
+          <path d="M16 8a5.5 5.5 0 0 1 0 8" />
+
+          <path d="M19 5a9.5 9.5 0 0 1 0 14" />
+
+          <circle cx="12" cy="12" r="1.5" />
+
+        </>
+
+      )}
+
+      {name === "lock" && (
+
+        <>
+
+          <rect x="5" y="10" width="14" height="10" rx="2" />
+
+          <path d="M8 10V7a4 4 0 0 1 8 0v3" />
+
+          <path d="M12 14v2.5" />
+
+        </>
+
+      )}
+
+      {name === "analytics" && (
+
+        <>
+
+          <path d="M5 19V13" />
+
+          <path d="M10 19V9" />
+
+          <path d="M15 19V5" />
+
+          <path d="M20 19V11" />
+
+        </>
+
+      )}
+
+      {name === "alert" && (
+
+        <>
+
+          <path d="M6 16v-5a6 6 0 0 1 12 0v5l2 2H4l2-2Z" />
+
+          <path d="M10 21h4" />
+
+        </>
+
+      )}
+
+      {name === "action" && (
+
+        <>
+
+          <circle cx="12" cy="12" r="3" />
+
+          <path d="M12 2v3M12 19v3M2 12h3M19 12h3" />
+
+          <path d="m4.9 4.9 2.1 2.1M17 17l2.1 2.1M19.1 4.9 17 7M7 17l-2.1 2.1" />
+
+        </>
+
+      )}
+
+    </svg>
+
+  );
+
 }
 
-/* ------------------------------------------------------------------
-   DESKTOP FLOW
-------------------------------------------------------------------- */
+function SvgFlowGlyph({
+  name,
+  x = 0,
+  y = 0,
+  scale = 1,
+  color = SIGNAL,
+}: {
+  name: SourceNode["icon"] | OutputNode["icon"];
+  x?: number;
+  y?: number;
+  scale?: number;
+  color?: string;
+}) {
+  return (
+    <g
+      transform={`translate(${x} ${y}) scale(${scale})`}
+      fill="none"
+      stroke={color}
+      strokeWidth="1.7"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      {name === "gps" && (
+        <>
+          <path d="M12 21s6-5.2 6-11a6 6 0 1 0-12 0c0 5.8 6 11 6 11Z" />
+          <circle cx="12" cy="10" r="2.1" />
+        </>
+      )}
+
+      {name === "video" && (
+        <>
+          <rect x="3.5" y="6.5" width="12.5" height="11" rx="2" />
+          <path d="m16 10 4.5-2.5v9L16 14" />
+          <circle cx="9.5" cy="12" r="2.1" />
+        </>
+      )}
+
+      {name === "rfid" && (
+        <>
+          <path d="M8 8a5.5 5.5 0 0 0 0 8" />
+          <path d="M5 5a9.5 9.5 0 0 0 0 14" />
+          <path d="M16 8a5.5 5.5 0 0 1 0 8" />
+          <path d="M19 5a9.5 9.5 0 0 1 0 14" />
+          <circle cx="12" cy="12" r="1.5" />
+        </>
+      )}
+
+      {name === "lock" && (
+        <>
+          <rect x="5" y="10" width="14" height="10" rx="2" />
+          <path d="M8 10V7a4 4 0 0 1 8 0v3" />
+          <path d="M12 14v2.5" />
+        </>
+      )}
+
+      {name === "analytics" && (
+        <>
+          <path d="M5 19V13" />
+          <path d="M10 19V9" />
+          <path d="M15 19V5" />
+          <path d="M20 19V11" />
+        </>
+      )}
+
+      {name === "alert" && (
+        <>
+          <path d="M6 16v-5a6 6 0 0 1 12 0v5l2 2H4l2-2Z" />
+          <path d="M10 21h4" />
+        </>
+      )}
+
+      {name === "action" && (
+        <>
+          <circle cx="12" cy="12" r="3" />
+          <path d="M12 2v3M12 19v3M2 12h3M19 12h3" />
+          <path d="m4.9 4.9 2.1 2.1M17 17l2.1 2.1M19.1 4.9 17 7M7 17l-2.1 2.1" />
+        </>
+      )}
+    </g>
+  );
+}
+
+function Packet({
+
+  path,
+
+  text,
+
+  begin,
+
+  animate,
+
+}: {
+
+  path: string;
+
+  text: string;
+
+  begin: number;
+
+  animate: boolean;
+
+}) {
+
+  return (
+
+    <g>
+
+      <circle r="4.2" fill={SIGNAL}>
+
+        <animateMotion
+
+          path={path}
+
+          dur="5.6s"
+
+          begin={`${begin}s`}
+
+          repeatCount="indefinite"
+
+          calcMode="linear"
+
+        />
+
+        <animate
+
+          attributeName="opacity"
+
+          values="0;1;1;0"
+
+          keyTimes="0;0.08;0.88;1"
+
+          dur="5.6s"
+
+          begin={`${begin}s`}
+
+          repeatCount="indefinite"
+
+        />
+
+      </circle>
+
+      <circle r="9" fill="none" stroke={SIGNAL} strokeOpacity="0.22">
+
+        <animateMotion
+
+          path={path}
+
+          dur="5.6s"
+
+          begin={`${begin}s`}
+
+          repeatCount="indefinite"
+
+          calcMode="linear"
+
+        />
+
+        <animate
+
+          attributeName="r"
+
+          values="6;10;6"
+
+          dur="1.2s"
+
+          begin={`${begin}s`}
+
+          repeatCount="indefinite"
+
+        />
+
+        <animate
+
+          attributeName="opacity"
+
+          values="0;0.35;0"
+
+          dur="1.2s"
+
+          begin={`${begin}s`}
+
+          repeatCount="indefinite"
+
+        />
+
+      </circle>
+
+      <g opacity="0">
+
+        <animateMotion
+
+          path={path}
+
+          dur="5.6s"
+
+          begin={`${begin}s`}
+
+          repeatCount="indefinite"
+
+          calcMode="linear"
+
+        />
+
+        <animate
+
+          attributeName="opacity"
+
+          values="0;0;0.95;0.95;0"
+
+          keyTimes="0;0.14;0.2;0.72;0.84"
+
+          dur="5.6s"
+
+          begin={`${begin}s`}
+
+          repeatCount="indefinite"
+
+        />
+
+        <rect
+
+          x="10"
+
+          y="-13"
+
+          width="118"
+
+          height="25"
+
+          rx="7"
+
+          fill={INK}
+
+          stroke={SIGNAL}
+
+          strokeOpacity="0.22"
+
+        />
+
+        <text
+
+          x="20"
+
+          y="3.2"
+
+          fill="rgba(255,255,255,0.8)"
+
+          fontSize="8.5"
+
+          fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
+
+          letterSpacing="0.8"
+
+        >
+
+          {text}
+
+        </text>
+
+      </g>
+
+    </g>
+
+  );
+
+}
+
+function FlowToken({
+  path,
+  icon,
+  label,
+  delay,
+  duration = 4.8,
+  animate,
+}: {
+  path: string;
+  icon: SourceNode["icon"] | OutputNode["icon"];
+  label: string;
+  delay: number;
+  duration?: number;
+  animate: boolean;
+}) {
+  return (
+    <g>
+      <g opacity="0">
+        <animateMotion
+          path={path}
+          dur={`${duration}s`}
+          begin={`${delay}s`}
+          repeatCount="indefinite"
+          calcMode="linear"
+        />
+        <animate
+          attributeName="opacity"
+          values="0;1;1;1;0"
+          keyTimes="0;0.08;0.8;0.94;1"
+          dur={`${duration}s`}
+          begin={`${delay}s`}
+          repeatCount="indefinite"
+        />
+
+        <circle
+          r="16"
+          fill="#081b24"
+          stroke="#27d59b"
+          strokeOpacity="0.46"
+          strokeWidth="1.15"
+        />
+        <circle
+          r="9"
+          fill="#27d59b"
+          fillOpacity="0.06"
+          stroke="#27d59b"
+          strokeOpacity="0.22"
+        />
+
+        <circle cx="-22" cy="0" r="3" fill="#27d59b" fillOpacity="0.38" />
+        <circle cx="-32" cy="0" r="2" fill="#27d59b" fillOpacity="0.20" />
+
+        <SvgFlowGlyph
+          name={icon}
+          x={-8}
+          y={-8}
+          scale={0.68}
+          color={SIGNAL}
+        />
+      </g>
+    </g>
+  );
+}
+
+function SourceCard({ node }: { node: SourceNode }) {
+
+  return (
+
+    <g transform={`translate(38 ${node.y - 42})`}>
+
+      <rect
+
+        width="224"
+
+        height="84"
+
+        rx="16"
+
+        fill="rgba(8,27,36,0.96)"
+
+        stroke="rgba(255,255,255,0.10)"
+
+      />
+
+      <rect
+
+        x="14"
+
+        y="14"
+
+        width="56"
+
+        height="56"
+
+        rx="13"
+
+        fill="rgba(39,213,155,0.055)"
+
+        stroke="rgba(39,213,155,0.16)"
+
+      />
+
+      <SvgFlowGlyph
+        name={node.icon}
+        x={30}
+        y={30}
+        scale={1}
+        color={SIGNAL}
+      />
+
+      <text
+
+        x="86"
+
+        y="34"
+
+        fill="#ffffff"
+
+        fontSize="15"
+
+        fontWeight="700"
+
+        fontFamily="ui-sans-serif, system-ui, sans-serif"
+
+      >
+
+        {node.title}
+
+      </text>
+
+      <text
+
+        x="86"
+
+        y="54"
+
+        fill="rgba(255,255,255,0.46)"
+
+        fontSize="10"
+
+        fontFamily="ui-sans-serif, system-ui, sans-serif"
+
+      >
+
+        {node.sub}
+
+      </text>
+
+      <circle cx="224" cy="42" r="5.5" fill={SIGNAL} />
+
+      <circle
+
+        cx="224"
+
+        cy="42"
+
+        r="10"
+
+        fill="none"
+
+        stroke={SIGNAL}
+
+        strokeOpacity="0.18"
+
+      />
+
+    </g>
+
+  );
+
+}
+
+function OutputCard({ node }: { node: OutputNode }) {
+
+  return (
+
+    <g transform={`translate(938 ${node.y - 42})`}>
+
+      <rect
+
+        width="224"
+
+        height="84"
+
+        rx="16"
+
+        fill="rgba(8,27,36,0.96)"
+
+        stroke="rgba(255,255,255,0.10)"
+
+      />
+
+      <rect
+
+        x="14"
+
+        y="14"
+
+        width="56"
+
+        height="56"
+
+        rx="13"
+
+        fill="rgba(39,213,155,0.055)"
+
+        stroke="rgba(39,213,155,0.16)"
+
+      />
+
+      <SvgFlowGlyph
+        name={node.icon}
+        x={30}
+        y={30}
+        scale={1}
+        color={SIGNAL}
+      />
+
+      <text
+
+        x="86"
+
+        y="34"
+
+        fill="#ffffff"
+
+        fontSize="15"
+
+        fontWeight="700"
+
+        fontFamily="ui-sans-serif, system-ui, sans-serif"
+
+      >
+
+        {node.title}
+
+      </text>
+
+      <text
+
+        x="86"
+
+        y="54"
+
+        fill="rgba(255,255,255,0.46)"
+
+        fontSize="10"
+
+        fontFamily="ui-sans-serif, system-ui, sans-serif"
+
+      >
+
+        {node.sub}
+
+      </text>
+
+      <circle cx="0" cy="42" r="5.5" fill={SIGNAL} />
+
+      <circle
+
+        cx="0"
+
+        cy="42"
+
+        r="10"
+
+        fill="none"
+
+        stroke={SIGNAL}
+
+        strokeOpacity="0.18"
+
+      />
+
+    </g>
+
+  );
+
+}
+
+function PlatformCore({ animate }: { animate: boolean }) {
+
+  return (
+
+    <g transform="translate(458 164)">
+
+      <motion.circle
+
+        cx="142"
+
+        cy="116"
+
+        r="128"
+
+        fill="none"
+
+        stroke={SIGNAL}
+
+        strokeOpacity="0.06"
+
+        strokeDasharray="3 13"
+
+        animate={{ rotate: 360 }}
+
+        transition={{
+
+          duration: 38,
+
+          repeat: Infinity,
+
+          ease: "linear",
+
+        }}
+
+        style={{ transformOrigin: "142px 116px" }}
+
+      />
+
+      <motion.circle
+
+        cx="142"
+
+        cy="116"
+
+        r="104"
+
+        fill="none"
+
+        stroke="rgba(8,27,36,0.08)"
+
+        strokeDasharray="2 11"
+
+        animate={{ rotate: -360 }}
+
+        transition={{
+
+          duration: 30,
+
+          repeat: Infinity,
+
+          ease: "linear",
+
+        }}
+
+        style={{ transformOrigin: "142px 116px" }}
+
+      />
+
+      <rect
+
+        width="284"
+
+        height="232"
+
+        rx="26"
+
+        fill="rgba(8,27,36,0.98)"
+
+        stroke="rgba(255,255,255,0.10)"
+
+      />
+
+      <rect
+
+        x="20"
+
+        y="20"
+
+        width="244"
+
+        height="115"
+
+        rx="18"
+
+        fill={INK}
+
+      />
+
+      <path
+
+        d="M45 105 C80 55 118 84 145 57 S208 40 240 70"
+
+        fill="none"
+
+        stroke={SIGNAL}
+
+        strokeOpacity="0.32"
+
+        strokeWidth="1.2"
+
+        strokeDasharray="3 8"
+
+      />
+
+      <path
+
+        d="M48 88 C92 110 120 62 168 79 S220 105 242 58"
+
+        fill="none"
+
+        stroke="rgba(255,255,255,0.15)"
+
+        strokeWidth="1"
+
+      />
+
+      {[70, 105, 140, 175, 210].map((x, index) => (
+
+        <g key={x}>
+
+          <rect
+
+            x={x}
+
+            y={56 - index * 2}
+
+            width="18"
+
+            height={50 + index * 3}
+
+            rx="3"
+
+            fill="rgba(39,213,155,0.08)"
+
+            stroke={SIGNAL}
+
+            strokeOpacity="0.28"
+
+          />
+
+          <line
+
+            x1={x + 4}
+
+            x2={x + 14}
+
+            y1={68 - index * 2}
+
+            y2={68 - index * 2}
+
+            stroke={SIGNAL}
+
+            strokeOpacity="0.45"
+
+          />
+
+          <line
+
+            x1={x + 4}
+
+            x2={x + 14}
+
+            y1={76 - index * 2}
+
+            y2={76 - index * 2}
+
+            stroke="rgba(255,255,255,0.18)"
+
+          />
+
+        </g>
+
+      ))}
+
+      <motion.circle
+
+        cx="218"
+
+        cy="46"
+
+        r="4"
+
+        fill={SIGNAL}
+
+        animate={
+
+          animate
+
+            ? { opacity: [0.25, 1, 0.25], r: [3, 5, 3] }
+
+            : undefined
+
+        }
+
+        transition={{
+
+          duration: 1.8,
+
+          repeat: Infinity,
+
+          ease: "easeInOut",
+
+        }}
+
+      />
+
+      <image
+
+        href="/logo/logo-bg.png"
+
+        x="90"
+
+        y="150"
+
+        width="104"
+
+        height="34"
+
+        preserveAspectRatio="xMidYMid meet"
+
+      />
+
+      <text
+
+        x="142"
+
+        y="206"
+
+        textAnchor="middle"
+
+        fill="rgba(255,255,255,0.46)"
+
+        fontSize="9.5"
+
+        fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
+
+        letterSpacing="1.2"
+
+      >
+
+        CONNECTED OPERATIONS PLATFORM
+
+      </text>
+
+    </g>
+
+  );
+
+}
 
 function DesktopFlow({ animate }: { animate: boolean }) {
-  const CARD_WIDTH = 160;
-  const CARD_HEIGHT = 58;
+
+  const leftPaths = [
+
+    "M262 88 C342 88 348 206 458 206",
+
+    "M262 206 C345 206 366 230 458 230",
+
+    "M262 324 C348 324 366 304 458 304",
+
+    "M262 442 C340 442 350 328 458 328",
+
+  ];
+
+  const rightPaths = [
+
+    "M742 218 C830 218 846 136 938 136",
+
+    "M742 280 C836 280 848 280 938 280",
+
+    "M742 342 C832 342 846 424 938 424",
+
+  ];
 
   return (
+
     <div className="w-full min-w-0 overflow-hidden">
+
       <svg
-        viewBox="0 0 1040 230"
+
+        viewBox="0 0 1200 560"
+
         preserveAspectRatio="xMidYMid meet"
+
         className="block h-auto w-full max-w-full"
+
         role="img"
-        aria-label="Data flow: Satellite and Network feed the Device, which sends data to the VIoT Platform, then Analytics, then Action"
+
+        aria-label="VIoT data flow from GPS, video, RFID and E-Lock through the VIoT platform to analytics, alerts and operational action."
+
       >
+
         <defs>
-          <marker
-            id="vf-arrow"
-            viewBox="0 0 8 8"
-            refX="7"
-            refY="4"
-            markerWidth="6"
-            markerHeight="6"
-            orient="auto"
-          >
-            <path
-              d="M0 0L8 4L0 8z"
-              fill="rgba(255,255,255,0.3)"
+
+          <filter id="vf-shadow" x="-20%" y="-20%" width="140%" height="140%">
+
+            <feDropShadow
+
+              dx="0"
+
+              dy="10"
+
+              stdDeviation="14"
+
+              floodColor="#081b24"
+
+              floodOpacity="0.08"
+
             />
-          </marker>
 
-          {/* Keeps text strictly inside every card */}
-          {nodes.map((n) => {
-            const cardX = n.x - CARD_WIDTH / 2;
-            const cardY = n.y - CARD_HEIGHT / 2;
+          </filter>
 
-            return (
-              <clipPath
-                key={`clip-${n.id}`}
-                id={`vf-card-clip-${n.id}`}
-              >
-                <rect
-                  x={cardX + 46}
-                  y={cardY + 4}
-                  width={CARD_WIDTH - 54}
-                  height={CARD_HEIGHT - 8}
-                  rx="5"
-                />
-              </clipPath>
-            );
-          })}
+          <linearGradient id="vf-bg" x1="0" x2="1">
+
+            <stop offset="0%" stopColor="#071820" />
+
+            <stop offset="50%" stopColor="#0a2029" />
+
+            <stop offset="100%" stopColor="#071820" />
+
+          </linearGradient>
+
+          <radialGradient id="vf-core-glow" cx="50%" cy="50%" r="50%">
+
+            <stop offset="0%" stopColor={SIGNAL} stopOpacity="0.08" />
+
+            <stop offset="100%" stopColor={SIGNAL} stopOpacity="0" />
+
+          </radialGradient>
+
         </defs>
 
-        {/* ----------------------------------------------------------
-            CONNECTION LINES
-        ----------------------------------------------------------- */}
+        <rect width="1200" height="560" rx="28" fill="url(#vf-bg)" />
+
+        <circle cx="600" cy="280" r="235" fill="url(#vf-core-glow)" />
 
         <path
-          d="M170,40 C210,40 210,115 220,115"
+
+          d="M0 460 C220 370 350 510 570 405 S950 260 1200 360"
+
           fill="none"
-          stroke="rgba(255,255,255,0.12)"
+
+          stroke="rgba(255,255,255,0.035)"
+
           strokeWidth="1"
-          markerEnd="url(#vf-arrow)"
+
         />
 
         <path
-          d="M170,190 C210,190 210,115 220,115"
+
+          d="M0 98 C260 10 410 88 610 110 S940 210 1200 76"
+
           fill="none"
-          stroke="rgba(255,255,255,0.12)"
+
+          stroke="rgba(39,213,155,0.055)"
+
           strokeWidth="1"
-          markerEnd="url(#vf-arrow)"
+
+          strokeDasharray="3 15"
+
         />
 
-        <path
-          d="M380,115 L430,115"
+        <g filter="url(#vf-shadow)">
+
+          {sources.map((node) => (
+
+            <SourceCard key={node.id} node={node} />
+
+          ))}
+
+          {outputs.map((node) => (
+
+            <OutputCard key={node.id} node={node} />
+
+          ))}
+
+          <PlatformCore animate={animate} />
+
+        </g>
+
+        <g
+
           fill="none"
-          stroke="rgba(255,255,255,0.12)"
-          strokeWidth="1"
-          markerEnd="url(#vf-arrow)"
-        />
 
-        <path
-          d="M590,115 L640,115"
+          stroke={SIGNAL}
+
+          strokeOpacity="0.26"
+
+          strokeWidth="1.35"
+
+        >
+
+          {leftPaths.map((path) => (
+
+            <path key={path} d={path} />
+
+          ))}
+
+          {rightPaths.map((path) => (
+
+            <path key={path} d={path} />
+
+          ))}
+
+        </g>
+
+        <g
+
           fill="none"
-          stroke="rgba(255,255,255,0.12)"
-          strokeWidth="1"
-          markerEnd="url(#vf-arrow)"
-        />
 
-        <path
-          d="M800,115 L840,115"
-          fill="none"
-          stroke="rgba(255,255,255,0.12)"
-          strokeWidth="1"
-          markerEnd="url(#vf-arrow)"
-        />
+          stroke={SIGNAL}
 
-        {/* ----------------------------------------------------------
-            TRAVELLING SIGNALS
-        ----------------------------------------------------------- */}
+          strokeOpacity="0.10"
 
-        {animate && (
-          <>
-            <rect
-              x="-3.5"
-              y="-3.5"
-              width="7"
-              height="7"
-              rx="1"
-              fill="#27d59b"
-            >
-              <animateMotion
-                path="M170,40 C210,40 210,115 220,115"
-                dur={`${CYCLE}s`}
-                begin="0s"
-                repeatCount="indefinite"
-                calcMode="linear"
-              />
+          strokeWidth="5"
 
-              <animate
-                attributeName="opacity"
-                values="1;1;0;0"
-                keyTimes="0;0.2;0.201;1"
-                dur={`${CYCLE}s`}
-                begin="0s"
-                repeatCount="indefinite"
-              />
-            </rect>
+          strokeLinecap="round"
 
-            <rect
-              x="-3.5"
-              y="-3.5"
-              width="7"
-              height="7"
-              rx="1"
-              fill="#27d59b"
-            >
-              <animateMotion
-                path="M170,190 C210,190 210,115 220,115"
-                dur={`${CYCLE}s`}
-                begin="0s"
-                repeatCount="indefinite"
-                calcMode="linear"
-              />
+        >
 
-              <animate
-                attributeName="opacity"
-                values="1;1;0;0"
-                keyTimes="0;0.2;0.201;1"
-                dur={`${CYCLE}s`}
-                begin="0s"
-                repeatCount="indefinite"
-              />
-            </rect>
+          {leftPaths.map((path) => (
 
-            <rect
-              x="-3.5"
-              y="-3.5"
-              width="7"
-              height="7"
-              rx="1"
-              fill="#27d59b"
-            >
-              <animateMotion
-                path="M380,115 L430,115"
-                dur={`${CYCLE}s`}
-                begin={`${0.2 * CYCLE}s`}
-                repeatCount="indefinite"
-                calcMode="linear"
-              />
+            <motion.path
 
-              <animate
-                attributeName="opacity"
-                values="1;1;0;0"
-                keyTimes="0;0.2;0.201;1"
-                dur={`${CYCLE}s`}
-                begin={`${0.2 * CYCLE}s`}
-                repeatCount="indefinite"
-              />
-            </rect>
+              key={`pulse-${path}`}
 
-            <rect
-              x="-3.5"
-              y="-3.5"
-              width="7"
-              height="7"
-              rx="1"
-              fill="#27d59b"
-            >
-              <animateMotion
-                path="M590,115 L640,115"
-                dur={`${CYCLE}s`}
-                begin={`${0.4 * CYCLE}s`}
-                repeatCount="indefinite"
-                calcMode="linear"
-              />
+              d={path}
 
-              <animate
-                attributeName="opacity"
-                values="1;1;0;0"
-                keyTimes="0;0.2;0.201;1"
-                dur={`${CYCLE}s`}
-                begin={`${0.4 * CYCLE}s`}
-                repeatCount="indefinite"
-              />
-            </rect>
+              initial={{ pathLength: 0 }}
 
-            <rect
-              x="-3.5"
-              y="-3.5"
-              width="7"
-              height="7"
-              rx="1"
-              fill="#27d59b"
-            >
-              <animateMotion
-                path="M800,115 L840,115"
-                dur={`${CYCLE}s`}
-                begin={`${0.6 * CYCLE}s`}
-                repeatCount="indefinite"
-                calcMode="linear"
-              />
+              animate={{ pathLength: [0, 1, 1] }}
 
-              <animate
-                attributeName="opacity"
-                values="1;1;0;0"
-                keyTimes="0;0.2;0.201;1"
-                dur={`${CYCLE}s`}
-                begin={`${0.6 * CYCLE}s`}
-                repeatCount="indefinite"
-              />
-            </rect>
-          </>
-        )}
+              transition={{
 
-        {/* ----------------------------------------------------------
-            CARDS
-        ----------------------------------------------------------- */}
+                duration: 3.2,
 
-        {nodes.map((n) => {
-          const cardX = n.x - CARD_WIDTH / 2;
-          const cardY = n.y - CARD_HEIGHT / 2;
+                repeat: Infinity,
 
-          return (
-            <g key={n.id}>
-              {/* Card background */}
-              <rect
-                x={cardX}
-                y={cardY}
-                width={CARD_WIDTH}
-                height={CARD_HEIGHT}
-                rx="10"
-                ry="10"
-                fill="#081b24"
-                stroke="#27d59b"
-                strokeOpacity="0.2"
-                strokeWidth="1"
-              >
-                {animate && (
-                  <animate
-                    attributeName="stroke-opacity"
-                    values={
-                      n.arrive === 0
-                        ? "0.9;0.2;0.2"
-                        : "0.2;0.2;0.9;0.2"
+                repeatDelay: 1.7,
+
+                ease: "easeInOut",
+
+              }}
+
+            />
+
+          ))}
+
+        
+          {rightPaths.map((path, index) => (
+            <motion.path
+              key={`pulse-right-${index}`}
+              d={path}
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: [0, 1, 1] }}
+              transition={{
+                duration: 3.1,
+                delay: index * 0.12,
+                repeat: Infinity,
+                repeatDelay: 1.0,
+                ease: "easeInOut",
+              }}
+            />
+          ))}
+</g>
+
+     {sources.map((node, index) => (
+  <g key={`source-flow-${node.id}`}>
+    <FlowToken
+      path={leftPaths[index]}
+      icon={node.icon}
+      label={node.packet}
+      delay={index * 0.6}
+      duration={5}
+      animate={animate}
+    />
+
+    <FlowToken
+      path={leftPaths[index]}
+      icon={node.icon}
+      label={node.title}
+      delay={5 + index * 0.6}
+      duration={5}
+      animate={animate}
+    />
+  </g>
+))}
+
+        {outputs.map((node, index) => (
+
+          <g key={`output-flow-${node.id}`}>
+
+            <FlowToken
+
+              path={rightPaths[index]}
+
+              icon={node.icon}
+
+              label={node.packet}
+
+              delay={0.35 + index * 0.48}
+
+              duration={4.9}
+
+              animate={animate}
+
+            />
+
+            <FlowToken
+
+              path={rightPaths[index]}
+
+              icon={node.icon}
+
+              label={node.title}
+
+              delay={2.1 + index * 0.48}
+
+              duration={4.9}
+
+              animate={animate}
+
+            />
+
+          </g>
+
+        ))}
+
+        {/* Convergence into the VIoT core */}
+
+        <g>
+
+          {[0, 1, 2].map((i) => (
+
+            <motion.circle
+
+              key={`core-pulse-${i}`}
+
+              cx="600"
+
+              cy="280"
+
+              r="42"
+
+              fill="none"
+
+              stroke={SIGNAL}
+
+              strokeOpacity="0.18"
+
+              strokeWidth="1"
+
+              animate={
+
+                animate
+
+                  ? {
+
+                      r: [34, 92],
+
+                      opacity: [0.45, 0],
+
                     }
-                    keyTimes={
-                      n.arrive === 0
-                        ? "0;0.3;1"
-                        : `0;${n.arrive};${n.arrive + 0.05};1`
-                    }
-                    dur={`${CYCLE}s`}
-                    repeatCount="indefinite"
-                  />
-                )}
-              </rect>
 
-              {/* Icon */}
-              <g
-                transform={`translate(${cardX + 14}, ${cardY + 17})`}
-                fill="none"
-                stroke="#27d59b"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <Icon name={n.icon} />
-              </g>
+                  : { opacity: 0.18 }
 
-              {/* Text — clipped strictly inside card */}
-              <g clipPath={`url(#vf-card-clip-${n.id})`}>
-                <text
-                  x={cardX + 48}
-                  y={cardY + 25}
-                  fill="#ffffff"
-                  fontSize="12.5"
-                  fontWeight="600"
-                  textLength={
-                    n.label === "VIoT Platform" ? 82 : undefined
-                  }
-                  lengthAdjust={
-                    n.label === "VIoT Platform"
-                      ? "spacingAndGlyphs"
-                      : undefined
-                  }
-                >
-                  {n.label}
-                </text>
+              }
 
-                <text
-                  x={cardX + 48}
-                  y={cardY + 42}
-                  fill="rgba(255,255,255,0.45)"
-                  fontSize="9.5"
-                  textLength={
-                    n.sub === "Receives live data" ||
-                    n.sub === "Routes · ETA · events"
-                      ? 82
-                      : undefined
-                  }
-                  lengthAdjust={
-                    n.sub === "Receives live data" ||
-                    n.sub === "Routes · ETA · events"
-                      ? "spacingAndGlyphs"
-                      : undefined
-                  }
-                >
-                  {n.sub}
-                </text>
-              </g>
-            </g>
-          );
-        })}
+              transition={{
+
+                duration: 3.2,
+
+                delay: i * 0.9,
+
+                repeat: Infinity,
+
+                ease: "easeOut",
+
+              }}
+
+            />
+
+          ))}
+
+        </g>
+
+        <g transform="translate(318 258)">
+
+          <rect
+
+            width="104"
+
+            height="44"
+
+            rx="10"
+
+            fill={INK}
+
+            fillOpacity="0.94"
+
+          />
+
+          <text
+
+            x="52"
+
+            y="17"
+
+            textAnchor="middle"
+
+            fill={SIGNAL}
+
+            fontSize="7.5"
+
+            fontWeight="700"
+
+            fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
+
+            letterSpacing="1"
+
+          >
+
+            INGRESS
+
+          </text>
+
+          <text
+
+            x="52"
+
+            y="31"
+
+            textAnchor="middle"
+
+            fill="rgba(255,255,255,0.58)"
+
+            fontSize="8.5"
+
+            fontFamily="ui-sans-serif, system-ui, sans-serif"
+
+          >
+
+            signals converge
+
+          </text>
+
+        </g>
+
+        <g transform="translate(782 258)">
+
+          <rect
+
+            width="112"
+
+            height="44"
+
+            rx="10"
+
+            fill={INK}
+
+            fillOpacity="0.94"
+
+          />
+
+          <text
+
+            x="56"
+
+            y="17"
+
+            textAnchor="middle"
+
+            fill={SIGNAL}
+
+            fontSize="7.5"
+
+            fontWeight="700"
+
+            fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
+
+            letterSpacing="1"
+
+          >
+
+            EGRESS
+
+          </text>
+
+          <text
+
+            x="56"
+
+            y="31"
+
+            textAnchor="middle"
+
+            fill="rgba(255,255,255,0.58)"
+
+            fontSize="8.5"
+
+            fontFamily="ui-sans-serif, system-ui, sans-serif"
+
+          >
+
+            data branches out
+
+          </text>
+
+        </g>
+
       </svg>
+
     </div>
+
   );
+
 }
 
-/* ------------------------------------------------------------------
-   MOBILE FLOW
-------------------------------------------------------------------- */
+function MobileNode({
 
-function MobileCard({ n }: { n: Node }) {
+  title,
+
+  sub,
+
+  icon,
+
+}: {
+
+  title: string;
+
+  sub: string;
+
+  icon: SourceNode["icon"] | OutputNode["icon"];
+
+}) {
+
   return (
-    <div
-      className="
-        flex w-full min-w-0 items-center gap-3
-        overflow-hidden
-        rounded-xl
-        border border-signal/20
-        bg-ink
-        px-3.5 py-3
-      "
-    >
-      <svg
-        viewBox="0 0 24 24"
-        className="h-6 w-6 shrink-0"
-        fill="none"
-        stroke="#27d59b"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        aria-hidden="true"
-      >
-        <Icon name={n.icon} />
-      </svg>
 
-      <div className="min-w-0 flex-1">
-        <p className="truncate text-sm font-semibold leading-5 text-white">
-          {n.label}
-        </p>
+    <div className="flex min-w-0 items-center gap-3 rounded-xl border border-white/[0.08] bg-[#081b24] px-3.5 py-3 shadow-[0_8px_22px_rgba(8,27,36,0.045)]">
 
-        <p className="break-words text-xs leading-5 text-white/45">
-          {n.sub}
-        </p>
+      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-[#27d59b]/15 bg-[#27d59b]/[0.04] text-[#27d59b]">
+
+        <FlowIcon name={icon} size={20} />
+
       </div>
+
+      <div className="min-w-0">
+
+        <p className="text-sm font-semibold leading-5 text-white">
+
+          {title}
+
+        </p>
+
+        <p className="mt-0.5 text-[11px] leading-4 text-white/45">{sub}</p>
+
+      </div>
+
     </div>
+
   );
+
 }
 
-/* ------------------------------------------------------------------
-   CONNECTOR
-------------------------------------------------------------------- */
+function MobileConnector({
 
-function Connector({ animate }: { animate: boolean }) {
+  label,
+
+  animate,
+
+}: {
+
+  label?: string;
+
+  animate: boolean;
+
+}) {
+
   return (
-    <div className="relative mx-auto h-6 w-px bg-white/10">
+
+    <div className="relative mx-auto flex h-12 w-full items-center justify-center">
+
+      <div className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-[#007c67]/20" />
+
       {animate && (
+
         <motion.span
-          className="absolute -left-[2px] h-[5px] w-[5px] rounded-full bg-signal"
-          animate={{
-            y: [0, 20],
-            opacity: [0, 1, 0],
-          }}
-          transition={{
-            duration: 1.4,
-            repeat: Infinity,
-            ease: "linear",
-          }}
+
+          className="absolute left-1/2 top-0 h-2 w-2 -translate-x-1/2 rounded-full bg-[#27d59b]"
+
+          animate={{ y: [0, 40], opacity: [0, 1, 0] }}
+
+          transition={{ duration: 1.6, repeat: Infinity, ease: "linear" }}
+
         />
+
       )}
+
+      {label && (
+
+        <span className="relative z-10 rounded-md border border-white/[0.08] bg-[#081b24] px-2.5 py-1 font-mono text-[7px] uppercase tracking-[0.12em] text-white/45">
+
+          {label}
+
+        </span>
+
+      )}
+
     </div>
+
   );
+
 }
 
-/* ------------------------------------------------------------------
-   MOBILE FLOW
-------------------------------------------------------------------- */
+function MobilePlatform({ animate }: { animate: boolean }) {
+
+  return (
+
+    <div className="relative overflow-hidden rounded-2xl border border-[#c8d5d0] bg-[#081b24] p-5 text-white shadow-[0_16px_42px_rgba(8,27,36,0.10)]">
+
+      <div className="pointer-events-none absolute -right-20 -top-20 h-48 w-48 rounded-full border border-[#27d59b]/10" />
+
+      <motion.div
+
+        className="pointer-events-none absolute -right-8 -top-8 h-28 w-28 rounded-full border border-white/[0.06]"
+
+        animate={{ rotate: 360 }}
+
+        transition={{ duration: 28, repeat: Infinity, ease: "linear" }}
+
+      />
+
+      <div className="relative">
+
+        <div className="flex items-center justify-between gap-4">
+
+          <img
+
+            src="/logo/logo-bg.png"
+
+            alt="VIoT"
+
+            className="h-8 w-auto object-contain"
+
+          />
+
+          <span className="flex items-center gap-2 font-mono text-[8px] uppercase tracking-[0.14em] text-[#27d59b]">
+
+            <motion.span
+
+              className="h-1.5 w-1.5 rounded-full bg-[#27d59b]"
+
+              animate={
+
+                animate ? { opacity: [0.3, 1, 0.3] } : { opacity: 0.8 }
+
+              }
+
+              transition={{ duration: 1.6, repeat: Infinity }}
+
+            />
+
+            Live data
+
+          </span>
+
+        </div>
+
+        <p className="mt-5 font-heading text-xl font-semibold tracking-[-0.03em]">
+
+          VIoT Platform
+
+        </p>
+
+        <p className="mt-2 text-xs leading-5 text-white/45">
+
+          Receives connected field data and turns it into operational context.
+
+        </p>
+
+        <div className="mt-5 grid grid-cols-3 gap-2">
+
+          {["Capture", "Process", "Route"].map((item, index) => (
+
+            <div
+
+              key={item}
+
+              className="rounded-lg border border-white/[0.08] bg-white/[0.035] px-2 py-2.5 text-center"
+
+            >
+
+              <span className="font-mono text-[7px] text-[#27d59b]">
+
+                0{index + 1}
+
+              </span>
+
+              <p className="mt-1 text-[10px] text-white/55">{item}</p>
+
+            </div>
+
+          ))}
+
+        </div>
+
+      </div>
+
+    </div>
+
+  );
+
+}
 
 function MobileFlow({ animate }: { animate: boolean }) {
-  const [sat, net, ...rest] = nodes;
 
   return (
-    <div className="w-full min-w-0">
-      <div className="grid w-full min-w-0 gap-2 sm:grid-cols-2">
-        <MobileCard n={sat} />
-        <MobileCard n={net} />
+
+    <div className="w-full">
+
+      <div className="grid gap-2 sm:grid-cols-2">
+
+        {sources.map((node) => (
+
+          <MobileNode
+
+            key={node.id}
+
+            title={node.title}
+
+            sub={node.sub}
+
+            icon={node.icon}
+
+          />
+
+        ))}
+
       </div>
 
-      {rest.map((n) => (
-        <div key={n.id} className="w-full min-w-0">
-          <Connector animate={animate} />
-          <MobileCard n={n} />
-        </div>
-      ))}
+      <MobileConnector label="Capture & push data" animate={animate} />
+
+      <MobilePlatform animate={animate} />
+
+      <MobileConnector label="Intelligence" animate={animate} />
+
+      <div className="grid gap-2 sm:grid-cols-3">
+
+        {outputs.map((node) => (
+
+          <MobileNode
+
+            key={node.id}
+
+            title={node.title}
+
+            sub={node.sub}
+
+            icon={node.icon}
+
+          />
+
+        ))}
+
+      </div>
+
     </div>
+
   );
+
 }
 
 /* ------------------------------------------------------------------
-   LIVE PLATFORM PANEL
-------------------------------------------------------------------- */
 
-const ROUTE =
-  "M30,120 C110,120 120,40 220,60 S340,130 420,80 S520,40 570,70";
-
-const LOOP_MS = 16000;
-const TOTAL_MIN = 24;
-const TOTAL_KM = 18;
-
-function LivePanel({ animate }: { animate: boolean }) {
-  const pathRef = useRef<SVGPathElement>(null);
-
-  const [len, setLen] = useState(0);
-  const [p, setP] = useState(animate ? 0 : 0.5);
-  const [pos, setPos] = useState({
-    x: 30,
-    y: 120,
-  });
-
-  useEffect(() => {
-    if (pathRef.current) {
-      setLen(pathRef.current.getTotalLength());
-    }
-  }, []);
-
-  useEffect(() => {
-    const path = pathRef.current;
-
-    if (!path || !len) return;
-
-    const place = (t: number) => {
-      const pt = path.getPointAtLength(len * t);
-
-      setP(t);
-      setPos({
-        x: pt.x,
-        y: pt.y,
-      });
-    };
-
-    if (!animate) {
-      place(0.5);
-      return;
-    }
-
-    let frame = 0;
-    const start = performance.now();
-
-    const tick = (now: number) => {
-      place(((now - start) % LOOP_MS) / LOOP_MS);
-      frame = requestAnimationFrame(tick);
-    };
-
-    frame = requestAnimationFrame(tick);
-
-    return () => cancelAnimationFrame(frame);
-  }, [len, animate]);
-
-  const arrived = p > 0.96;
-  const inZone = p > 0.82;
-
-  const eta = arrived
-    ? "Arrived"
-    : `${Math.max(1, Math.ceil(TOTAL_MIN * (1 - p)))} min`;
-
-  const distance = (TOTAL_KM * (1 - p)).toFixed(1);
-
-  const speed = arrived
-    ? 0
-    : 42 + Math.round(8 * Math.sin(p * 22));
-
-  const cell =
-    "border-l border-white/[0.08] px-4 py-3 first:border-l-0 lg:border-l-0 lg:border-t lg:first:border-t-0";
-
-  return (
-    <div className="w-full min-w-0 overflow-hidden rounded-2xl border border-white/[0.08] lg:grid lg:grid-cols-[minmax(0,1fr)_210px]">
-      {/* Map */}
-
-      {/*
-      <div className="min-w-0 lg:border-r lg:border-white/[0.08]">
-        <div className="flex items-center justify-between px-4 pt-3">
-          <p className="text-xs font-semibold text-white">
-            Live in the VIoT Platform
-          </p>
-
-          <span className="flex items-center gap-1.5 text-[11px] text-signal">
-            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-signal" />
-            Live
-          </span>
-        </div>
-
-        <div className="w-full min-w-0 overflow-hidden">
-          <svg
-            viewBox="0 0 600 160"
-            className="block h-auto w-full max-w-full"
-            aria-hidden="true"
-          >
-            {[40, 80, 120].map((y) => (
-              <line
-                key={`h${y}`}
-                x1="0"
-                x2="600"
-                y1={y}
-                y2={y}
-                stroke="rgba(255,255,255,0.04)"
-              />
-            ))}
-
-            {[100, 200, 300, 400, 500].map((x) => (
-              <line
-                key={`v${x}`}
-                x1={x}
-                x2={x}
-                y1="0"
-                y2="160"
-                stroke="rgba(255,255,255,0.04)"
-              />
-            ))}
-
-            <path
-              ref={pathRef}
-              d={ROUTE}
-              fill="none"
-              stroke="rgba(255,255,255,0.16)"
-              strokeWidth="2"
-              strokeDasharray="4 6"
-            />
-
-            {len > 0 && (
-              <path
-                d={ROUTE}
-                fill="none"
-                stroke="#27d59b"
-                strokeWidth="2.5"
-                strokeDasharray={`${len * p} ${len}`}
-              />
-            )}
-
-            <circle
-              cx="570"
-              cy="70"
-              r="26"
-              fill="rgba(39,213,155,0.05)"
-              stroke="#27d59b"
-              strokeOpacity={inZone ? 0.9 : 0.3}
-              strokeDasharray="3 4"
-            />
-
-            <rect
-              x="567"
-              y="67"
-              width="6"
-              height="6"
-              fill="#ffffff"
-            />
-
-            <g transform={`translate(${pos.x}, ${pos.y})`}>
-              <rect
-                x="-14"
-                y="-14"
-                width="28"
-                height="28"
-                rx="5"
-                fill="rgba(39,213,155,0.14)"
-              />
-
-              <rect
-                x="-8"
-                y="-5"
-                width="11"
-                height="9"
-                rx="1"
-                fill="#27d59b"
-              />
-
-              <rect
-                x="3"
-                y="-2"
-                width="5"
-                height="6"
-                rx="1"
-                fill="#ffffff"
-              />
-            </g>
-
-            <g
-              transform={`translate(${Math.min(
-                pos.x,
-                490
-              )}, ${Math.max(pos.y - 38, 6)})`}
-            >
-              <rect
-                x="-6"
-                y="0"
-                width="82"
-                height="20"
-                rx="6"
-                fill="#081b24"
-                stroke="rgba(255,255,255,0.16)"
-              />
-
-              <text
-                x="2"
-                y="14"
-                fill="#ffffff"
-                fontSize="11"
-                fontWeight="600"
-              >
-                ETA {eta}
-              </text>
-            </g>
-          </svg>
-        </div>
-      </div>
-      */}
-
-      {/* Metrics */}
-
-      {/*
-      <div className="grid min-w-0 grid-cols-3 border-t border-white/[0.08] lg:grid-cols-1 lg:border-t-0">
-        <div className={cell}>
-          <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-white/30">
-            ETA
-          </p>
-          <p className="mt-1 font-heading text-lg font-semibold text-white">
-            {eta}
-          </p>
-        </div>
-
-        <div className={cell}>
-          <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-white/30">
-            Distance left
-          </p>
-          <p className="mt-1 font-heading text-lg font-semibold text-white">
-            {distance} km
-          </p>
-        </div>
-
-        <div className={cell}>
-          <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-white/30">
-            Speed
-          </p>
-          <p className="mt-1 font-heading text-lg font-semibold text-white">
-            {speed} km/h
-          </p>
-        </div>
-      </div>
-      */}
-
-      {/* Status */}
-
-      {/*
-      <div className="border-t border-white/[0.08] px-4 py-2.5 text-xs text-signal lg:col-span-2">
-        {arrived
-          ? "Delivery reached · Alert sent to operations team"
-          : inZone
-            ? "Entering destination zone · Alert sent to operations team"
-            : "On route · Updating every few seconds"}
-      </div>
-      */}
-    </div>
-  );
-}
-
-/* ------------------------------------------------------------------
    MAIN EXPORT
-------------------------------------------------------------------- */
+
+\------------------------------------------------------------------- */
 
 export function DataFlowVisual() {
-  const reduce = useReducedMotion();
-  const animate = !reduce;
+  const animate = true;
 
   return (
-    <div className="w-full min-w-0">
-      <div className="mb-6 flex min-w-0 items-center gap-3">
-        <span className="h-px w-8 shrink-0 bg-signal" />
 
-        <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-signal">
+    <div className="w-full min-w-0 rounded-2xl border border-white/[0.08] bg-[#081b24] p-4 shadow-[0_20px_55px_rgba(8,27,36,0.16)] sm:p-5 lg:p-6">
+
+      <div className="mb-5 flex min-w-0 items-center gap-3">
+
+        <span className="h-px w-8 shrink-0 bg-[#27d59b]" />
+
+        <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.18em] text-[#27d59b]">
+
           How the system works
+
         </span>
+
       </div>
 
-      <div className="hidden w-full min-w-0 overflow-hidden lg:block">
+      <div className="hidden w-full min-w-0 lg:block">
+
         <DesktopFlow animate={animate} />
+
       </div>
 
       <div className="w-full min-w-0 lg:hidden">
+
         <MobileFlow animate={animate} />
+
       </div>
 
-      <div className="mt-6 w-full min-w-0">
-        <LivePanel animate={animate} />
-      </div>
     </div>
+
   );
+
 }
+
+export default DataFlowVisual;

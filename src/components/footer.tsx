@@ -6,8 +6,8 @@ import { motion } from "framer-motion";
 
 const exploreLinks = [
   { label: "Products", href: "/products" },
-  { label: "Solutions", href: "/solutions" },
-  { label: "Platform", href: "/platform" },
+  { label: "Industries", href: "/solutions" },
+  { label: "Solutions", href: "/platform" },
 ];
 
 const companyLinks = [
@@ -399,34 +399,7 @@ export function Footer() {
           </div>
         </div>
 
-        {/* =================================================
-            BOTTOM BAR
-        ================================================= */}
-
-        <div
-          className="
-            flex flex-col
-            gap-3
-            py-6
-            font-mono
-            text-[9px]
-            uppercase
-            tracking-[0.08em]
-            text-white/30
-
-            sm:flex-row
-            sm:items-center
-            sm:justify-between
-          "
-        >
-          <p>© 2026 VIoT Technologies LLP. All rights reserved.</p>
-
-          <div className="flex items-center gap-2">
-            <span className="h-1 w-1 rounded-full bg-[#27d59b]/70" />
-
-            <p>AIS-140 certified support available</p>
-          </div>
-        </div>
+      
       </div>
     </footer>
   );
