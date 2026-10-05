@@ -1,28 +1,6 @@
 "use client";
 
-import {
-
-  Activity,
-
-  ArrowDownRight,
-
-  ArrowUpRight,
-
-  Camera,
-
-  Cpu,
-
-  LockKeyhole,
-
-  PackageSearch,
-
-  Radio,
-
-  ShieldCheck,
-
-  Truck,
-
-} from "lucide-react";
+import { ArrowDownRight } from "lucide-react";
 
 import { motion } from "framer-motion";
 
@@ -33,26 +11,6 @@ import { solutions } from "@/lib/solutions";
 import { SolutionsScrolly } from "./_components/solutions-scrolly";
 
 const ease = [0.16, 1, 0.3, 1] as const;
-
-const solutionIcons = [
-
-  Truck,
-
-  Camera,
-
-  LockKeyhole,
-
-  PackageSearch,
-
-  Radio,
-
-  ShieldCheck,
-
-  Cpu,
-
-  Activity,
-
-];
 
 function SectionLabel({
 
@@ -340,24 +298,11 @@ export default function SolutionsPage() {
 
     <main className="overflow-hidden bg-[#f4f6f2] text-[#081b24] selection:bg-[#27d59b] selection:text-[#081b24]">
 
-      {/* HERO */}
-
       <section className="relative min-h-[610px] overflow-hidden bg-[#081b24] text-white sm:min-h-[650px]">
 
         <VIoTSVGBackground dark />
 
        <div className="relative z-10 mx-auto flex min-h-[610px] max-w-[1440px] flex-col justify-between px-6 pb-8 pt-24 sm:min-h-[650px] sm:px-8 sm:pt-28 lg:px-12 lg:pt-32">
-          {/* <div className="flex items-center justify-between">
-
-            <SectionLabel dark>Solutions</SectionLabel>
-
-            <span className="hidden font-mono text-[9px] uppercase tracking-[0.18em] text-white/40 sm:block">
-
-              VIoT / Connected intelligence
-
-            </span>
-
-          </div> */}
 
           <div className="grid items-end gap-10 lg:grid-cols-12">
 
@@ -495,13 +440,11 @@ export default function SolutionsPage() {
 
       </section>
 
-      {/* INTRO */}
-
-      <section className="relative overflow-hidden bg-[#f4f6f2]">
+      {/* <section className="relative overflow-hidden bg-[#f4f6f2]">
 
         <VIoTSVGBackground />
 
-        <div className="relative z-10 mx-auto max-w-[1440px] px-6 py-16 sm:px-8 sm:py-20 lg:px-12">
+        <div className="relative z-10 mx-auto max-w-[1440px] px-6 pb-10 pt-16 sm:px-8 sm:pb-12 sm:pt-20 lg:px-12">
 
           <motion.div
 
@@ -537,165 +480,92 @@ export default function SolutionsPage() {
 
             </div>
 
-            {/* <div className="lg:col-span-4">
-
-              <p className="max-w-md text-sm leading-7 text-[#081b24]/62">
-
-                From mobility and assets to security and connected spaces,
-
-                choose the solution that fits your operation.
-
-              </p>
-
-            </div> */}
-
           </motion.div>
 
         </div>
 
-      </section>
+      </section> */}
 
-      {/* SOLUTION GRID */}
-
-      <section className="relative overflow-hidden bg-[#f4f6f2] pb-16 sm:pb-20 lg:pb-24">
-
+      
+      <section className="relative overflow-hidden border-y border-[#cdd5d2] bg-white">
         <VIoTSVGBackground />
 
-        <div className="relative z-10 mx-auto max-w-[1440px] px-6 sm:px-8 lg:px-12">
+        <div className="relative z-10 mx-auto max-w-[1440px] px-6 py-14 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.25 }}
+            transition={{ duration: 0.65, ease }}
+            className="grid gap-10 lg:grid-cols-12 lg:items-end"
+          >
+            <div className="lg:col-span-5">
+              <SectionLabel>Connected operating model</SectionLabel>
 
-          <div className="mb-7 flex items-end justify-between">
+              <h2 className="mt-5 max-w-xl font-heading text-3xl font-semibold leading-[1.02] tracking-[-0.045em] text-[#081b24] sm:text-4xl lg:text-[48px]">
+                Connect.
+                <br />
+                <span className="font-normal text-[#007c67]">
+                  Understand. Act.
+                </span>
+              </h2>
+            </div>
 
-            {/* <div>
+            <div className="lg:col-span-7">
+              <div className="relative overflow-hidden rounded-2xl border border-[#c8d5d0] bg-[#f4f6f2]/80 shadow-[0_16px_42px_rgba(8,27,36,0.05)]">
+                <div className="absolute left-[16.66%] right-[16.66%] top-[36px] hidden h-px bg-[#007c67]/12 sm:block" />
 
-              <span className="font-mono text-[8px] font-semibold uppercase tracking-[0.2em] text-[#007c67]">
-
-                Explore
-
-              </span>
-
-              <h3 className="mt-2 font-heading text-2xl font-semibold tracking-[-0.035em] text-[#081b24] sm:text-3xl">
-
-                Eight solutions for real operations.
-
-              </h3>
-
-            </div> */}
-
-            {/* <span className="hidden font-mono text-[8px] uppercase tracking-[0.18em] text-[#007c67] sm:block">
-
-              {String(solutions.length).padStart(2, "0")} solutions
-
-            </span> */}
-
-          </div>
-
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-
-            {solutions.map((solution, index) => {
-
-              const Icon = solutionIcons[index % solutionIcons.length];
-
-              return (
-
-                <motion.a
-
-                  key={solution.slug}
-
-                  href={`#solution-${solution.slug}`}
-
-                  initial={{ opacity: 0, y: 18 }}
-
-                  whileInView={{ opacity: 1, y: 0 }}
-
-                  viewport={{ once: true, amount: 0.15 }}
-
-                  transition={{
-
-                    duration: 0.55,
-
-                    delay: index * 0.04,
-
-                    ease,
-
-                  }}
-
-                  whileHover={{ y: -3 }}
-
-                  className="group relative min-h-[220px] overflow-hidden rounded-2xl border border-[#c8d5d0] bg-white/90 p-5 shadow-[0_10px_28px_rgba(8,27,36,0.045)] backdrop-blur-sm transition-all duration-300 hover:border-[#007c67]/25 hover:shadow-[0_16px_40px_rgba(8,27,36,0.08)]"
-
-                >
-
-                  <div className="relative flex h-full flex-col justify-between">
-
-                    <div className="flex items-start justify-between">
-
-                      <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#007c67]/12 bg-[#f4f6f2] text-[#007c67] transition-all duration-300 group-hover:border-[#27d59b]/40 group-hover:bg-[#27d59b] group-hover:text-[#081b24]">
-
-                        <Icon className="h-[18px] w-[18px]" strokeWidth={1.7} />
-
+                <div className="grid sm:grid-cols-3">
+                  {[
+                    {
+                      label: "Connect",
+                      text: "Vehicles, assets, locks and sensors",
+                    },
+                    {
+                      label: "Understand",
+                      text: "One connected operational view",
+                    },
+                    {
+                      label: "Act",
+                      text: "Exceptions, response and decisions",
+                    },
+                  ].map((item, index) => (
+                    <motion.div
+                      key={item.label}
+                      initial={{ opacity: 0, y: 12 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, amount: 0.25 }}
+                      transition={{
+                        duration: 0.5,
+                        delay: index * 0.08,
+                        ease,
+                      }}
+                      className="relative border-b border-[#cdd5d2] px-5 py-6 last:border-b-0 sm:border-b-0 sm:border-r sm:last:border-r-0 sm:px-6 sm:py-7"
+                    >
+                      <div className="relative z-10 flex h-8 w-8 items-center justify-center rounded-lg border border-[#007c67]/15 bg-white font-mono text-[8px] font-semibold text-[#007c67] shadow-[0_6px_16px_rgba(8,27,36,0.04)]">
+                        0{index + 1}
                       </div>
 
-                      <span className="font-mono text-[9px] font-semibold tracking-[0.18em] text-[#007c67]">
+                      <h3 className="mt-5 font-heading text-lg font-semibold tracking-[-0.025em] text-[#081b24]">
+                        {item.label}
+                      </h3>
 
-                        {solution.number}
-
-                      </span>
-
-                    </div>
-
-                    <div className="mt-8">
-
-                      <h4 className="font-heading text-lg font-semibold tracking-[-0.03em] text-[#081b24] sm:text-xl">
-
-                        {solution.name}
-
-                      </h4>
-
-                      <p className="mt-2 max-w-[270px] text-[13px] leading-6 text-[#081b24]/60">
-
-                        {solution.headline}
-
+                      <p className="mt-2 max-w-[240px] text-[13px] leading-6 text-[#607078]">
+                        {item.text}
                       </p>
-
-                    </div>
-
-                    <div className="mt-6 flex items-center justify-between border-t border-[#007c67]/10 pt-4">
-
-                      <span className="font-mono text-[8px] font-semibold uppercase tracking-[0.18em] text-[#007c67]">
-
-                        Explore
-
-                      </span>
-
-                      <span className="flex h-8 w-8 items-center justify-center rounded-lg border border-[#007c67]/15 text-[#007c67] transition-all duration-300 group-hover:border-[#27d59b] group-hover:bg-[#27d59b] group-hover:text-[#081b24]">
-
-                        <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-
-                      </span>
-
-                    </div>
-
-                  </div>
-
-                </motion.a>
-
-              );
-
-            })}
-
-          </div>
-
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </motion.div>
         </div>
-
       </section>
 
-      {/* ARCHITECTURE */}
-
-      <section className="relative overflow-hidden bg-[#081b24] text-white">
+<section className="relative overflow-hidden bg-[#081b24] text-white">
 
         <VIoTSVGBackground dark />
 
-        <div className="relative z-10 mx-auto max-w-[1440px] px-6 pb-8 pt-16 sm:px-8 sm:pt-20 lg:px-12">
+        <div className="relative z-10 mx-auto max-w-[1440px] px-6 pb-8 pt-14 sm:px-8 sm:pt-16 lg:px-12 lg:pt-20">
 
           <div className="grid gap-8 lg:grid-cols-12 lg:items-end">
 
@@ -715,18 +585,6 @@ export default function SolutionsPage() {
 
             </div>
 
-            {/* <div className="lg:col-span-4">
-
-              <p className="max-w-sm text-sm leading-7 text-white/55 lg:ml-auto lg:text-right">
-
-                The right hardware, connectivity and intelligence work together
-
-                as one system.
-
-              </p>
-
-            </div> */}
-
           </div>
 
         </div>
@@ -738,8 +596,6 @@ export default function SolutionsPage() {
         </div>
 
       </section>
-
-      {/* CLOSING */}
 
       <section className="relative overflow-hidden bg-white">
 
@@ -780,18 +636,6 @@ export default function SolutionsPage() {
               </h2>
 
             </div>
-{/* 
-            <div className="lg:col-span-4">
-
-              <p className="max-w-md text-sm leading-7 text-[#081b24]/62">
-
-                Connect the physical world to the information your teams need
-
-                to make better operational decisions.
-
-              </p>
-
-            </div> */}
 
           </motion.div>
 
