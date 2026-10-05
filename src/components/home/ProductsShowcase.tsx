@@ -405,28 +405,23 @@ export function ProductsShowcase() {
       <div className="relative z-10 mx-auto max-w-7xl px-6 py-14 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
 
         {/* Header */}
+<div className="mb-10 border-b border-[#cdd5d2] pb-8">
+  <div className="mb-4 flex items-center gap-3">
+    <span className="h-px w-8 bg-[#27d59b]" />
 
-        <div className="mb-10 border-b border-line pb-8">
+    <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-[#007c67]">
+      Product ecosystem
+    </span>
+  </div>
 
-          <div className="mb-4 flex items-center gap-3">
-
-            <span className="h-px w-8 bg-signal-dark" />
-
-            <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-signal-dark">
-
-              Products
-
-            </span>
-
-          </div>
-
-          <h2 className="font-heading text-3xl font-semibold leading-[1.1] tracking-[-0.03em] text-ink sm:text-4xl lg:text-[44px]">
-
-            Our products
-
-          </h2>
-
-        </div>
+  <h2 className="max-w-3xl font-heading text-3xl font-semibold leading-[1.06] tracking-[-0.04em] text-[#081b24] sm:text-4xl lg:text-[44px]">
+    Connected hardware.
+    <br />
+    <span className="font-normal text-[#007c67]">
+      Built for real operations.
+    </span>
+  </h2>
+</div>
 
         {/* Grid */}
 

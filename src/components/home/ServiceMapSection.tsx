@@ -202,20 +202,20 @@ export function ServiceMapSection() {
               The connected layer
             </p>
 
-            <h2
-              className="
-                mt-4 max-w-3xl
-                break-words
-                font-heading font-semibold
-                text-3xl leading-[1.06] tracking-[-0.045em]
-                sm:text-4xl
-                lg:text-[52px]
-              "
-            >
-              Every signal has a journey.
-              <br className="hidden sm:block" />
-              <span className="text-white/40"> VIoT makes it useful.</span>
-            </h2>
+        <h2
+  className="
+    mt-4 max-w-3xl
+    break-words
+    font-heading font-semibold
+    text-3xl leading-[1.06] tracking-[-0.045em]
+    sm:text-4xl
+    lg:text-[52px]
+  "
+>
+  Every signal has a journey.
+  <br className="hidden sm:block" />
+  <span className="text-[#27d59b]"> VIoT makes it useful.</span>
+</h2>
           </motion.div>
 
           {/* <motion.div
