@@ -310,7 +310,7 @@ function getProductImage(slug: string) {
 
 
 
-      return "/image/vehicle-telematics.png";
+      return "/image/vehicle-telementic.png";
 
 
 
