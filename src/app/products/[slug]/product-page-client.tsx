@@ -838,7 +838,7 @@ export default function ProductPageClient({
               id: item.id,
               title: item.title,
               specs: item.specs,
-              note: item.note,
+              // note: item.note,
             })
           }
         />

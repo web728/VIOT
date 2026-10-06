@@ -190,8 +190,7 @@ export const products: Product[] = [
       ["Dimensions", "140 × 86 × 38 mm"],
       ["Lock formats", "Rope-type and pole-type configurations"],
     ],
-    note:
-      "Exact lock format and regional communication bands depend on the selected deployment configuration.",
+ 
   },
 
   {
