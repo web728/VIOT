@@ -1087,7 +1087,7 @@ function PlatformCore({ animate }: { animate: boolean }) {
 
       <image
 
-        href="/logo/logo-bg.png"
+        href="/logo/logo.png"
 
         x="90"
 
@@ -1101,7 +1101,7 @@ function PlatformCore({ animate }: { animate: boolean }) {
 
       />
 
-      <text
+      {/* <text
 
         x="142"
 
@@ -1121,7 +1121,7 @@ function PlatformCore({ animate }: { animate: boolean }) {
 
         CONNECTED OPERATIONS PLATFORM
 
-      </text>
+      </text> */}
 
     </g>
 
@@ -1465,7 +1465,7 @@ function DesktopFlow({ animate }: { animate: boolean }) {
 
         </g>
 
-        <g transform="translate(318 258)">
+        {/* <g transform="translate(318 258)">
 
           <rect
 
@@ -1525,8 +1525,8 @@ function DesktopFlow({ animate }: { animate: boolean }) {
 
           </text>
 
-        </g>
-
+        </g> */}
+{/* 
         <g transform="translate(782 258)">
 
           <rect
@@ -1587,7 +1587,7 @@ function DesktopFlow({ animate }: { animate: boolean }) {
 
           </text>
 
-        </g>
+        </g> */}
 
       </svg>
 
@@ -1717,7 +1717,7 @@ function MobilePlatform({ animate }: { animate: boolean }) {
 
           <img
 
-            src="/logo/logo-bg.png"
+            src="/logo/logo.png"
 
             alt="VIoT"
 

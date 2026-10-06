@@ -767,67 +767,241 @@ export const platformModules: PlatformModule[] = [
     slug: "load-weight-analytics",
     number: "08",
     name: "Load & Weight Analytics",
-    eyebrow: "Load intelligence",
-    headline: "Understand what is moving, not only where it is moving.",
+    eyebrow: "Load & Weight Analytics",
+    headline: "Caught at the Yard, Not at the Checkpoint",
     lede:
-      "Connect load and weight signals with vehicle movement to create clearer utilisation and operating context.",
+      "A legal total weight can still be an illegal axle load. VIoT checks both before the vehicle leaves — so the fine, the hold-up, or the rollover never happens in the first place.",
     description:
-      "Load & Weight Analytics brings payload information into the connected fleet layer, helping teams understand loading patterns, utilisation and weight-related exceptions across operations.",
+      "Every load is checked against both the total limit and the axle-wise distribution before departure. Within limits, the trip is cleared and logged normally; over limit, the vehicle is held and flagged at the yard — not hours down the road.",
     capabilities: [
-      "Connected load and weight visibility",
-      "Payload-event monitoring",
-      "Trip-linked load context",
-      "Overload and threshold awareness",
-      "Historical load patterns",
-      "Vehicle utilisation context",
+      "Real-Time Overload Alerts (Total + Axle-Wise)",
+      "Load-Shift / Imbalance Alerts",
+      "Utilization / Empty-Running Analytics",
     ],
     signals: [
-      "Weight readings",
-      "Load changes",
-      "Threshold events",
-      "Vehicle location",
-      "Trip activity",
-      "Historical payload data",
+      "total weight",
+      "axle-wise distribution",
+      "cargo shifting mid-transit",
+      "vehicle utilization",
     ],
     outcomes: [
-      "Improved load visibility",
-      "Better utilisation context",
-      "Faster overload awareness",
-      "Stronger operational accountability",
+      "the trip is cleared and logged normally",
+      "the vehicle is held and flagged at the yard",
+      "Flags a real-time rollover risk",
+      "Turns wasted capacity into a visible, trackable cost",
     ],
+    solutionContent: {
+      heroWhy:
+        'the standard failure mode in this category is finding out about an overload at a weighbridge checkpoint, hours into a trip, when the only options left are a fine or a costly reshuffle on the roadside. Leading with "caught at the yard" names the moment that actually matters — before departure, not after.',
+      heroIllustrationNote:
+        "a simple yard/loading-bay graphic with a weight readout showing both a total figure and a per-axle breakdown — reads better than a generic weighbridge or truck-scale stock photo.",
+      problemTitle: "The Problem: Found Out Too Late, and Only Half the Picture",
+      problemParagraphs: [
+        "Most fleets find out about an overload at a weighbridge checkpoint — hours into the trip, with a fine already earned and a reshuffle now blocking the road. By the time the number shows up, there's no good option left, only a less bad one.",
+        "Total weight is also only half the question. A load can be perfectly legal by total weight and still be an illegal, dangerous axle distribution — too much weight on one axle, not enough on another — and most systems never check for that at all. They pass a load that a proper inspection would have failed.",
+        "And weight isn't just a compliance number. Cargo that shifts mid-transit changes a vehicle's center of gravity in ways that can cause a rollover, and that's a real-time safety event, not a paperwork issue — yet it's rarely monitored at all. Meanwhile, on the other end of the spectrum, a fleet running trips at half capacity is bleeding money nobody's tracking, because empty capacity has never been treated as a cost worth measuring.",
+      ],
+      coversTitle: "What Load/Weight Analytics Actually Covers",
+      capabilityRows: [
+        {
+          name: "Real-Time Overload Alerts (Total + Axle-Wise)",
+          whatItDoes:
+            "Checks a load against the legal limit by total weight and by axle distribution, before departure",
+          whatItChanges:
+            "Catches the overload — and the axle violation a total-weight-only check would miss — at the yard, not the checkpoint",
+        },
+        {
+          name: "Load-Shift / Imbalance Alerts",
+          whatItDoes:
+            "Detects cargo shifting mid-transit, changing the vehicle's balance",
+          whatItChanges:
+            "Flags a real-time rollover risk, not just a compliance number discovered after the fact",
+        },
+        {
+          name: "Utilization / Empty-Running Analytics",
+          whatItDoes:
+            "Tracks how full a vehicle actually runs across its trips",
+          whatItChanges:
+            "Turns wasted capacity into a visible, trackable cost instead of an assumed inefficiency nobody measures",
+        },
+      ],
+      capabilityClosing:
+        "The first row carries the most weight on this page, deliberately — catching a violation before the vehicle leaves the yard is a fundamentally different proposition from catching it on the road (Section 4).",
+      differenceTitle: "How VIoT Does This Differently",
+      differences: [
+        {
+          title: "Caught before departure, not at the checkpoint",
+          text:
+            "An overload found at a weighbridge only documents a problem that's already costing money and blocking the route. VIoT's check happens at the yard, before the vehicle leaves, so the fine and the roadside reshuffle never happen — the load gets corrected where correcting it is still easy.",
+        },
+        {
+          title: "Axle-level precision, not just a total",
+          text:
+            "A total-weight check can wave through a load that's dangerously uneven across axles. VIoT checks the distribution, not just the sum, so a legal-looking total that's actually an axle violation gets caught — the detail most systems never look for in the first place.",
+        },
+        {
+          title: "A mid-transit safety alert, not just a compliance number",
+          text:
+            "Load-shift detection isn't about avoiding a fine — it's about catching a change in the vehicle's balance before it becomes a rollover. That's a different category of alert from a weight violation, and VIoT treats it with the urgency a safety event deserves, not the urgency of a paperwork issue.",
+        },
+        {
+          title: "Empty capacity becomes a number, not a shrug",
+          text:
+            'Most fleets have no real visibility into how much they\'re paying to run half-empty. VIoT turns utilization into a tracked, visible figure, so "we\'re probably underutilized somewhere" becomes a specific number someone can actually act on.',
+        },
+      ],
+      engineTitle: "Caught at the Yard, Not the Checkpoint",
+      engineCaption:
+        "a load clears to depart only after passing a total and axle-wise weight check",
+      engineText:
+        "Every load is checked against both the total limit and the axle-wise distribution before departure. Within limits, the trip is cleared and logged normally; over limit, the vehicle is held and flagged at the yard — not hours down the road.",
+      proofTitle: "Where This Is Proven",
+      proofParagraphs: [
+        "This matters most where overload is a constant, almost routine temptation. Heavy goods and construction material haulage, where every extra ton on the truck is an extra ton of margin until it's a fine or a failed inspection. And bulk and mining transport, where axle-load compliance isn't an occasional risk — it's a routine checkpoint reality on nearly every run.",
+        "These are also the fleet types where load-shift matters most: heavy, dense, often loosely secured cargo is exactly what turns a shift in balance into a real stability risk, not a minor inconvenience.",
+      ],
+      supportTitle: "Built to Last: A Number That Stays Trustworthy",
+      supportParagraphs: [
+        "A weight reading that's quietly drifted out of calibration either misses a real overload or flags a legal load as a violation — and both failures are expensive in their own way, one in fines and risk, the other in a trip held up for nothing. Weight sensors take constant mechanical stress from loading and unloading, so drift here isn't a rare edge case; it's the expected direction things move without active correction.",
+        'VIoT keeps checking its own sensors against drift over their working life, so the number stays trustworthy long after installation — not just in the first few months before wear started affecting the reading. That\'s what "built to last" means on this page: a figure the yard team can keep trusting, year after year, not just on installation day.',
+      ],
+      ctaHeading: "See what a pre-departure check would have caught",
+      ctaSubheading:
+        "Tell us what you're hauling and your typical load pattern — we'll show you a total-plus-axle check in action, not a generic demo.",
+      formFields:
+        "unchanged from the sitewide enquiry form (name, company, fleet size, phone/email, message).",
+      implementationNotes: [
+        "This is the third of three Solutions pages fed by the IoT Sensors product (Products tab), alongside Temperature & Humidity Monitoring and Fuel Monitoring. Link to the IoT Sensors product page for hardware/spec details; don't duplicate hardware specs here.",
+        "Section 5's diagram visualizes only the pre-departure overload check — the first of the page's three capabilities. Load-Shift/Imbalance Alerts and Utilization/Empty-Running Analytics are covered in writing (Sections 2, 3, 4, 6) but have no visual of their own. Worth giving at least one of them a supporting graphic so the page doesn't read as if the diagram is the whole story.",
+        'Loose cross-link opportunity, not a strict overlap: utilization/empty-running analytics touches route planning, which is also part of Fleet Intelligence\'s route & geofence intelligence capability. Not worth merging the two, but a cross-link could help a visitor connect "underutilized trips" with "route intelligence" if that\'s a sales angle worth making explicit.',
+        'Do not use the term "AIS-140" anywhere on this page or its footer.',
+        'Do not state or imply VIoT designs or manufactures the sensor hardware. Use ownership language ("our hardware, end-to-end") rather than "designed by us" / "manufactured by us."',
+        "No team or personnel content on this page.",
+        "Section 5's diagram and Section 1's illustration note are guidance for creative execution, not final visual specs.",
+      ],
+    },
   },
   {
     slug: "industrial-automation",
     number: "09",
     name: "Industrial Automation",
-    eyebrow: "Connected operations",
-    headline: "Connect field events directly to operating workflows.",
+    eyebrow: "Industrial Automation",
+    headline: "Every Asset, Indoors and Out, on One System",
     lede:
-      "Bring sensors, connected equipment and event-driven actions into one operational automation layer.",
+      "Most asset tags work in the yard or on the floor, never both. VIoT tracks location, usage, and condition across your whole site — one system, not a GPS tag for the yard and a different one for the plant.",
     description:
-      "Industrial Automation connects field signals with rules, alerts and workflows so operational events can be surfaced and routed to the teams or systems that need to act.",
+      "Every asset movement is checked against its authorised zone. Movement inside that zone is tracked normally and the record updates; movement outside it is flagged as unauthorised and alerted immediately, whether the asset is indoors or out.",
     capabilities: [
-      "Connected sensor and equipment visibility",
-      "Event-driven workflow triggers",
-      "Rule-based operating alerts",
-      "Remote state monitoring",
-      "Operational event history",
-      "Multi-site automation context",
+      "Asset Location Tracking (Indoor + Outdoor)",
+      "Utilization / Idle Tracking",
+      "Asset Health/Condition Alerts",
+      "Unauthorised Movement Alerts",
     ],
     signals: [
-      "Sensor readings",
-      "Equipment state",
-      "Threshold events",
-      "Digital inputs",
-      "Access events",
-      "Operational exceptions",
+      "Asset Location Tracking (Indoor + Outdoor)",
+      "Utilization / Idle Tracking",
+      "Asset Health/Condition Alerts",
+      "Unauthorised Movement Alerts",
     ],
     outcomes: [
-      "Faster event response",
-      "Reduced manual monitoring",
-      "Improved workflow consistency",
-      "Connected operational visibility",
+      "No blind spot where an asset crosses from outdoor to indoor or back",
+      'Turns "we probably have enough equipment" into a real, checkable number',
+      "Catches a developing fault before it becomes a breakdown, not after",
+      "Equipment loss becomes an alert at the moment it happens, not a surprise at the next inventory count",
     ],
+    solutionContent: {
+      heroWhy:
+        'the standard failure mode in industrial asset tracking is a system built for one environment — GPS for outdoors, a different tech for indoors — that breaks the moment an asset crosses that line, which it does constantly on a real site. Naming "indoors and out, on one system" up front addresses the gap before anyone has to ask about it.',
+      heroIllustrationNote:
+        "a single site map showing both an outdoor yard and an indoor plant floor, with the same asset icon tracked seamlessly across both — communicates the core claim better than a generic forklift-with-a-tag image.",
+      problemTitle: "The Problem: A Tag That Only Works Half the Site",
+      problemParagraphs: [
+        "Most asset tracking is built around one technology for one environment — GPS that works in the yard and goes blind the moment an asset moves indoors, or an indoor system that has no idea where anything is once it's loaded onto a truck or left on the lot. On a real industrial site, assets cross that line constantly, and most tracking systems simply stop working when they do.",
+        "Even when location works, it's usually the only question being answered. Knowing where a forklift is doesn't tell you whether it's actually being used or sitting idle half the shift — and idle, underused equipment is one of the most common hidden costs on any site, invisible because nobody's measuring it.",
+        "And equipment failure is still mostly reactive: a machine breaks down, and only then does anyone look into why. Meanwhile, assets without any tracking at all tend to surface as a problem exactly once — at the next physical inventory count, when something everyone assumed was still on-site turns out not to be.",
+      ],
+      coversTitle: "What Industrial Automation Actually Covers",
+      capabilityRows: [
+        {
+          name: "Asset Location Tracking (Indoor + Outdoor)",
+          whatItDoes:
+            "Tracks where an asset actually is across the plant floor and the yard, as one continuous system",
+          whatItChanges:
+            "No blind spot where an asset crosses from outdoor to indoor or back",
+        },
+        {
+          name: "Utilization / Idle Tracking",
+          whatItDoes:
+            "Tracks whether an asset is actually in use or sitting idle",
+          whatItChanges:
+            'Turns "we probably have enough equipment" into a real, checkable number',
+        },
+        {
+          name: "Asset Health/Condition Alerts",
+          whatItDoes:
+            "Flags a maintenance issue or abnormal condition on the asset itself",
+          whatItChanges:
+            "Catches a developing fault before it becomes a breakdown, not after",
+        },
+        {
+          name: "Unauthorised Movement Alerts",
+          whatItDoes:
+            "Flags an asset leaving its designated zone or site without authorisation",
+          whatItChanges:
+            "Equipment loss becomes an alert at the moment it happens, not a surprise at the next inventory count",
+        },
+      ],
+      capabilityClosing:
+        "The first row is what makes the other three possible at all — utilization, health, and unauthorised movement are all built on top of knowing where the asset actually is, continuously, wherever it happens to be (Section 4).",
+      differenceTitle: "How VIoT Does This Differently",
+      differences: [
+        {
+          title: "Indoors and outdoors, one system",
+          text:
+            "Most tracking technology is built for one environment and breaks at its edge — GPS that goes blind indoors, or an indoor system with no outdoor coverage. VIoT tracks an asset continuously across both, so a forklift that moves from the plant floor to the yard and back doesn't disappear from the system at the doorway.",
+        },
+        {
+          title: "Versatile enough for very different assets",
+          text:
+            "A system built around one asset class — only heavy machinery, or only small tools — gets stretched thin the moment a site's real inventory is more varied than that. VIoT's platform handles both ends of that range on one system, so a site doesn't need a separate tracking solution for its cranes and its hand tools.",
+        },
+        {
+          title: "Location plus utilization, not just a dot on a map",
+          text:
+            "Most asset trackers answer one question: where is it. VIoT also answers whether it's actually being used — which is the question that actually saves money. Knowing a forklift's location is interesting; knowing it's been idle for six of eight hours is actionable.",
+        },
+      ],
+      engineTitle: "Tracked Everywhere, Flagged Where It Shouldn't Be",
+      engineCaption:
+        "an asset moving inside its authorised zone is tracked normally; leaving it fires an alert",
+      engineText:
+        "Every asset movement is checked against its authorised zone. Movement inside that zone is tracked normally and the record updates; movement outside it is flagged as unauthorised and alerted immediately, whether the asset is indoors or out.",
+      proofTitle: "Where This Is Proven",
+      proofParagraphs: [
+        "This earns its place most clearly on sites where equipment is expensive, mobile, and easy to lose track of. Manufacturing plants, where tools and equipment move between work areas constantly and idle time on a single costly machine can go unnoticed for a full shift. Construction sites, where machinery moves between sites entirely, and an asset \"somewhere on-site\" can just as easily mean an asset that's quietly left it.",
+        "Both are environments where the indoor/outdoor split in Section 4 isn't a technical detail — it's the actual, daily reality of where equipment goes.",
+      ],
+      supportTitle: "Built to Last: Built for the Floor, Not a Demo",
+      supportParagraphs: [
+        "A tracker that fails in the one environment it's meant for isn't a tracker. Dust, vibration, heat, and the rough handling that comes standard on a working plant floor or a construction site are exactly the conditions a lot of asset-tracking hardware quietly isn't built for — it works fine in a clean test, then degrades fast once it's actually deployed.",
+        'VIoT\'s asset trackers are built for those real conditions from the start, not adapted to them after the fact, so they keep reporting accurately for the working life of the asset — not just for the first few weeks before dust and vibration start taking their toll. That\'s what "built to last" means here: hardware that survives the job it was actually bought to do.',
+      ],
+      ctaHeading: "See what's actually idle on your site right now",
+      ctaSubheading:
+        "Tell us what equipment you're tracking and where — we'll show you indoor-outdoor tracking and a real utilization number, not a generic demo.",
+      formFields:
+        "unchanged from the sitewide enquiry form (name, company, fleet size, phone/email, message).",
+      implementationNotes: [
+        'This is the Solutions tab page built on the Asset Trackers product (Products tab) — the broadest-application page of the nine, by design, since this is where "other applications of the asset tracker" beyond the primary verticals live. Link to the Asset Trackers product page for hardware/spec details; don\'t duplicate hardware specs here.',
+        "Keep the page's examples general enough to apply across multiple Industries (Construction, Mining, FMCG, Data Centres, Smart Infrastructure), not just the two depth examples named in Section 6. Manufacturing and construction are the proof points, not the scope boundary.",
+        "Section 5's diagram covers only Unauthorised Movement Alerts, the fourth of the page's four capabilities. Utilization/Idle Tracking and Asset Health/Condition Alerts are covered in writing (Sections 2, 3, 4) but have no visual of their own — same pattern flagged on the Load/Weight Analytics page, worth addressing the same way.",
+        'Two cross-link opportunities worth making explicit: Asset Health/Condition Alerts here is conceptually the same idea as Fleet Intelligence\'s Maintenance & Health Alerts, just applied to non-vehicle equipment instead of vehicles. And Unauthorised Movement Alerts here is the same "checks the context, not just the state" logic as Smart Access Monitoring, applied to a moving asset instead of a fixed door. Neither needs merging, both are worth a cross-link.',
+        'Do not use the term "AIS-140" anywhere on this page or its footer.',
+        'Do not state or imply VIoT designs or manufactures the tracker hardware. Use ownership language ("our hardware, end-to-end") rather than "designed by us" / "manufactured by us."',
+        "No team or personnel content on this page.",
+        "Section 5's diagram and Section 1's illustration note are guidance for creative execution, not final visual specs.",
+      ],
+    },
   },
 ];
 
