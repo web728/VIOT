@@ -57,13 +57,13 @@ export const products: Product[] = [
       "VIoT vehicle telematics is designed around real operating conditions rather than a single device format. Basic deployments focus on dependable 4G tracking, wide-voltage compatibility and remote immobilisation. Advanced deployments add richer positioning, SOS workflows, dual serial interfaces and support for temperature, fuel, RFID and Bluetooth peripherals.",
     points: [
       "4G vehicle connectivity",
-      "9–90V operating range",
+      "9-90V operating range",
       "Vehicle immobilisation",
     ],
     specs: [
       ["Connectivity", "4G cellular vehicle tracking"],
       ["Positioning", "GPS + BDS + LBS positioning"],
-      ["Power", "Wide-voltage 9–90V vehicle installation"],
+      ["Power", "Wide-voltage 9-90V vehicle installation"],
       ["Control", "Remote fuel / power cut-off support"],
       ["Monitoring", "Movement, speed, ignition and exception events"],
       ["Platform", "Connected VIoT operational visibility"],
@@ -78,13 +78,13 @@ export const products: Product[] = [
           "A compact 4G tracking configuration for dependable location reporting, driving-event visibility and remote vehicle immobilisation across a wide range of vehicle power systems.",
         features: [
           "4G Connectivity",
-          "9–90V Operating Voltage",
+          "9-90V Operating Voltage",
           "Vehicle Immobilisation",
         ],
         specs: [
           ["Network", "4G Cat.1"],
           ["Positioning", "GPS + BDS"],
-          ["Input voltage", "9–90V DC"],
+          ["Input voltage", "9-90V DC"],
           ["Standby current", "<5mA"],
           [
             "Driving events",
@@ -118,7 +118,7 @@ export const products: Product[] = [
           ["Network", "4G LTE with GSM fallback"],
           ["Positioning", "GPS + BDS + LBS"],
           ["Positioning accuracy", "<2.5 m CEP50"],
-          ["Input voltage", "9–90V DC"],
+          ["Input voltage", "9-90V DC"],
           ["Backup battery", "500mAh / 3.7V Li-Polymer"],
           ["Serial interfaces", "2 × TTL"],
           ["Digital input", "1"],
@@ -199,7 +199,7 @@ export const products: Product[] = [
       ["Voice intercom", "Supported"],
       ["Communication protocol", "JT/T808 · JT/T1078"],
       ["SIM", "1 × Micro SIM"],
-      ["Power supply", "DC 10V–36V"],
+      ["Power supply", "DC 10V-36V"],
       ["Power consumption", "<5W"],
       ["Upgrade", "OTA & TF card"],
       ["Operating temperature", "-25°C to +70°C"],
@@ -321,7 +321,7 @@ export const products: Product[] = [
       ],
       [
         "Access credential",
-        "One-time cryptographic code (8–10 digit), freshly generated per use; no stored credential at the lock",
+        "One-time cryptographic code (8-10 digit), freshly generated per use; no stored credential at the lock",
       ],
       [
         "Key device",
@@ -340,7 +340,7 @@ export const products: Product[] = [
         "Operating conditions",
         "Rated for extreme heat, cold, and urban vandalism; continues operating through mobile network or power outages",
       ],
-      ["Ingress protection", "IP65–IP68, depending on form factor"],
+      ["Ingress protection", "IP65-IP68, depending on form factor"],
       [
         "Security / resistance rating",
         "Up to RC3 (DIN EN 1627, class D400) for shaft/manhole covers; Resistance Class 2 for swing-handle locks; EN16867 (security fittings); EN16864 (padlocks)",

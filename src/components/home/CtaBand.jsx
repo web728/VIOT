@@ -20,7 +20,7 @@ const lookingForOptions = [
   "Other",
 ];
 
-const fleetSizes = ["1–10", "11–50", "51–200", "200+"];
+const fleetSizes = ["1-10", "11-50", "51-200", "200+"];
 
 const followUps = {
   "Vehicle Telematics": [
@@ -68,7 +68,7 @@ const followUps = {
       name: "lockQuantity",
       label: "Number of locks",
       type: "select",
-      options: ["1–10", "11–50", "51–200", "200+"],
+      options: ["1-10", "11-50", "51-200", "200+"],
     },
     {
       name: "lockUse",
@@ -94,7 +94,7 @@ const followUps = {
       name: "assetCount",
       label: "Number of assets",
       type: "select",
-      options: ["1–25", "26–100", "101–500", "500+"],
+      options: ["1-25", "26-100", "101-500", "500+"],
     },
   ],
 
@@ -129,7 +129,7 @@ const followUps = {
       name: "accessPoints",
       label: "Number of doors / access points",
       type: "select",
-      options: ["1–10", "11–50", "51–200", "200+"],
+      options: ["1-10", "11-50", "51-200", "200+"],
     },
   ],
 
@@ -156,7 +156,7 @@ const followUps = {
 const timelines = [
   "As soon as possible",
   "Within 1 month",
-  "1–3 months",
+  "1-3 months",
   "Just exploring",
 ];
 

@@ -22,7 +22,7 @@ const products: ShowcaseProduct[] = [
     id: "vehicle-telematics",
     meta: "Fleet Intelligence",
     title: "Vehicle Telematics",
-    spec: "4G connectivity · 9–90V input · vehicle immobilisation",
+    spec: "4G connectivity · 9-90V input · vehicle immobilisation",
     href: "/products/vehicle-telematics",
     image: "/products/vehicle-telem.png",
   },
