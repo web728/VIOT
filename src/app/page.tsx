@@ -10,7 +10,7 @@ import { CtaBand } from "@/components/home/CtaBand";
 import SolutionSection from "@/components/home/SolutionSection";
 
 export const metadata: Metadata = {
-  title: "VIoT — Fleet, Asset & Access Intelligence",
+  title: "VIoT - Fleet, Asset & Access Intelligence",
   description:
     "Track what moves. Secure what matters. Control who gets in.",
 };

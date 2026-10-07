@@ -4,8 +4,8 @@ import { motion } from "framer-motion";
 import { CheckIcon } from "@/components/icons";
 
 const points = [
-  "Fleet Intelligence & Asset Intelligence — ours, end-to-end",
-  "Access Control — internationally curated and localised",
+  "Fleet Intelligence & Asset Intelligence - ours, end-to-end",
+  "Access Control - internationally curated and localised",
   "India-first support, global standard",
 ];
 
@@ -40,7 +40,7 @@ export function ThesisSection() {
           <motion.div variants={itemVariants} className="lg:col-span-3">
             <div className="inline-flex items-center gap-2 rounded-full border border-[#cdd5d2] bg-[#f4f6f2] px-3.5 py-1.5 font-mono text-[11px] uppercase tracking-widest text-[#007c67]">
               <span className="h-1.5 w-1.5 rounded-full bg-[#27d59b]" />
-              01 — Core Thesis
+              01 - Core Thesis
             </div>
           </motion.div>
 
@@ -51,7 +51,7 @@ export function ThesisSection() {
             </h2>
 
             <p className="mt-6 max-w-2xl text-base leading-relaxed text-[#607078] md:text-lg font-sans">
-              We own what we can — and curate, with the same accountability, what we should. No vendor hand-offs, no reconciling data across separate apps.
+              We own what we can - and curate, with the same accountability, what we should. No vendor hand-offs, no reconciling data across separate apps.
             </p>
 
             {/* Feature Points Grid */}

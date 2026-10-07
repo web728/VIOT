@@ -45,7 +45,7 @@ export function ProductSection({ product, index }: { product: Product; index: nu
         isEven ? "bg-paper text-ink" : "bg-ink text-white"
       }`}
     >
-      {/* Ambient glow — overflow-hidden lives HERE, not on the section itself,
+      {/* Ambient glow - overflow-hidden lives HERE, not on the section itself,
           so the sticky column below isn't blocked by a clipping ancestor */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div
@@ -57,7 +57,7 @@ export function ProductSection({ product, index }: { product: Product; index: nu
 
       <div className="container relative z-10 mx-auto max-w-7xl px-6">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-12">
-          {/* Left — pinned column with scroll-progress rail */}
+          {/* Left - pinned column with scroll-progress rail */}
           <div className="lg:col-span-5">
             <div className="flex gap-5 lg:sticky lg:top-28">
               <motion.div
@@ -126,7 +126,7 @@ export function ProductSection({ product, index }: { product: Product; index: nu
             </div>
           </div>
 
-          {/* Right — scrolling content with reveal animations */}
+          {/* Right - scrolling content with reveal animations */}
           <div className="space-y-5 lg:col-span-7">
             <motion.div
               initial={{ opacity: 0, y: 24 }}

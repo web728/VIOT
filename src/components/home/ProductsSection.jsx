@@ -619,7 +619,7 @@ export function ProductsSection() {
 
       {/* =====================================================*
 
-         BACKGROUND ANIMATION — UNCHANGED*
+         BACKGROUND ANIMATION - UNCHANGED*
 
      ===================================================== */}
 

@@ -36,7 +36,7 @@ export const metadata: Metadata = {
 
   title: {
     default:
-      "VIoT — Track what moves. Secure what matters. Control who gets in.",
+      "VIoT - Track what moves. Secure what matters. Control who gets in.",
     template: "%s | VIoT",
   },
 
@@ -75,7 +75,7 @@ export const metadata: Metadata = {
     type: "website",
     siteName: "VIoT",
     title:
-      "VIoT — Track what moves. Secure what matters. Control who gets in.",
+      "VIoT - Track what moves. Secure what matters. Control who gets in.",
     description:
       "Fleet Intelligence, Asset Intelligence and Access Control unified on one platform with India-first support.",
     url: "https://viot.in",
@@ -84,7 +84,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary",
     title:
-      "VIoT — Track what moves. Secure what matters. Control who gets in.",
+      "VIoT - Track what moves. Secure what matters. Control who gets in.",
     description:
       "Fleet Intelligence, Asset Intelligence and Access Control unified on one platform with India-first support.",
   },

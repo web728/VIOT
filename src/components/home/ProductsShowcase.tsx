@@ -459,7 +459,7 @@ export function ProductsShowcase() {
 
               >
 
-                {/* Image — no text on top of it */}
+                {/* Image - no text on top of it */}
 
                 <div className="relative aspect-[16/10] overflow-hidden rounded-xl bg-ink">
 

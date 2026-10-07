@@ -37,7 +37,7 @@ export async function notifyAdmins(submission: ContactSubmission) {
     service: "gmail",
     auth: { user: gmailUser, pass: requiredEnv("GMAIL_APP_PASSWORD") },
   });
-  const subject = `New VIoT website enquiry — ${submission.company || submission.name}`;
+  const subject = `New VIoT website enquiry - ${submission.company || submission.name}`;
   const details = [
     `Name: ${submission.name}`,
     `Email: ${submission.email}`,

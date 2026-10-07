@@ -36,7 +36,7 @@ const values = [
 
     title: "Follow-through",
 
-    copy: "Stay accountable through deployment, operation and ongoing support—not only before implementation.",
+    copy: "Stay accountable through deployment, operation and ongoing support-not only before implementation.",
 
   },
 

@@ -171,12 +171,12 @@ export const products: Product[] = [
       "4G remote monitoring",
     ],
     keyCapabilities: [
-      "Triple-channel HD recording — one 1080P front camera and two 720P HD channels provide simultaneous road, cabin or surrounding-vehicle coverage.",
-      "AI safety monitoring — ADAS, DMS and BSD can identify lane departure, forward-collision risk, fatigue, mobile-phone use, smoking, blind spots and unsafe driving behaviour.",
-      "4G remote connectivity — built-in 4G LTE supports live video, remote monitoring, cloud connectivity and OTA updates.",
-      "Fleet operations — live preview, playback and device settings can be managed remotely, with built-in microphone and speaker support for two-way voice communication.",
-      "Secure recording continuity — a built-in supercapacitor helps protect important recordings during sudden power interruption.",
-      "Accurate positioning — GPS + Beidou supports vehicle location, route history and trip tracking.",
+      "Triple-channel HD recording - one 1080P front camera and two 720P HD channels provide simultaneous road, cabin or surrounding-vehicle coverage.",
+      "AI safety monitoring - ADAS, DMS and BSD can identify lane departure, forward-collision risk, fatigue, mobile-phone use, smoking, blind spots and unsafe driving behaviour.",
+      "4G remote connectivity - built-in 4G LTE supports live video, remote monitoring, cloud connectivity and OTA updates.",
+      "Fleet operations - live preview, playback and device settings can be managed remotely, with built-in microphone and speaker support for two-way voice communication.",
+      "Secure recording continuity - a built-in supercapacitor helps protect important recordings during sudden power interruption.",
+      "Accurate positioning - GPS + Beidou supports vehicle location, route history and trip tracking.",
     ],
     specs: [
       ["Processor", "Dual-core processor @ 1.5GHz"],
@@ -227,11 +227,11 @@ export const products: Product[] = [
       "Tamper and lock-cut alerts",
     ],
     keyCapabilities: [
-      "Multiple positioning methods — GNSS, AGPS, Wi-Fi and LBS provide location visibility across logistics workflows.",
-      "Flexible lock control — unlock through IC card, BLE, SMS, platform, app, geo-fence or scheduled timing depending on configuration.",
-      "Security alarms — shell-open, lock-cut, lock-breakdown, low-power and overspeed events can be reported to the platform.",
-      "Power-aware reporting — moving/static, latent and scheduled wake modes reduce power consumption when continuous reporting is not required.",
-      "Rope and pole formats — supports rope-type and pole-type locking configurations for different cargo and trailer applications.",
+      "Multiple positioning methods - GNSS, AGPS, Wi-Fi and LBS provide location visibility across logistics workflows.",
+      "Flexible lock control - unlock through IC card, BLE, SMS, platform, app, geo-fence or scheduled timing depending on configuration.",
+      "Security alarms - shell-open, lock-cut, lock-breakdown, low-power and overspeed events can be reported to the platform.",
+      "Power-aware reporting - moving/static, latent and scheduled wake modes reduce power consumption when continuous reporting is not required.",
+      "Rope and pole formats - supports rope-type and pole-type locking configurations for different cargo and trailer applications.",
     ],
     howItWorks:
       "When the rope or pole is inserted, the device is ready to lock. Locking and unlocking can be authorised through configured channels such as IC card, BLE, SMS or the platform. LED, buzzer and voice prompts indicate lock state and operation result. The device reports location, lock state and configured security events to the platform, while power-saving modes adjust reporting behaviour when the asset is static or sleeping.",
@@ -291,33 +291,33 @@ export const products: Product[] = [
     lede:
       "Cabinets, manholes, gates, containers and security doors can be managed without physical-key handovers, with every authorised opening visible on the VIoT platform.",
     description:
-      "Battery-free, keyless locking for the access points that matter most — cabinets, manholes, gates, containers, and security doors across critical infrastructure sites. Every access is logged, authorised remotely, and visible on the VIoT platform, so site teams stop depending on physical keys and start managing access the way they manage every other asset.",
+      "Battery-free, keyless locking for the access points that matter most - cabinets, manholes, gates, containers, and security doors across critical infrastructure sites. Every access is logged, authorised remotely, and visible on the VIoT platform, so site teams stop depending on physical keys and start managing access the way they manage every other asset.",
     points: [
       "Battery-free locking",
       "Remote, revocable access",
       "One-time, auditable access codes",
     ],
     keyCapabilities: [
-      "Battery-free locking — no batteries, wiring, or recurring replacement; the lock draws its energy from the key device at the moment of opening",
-      "Remote, revocable access — grant or cancel access instantly from the platform; no physical key ever needs to be collected back",
-      "One-time, auditable access codes — every opening uses a fresh credential, so a lost key device or code carries no standing risk",
-      "Works through outages — stays operational even if mobile network or site power fails",
-      "Built for harsh sites — rated for extreme heat, cold, moisture, and vandalism; suited to outdoor and unmanned locations",
-      "Centralised management — manage locks, sites, and user access on-premise or via a secure cloud, with a full access log for every door",
+      "Battery-free locking - no batteries, wiring, or recurring replacement; the lock draws its energy from the key device at the moment of opening",
+      "Remote, revocable access - grant or cancel access instantly from the platform; no physical key ever needs to be collected back",
+      "One-time, auditable access codes - every opening uses a fresh credential, so a lost key device or code carries no standing risk",
+      "Works through outages - stays operational even if mobile network or site power fails",
+      "Built for harsh sites - rated for extreme heat, cold, moisture, and vandalism; suited to outdoor and unmanned locations",
+      "Centralised management - manage locks, sites, and user access on-premise or via a secure cloud, with a full access log for every door",
     ],
     howItWorks:
-      "An authorised user requests access through a mobile key device or an app, which is issued a fresh, single-use credential tied to that one opening — nothing is stored on the lock itself. The lock reports every open/close event, along with tamper and battery-health alerts from its connected door/sensor guard, back to the VIoT platform over the site's available network. On the platform, teams see live lock status, a complete access log (who opened which lock, when), and instant alerts for forced entry, sabotage, or a door left open.",
+      "An authorised user requests access through a mobile key device or an app, which is issued a fresh, single-use credential tied to that one opening - nothing is stored on the lock itself. The lock reports every open/close event, along with tamper and battery-health alerts from its connected door/sensor guard, back to the VIoT platform over the site's available network. On the platform, teams see live lock status, a complete access log (who opened which lock, when), and instant alerts for forced entry, sabotage, or a door left open.",
     builtFor: [
-      "Energy & utilities — substations, distribution cabinets, local network stations",
-      "Water & telecom infrastructure — treatment sites, manholes, shaft covers, telecom towers",
-      "Logistics & storage — containers, fenced yards, secure supply-chain boxes",
-      "Security doors & gates — perimeter access, fire-rated doors, padlocked gates",
-      "Managed properties — multi-site buildings and facilities needing centralised, keyless access control",
+      "Energy & utilities - substations, distribution cabinets, local network stations",
+      "Water & telecom infrastructure - treatment sites, manholes, shaft covers, telecom towers",
+      "Logistics & storage - containers, fenced yards, secure supply-chain boxes",
+      "Security doors & gates - perimeter access, fire-rated doors, padlocked gates",
+      "Managed properties - multi-site buildings and facilities needing centralised, keyless access control",
     ],
     specs: [
       [
         "Locking technology",
-        "Battery-free — lock draws its operating energy from the key device at the moment of opening",
+        "Battery-free - lock draws its operating energy from the key device at the moment of opening",
       ],
       [
         "Access credential",
@@ -325,7 +325,7 @@ export const products: Product[] = [
       ],
       [
         "Key device",
-        "Portable keypad fob — rechargeable via USB, supplies up to 1,000 openings per charge",
+        "Portable keypad fob - rechargeable via USB, supplies up to 1,000 openings per charge",
       ],
       [
         "Management software",
@@ -354,7 +354,7 @@ export const products: Product[] = [
         "Form factors available",
         "Key safe, lock inserts (Ø33/35/46/58/67 mm), manhole lock, swing-handle lock, profile cylinder, security door fitting, container lock, padlock",
       ],
-      ["Data hosting", "On-premise or cloud — customer's choice"],
+      ["Data hosting", "On-premise or cloud - customer's choice"],
     ],
   },
 
@@ -434,21 +434,21 @@ export const products: Product[] = [
         name: "Humidity Sensor",
         imagePlaceholder: "[Image: Humidity Sensor]",
         description:
-          "Measures relative humidity inside a cargo or storage compartment, typically as part of a combined temperature-humidity probe. (Interface to confirm — proposed below) It connects to the 1-Wire input of the GPS device, sharing the bus with the temperature probe. The platform shows live humidity %, trends, and threshold alerts for moisture-sensitive cargo.",
+          "Measures relative humidity inside a cargo or storage compartment, typically as part of a combined temperature-humidity probe. (Interface to confirm - proposed below) It connects to the 1-Wire input of the GPS device, sharing the bus with the temperature probe. The platform shows live humidity %, trends, and threshold alerts for moisture-sensitive cargo.",
       },
       {
         id: "load-axle-sensor",
         name: "Load/Axle Sensor",
         imagePlaceholder: "[Image: Load/Axle Sensor]",
         description:
-          "Measures weight and load distribution across axles using a load cell mounted on the suspension or chassis. (Interface to confirm — proposed below) It connects to the Analog Input (AIN) of the GPS device, which reads the load cell's voltage output. The platform shows live load weight per axle, overload alerts, and uneven-distribution warnings.",
+          "Measures weight and load distribution across axles using a load cell mounted on the suspension or chassis. (Interface to confirm - proposed below) It connects to the Analog Input (AIN) of the GPS device, which reads the load cell's voltage output. The platform shows live load weight per axle, overload alerts, and uneven-distribution warnings.",
       },
       {
         id: "lux-sensor",
         name: "Lux Sensor",
         imagePlaceholder: "[Image: Lux Sensor]",
         description:
-          "Measures ambient light intensity and is used in lighting applications — for example, verifying cabin or headlight status. It connects to the RS485 input of the GPS device and sends light-level readings over the serial line. The platform shows live light levels, on/off status, and light-triggered event logs.",
+          "Measures ambient light intensity and is used in lighting applications - for example, verifying cabin or headlight status. It connects to the RS485 input of the GPS device and sends light-level readings over the serial line. The platform shows live light levels, on/off status, and light-triggered event logs.",
       },
     ],
     specs: [
@@ -456,11 +456,11 @@ export const products: Product[] = [
       ["Temperature Sensor", "1-Wire input of the GPS device"],
       [
         "Humidity Sensor",
-        "1-Wire input of the GPS device — interface to confirm",
+        "1-Wire input of the GPS device - interface to confirm",
       ],
       [
         "Load/Axle Sensor",
-        "Analog Input (AIN) of the GPS device — interface to confirm",
+        "Analog Input (AIN) of the GPS device - interface to confirm",
       ],
       ["Lux Sensor", "RS485 input of the GPS device"],
     ],

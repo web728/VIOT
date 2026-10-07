@@ -46,7 +46,7 @@ export function PageHero({
       <div className="relative z-10 mx-auto max-w-[1440px]">
         <div className="grid grid-cols-1 lg:grid-cols-12 lg:gap-14">
           {/* =====================================================
-              LEFT — MAIN HERO CONTENT
+              LEFT - MAIN HERO CONTENT
           ===================================================== */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -83,7 +83,7 @@ export function PageHero({
           </motion.div>
 
           {/* =====================================================
-              RIGHT — CLEAN NEGATIVE SPACE
+              RIGHT - CLEAN NEGATIVE SPACE
           ===================================================== */}
           <div className="hidden lg:col-span-4 lg:block">
             <div className="relative h-full min-h-[170px]">

@@ -72,7 +72,7 @@ const platformModules = [
     title: "Access Control",
     eyebrow: "Access Intelligence",
     tagline: "Facility gates & credential sync.",
-    desc: "Door and facility hardware reporting into its own certified platform — door status, access logs and credential management.",
+    desc: "Door and facility hardware reporting into its own certified platform - door status, access logs and credential management.",
     features: [
       "Door status & access logs",
       "Credential management",

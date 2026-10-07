@@ -41,7 +41,7 @@ export function IndustriesSection() {
           className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-signal"
         >
           <span className="h-1.5 w-1.5 rounded-full bg-signal animate-pulse" />
-          02 — Who We Serve
+          02 - Who We Serve
         </motion.div>
 
         {/* Featured Banner / Hero Grid */}
