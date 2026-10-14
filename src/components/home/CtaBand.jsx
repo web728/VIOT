@@ -445,7 +445,7 @@ export function CtaBand() {
             <h2 className="mt-3 max-w-2xl font-heading text-3xl font-semibold leading-[1.05] tracking-[-0.045em] text-[#081b24] sm:text-4xl">
               Let&apos;s solve your{" "}
               <span className="text-[#007c67]">
-                connected challenge.
+                connectivity challenges.
               </span>
             </h2>
           </div>

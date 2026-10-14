@@ -234,12 +234,7 @@ export function StatsSection() {
                 ${index < stats.length - 1 ? "sm:pr-7" : ""}
               `}
             >
-              <div className="mb-5 flex items-center gap-2">
-                <span className="font-mono text-[9px] tracking-[0.16em] text-muted">
-                  0{index + 1}
-                </span>
-                <span className="h-1 w-1 rounded-full bg-signal" />
-              </div>
+              
 
               <div className="flex min-w-0 items-baseline">
                 <AnimatedCounter value={stat.number} />

@@ -49,15 +49,25 @@ const solutionLinks = [
 ] as const;
 
 const platformLinks = [
+
   ["Fleet Intelligence", "/platform/fleet-management"],
+
   ["EV Management", "/platform/ev-management"],
+
   ["Safe Logistics", "/platform/e-lock"],
+
   ["Video Intelligence", "/platform/video"],
+
   ["Smart Access Control", "/platform/access-control"],
+
   ["Temperature & Humidity Monitoring", "/platform/temperature-humidity-monitoring"],
+
   ["Fuel Monitoring", "/platform/fuel-monitoring"],
+
   ["Load & Weight Analytics", "/platform/load-weight-analytics"],
+
   ["Industrial Automation", "/platform/industrial-automation"],
+
 ] as const;
 
 const navItems = [
@@ -94,31 +104,15 @@ const navItems = [
 
 ] as const;
 
-function NavGroup({
-
-  label,
-
-  href,
-
-  links,
-
-  active,
-
-  isScrolled,
-
-}: {
-
+type NavGroupProps = {
   label: string;
-
   href: string;
-
   links: ReadonlyArray<readonly [string, string]>;
-
   active: boolean;
+  isLightHeader: boolean;
+};
 
-  isScrolled: boolean;
-
-}) {
+function NavGroup({ label, href, links, active, isLightHeader }: NavGroupProps) {
 
   const [hover, setHover] = useState(false);
 
@@ -144,7 +138,7 @@ function NavGroup({
 
             ? "#27d59b"
 
-            : isScrolled
+            : isLightHeader
 
               ? hover
 
@@ -298,7 +292,7 @@ export function Header() {
 
   const [open, setOpen] = useState(false);
 
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [isLightHeader, setIsLightHeader] = useState(true);
 
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
 
@@ -311,28 +305,57 @@ export function Header() {
   };
 
   useEffect(() => {
+    let frame: number | null = null;
 
-    const update = () => {
+    const updateHeaderContrast = () => {
+      // Inspect the actual page under the fixed header, not the scroll position.
+      const header = document.querySelector('[data-adaptive-header]');
+      const x = window.innerWidth / 2;
+      const y = Math.min(43, window.innerHeight - 1);
+      const layers = document.elementsFromPoint(x, y);
+      let backgroundIsDark = false;
+      let foundBackground = false;
 
-      setIsScrolled(window.scrollY > 20);
+      for (const layer of layers) {
+        if (header?.contains(layer)) continue;
+        const style = window.getComputedStyle(layer);
+        const rgb = style.backgroundColor.match(
+          /rgba?\(\s*([\d.]+)[,\s]+([\d.]+)[,\s]+([\d.]+)(?:[,\s/]+([\d.]+))?\s*\)/
+        );
+        if (rgb) {
+          const alpha = rgb[4] === undefined ? 1 : Number(rgb[4]);
+          if (alpha >= 0.45) {
+            const channels = [Number(rgb[1]), Number(rgb[2]), Number(rgb[3])]
+              .map((value) => value / 255)
+              .map((value) => value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4);
+            const brightness = channels[0] * 0.2126 + channels[1] * 0.7152 + channels[2] * 0.0722;
+            backgroundIsDark = brightness < 0.18;
+            foundBackground = true;
+            break;
+          }
+        }
+        // Full-bleed hero video/image backgrounds are handled by their overlays;
+        // if no solid overlay exists, preserve the initial dark-hero assumption.
+      }
 
+      // Default to a dark hero until a section with a solid background is found.
+      setIsLightHeader(foundBackground ? backgroundIsDark : true);
     };
 
-    update();
+    const scheduleUpdate = () => {
+      if (frame !== null) cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(updateHeaderContrast);
+    };
 
-    window.addEventListener("scroll", update, {
-
-      passive: true,
-
-    });
-
+    scheduleUpdate();
+    window.addEventListener("scroll", scheduleUpdate, { passive: true });
+    window.addEventListener("resize", scheduleUpdate);
     return () => {
-
-      window.removeEventListener("scroll", update);
-
+      window.removeEventListener("scroll", scheduleUpdate);
+      window.removeEventListener("resize", scheduleUpdate);
+      if (frame !== null) cancelAnimationFrame(frame);
     };
-
-  }, []);
+  }, [pathname]);
 
   useEffect(() => {
 
@@ -348,7 +371,7 @@ export function Header() {
 
   return (
 
-  <header className="fixed left-0 top-0 z-50 w-full rounded-xl px-3 pt-3 sm:px-5">
+  <header data-adaptive-header className="fixed left-0 top-0 z-50 w-full rounded-xl px-3 pt-3 sm:px-5">
 
       {/* Main Navbar */}
 
@@ -356,9 +379,9 @@ export function Header() {
 
         style={{
 
-          backgroundColor: isScrolled ? "#ffffff" : "#0d2935",
+          backgroundColor: isLightHeader ? "#ffffff" : "#0d2935",
 
-          borderColor: isScrolled
+          borderColor: isLightHeader
 
             ? "#d8e0dd"
 
@@ -418,7 +441,7 @@ className="relative mx-auto flex h-[56px] max-w-4xl items-center justify-between
 
                   ? "#27d59b"
 
-                  : isScrolled
+                  : isLightHeader
 
                     ? "#081b24"
 
@@ -446,7 +469,7 @@ className="relative mx-auto flex h-[56px] max-w-4xl items-center justify-between
 
                   ? "#27d59b"
 
-                  : isScrolled
+                  : isLightHeader
 
                     ? "#081b24"
 
@@ -476,7 +499,7 @@ className="relative mx-auto flex h-[56px] max-w-4xl items-center justify-between
 
               active={pathname.startsWith(item.href)}
 
-              isScrolled={isScrolled}
+              isLightHeader={isLightHeader}
 
             />
 
@@ -494,9 +517,9 @@ className="relative mx-auto flex h-[56px] max-w-4xl items-center justify-between
 
             style={{
 
-              backgroundColor: isScrolled ? "#081b24" : "#27d59b",
+              backgroundColor: isLightHeader ? "#081b24" : "#27d59b",
 
-              color: isScrolled ? "#ffffff" : "#081b24",
+              color: isLightHeader ? "#ffffff" : "#081b24",
 
             }}
 
@@ -528,13 +551,13 @@ className="relative mx-auto flex h-[56px] max-w-4xl items-center justify-between
 
             style={{
 
-              backgroundColor: isScrolled
+              backgroundColor: isLightHeader
 
                 ? "#f3f6f4"
 
                 : "rgba(255,255,255,0.08)",
 
-              borderColor: isScrolled
+              borderColor: isLightHeader
 
                 ? "#d8e0dd"
 
@@ -554,7 +577,7 @@ className="relative mx-auto flex h-[56px] max-w-4xl items-center justify-between
 
                   ? "translate-y-[3.25px] rotate-45 bg-[#081b24]"
 
-                  : isScrolled
+                  : isLightHeader
 
                     ? "bg-[#081b24]"
 
@@ -572,7 +595,7 @@ className="relative mx-auto flex h-[56px] max-w-4xl items-center justify-between
 
                   ? "-translate-y-[3.25px] -rotate-45 bg-[#081b24]"
 
-                  : isScrolled
+                  : isLightHeader
 
                     ? "bg-[#081b24]"
 

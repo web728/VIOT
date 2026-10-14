@@ -483,11 +483,7 @@ export function ProductsShowcase() {
 
                 <div className="px-2 pb-2 pt-5">
 
-                  <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-signal-dark">
-
-                    {product.meta}
-
-                  </span>
+                 
 
                   <div className="mt-2 flex items-start justify-between gap-4">
 
@@ -505,21 +501,7 @@ export function ProductsShowcase() {
 
                   </div>
 
-                  <div className="mt-4 border-t border-line pt-4">
-
-                    <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted">
-
-                      Key specification
-
-                    </p>
-
-                    <p className="mt-1.5 text-sm font-medium text-ink">
-
-                      {product.spec}
-
-                    </p>
-
-                  </div>
+                 
 
                 </div>
 

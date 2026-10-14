@@ -3,24 +3,6 @@
 import { motion } from "framer-motion";
 import { DataFlowVisual } from "./DataFlowVisual";
 
-const divisions = [
-  {
-    number: "01",
-    title: "Fleet Intelligence",
-    text: "Vehicles, journeys and driver activity.",
-  },
-  {
-    number: "02",
-    title: "Asset Intelligence",
-    text: "Cargo, equipment and connected sensors.",
-  },
-  {
-    number: "03",
-    title: "Access Control",
-    text: "Physical access and security events.",
-  },
-];
-
 /* Same background animation as the Platform section */
 function ServiceMapBackground() {
   return (
@@ -54,101 +36,56 @@ function ServiceMapBackground() {
           stroke="rgba(255,255,255,0.065)"
           strokeWidth="1"
         />
-
         <motion.path
           d="M-120 720 C180 670 330 510 580 560 S930 790 1190 650 S1480 430 1730 500"
           stroke="rgba(39,213,155,0.11)"
           strokeWidth="1"
           strokeDasharray="3 18"
           animate={{ strokeDashoffset: [0, -220] }}
-          transition={{
-            duration: 16,
-            repeat: Infinity,
-            ease: "linear",
-          }}
+          transition={{ duration: 16, repeat: Infinity, ease: "linear" }}
         />
-
         <path
           d="M140 1040 C290 760 480 730 690 510 S1050 190 1460 -80"
           stroke="rgba(255,255,255,0.04)"
           strokeWidth="1"
         />
-
         <motion.path
           d="M-80 550 C230 520 410 310 670 330 S1050 640 1700 310"
           stroke="rgba(39,213,155,0.12)"
           strokeWidth="1"
           strokeDasharray="2 22"
           animate={{ strokeDashoffset: [0, 180] }}
-          transition={{
-            duration: 18,
-            repeat: Infinity,
-            ease: "linear",
-          }}
+          transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
         />
       </svg>
 
       {/* Moving signals */}
       <motion.span
         className="absolute left-[18%] top-[31%] h-1.5 w-1.5 rounded-full bg-signal"
-        animate={{
-          x: [0, 130, 260],
-          opacity: [0, 0.8, 0],
-        }}
-        transition={{
-          duration: 5,
-          repeat: Infinity,
-          ease: "linear",
-        }}
+        animate={{ x: [0, 130, 260], opacity: [0, 0.8, 0] }}
+        transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
       />
-
       <motion.span
         className="absolute left-[58%] top-[64%] h-1.5 w-1.5 rounded-full bg-signal"
-        animate={{
-          x: [0, -110, -220],
-          opacity: [0, 0.75, 0],
-        }}
-        transition={{
-          duration: 6,
-          delay: 1.2,
-          repeat: Infinity,
-          ease: "linear",
-        }}
+        animate={{ x: [0, -110, -220], opacity: [0, 0.75, 0] }}
+        transition={{ duration: 6, delay: 1.2, repeat: Infinity, ease: "linear" }}
       />
-
       <motion.span
         className="absolute right-[17%] top-[28%] h-1 w-1 rounded-full bg-signal"
-        animate={{
-          y: [0, 70, 140],
-          opacity: [0, 0.7, 0],
-        }}
-        transition={{
-          duration: 5.5,
-          delay: 2,
-          repeat: Infinity,
-          ease: "linear",
-        }}
+        animate={{ y: [0, 70, 140], opacity: [0, 0.7, 0] }}
+        transition={{ duration: 5.5, delay: 2, repeat: Infinity, ease: "linear" }}
       />
 
       {/* Large subtle rings */}
       <motion.div
         className="absolute right-[3%] top-[8%] h-[480px] w-[480px] rounded-full border border-white/[0.04]"
         animate={{ rotate: 360 }}
-        transition={{
-          duration: 80,
-          repeat: Infinity,
-          ease: "linear",
-        }}
+        transition={{ duration: 80, repeat: Infinity, ease: "linear" }}
       />
-
       <motion.div
         className="absolute right-[9%] top-[16%] h-[320px] w-[320px] rounded-full border border-signal/[0.055]"
         animate={{ rotate: -360 }}
-        transition={{
-          duration: 55,
-          repeat: Infinity,
-          ease: "linear",
-        }}
+        transition={{ duration: 55, repeat: Infinity, ease: "linear" }}
       />
 
       {/* Ambient nodes */}
@@ -178,16 +115,11 @@ function ServiceMapBackground() {
 
 export function ServiceMapSection() {
   return (
-    <section className="relative w-full overflow-hidden bg-ink text-white">
+    <section className="relative w-full min-w-0 overflow-hidden bg-ink text-white">
       <ServiceMapBackground />
 
       <div
-        className="
-          relative z-10 mx-auto w-full max-w-7xl
-          px-5 py-14
-          sm:px-8 sm:py-16
-          lg:px-12 lg:py-20
-        "
+        className="relative z-10 mx-auto w-full min-w-0 max-w-7xl px-4 py-12 min-[375px]:px-5 sm:px-8 sm:py-16 lg:px-12 lg:py-20"
       >
         {/* Intro */}
         <div className="grid min-w-0 gap-8 lg:grid-cols-12 lg:gap-12">
@@ -202,115 +134,18 @@ export function ServiceMapSection() {
               The connected layer
             </p>
 
-        <h2
-  className="
-    mt-4 max-w-3xl
-    break-words
-    font-heading font-semibold
-    text-3xl leading-[1.06] tracking-[-0.045em]
-    sm:text-4xl
-    lg:text-[52px]
-  "
->
-  Every signal has a journey.
-  <br className="hidden sm:block" />
-  <span className="text-[#27d59b]"> VIoT makes it useful.</span>
-</h2>
+            <h2 className="mt-4 max-w-3xl break-words font-heading text-[clamp(1.65rem,7.5vw,2.25rem)] font-semibold leading-[1.1] tracking-[-0.045em] sm:text-4xl sm:leading-[1.06] lg:text-[52px]">
+              Every signal has a journey.
+              <br className="hidden sm:block" />
+              <span className="text-[#27d59b]"> VIoT makes it useful.</span>
+            </h2>
           </motion.div>
-
-          {/* <motion.div
-            initial={{ opacity: 0, y: 14 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="flex min-w-0 items-start lg:col-span-5 lg:items-end"
-          >
-            <p
-              className="
-                w-full max-w-md
-                break-words
-                text-sm leading-6 text-white/50
-                sm:text-[15px] sm:leading-6
-              "
-            >
-              From the first signal received by a device to the information
-              used by an operations team, VIoT connects the physical world
-              with the decisions that follow.
-            </p>
-          </motion.div> */}
         </div>
 
         {/* Data-flow illustration */}
-        <div className="mt-10 w-full min-w-0 overflow-hidden sm:mt-12">
+        <div className="mt-8 w-full min-w-0 max-w-full overflow-hidden sm:mt-12">
           <div className="w-full min-w-0 max-w-full">
             <DataFlowVisual />
-          </div>
-        </div>
-
-        {/* Divisions */}
-        <div
-          className="
-            mt-10
-            w-full
-            min-w-0
-            rounded-2xl
-            border border-white/10
-            pt-1
-            sm:mt-12
-          "
-        >
-          <div className="grid min-w-0 grid-cols-1 sm:grid-cols-3">
-            {divisions.map((division, index) => (
-              <motion.div
-                key={division.number}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{
-                  duration: 0.5,
-                  delay: index * 0.08,
-                }}
-                className={`
-                  min-w-0 overflow-hidden px-5 py-5
-                  sm:px-6 sm:py-5
-                  lg:px-7
-                  ${
-                    index > 0
-                      ? "border-t border-white/10 sm:border-l sm:border-t-0"
-                      : ""
-                  }
-                `}
-              >
-                <div className="flex min-w-0 items-start gap-3">
-                  <span className="shrink-0 pt-0.5 font-mono text-[9px] text-white/25">
-                    {division.number}
-                  </span>
-
-                  <h3
-                    className="
-                      min-w-0
-                      break-words
-                      font-heading text-sm font-medium
-                      leading-5 text-white
-                    "
-                  >
-                    {division.title}
-                  </h3>
-                </div>
-
-                <p
-                  className="
-                    mt-2
-                    break-words
-                    pl-7
-                    text-xs leading-5
-                    text-white/40
-                  "
-                >
-                  {division.text}
-                </p>
-              </motion.div>
-            ))}
           </div>
         </div>
       </div>
