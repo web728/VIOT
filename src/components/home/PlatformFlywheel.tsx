@@ -460,79 +460,19 @@ export function PlatformFlywheel() {
             <span className="h-px w-8 bg-signal-dark" />
 
             <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-signal-dark">
-              How the platform works
+              How the system works
             </span>
           </div>
 
-          <h2 className="max-w-xl font-heading text-4xl font-semibold leading-[1.03] tracking-[-0.045em] text-ink sm:text-5xl lg:text-[56px]">
-            Capture. Deliver.
+          <h2 className="max-w-xl font-heading text-4xl font-semibold leading-[1.03] tracking-[-0.045em] text-ink sm:text-4xl lg:text-[46px]">
+            A single, unbroken path from connected hardware to the teams,
             <br />
-            Read. Act.
+          who run the operation.
           </h2>
 
-          <p className="mt-6 max-w-md text-[15px] leading-7 text-muted sm:text-base">
-            A single, unbroken path from connected hardware to the teams who
-            run the operation.
-          </p>
+          
 
-          {/* Active description */}
-          <div className="relative mt-9 min-h-[138px] max-w-md border-l border-signal-dark/25 pl-6">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={currentStep.number}
-                initial={{
-                  opacity: 0,
-                  y: 8,
-                }}
-                animate={{
-                  opacity: 1,
-                  y: 0,
-                }}
-                exit={{
-                  opacity: 0,
-                  y: -8,
-                }}
-                transition={{
-                  duration: 0.3,
-                  ease: [0.16, 1, 0.3, 1],
-                }}
-              >
-                <div className="flex items-center gap-3">
-                  <span className="font-mono text-[10px] font-semibold tracking-[0.15em] text-signal-dark">
-                    {currentStep.number}
-                  </span>
-
-                  <span className="h-px w-5 bg-signal-dark/30" />
-
-                  <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.15em] text-signal-dark">
-                    {currentStep.title}
-                  </span>
-                </div>
-
-                <p className="mt-3 max-w-sm text-sm leading-6 text-ink/80">
-                  {currentStep.desc}
-                </p>
-              </motion.div>
-            </AnimatePresence>
-
-            {/* Progress rail */}
-            <div className="absolute bottom-0 left-6 h-px w-[calc(100%-1.5rem)] overflow-hidden bg-ink/[0.08]">
-              <motion.div
-                key={`progress-${active}`}
-                className="h-full origin-left bg-signal-dark"
-                initial={{
-                  scaleX: 0,
-                }}
-                animate={{
-                  scaleX: 1,
-                }}
-                transition={{
-                  duration: STEP_DURATION,
-                  ease: "linear",
-                }}
-              />
-            </div>
-          </div>
+         
 
           <Link
             href="/platform"
