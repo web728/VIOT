@@ -8,7 +8,7 @@ import { ArrowIcon } from "@/components/icons";
 const heroSlides = [
   {
     id: 1,
-    video: "/video/video-1.1.mp4",
+    video: "/video/video-1.mp4",
     title: "Track what moves.",
     cta: "Explore Vehicle Telematics",
     href: "/products/vehicle-telematics",
