@@ -1,7 +1,6 @@
 @import "tailwindcss";
 
 @theme {
-  /* Brand */
   --color-ink: #081b24;
   --color-ink-2: #0d2935;
   --color-paper: #f4f6f2;
@@ -9,20 +8,15 @@
   --color-muted: #607078;
   --color-line: #cdd5d2;
 
-  /* Accent */
   --color-signal: #27d59b;
   --color-signal-dark: #007c67;
   --color-amber: #ffb321;
 
-  /* Typography */
   --font-sans: var(--viot-body), -apple-system, BlinkMacSystemFont, "Segoe UI",
     Arial, sans-serif;
-
   --font-heading: var(--viot-heading), var(--font-sans);
-
   --font-mono: var(--viot-mono), "SFMono-Regular", Consolas, monospace;
 
-  /* Layout */
   --spacing-18: 4.5rem;
   --spacing-22: 5.5rem;
   --spacing-30: 7.5rem;
@@ -42,8 +36,19 @@ body {
   background: var(--color-paper);
   color: var(--color-ink);
   font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 26px;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
 }
 
 a {
@@ -77,14 +82,93 @@ svg {
   color: var(--color-ink);
 }
 
-/* Accessibility */
+.viot-hero-title {
+  font-family: var(--font-heading);
+  font-size: 36px;
+  font-weight: 600;
+  line-height: 0.92;
+  letter-spacing: -2px;
+}
+
+.viot-hero-description {
+  max-width: 700px;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 28px;
+}
+
+.viot-section-title {
+  font-family: var(--font-heading);
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -2px;
+}
+
+.viot-section-subtitle {
+  font-family: var(--font-heading);
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.viot-body-copy {
+  max-width: 700px;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 26px;
+}
+
+.viot-card-title {
+  font-family: var(--font-heading);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.viot-card-copy {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22px;
+}
+
+.viot-label {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 18px;
+}
+
+@media (min-width: 1024px) {
+  .viot-hero-title {
+    font-size: 76px;
+    letter-spacing: -4.5px;
+  }
+
+  .viot-hero-description {
+    font-size: 18px;
+  }
+
+  .viot-section-title {
+    font-size: 46px;
+  }
+
+  .viot-section-subtitle {
+    font-size: 26px;
+  }
+
+  .viot-card-title {
+    font-size: 22px;
+  }
+}
 
 :where(a, button, input, select, textarea):focus-visible {
   outline: 2px solid var(--color-amber);
   outline-offset: 3px;
 }
-
-/* Contact form honeypot */
 
 .hp-field {
   position: absolute !important;
@@ -93,8 +177,6 @@ svg {
   height: 1px !important;
   overflow: hidden !important;
 }
-
-/* Skip navigation */
 
 .skip-link {
   position: fixed;
@@ -111,8 +193,6 @@ svg {
 .skip-link:focus {
   top: 12px;
 }
-
-/* Reduced motion */
 
 @media (prefers-reduced-motion: reduce) {
   html {

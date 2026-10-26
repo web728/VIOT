@@ -1,63 +1,56 @@
 import type { Metadata } from "next";
+
 import type { ReactNode } from "react";
 
 import Link from "next/link";
+
 import { notFound } from "next/navigation";
 
+import { PlatformSectionNav } from "./_components/platform-section-nav";
 import { ArrowIcon } from "@/components/icons";
-import {
-  breadcrumbSchema,
-  StructuredData,
-} from "@/components/structured-data";
-import { getSolution, solutions } from "@/lib/solutions";
-import Image from "next/image";
+
+import { getPlatformModule, platformModules } from "@/lib/platform-modules";
 
 export const dynamicParams = false;
 
-type SolutionPageParams = {
-  params: Promise<{
-    slug: string;
-  }>;
+type PlatformDetailParams = {
+  params: Promise<{ slug: string }>;
 };
 
+type Module = NonNullable<ReturnType<typeof getPlatformModule>>;
+
 export function generateStaticParams() {
-  return solutions.map(({ slug }) => ({ slug }));
+  return platformModules.map(({ slug }) => ({ slug }));
 }
 
 export async function generateMetadata({
   params,
-}: SolutionPageParams): Promise<Metadata> {
+}: PlatformDetailParams): Promise<Metadata> {
   const { slug } = await params;
-  const solution = getSolution(slug);
 
-  if (!solution) return {};
+  const module = getPlatformModule(slug);
+
+  if (!module) return {};
 
   return {
-    title: `${solution.name} | VIoT Solutions`,
-    description: solution.lede,
+    title: `${module.name} | VIoT`,
+
+    description: module.fleetIntelligence
+      ? "Most platforms show you where a vehicle is. VIoT helps operations teams understand what action to take before problems escalate."
+      : module.lede,
+
     alternates: {
       canonical: `/solutions/${slug}`,
     },
   };
 }
 
-/* =========================================================
-   VIoT BACKGROUND
-   Existing server-safe animated SVG language preserved.
-========================================================= */
-
 function VIoTBackground({ dark = false }: { dark?: boolean }) {
   const line = dark ? "rgba(255,255,255,0.05)" : "rgba(8,27,36,0.07)";
+
   const green = dark ? "rgba(39,213,155,0.15)" : "rgba(0,124,103,0.12)";
-  const softGreen = dark
-    ? "rgba(39,213,155,0.07)"
-    : "rgba(0,124,103,0.06)";
-  const ring = dark
-    ? "border-white/[0.035]"
-    : "border-[#081b24]/[0.04]";
-  const greenRing = dark
-    ? "border-[#27d59b]/[0.055]"
-    : "border-[#007c67]/[0.055]";
+
+  const softGreen = dark ? "rgba(39,213,155,0.07)" : "rgba(0,124,103,0.06)";
 
   return (
     <div
@@ -69,6 +62,7 @@ function VIoTBackground({ dark = false }: { dark?: boolean }) {
           dark ? "bg-[#27d59b]/[0.025]" : "bg-[#27d59b]/[0.022]"
         }`}
       />
+
       <div
         className={`absolute -right-56 bottom-[5%] h-[620px] w-[620px] rounded-full blur-3xl ${
           dark ? "bg-white/[0.012]" : "bg-[#081b24]/[0.022]"
@@ -85,18 +79,7 @@ function VIoTBackground({ dark = false }: { dark?: boolean }) {
           d="M-160 260 C120 50 390 100 620 285 S1050 610 1760 235"
           stroke={line}
           strokeWidth="1"
-          pathLength="1"
-          strokeDasharray="1"
-          strokeDashoffset="1"
-        >
-          <animate
-            attributeName="stroke-dashoffset"
-            from="1"
-            to="0"
-            dur="2.4s"
-            fill="freeze"
-          />
-        </path>
+        />
 
         <path
           d="M-180 700 C120 470 390 525 680 685 S1130 880 1780 560"
@@ -113,13 +96,6 @@ function VIoTBackground({ dark = false }: { dark?: boolean }) {
         </path>
 
         <path
-          d="M80 1080 C260 740 520 700 780 450 S1240 120 1620 -90"
-          stroke={line}
-          strokeOpacity="0.65"
-          strokeWidth="1"
-        />
-
-        <path
           d="M-120 470 C230 340 420 420 650 515 S1060 700 1730 455"
           stroke={softGreen}
           strokeWidth="1"
@@ -132,54 +108,42 @@ function VIoTBackground({ dark = false }: { dark?: boolean }) {
             repeatCount="indefinite"
           />
         </path>
+
+        <path
+          d="M80 1080 C260 740 520 700 780 450 S1240 120 1620 -90"
+          stroke={dark ? "rgba(255,255,255,0.035)" : "rgba(8,27,36,0.045)"}
+          strokeWidth="1"
+        />
       </svg>
 
       <div
-        className={`absolute right-[4%] top-[12%] h-[420px] w-[420px] rounded-full border ${ring}`}
-      >
-        <svg viewBox="0 0 100 100" className="h-full w-full">
-          <circle
-            cx="50"
-            cy="50"
-            r="49"
-            fill="none"
-            stroke="transparent"
-          />
-          <g>
-            <circle cx="50" cy="1.4" r="1.1" fill="#27d59b" opacity="0.65" />
-            <animateTransform
-              attributeName="transform"
-              type="rotate"
-              from="0 50 50"
-              to="360 50 50"
-              dur="60s"
-              repeatCount="indefinite"
-            />
-          </g>
-        </svg>
-      </div>
-
-      <div
-        className={`absolute right-[9%] top-[18%] h-[290px] w-[290px] rounded-full border ${greenRing}`}
+        className={`absolute right-[3%] top-[10%] h-[420px] w-[420px] rounded-full border ${
+          dark ? "border-white/[0.035]" : "border-[#081b24]/[0.045]"
+        }`}
       />
 
-      <span className="absolute left-[19%] top-[31%] h-1.5 w-1.5 rounded-full bg-[#27d59b] opacity-60" />
-      <span className="absolute left-[46%] top-[69%] h-1.5 w-1.5 rounded-full bg-[#27d59b] opacity-45" />
-      <span className="absolute right-[18%] top-[38%] h-1.5 w-1.5 rounded-full bg-[#27d59b] opacity-55" />
+      <div
+        className={`absolute right-[9%] top-[17%] h-[285px] w-[285px] rounded-full border ${
+          dark ? "border-[#27d59b]/[0.06]" : "border-[#007c67]/[0.06]"
+        }`}
+      />
     </div>
   );
 }
 
 function SectionLabel({
   children,
+
   dark = false,
 }: {
   children: ReactNode;
+
   dark?: boolean;
 }) {
   return (
     <div className="flex items-center gap-3">
       <span className={`h-px w-8 ${dark ? "bg-[#27d59b]" : "bg-[#007c67]"}`} />
+
       <span
         className={`font-mono text-[8px] font-semibold uppercase tracking-[0.2em] ${
           dark ? "text-[#27d59b]" : "text-[#007c67]"
@@ -191,201 +155,107 @@ function SectionLabel({
   );
 }
 
-const capabilityRoutes: Record<string, string> = {
-  "Fleet Intelligence": "/platform/fleet-management",
-  "Safe Logistics": "/platform/e-lock",
-  "Video Intelligence": "/platform/video",
-  "Smart Access Monitoring": "/platform/access-control",
-  "Temperature & Humidity Monitoring":
-    "/platform/temperature-humidity-monitoring",
-  "Fuel Monitoring": "/platform/fuel-monitoring",
-  "Load/Weight Analytics": "/platform/load-weight-analytics",
-};
-
-function CapabilityLink({ name }: { name: string }) {
-  const href = capabilityRoutes[name];
-
-  if (!href) {
-    return <span>{name}</span>;
-  }
+function HeroSignalVisual({ module }: { module: Module }) {
+  const items = module.capabilities.slice(0, 4);
 
   return (
-    <Link
-      href={href}
-      className="group inline-flex items-center gap-2 font-semibold text-[#081b24] transition-colors duration-300 hover:text-[#007c67]"
-    >
-      <span>{name}</span>
-      <ArrowIcon className="h-3 w-3 text-[#007c67] transition-transform duration-300 group-hover:translate-x-0.5" />
-    </Link>
-  );
-}
+    <div className="relative mx-auto w-full max-w-[460px]">
+      <div className="absolute inset-6 rounded-full border border-[#27d59b]/10" />
 
-function ProofStrip({
-  points,
-}: {
-  points: Array<{ title: string; text: string }>;
-}) {
-  return (
-    <div className="mt-9 overflow-hidden rounded-2xl border border-[#c8d5d0] bg-white/82 shadow-[0_14px_40px_rgba(8,27,36,0.045)] backdrop-blur-sm">
-      <div className="grid lg:grid-cols-3">
-        {points.map((point, index) => (
-          <div
-            key={`${point.title}-${index}`}
-            className={`p-5 sm:p-6 lg:p-7 ${
-              index !== points.length - 1
-                ? "border-b border-[#d8e2de] lg:border-b-0 lg:border-r"
-                : ""
-            }`}
+      <div className="absolute inset-14 rounded-full border border-white/[0.05]" />
+
+      <div className="relative rounded-2xl border border-white/[0.09] bg-white/[0.025] p-5 shadow-[0_24px_70px_rgba(0,0,0,0.18)] backdrop-blur-sm">
+        <div className="flex items-center justify-between border-b border-white/[0.08] pb-4">
+          <span className="font-mono text-[8px] uppercase tracking-[0.16em] text-white/40">
+            {module.name}
+          </span>
+
+          <span className="h-1.5 w-1.5 rounded-full bg-[#27d59b]" />
+        </div>
+
+        <div className="mt-4 space-y-2.5">
+          {items.map((item) => (
+            <div
+              key={item}
+              className="grid grid-cols-[1fr_auto] items-center gap-3 rounded-xl border border-white/[0.07] bg-[#0a2029]/90 px-3.5 py-3"
+            >
+              <span className="text-[11px] leading-5 text-white/68">
+                {item}
+              </span>
+
+              <span className="relative flex h-4 w-4 items-center justify-center">
+                <span className="absolute h-4 w-4 rounded-full border border-[#27d59b]/20" />
+
+                <span className="h-1.5 w-1.5 rounded-full bg-[#27d59b]" />
+              </span>
+            </div>
+          ))}
+        </div>
+
+        <div className="relative mt-5 h-16 overflow-hidden rounded-xl border border-white/[0.07] bg-white/[0.018]">
+          <svg
+            viewBox="0 0 420 64"
+            preserveAspectRatio="none"
+            className="absolute inset-0 h-full w-full"
+            fill="none"
+            aria-hidden="true"
           >
-            <span className="mb-5 block h-1.5 w-1.5 rounded-full bg-[#27d59b]" />
-            <h3 className="font-heading text-[18px] font-semibold leading-[1.18] tracking-[-0.025em] text-[#081b24]">
-              {point.title}
-            </h3>
-            <p className="mt-3 text-[13px] leading-6 text-[#607078]">
-              {point.text}
-            </p>
-          </div>
-        ))}
+            <path
+              d="M0 44 C82 8 145 56 214 30 S334 8 420 28"
+              stroke="rgba(39,213,155,0.22)"
+              strokeWidth="1.1"
+              strokeDasharray="3 12"
+            >
+              <animate
+                attributeName="stroke-dashoffset"
+                values="0;-120"
+                dur="8s"
+                repeatCount="indefinite"
+              />
+            </path>
+          </svg>
+        </div>
       </div>
     </div>
   );
 }
 
-/* =========================================================
-   SECTION 5 VISUALS
-   Each visual follows the client document's requested pattern.
-========================================================= */
-
-function Node({
+function DecisionNode({
   children,
+
   tone = "default",
+
+  className = "",
 }: {
   children: ReactNode;
-  tone?: "default" | "green" | "alert" | "soft";
+
+  tone?: "default" | "success" | "alert" | "decision";
+
+  className?: string;
 }) {
-  const cls =
-    tone === "green"
-      ? "border-[#27d59b]/45 bg-[#27d59b]/[0.08]"
+  const toneClass =
+    tone === "success"
+      ? "border-[#27d59b]/45 bg-[#27d59b]/[0.08] text-[#081b24]"
       : tone === "alert"
-        ? "border-[#b85b5b]/35 bg-[#b85b5b]/[0.055]"
-        : tone === "soft"
-          ? "border-[#007c67]/20 bg-[#f4f6f2]"
-          : "border-[#c8d5d0] bg-white";
+        ? "border-[#b85b5b]/35 bg-[#b85b5b]/[0.055] text-[#081b24]"
+        : tone === "decision"
+          ? "border-[#007c67]/25 bg-white text-[#081b24]"
+          : "border-[#c8d5d0] bg-white text-[#081b24]";
 
   return (
     <div
-      className={`flex min-h-[58px] items-center justify-center rounded-xl border px-4 py-3 text-center shadow-[0_8px_24px_rgba(8,27,36,0.04)] ${cls}`}
+      className={`relative z-10 flex min-h-[64px] items-center justify-center rounded-xl border px-4 py-3 text-center shadow-[0_8px_24px_rgba(8,27,36,0.04)] ${toneClass} ${className}`}
     >
-      <span className="text-[11px] font-semibold leading-5 text-[#081b24]">
-        {children}
-      </span>
-    </div>
-  );
-}
-
-function LogisticsVisual() {
-  const items = [
-    "Fleet Intelligence",
-    "Safe Logistics",
-    "Fuel Monitoring",
-    "Load/Weight Analytics",
-  ];
-
-  return (
-    <div className="relative mt-9 min-h-[430px] overflow-hidden rounded-2xl border border-[#c8d5d0] bg-white p-5 shadow-[0_18px_55px_rgba(8,27,36,0.055)] sm:p-7">
-      <div className="absolute left-1/2 top-1/2 hidden h-[250px] w-[250px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#007c67]/10 lg:block" />
-      <div className="absolute left-1/2 top-1/2 hidden h-[170px] w-[170px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#27d59b]/15 lg:block" />
-
-      <div className="hidden h-[360px] grid-cols-[1fr_220px_1fr] grid-rows-2 items-center gap-x-12 gap-y-10 lg:grid">
-        <Node>{items[0]}</Node>
-        <div className="row-span-2 flex items-center justify-center">
-          <div className="relative flex h-[150px] w-[150px] items-center justify-center rounded-2xl border border-[#007c67]/25 bg-[#081b24] shadow-[0_20px_50px_rgba(8,27,36,0.13)]">
-           <div className="flex flex-col items-center justify-center text-center">
-  <Image
-    src="/logo/logo.png"
-    alt="VIoT"
-    width={86}
-    height={34}
-    className="h-auto w-[96px] object-contain"
-  />
-
-  {/* <span className="mt-3 block font-mono text-[8px] uppercase tracking-[0.16em] text-[#27d59b]">
-    One Platform
-  </span> */}
-</div>
-            <span className="absolute -left-12 top-1/4 h-px w-12 bg-[#007c67]/20" />
-            <span className="absolute -left-12 bottom-1/4 h-px w-12 bg-[#007c67]/20" />
-            <span className="absolute -right-12 top-1/4 h-px w-12 bg-[#007c67]/20" />
-            <span className="absolute -right-12 bottom-1/4 h-px w-12 bg-[#007c67]/20" />
-          </div>
-        </div>
-        <Node>{items[1]}</Node>
-        <Node>{items[2]}</Node>
-        <Node>{items[3]}</Node>
-      </div>
-
-      <div className="grid gap-3 lg:hidden">
-        <div className="mx-auto w-full max-w-[220px]">
-          <div className="flex min-h-[86px] items-center justify-center rounded-2xl border border-[#007c67]/25 bg-[#081b24] text-center shadow-[0_16px_40px_rgba(8,27,36,0.12)]">
-            <div>
-              <span className="font-heading text-xl font-semibold text-white">
-                VIoT
-              </span>
-              <span className="mt-1 block font-mono text-[8px] uppercase tracking-[0.16em] text-[#27d59b]">
-                One Platform
-              </span>
-            </div>
-          </div>
-        </div>
-        <div className="grid gap-3 sm:grid-cols-2">
-          {items.map((item) => (
-            <Node key={item}>{item}</Node>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function PharmaVisual() {
-  const items = [
-    "Temp and Humidity",
-    "Safe Logistics",
-    "Smart Access",
-    "Fleet Intelligence",
-  ];
-
-  return (
-    <div className="mt-9 overflow-hidden rounded-2xl border border-[#c8d5d0] bg-white p-5 shadow-[0_18px_55px_rgba(8,27,36,0.055)] sm:p-7">
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        {items.map((item) => (
-          <Node key={item}>{item}</Node>
-        ))}
-      </div>
-
-      <div className="mx-auto h-8 w-px bg-[#007c67]/20" />
-
-      <div className="mx-auto max-w-[300px]">
-        <Node tone="soft">
-          One Compliance Record
-          <br />
-          Timestamped, Tied to each event
-        </Node>
-      </div>
-
-      <div className="mx-auto h-8 w-px bg-[#007c67]/20" />
-
-      <div className="mx-auto max-w-[340px]">
-        <Node tone="green">Retrieved in minutes, not weeks</Node>
-      </div>
+      <span className="text-[12px] font-semibold leading-5">{children}</span>
     </div>
   );
 }
 
 function DecisionDiamond({ children }: { children: ReactNode }) {
   return (
-    <div className="relative flex h-[86px] w-[86px] shrink-0 items-center justify-center">
-      <div className="absolute inset-[13px] rotate-45 rounded-[10px] border border-[#007c67]/25 bg-white shadow-[0_8px_24px_rgba(8,27,36,0.04)]" />
+    <div className="relative z-10 flex h-[84px] w-[84px] items-center justify-center">
+      <div className="absolute inset-[12px] rotate-45 rounded-[10px] border border-[#007c67]/25 bg-white shadow-[0_8px_24px_rgba(8,27,36,0.04)]" />
+
       <span className="relative z-10 max-w-[66px] text-center text-[10px] font-semibold leading-4 text-[#081b24]">
         {children}
       </span>
@@ -393,70 +263,135 @@ function DecisionDiamond({ children }: { children: ReactNode }) {
   );
 }
 
-function ConstructionVisual() {
+function LoadWeightDecisionVisual() {
   return (
-    <div className="mt-9 overflow-hidden rounded-2xl border border-[#c8d5d0] bg-white p-5 shadow-[0_18px_55px_rgba(8,27,36,0.055)] sm:p-7">
-      <div className="hidden grid-cols-[1fr_42px_1fr_42px_90px_42px_1fr] items-center lg:grid">
-        <Node>Equipment Starts</Node>
-        <div className="h-px bg-[#007c67]/20" />
-        <Node>Checked vs Window</Node>
-        <div className="h-px bg-[#007c67]/20" />
-        <DecisionDiamond>Authorized Use?</DecisionDiamond>
-        <div className="relative h-px bg-[#007c67]/20">
-          <span className="absolute -top-5 left-1/2 -translate-x-1/2 font-mono text-[7px] uppercase tracking-[0.12em] text-[#007c67]">
-            yes
-          </span>
-        </div>
-        <Node tone="green">Normal Use Logged</Node>
-      </div>
+    <div className="mt-9 overflow-hidden rounded-2xl border border-[#c8d5d0] bg-white p-5 shadow-[0_18px_55px_rgba(8,27,36,0.055)] sm:p-6 lg:p-8">
+      <div className="hidden lg:block">
+        <div className="grid grid-cols-[1fr_48px_1.15fr_48px_96px_48px_1fr] items-center">
+          <DecisionNode>Load Placed</DecisionNode>
 
-      <div className="hidden grid-cols-[1fr_42px_1fr_42px_90px_42px_1fr] lg:grid">
-        <div />
-        <div />
-        <div />
-        <div />
-        <div className="relative flex justify-center pt-2">
-          <span className="absolute top-1 font-mono text-[7px] uppercase tracking-[0.12em] text-[#607078]">
-            no
-          </span>
-          <div className="mt-5 h-10 w-px bg-[#007c67]/20" />
-        </div>
-        <div />
-        <div />
-      </div>
+          <div className="h-px bg-[#007c67]/20" />
 
-      <div className="hidden grid-cols-[1fr_42px_1fr_42px_90px_42px_1fr] lg:grid">
-        <div />
-        <div />
-        <div />
-        <div className="col-span-3 flex justify-center">
-          <div className="w-[190px]">
-            <Node tone="alert">Unauthorized Use</Node>
+          <DecisionNode>
+            Weight Check
+            <br />
+            Total + Axle
+          </DecisionNode>
+
+          <div className="h-px bg-[#007c67]/20" />
+
+          <DecisionDiamond>Within Limits?</DecisionDiamond>
+
+          <div className="relative h-px bg-[#007c67]/20">
+            <span className="absolute -top-5 left-1/2 -translate-x-1/2 font-mono text-[7px] uppercase tracking-[0.12em] text-[#007c67]">
+              within limits
+            </span>
+          </div>
+
+          <DecisionNode tone="success">Cleared to Depart</DecisionNode>
+        </div>
+
+        <div className="grid grid-cols-[1fr_48px_1.15fr_48px_96px_48px_1fr]">
+          <div />
+
+          <div />
+
+          <div />
+
+          <div />
+
+          <div className="flex justify-center">
+            <div className="h-12 w-px bg-[#007c67]/20" />
+          </div>
+
+          <div />
+
+          <div className="pt-4">
+            <DecisionNode tone="success">Logged. Departed.</DecisionNode>
           </div>
         </div>
-        <div />
+
+        <div className="grid grid-cols-[1fr_48px_1.15fr_48px_96px_48px_1fr]">
+          <div />
+
+          <div />
+
+          <div />
+
+          <div />
+
+          <div className="relative flex justify-center">
+            <span className="absolute top-1 font-mono text-[7px] uppercase tracking-[0.12em] text-[#607078]">
+              over limit
+            </span>
+
+            <div className="mt-5 h-10 w-px bg-[#007c67]/20" />
+          </div>
+
+          <div />
+
+          <div />
+        </div>
+
+        <div className="grid grid-cols-[1fr_48px_1.15fr_48px_96px_48px_1fr]">
+          <div />
+
+          <div />
+
+          <div />
+
+          <div className="col-span-3 flex justify-center">
+            <DecisionNode tone="alert" className="w-[190px]">
+              Overload Flagged
+              <br />
+              Held for Reload
+            </DecisionNode>
+          </div>
+
+          <div />
+        </div>
       </div>
 
       <div className="space-y-3 lg:hidden">
-        <Node>Equipment Starts</Node>
+        <DecisionNode>Load Placed</DecisionNode>
+
         <div className="mx-auto h-5 w-px bg-[#007c67]/20" />
-        <Node>Checked vs Window</Node>
+
+        <DecisionNode>
+          Weight Check
+          <br />
+          Total + Axle
+        </DecisionNode>
+
         <div className="mx-auto h-5 w-px bg-[#007c67]/20" />
+
         <div className="flex justify-center">
-          <DecisionDiamond>Authorized Use?</DecisionDiamond>
+          <DecisionDiamond>Within Limits?</DecisionDiamond>
         </div>
+
         <div className="grid gap-3 sm:grid-cols-2">
           <div>
             <p className="mb-2 text-center font-mono text-[7px] uppercase tracking-[0.12em] text-[#007c67]">
-              yes
+              within limits
             </p>
-            <Node tone="green">Normal Use Logged</Node>
+
+            <DecisionNode tone="success">Cleared to Depart</DecisionNode>
+
+            <div className="mx-auto h-5 w-px bg-[#007c67]/20" />
+
+            <DecisionNode tone="success">Logged. Departed.</DecisionNode>
           </div>
+
           <div>
             <p className="mb-2 text-center font-mono text-[7px] uppercase tracking-[0.12em] text-[#607078]">
-              no
+              over limit
             </p>
-            <Node tone="alert">Unauthorized Use</Node>
+
+            <DecisionNode tone="alert">
+              Overload Flagged
+              <br />
+              Held for Reload
+            </DecisionNode>
           </div>
         </div>
       </div>
@@ -464,383 +399,1040 @@ function ConstructionVisual() {
   );
 }
 
-function MiningVisual() {
-  const without = [
-    "Enters Dead Zone",
-    "No Local Record",
-    "Signal Returns",
-    "Gap in Record",
-  ];
-  const withViot = [
-    "Enters Dead Zone",
-    "Data Queued On Device",
-    "Signal Returns",
-    "Record Synced",
-  ];
-
+function IndustrialAutomationDecisionVisual() {
   return (
-    <div className="mt-9 overflow-hidden rounded-2xl border border-[#c8d5d0] bg-white p-5 shadow-[0_18px_55px_rgba(8,27,36,0.055)] sm:p-7">
-      <div>
-        <span className="font-mono text-[8px] font-semibold uppercase tracking-[0.16em] text-[#607078]">
-          Without local queuing
-        </span>
-        <div className="mt-3 grid gap-3 lg:grid-cols-4">
-          {without.map((item, index) => (
-            <Node
-              key={item}
-              tone={index === without.length - 1 ? "alert" : "default"}
-            >
-              {item}
-            </Node>
-          ))}
-        </div>
-      </div>
+    <div className="mt-9 overflow-hidden rounded-2xl border border-[#c8d5d0] bg-white p-5 shadow-[0_18px_55px_rgba(8,27,36,0.055)] sm:p-6 lg:p-8">
+      <div className="hidden lg:block">
+        <div className="grid grid-cols-[1fr_48px_1.15fr_48px_96px_48px_1fr] items-center">
+          <DecisionNode>Asset Moves</DecisionNode>
 
-      <div className="my-6 border-t border-[#d8e2de]" />
+          <div className="h-px bg-[#007c67]/20" />
 
-      <div>
-        <span className="font-mono text-[8px] font-semibold uppercase tracking-[0.16em] text-[#007c67]">
-          With VIoT
-        </span>
-        <div className="mt-3 grid gap-3 lg:grid-cols-4">
-          {withViot.map((item, index) => (
-            <Node
-              key={item}
-              tone={index === 1 || index === withViot.length - 1 ? "green" : "default"}
-            >
-              {item}
-            </Node>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
+          <DecisionNode>
+            Location +<br />
+            Zone Check
+          </DecisionNode>
 
-function FmcgVisual() {
-  return (
-    <div className="mt-9 overflow-hidden rounded-2xl border border-[#c8d5d0] bg-white p-5 shadow-[0_18px_55px_rgba(8,27,36,0.055)] sm:p-7 lg:p-8">
-      <div className="relative mx-auto max-w-[900px] py-12">
-        <div className="absolute left-[7%] right-[7%] top-1/2 h-px -translate-y-1/2 bg-[#c8d5d0]" />
+          <div className="h-px bg-[#007c67]/20" />
 
-        <div className="relative grid grid-cols-6 gap-2">
-          {[1, 2, 3, 4, 5, 6].map((stop) => {
-            const flagged = stop === 4;
+          <DecisionDiamond>Authorized?</DecisionDiamond>
 
-            return (
-              <div key={stop} className="relative flex flex-col items-center">
-                {flagged ? (
-                  <div className="absolute bottom-[42px] whitespace-nowrap rounded-lg border border-[#b85b5b]/35 bg-[#b85b5b]/[0.055] px-3 py-2 text-[10px] font-semibold text-[#081b24] shadow-[0_8px_20px_rgba(8,27,36,0.04)]">
-                    Short count flagged
-                  </div>
-                ) : null}
-
-                <span
-                  className={`relative z-10 h-4 w-4 rounded-full border ${
-                    flagged
-                      ? "border-[#b85b5b] bg-[#b85b5b]"
-                      : "border-[#9fb0aa] bg-white"
-                  }`}
-                />
-                <span
-                  className={`mt-3 font-mono text-[8px] uppercase tracking-[0.12em] ${
-                    flagged ? "text-[#b85b5b]" : "text-[#607078]"
-                  }`}
-                >
-                  Stop {stop}
-                </span>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      <div className="mt-1 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-[#d8e2de] pt-5">
-        <span className="flex items-center gap-2 text-[10px] text-[#607078]">
-          <span className="h-2.5 w-2.5 rounded-full border border-[#9fb0aa] bg-white" />
-          Recorded normally
-        </span>
-        <span className="flex items-center gap-2 text-[10px] text-[#607078]">
-          <span className="h-2.5 w-2.5 rounded-full bg-[#b85b5b]" />
-          Flagged for review
-        </span>
-      </div>
-    </div>
-  );
-}
-
-function SchoolsVisual() {
-  const steps = [
-    "Boards at Stop",
-    "En Route",
-    "Exits, Confirmed",
-    "Logged. Parent Notified.",
-  ];
-
-  return (
-    <div className="mt-9 overflow-hidden rounded-2xl border border-[#c8d5d0] bg-white p-5 shadow-[0_18px_55px_rgba(8,27,36,0.055)] sm:p-7">
-      <div className="grid gap-3 lg:grid-cols-4">
-        {steps.map((step, index) => (
-          <div key={step} className="relative">
-            <Node tone={index === steps.length - 1 ? "green" : "default"}>
-              {step}
-            </Node>
-            {index !== steps.length - 1 ? (
-              <span className="absolute -right-3 top-1/2 hidden h-px w-3 bg-[#007c67]/20 lg:block" />
-            ) : null}
+          <div className="relative h-px bg-[#007c67]/20">
+            <span className="absolute -top-5 left-1/2 -translate-x-1/2 font-mono text-[7px] uppercase tracking-[0.12em] text-[#007c67]">
+              authorized
+            </span>
           </div>
-        ))}
+
+          <DecisionNode tone="success">Tracked Normally</DecisionNode>
+        </div>
+
+        <div className="grid grid-cols-[1fr_48px_1.15fr_48px_96px_48px_1fr]">
+          <div />
+
+          <div />
+
+          <div />
+
+          <div />
+
+          <div className="flex justify-center">
+            <div className="h-12 w-px bg-[#007c67]/20" />
+          </div>
+
+          <div />
+
+          <div className="pt-4">
+            <DecisionNode tone="success">Logged. Updated.</DecisionNode>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-[1fr_48px_1.15fr_48px_96px_48px_1fr]">
+          <div />
+
+          <div />
+
+          <div />
+
+          <div />
+
+          <div className="relative flex justify-center">
+            <span className="absolute top-1 font-mono text-[7px] uppercase tracking-[0.12em] text-[#607078]">
+              unauthorized
+            </span>
+
+            <div className="mt-5 h-10 w-px bg-[#007c67]/20" />
+          </div>
+
+          <div />
+
+          <div />
+        </div>
+
+        <div className="grid grid-cols-[1fr_48px_1.15fr_48px_96px_48px_1fr]">
+          <div />
+
+          <div />
+
+          <div />
+
+          <div className="col-span-3 flex justify-center">
+            <DecisionNode tone="alert" className="w-[190px]">
+              Unauthorized
+              <br />
+              Movement Alert
+            </DecisionNode>
+          </div>
+
+          <div />
+        </div>
+      </div>
+
+      <div className="space-y-3 lg:hidden">
+        <DecisionNode>Asset Moves</DecisionNode>
+
+        <div className="mx-auto h-5 w-px bg-[#007c67]/20" />
+
+        <DecisionNode>
+          Location +<br />
+          Zone Check
+        </DecisionNode>
+
+        <div className="mx-auto h-5 w-px bg-[#007c67]/20" />
+
+        <div className="flex justify-center">
+          <DecisionDiamond>Authorized?</DecisionDiamond>
+        </div>
+
+        <div className="grid gap-3 sm:grid-cols-2">
+          <div>
+            <p className="mb-2 text-center font-mono text-[7px] uppercase tracking-[0.12em] text-[#007c67]">
+              authorized
+            </p>
+
+            <DecisionNode tone="success">Tracked Normally</DecisionNode>
+
+            <div className="mx-auto h-5 w-px bg-[#007c67]/20" />
+
+            <DecisionNode tone="success">Logged. Updated.</DecisionNode>
+          </div>
+
+          <div>
+            <p className="mb-2 text-center font-mono text-[7px] uppercase tracking-[0.12em] text-[#607078]">
+              unauthorized
+            </p>
+
+            <DecisionNode tone="alert">
+              Unauthorized
+              <br />
+              Movement Alert
+            </DecisionNode>
+          </div>
+        </div>
       </div>
     </div>
   );
 }
 
-function SmartInfrastructureVisual() {
-  const separate = [
-    "Access Vendor",
-    "CCTV Vendor",
-    "Visitor Mgmt",
-    "Manually Matched",
-  ];
-  const unified = [
-    "Access Control",
-    "Video",
-    "Visitor Mgmt",
-    "Unified Record",
-  ];
+function EngineVisual({
+  module,
 
-  return (
-    <div className="mt-9 overflow-hidden rounded-2xl border border-[#c8d5d0] bg-white p-5 shadow-[0_18px_55px_rgba(8,27,36,0.055)] sm:p-7">
-      <div>
-        <span className="font-mono text-[8px] font-semibold uppercase tracking-[0.16em] text-[#607078]">
-          Separate Vendor Systems
-        </span>
-        <div className="mt-3 grid gap-3 lg:grid-cols-4">
-          {separate.map((item, index) => (
-            <Node
-              key={item}
-              tone={index === separate.length - 1 ? "alert" : "default"}
-            >
-              {item}
-            </Node>
-          ))}
-        </div>
-      </div>
-
-      <div className="my-6 border-t border-[#d8e2de]" />
-
-      <div>
-        <span className="font-mono text-[8px] font-semibold uppercase tracking-[0.16em] text-[#007c67]">
-          One VIoT Platform
-        </span>
-        <div className="mt-3 grid gap-3 lg:grid-cols-4">
-          {unified.map((item, index) => (
-            <Node
-              key={item}
-              tone={index === unified.length - 1 ? "green" : "default"}
-            >
-              {item}
-            </Node>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function IndustryEngineVisual({ slug }: { slug: string }) {
-  if (slug === "logistics-supply-chain") return <LogisticsVisual />;
-  if (slug === "pharmaceuticals-chemicals") return <PharmaVisual />;
-  if (slug === "construction") return <ConstructionVisual />;
-  if (slug === "mining") return <MiningVisual />;
-  if (slug === "fmcg") return <FmcgVisual />;
-  if (slug === "schools-universities") return <SchoolsVisual />;
-  if (slug === "smart-infrastructure") return <SmartInfrastructureVisual />;
-  return null;
-}
-
-/* =========================================================
-   CLIENT INDUSTRY PAGE
-========================================================= */
-
-function ClientIndustryPage({
-  solution,
+  engineTitle,
 }: {
-  solution: NonNullable<ReturnType<typeof getSolution>>;
-}) {
-  const content = solution.industryContent;
+  module: Module;
 
-  if (!content) return null;
+  engineTitle: string;
+}) {
+  const inputs = module.signals.slice(0, 4);
+
+  const outputs = module.outcomes.slice(0, 3);
+
+  return (
+    <div className="relative mt-9 overflow-hidden rounded-2xl border border-[#c8d5d0] bg-white shadow-[0_18px_55px_rgba(8,27,36,0.055)]">
+      <div className="grid gap-0 lg:grid-cols-[1fr_0.88fr_1fr]">
+        <div className="divide-y divide-[#d8e2de] border-b border-[#d8e2de] lg:border-b-0 lg:border-r">
+          {inputs.map((item, index) => (
+            <div
+              key={item}
+              className="flex items-center gap-3 px-5 py-4 sm:px-6"
+            >
+              <span className="font-mono text-[8px] text-[#007c67]">
+                0{index + 1}
+              </span>
+
+              <span className="text-[12px] leading-5 text-[#26373e]">
+                {item}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        <div className="relative flex min-h-[190px] items-center justify-center overflow-hidden bg-[#081b24] px-6 py-8 text-center text-white">
+          <svg
+            viewBox="0 0 300 220"
+            preserveAspectRatio="none"
+            className="pointer-events-none absolute inset-0 h-full w-full"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M-20 40 C60 40 72 110 150 110"
+              stroke="rgba(39,213,155,0.28)"
+              strokeWidth="1.2"
+              strokeDasharray="3 12"
+            >
+              <animate
+                attributeName="stroke-dashoffset"
+                values="0;-120"
+                dur="7s"
+                repeatCount="indefinite"
+              />
+            </path>
+
+            <path
+              d="M-20 180 C60 180 72 110 150 110"
+              stroke="rgba(39,213,155,0.18)"
+              strokeWidth="1.2"
+              strokeDasharray="3 12"
+            >
+              <animate
+                attributeName="stroke-dashoffset"
+                values="0;-120"
+                dur="8s"
+                repeatCount="indefinite"
+              />
+            </path>
+
+            <path
+              d="M150 110 C220 110 232 58 320 58"
+              stroke="rgba(39,213,155,0.26)"
+              strokeWidth="1.2"
+              strokeDasharray="3 12"
+            >
+              <animate
+                attributeName="stroke-dashoffset"
+                values="0;-120"
+                dur="7.5s"
+                repeatCount="indefinite"
+              />
+            </path>
+
+            <path
+              d="M150 110 C220 110 232 164 320 164"
+              stroke="rgba(39,213,155,0.18)"
+              strokeWidth="1.2"
+              strokeDasharray="3 12"
+            >
+              <animate
+                attributeName="stroke-dashoffset"
+                values="0;-120"
+                dur="8.5s"
+                repeatCount="indefinite"
+              />
+            </path>
+          </svg>
+
+          <div className="relative z-10 rounded-xl border border-[#27d59b]/20 bg-[#27d59b]/[0.055] px-5 py-4">
+            <p className="font-heading text-lg font-semibold tracking-[-0.025em]">
+              {engineTitle}
+            </p>
+          </div>
+        </div>
+
+        <div className="divide-y divide-[#d8e2de] border-t border-[#d8e2de] lg:border-l lg:border-t-0">
+          {outputs.map((item, index) => (
+            <div
+              key={item}
+              className="flex items-center gap-3 px-5 py-4 sm:px-6"
+            >
+              <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#27d59b]" />
+
+              <span className="text-[12px] leading-5 text-[#26373e]">
+                {item}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function SolutionEngineVisual({
+  module,
+
+  engineTitle,
+}: {
+  module: Module;
+
+  engineTitle: string;
+}) {
+  if (module.slug === "load-weight-analytics") {
+    return <LoadWeightDecisionVisual />;
+  }
+
+  if (module.slug === "industrial-automation") {
+    return <IndustrialAutomationDecisionVisual />;
+  }
+
+  if (module.slug === "e-lock") {
+    return <SafeLogisticsVisual />;
+  }
+
+  if (module.slug === "video") {
+    return <VideoIntelligenceVisual module={module} />;
+  }
+
+  return <EngineVisual module={module} engineTitle={engineTitle} />;
+}
+
+function InlineSectionLinks({ text }: { text: string }) {
+  const parts = text.split(/(\(?Section [2-7]\)?)/g);
 
   return (
     <>
-      {/* 1. HERO */}
-      <section className="relative min-h-[620px] overflow-hidden bg-[#081b24] text-white sm:min-h-[660px]">
+      {parts.map((part, index) => {
+        const match = part.match(/^\(?(Section ([2-7]))\)?$/);
+
+        if (!match) {
+          return <span key={`${part}-${index}`}>{part}</span>;
+        }
+
+        const section = match[2];
+
+        return (
+          <a
+            key={`${part}-${index}`}
+            href={`#section-${section.padStart(2, "0")}`}
+            className="font-medium text-[#007c67] underline decoration-[#007c67]/25 underline-offset-2 transition-colors hover:text-[#081b24]"
+          >
+            {part}
+          </a>
+        );
+      })}
+    </>
+  );
+}
+
+function SectionNav() {
+  return (
+    <PlatformSectionNav
+      items={[
+        { number: "01", label: "Overview", id: "section-01" },
+        { number: "02", label: "Problem", id: "section-02" },
+        { number: "03", label: "Coverage", id: "section-03" },
+        { number: "04", label: "Difference", id: "section-04" },
+        { number: "05", label: "Engine", id: "section-05" },
+        { number: "06", label: "Support", id: "section-06" },
+        { number: "07", label: "Enquiry", id: "section-07" },
+      ]}
+    />
+  );
+}
+
+function SafeLogisticsVisual() {
+  return (
+    <div className="mt-9 overflow-hidden rounded-2xl border border-[#c8d5d0] bg-white p-5 shadow-[0_18px_55px_rgba(8,27,36,0.055)] sm:p-6 lg:p-8">
+      <div className="hidden lg:block">
+        <div className="grid grid-cols-[1fr_44px_1fr_44px_1fr] items-center">
+          <DecisionNode>Lock engages at loading</DecisionNode>
+          <div className="h-px bg-[#007c67]/20" />
+          <DecisionNode>Stays armed through transit</DecisionNode>
+          <div className="h-px bg-[#007c67]/20" />
+          <DecisionDiamond>Unlock event</DecisionDiamond>
+        </div>
+
+        <div className="grid grid-cols-[1fr_44px_1fr_44px_1fr]">
+          <div />
+          <div />
+          <div />
+          <div />
+          <div className="flex justify-center">
+            <div className="h-10 w-px bg-[#007c67]/20" />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-5">
+          <div>
+            <p className="mb-2 text-center font-mono text-[7px] uppercase tracking-[0.12em] text-[#007c67]">
+              declared destination
+            </p>
+            <DecisionNode tone="success">
+              Unlock at declared destination
+              <br />
+              closes the trip normally
+            </DecisionNode>
+          </div>
+
+          <div>
+            <p className="mb-2 text-center font-mono text-[7px] uppercase tracking-[0.12em] text-[#607078]">
+              anywhere else
+            </p>
+            <DecisionNode tone="alert">
+              Treated as tamper
+              <br />
+              alerts ops in real time
+            </DecisionNode>
+          </div>
+        </div>
+      </div>
+
+      <div className="space-y-3 lg:hidden">
+        <DecisionNode>Lock engages at loading</DecisionNode>
+        <div className="mx-auto h-5 w-px bg-[#007c67]/20" />
+        <DecisionNode>Stays armed through transit</DecisionNode>
+        <div className="mx-auto h-5 w-px bg-[#007c67]/20" />
+        <div className="flex justify-center">
+          <DecisionDiamond>Unlock event</DecisionDiamond>
+        </div>
+
+        <div className="grid gap-3 sm:grid-cols-2">
+          <div>
+            <p className="mb-2 text-center font-mono text-[7px] uppercase tracking-[0.12em] text-[#007c67]">
+              declared destination
+            </p>
+            <DecisionNode tone="success">
+              Unlock at declared destination
+              <br />
+              closes the trip normally
+            </DecisionNode>
+          </div>
+
+          <div>
+            <p className="mb-2 text-center font-mono text-[7px] uppercase tracking-[0.12em] text-[#607078]">
+              anywhere else
+            </p>
+            <DecisionNode tone="alert">
+              Treated as tamper
+              <br />
+              alerts ops in real time
+            </DecisionNode>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function VideoIntelligenceVisual({ module }: { module: Module }) {
+  const inputs = module.signals.slice(0, 3);
+  const outputs = module.outcomes.slice(0, 3);
+
+  return (
+    <div className="mt-9 overflow-hidden rounded-2xl border border-[#c8d5d0] bg-white shadow-[0_18px_55px_rgba(8,27,36,0.055)]">
+      <div className="grid lg:grid-cols-[1fr_0.85fr_1fr]">
+        <div className="divide-y divide-[#d8e2de] border-b border-[#d8e2de] lg:border-b-0 lg:border-r">
+          {inputs.map((item) => (
+            <div
+              key={item}
+              className="px-5 py-5 text-[12px] font-medium leading-5 text-[#26373e] sm:px-6"
+            >
+              {item}
+            </div>
+          ))}
+        </div>
+
+        <div className="relative flex min-h-[210px] items-center justify-center overflow-hidden bg-[#081b24] px-6 py-8">
+          <svg
+            viewBox="0 0 300 220"
+            preserveAspectRatio="none"
+            className="pointer-events-none absolute inset-0 h-full w-full"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M-10 42 C90 42 92 110 150 110"
+              stroke="rgba(39,213,155,0.26)"
+              strokeWidth="1.2"
+              strokeDasharray="3 12"
+            >
+              <animate
+                attributeName="stroke-dashoffset"
+                values="0;-120"
+                dur="7s"
+                repeatCount="indefinite"
+              />
+            </path>
+            <path
+              d="M-10 110 C80 110 95 110 150 110"
+              stroke="rgba(39,213,155,0.20)"
+              strokeWidth="1.2"
+              strokeDasharray="3 12"
+            >
+              <animate
+                attributeName="stroke-dashoffset"
+                values="0;-120"
+                dur="8s"
+                repeatCount="indefinite"
+              />
+            </path>
+            <path
+              d="M-10 178 C90 178 92 110 150 110"
+              stroke="rgba(39,213,155,0.16)"
+              strokeWidth="1.2"
+              strokeDasharray="3 12"
+            >
+              <animate
+                attributeName="stroke-dashoffset"
+                values="0;-120"
+                dur="9s"
+                repeatCount="indefinite"
+              />
+            </path>
+            <path
+              d="M150 110 C220 110 230 66 310 66"
+              stroke="rgba(39,213,155,0.26)"
+              strokeWidth="1.2"
+              strokeDasharray="3 12"
+            >
+              <animate
+                attributeName="stroke-dashoffset"
+                values="0;-120"
+                dur="7.5s"
+                repeatCount="indefinite"
+              />
+            </path>
+            <path
+              d="M150 110 C220 110 230 154 310 154"
+              stroke="rgba(39,213,155,0.18)"
+              strokeWidth="1.2"
+              strokeDasharray="3 12"
+            >
+              <animate
+                attributeName="stroke-dashoffset"
+                values="0;-120"
+                dur="8.5s"
+                repeatCount="indefinite"
+              />
+            </path>
+          </svg>
+
+          <div className="relative z-10 rounded-xl border border-[#27d59b]/20 bg-[#27d59b]/[0.055] px-5 py-4 text-center text-white">
+            <span className="font-heading text-lg font-semibold tracking-[-0.025em]">
+              Video Intelligence
+            </span>
+          </div>
+        </div>
+
+        <div className="divide-y divide-[#d8e2de] border-t border-[#d8e2de] lg:border-l lg:border-t-0">
+          <div className="px-5 py-5 sm:px-6">
+            <span className="mb-2 block h-1.5 w-1.5 rounded-full bg-[#27d59b]" />
+            <p className="text-[12px] font-medium leading-5 text-[#26373e]">
+              {outputs[0]}
+            </p>
+          </div>
+          <div className="px-5 py-5 sm:px-6">
+            <span className="mb-2 block h-1.5 w-1.5 rounded-full bg-[#27d59b]" />
+            <p className="text-[12px] font-medium leading-5 text-[#26373e]">
+              {outputs[1]}
+            </p>
+            {outputs[2] ? (
+              <p className="mt-2 text-[11px] leading-5 text-[#607078]">
+                {outputs[2]}
+              </p>
+            ) : null}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ClientSolutionPage({ module }: { module: Module }) {
+  const content = module.solutionContent;
+
+  if (!content) return null;
+
+  const problemCallout =
+    module.slug === "ev-management"
+      ? content.problemParagraphs[content.problemParagraphs.length - 1]
+      : null;
+
+  const problemBody = problemCallout
+    ? content.problemParagraphs.slice(0, -1)
+    : content.problemParagraphs;
+
+  return (
+    <>
+      <section
+        id="section-01"
+        className="relative min-h-[590px] scroll-mt-28 overflow-hidden bg-[#081b24] text-white"
+      >
         <VIoTBackground dark />
 
-        <div className="relative z-10 mx-auto flex min-h-[620px] max-w-[1440px] flex-col justify-between px-6 pb-9 pt-24 sm:min-h-[660px] sm:px-8 sm:pt-28 lg:px-12 lg:pt-32">
-          {/* <SectionLabel dark>
-            Solutions / {solution.name}
-          </SectionLabel> */}
+        <div className="relative z-10 mx-auto flex min-h-[590px] max-w-[1440px] flex-col justify-between px-6 pb-8 pt-24 sm:px-8 sm:pt-28 lg:px-12 lg:pt-32">
+          <SectionLabel dark>{module.name}</SectionLabel>
 
-          <div className="max-w-5xl py-12 sm:py-14">
-            <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.18em] text-[#27d59b]">
-              {solution.number} / Industry
+          <div className="grid items-center gap-12 py-12 lg:grid-cols-12">
+            <div className="lg:col-span-7">
+              <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.18em] text-[#27d59b]">
+                {module.number}
+              </span>
+
+              <h1 className="mt-5 max-w-4xl font-heading text-[clamp(2.8rem,5.2vw,5.3rem)] font-semibold leading-[0.92] tracking-[-0.06em]">
+                {module.headline}
+              </h1>
+
+              <p className="mt-6 max-w-2xl text-sm leading-7 text-white/64 sm:text-[15px]">
+                {module.lede}
+              </p>
+            </div>
+
+            <div className="lg:col-span-5">
+              <HeroSignalVisual module={module} />
+            </div>
+          </div>
+
+          <div className="border-t border-white/[0.09] pt-4">
+            <span className="font-mono text-[8px] uppercase tracking-[0.16em] text-white/35">
+              VIoT / Connected intelligence
             </span>
+          </div>
+        </div>
+      </section>
 
-            <h1 className="mt-5 max-w-5xl font-heading text-[clamp(2.7rem,5vw,5rem)] font-semibold leading-[0.93] tracking-[-0.055em] text-white">
-              {solution.headline}
-            </h1>
+      <SectionNav />
 
-            <p className="mt-6 max-w-3xl text-sm leading-7 text-white/62 sm:text-[15px]">
-              {solution.lede}
+      <section
+        id="section-02"
+        className="relative scroll-mt-28 overflow-hidden border-b border-[#cdd5d2] bg-[#f4f6f2]"
+      >
+        <VIoTBackground />
+
+        <div className="relative z-10 mx-auto max-w-[1440px] px-6 py-16 sm:px-8 sm:py-20 lg:px-12">
+          <SectionLabel>02</SectionLabel>
+
+          <div className="mt-6 grid gap-10 lg:grid-cols-12">
+            <div className="lg:col-span-5">
+              <h2 className="max-w-xl font-heading text-[32px] font-semibold leading-[1.05] tracking-[-2px] lg:text-[46px]">
+                {content.problemTitle}
+              </h2>
+            </div>
+
+            <div className="lg:col-span-7">
+              <div className="space-y-5">
+                {problemBody.map((paragraph) => (
+                  <p
+                    key={paragraph}
+                    className="text-sm leading-7 text-[#607078]"
+                  >
+                    <InlineSectionLinks text={paragraph} />
+                  </p>
+                ))}
+              </div>
+
+              {problemCallout ? (
+                <div className="mt-7 rounded-2xl border border-[#27d59b]/30 bg-[#27d59b]/[0.055] px-5 py-5 shadow-[0_12px_34px_rgba(8,27,36,0.04)] sm:px-6">
+                  <span className="mb-3 block h-1.5 w-1.5 rounded-full bg-[#27d59b]" />
+                  <p className="font-heading text-xl font-semibold leading-[1.3] tracking-[-0.025em] text-[#081b24] sm:text-2xl">
+                    <InlineSectionLinks text={problemCallout} />
+                  </p>
+                </div>
+              ) : null}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="section-03"
+        className="relative scroll-mt-28 overflow-hidden border-b border-[#cdd5d2] bg-white"
+      >
+        <VIoTBackground />
+
+        <div className="relative z-10 mx-auto max-w-[1440px] px-6 py-16 sm:px-8 sm:py-20 lg:px-12">
+          <SectionLabel>03</SectionLabel>
+
+          <h2 className="mt-5 max-w-3xl font-heading text-[32px] font-semibold leading-[1.05] tracking-[-2px] lg:text-[46px]">
+            {content.coversTitle}
+          </h2>
+
+          <div className="mt-8 overflow-hidden rounded-2xl border border-[#c8d5d0] bg-white shadow-[0_16px_45px_rgba(8,27,36,0.045)]">
+            <div className="hidden grid-cols-[0.8fr_1.1fr_1.1fr] border-b border-[#d8e2de] bg-[#f4f6f2] px-6 py-4 sm:grid">
+              <span className="font-mono text-[8px] font-semibold uppercase tracking-[0.15em] text-[#007c67]">
+                Capability
+              </span>
+              <span className="font-mono text-[8px] font-semibold uppercase tracking-[0.15em] text-[#007c67]">
+                What it does
+              </span>
+              <span className="font-mono text-[8px] font-semibold uppercase tracking-[0.15em] text-[#007c67]">
+                What it changes
+              </span>
+            </div>
+
+            {content.capabilityRows.map((row, index) => (
+              <div
+                key={row.name}
+                className={`grid gap-5 px-5 py-5 sm:grid-cols-[0.8fr_1.1fr_1.1fr] sm:px-6 ${
+                  index !== content.capabilityRows.length - 1
+                    ? "border-b border-[#d8e2de]"
+                    : ""
+                }`}
+              >
+                <h3 className="font-heading text-base font-semibold leading-6 text-[#081b24]">
+                  {row.name}
+                </h3>
+                <p className="text-[13px] leading-6 text-[#607078]">
+                  {row.whatItDoes}
+                </p>
+                <p className="text-[13px] leading-6 text-[#405159]">
+                  {row.whatItChanges}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-6 max-w-4xl border-l-2 border-[#27d59b] pl-5">
+            <p className="text-sm leading-7 text-[#607078]">
+              <InlineSectionLinks text={content.capabilityClosing} />
             </p>
           </div>
         </div>
       </section>
 
-      {/* 2. THE PROBLEM */}
-      <section className="relative overflow-hidden border-b border-[#cdd5d2] bg-[#f4f6f2]">
-        <VIoTBackground />
-
-        <div className="relative z-10 mx-auto max-w-[1440px] px-6 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-24">
-          <div className="grid gap-10 lg:grid-cols-12 lg:gap-14">
-            <div className="lg:col-span-4">
-              <div className="lg:sticky lg:top-28">
-                <SectionLabel>02 / The problem</SectionLabel>
-                <h2 className="mt-5 max-w-lg font-heading text-3xl font-semibold leading-[1.03] tracking-[-0.045em] text-[#081b24] sm:text-4xl lg:text-[46px]">
-                  {content.problemTitle}
-                </h2>
-              </div>
-            </div>
-
-            <div className="lg:col-span-8">
-              <div className="overflow-hidden rounded-2xl border border-[#c8d5d0] bg-white/82 shadow-[0_16px_45px_rgba(8,27,36,0.045)] backdrop-blur-sm">
-                {content.problemParagraphs.map((paragraph, index) => (
-                  <p
-                    key={index}
-                    className={`px-5 py-5 text-[14px] leading-7 text-[#405159] sm:px-7 sm:py-6 ${
-                      index !== content.problemParagraphs.length - 1
-                        ? "border-b border-[#d8e2de]"
-                        : ""
-                    }`}
-                  >
-                    {paragraph}
-                  </p>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 3. INDUSTRY MAPPING */}
-      <section className="relative overflow-hidden border-b border-[#cdd5d2] bg-white">
-        <VIoTBackground />
-
-        <div className="relative z-10 mx-auto max-w-[1440px] px-6 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-24">
-          <SectionLabel>03 / How VIoT Maps to This Industry</SectionLabel>
-
-          <div className="mt-6 grid gap-10 lg:grid-cols-12 lg:gap-14">
-            <div className="lg:col-span-4">
-              <p className="max-w-md text-sm leading-7 text-[#607078]">
-                {content.mappingIntro}
-              </p>
-              {content.mappingClosing ? (
-                <p className="mt-5 max-w-md text-sm font-medium leading-7 text-[#081b24]">
-                  {content.mappingClosing}
-                </p>
-              ) : null}
-            </div>
-
-            <div className="lg:col-span-8">
-              <div className="overflow-hidden rounded-2xl border border-[#c8d5d0] bg-[#f8faf7]/85 shadow-[0_16px_45px_rgba(8,27,36,0.045)]">
-                <div className="grid grid-cols-[minmax(0,0.85fr)_minmax(0,1.4fr)] border-b border-[#d8e2de] bg-white/80">
-                  <span className="px-5 py-4 font-mono text-[8px] font-semibold uppercase tracking-[0.17em] text-[#007c67] sm:px-6">
-                    VIoT Capability
-                  </span>
-                  <span className="border-l border-[#d8e2de] px-5 py-4 font-mono text-[8px] font-semibold uppercase tracking-[0.17em] text-[#007c67] sm:px-6">
-                    Why It Matters Here
-                  </span>
-                </div>
-
-                {content.capabilityRows.map((row, index) => (
-                  <div
-                    key={row.name}
-                    className={`grid grid-cols-1 sm:grid-cols-[minmax(0,0.85fr)_minmax(0,1.4fr)] ${
-                      index !== content.capabilityRows.length - 1
-                        ? "border-b border-[#d8e2de]"
-                        : ""
-                    }`}
-                  >
-                    <div className="px-5 py-5 text-[13px] leading-6 sm:px-6">
-                      <CapabilityLink name={row.name} />
-                    </div>
-                    <div className="border-t border-[#d8e2de] px-5 py-5 text-[13px] leading-6 text-[#607078] sm:border-l sm:border-t-0 sm:px-6">
-                      {row.whyItMatters}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 4. DIFFERENTIATORS */}
-      <section className="relative overflow-hidden border-b border-white/[0.08] bg-[#081b24] text-white">
+      <section
+        id="section-04"
+        className="relative scroll-mt-28 overflow-hidden bg-[#081b24] text-white"
+      >
         <VIoTBackground dark />
 
-        <div className="relative z-10 mx-auto max-w-[1440px] px-6 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-24">
-          <SectionLabel dark>04 / Different by design</SectionLabel>
+        <div className="relative z-10 mx-auto max-w-[1440px] px-6 py-16 sm:px-8 sm:py-20 lg:px-12">
+          <SectionLabel dark>04</SectionLabel>
 
-          <h2 className="mt-5 max-w-4xl font-heading text-3xl font-semibold leading-[1.03] tracking-[-0.045em] sm:text-4xl lg:text-[46px]">
+          <h2 className="mt-5 max-w-3xl font-heading text-[32px] font-semibold leading-[1.05] tracking-[-2px] lg:text-[46px]">
             {content.differenceTitle}
           </h2>
 
-          <div className="mt-9 overflow-hidden rounded-2xl border border-white/[0.09] bg-white/[0.018]">
+          <div className="mt-9 grid gap-4 md:grid-cols-2">
             {content.differences.map((item, index) => (
-              <div
+              <article
                 key={item.title}
-                className={`grid gap-5 px-5 py-6 sm:px-7 sm:py-7 lg:grid-cols-[260px_1fr] lg:gap-9 ${
-                  index !== content.differences.length - 1
-                    ? "border-b border-white/[0.08]"
-                    : ""
-                }`}
+                className="rounded-2xl border border-white/[0.09] bg-white/[0.025] p-5 shadow-[0_16px_44px_rgba(0,0,0,0.10)] backdrop-blur-sm sm:p-6"
               >
-                <h3 className="font-heading text-lg font-semibold leading-[1.2] tracking-[-0.025em] text-white">
+                <div className="flex items-center justify-between gap-4">
+                  <span className="font-mono text-[8px] font-semibold uppercase tracking-[0.16em] text-[#27d59b]">
+                    4.{index + 1}
+                  </span>
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#27d59b]" />
+                </div>
+
+                <h3 className="mt-5 font-heading text-xl font-semibold leading-[1.18] tracking-[-0.025em]">
                   {item.title}
                 </h3>
-                <p className="text-[13px] leading-7 text-white/55">
-                  {item.text}
+
+                <p className="mt-4 text-[13px] leading-7 text-white/58">
+                  <InlineSectionLinks text={item.text} />
                 </p>
-              </div>
+              </article>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 5. CLIENT-SPECIFIC VISUAL */}
-      <section className="relative overflow-hidden border-b border-[#cdd5d2] bg-[#f4f6f2]">
+      <section
+        id="section-05"
+        className="relative scroll-mt-28 overflow-hidden border-b border-[#cdd5d2] bg-[#f4f6f2]"
+      >
         <VIoTBackground />
 
-        <div className="relative z-10 mx-auto max-w-[1440px] px-6 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-24">
-          <div className="grid gap-8 lg:grid-cols-12 lg:items-end">
-            <div className="lg:col-span-8">
-              <SectionLabel>05 / Operating view</SectionLabel>
-              <h2 className="mt-5 max-w-4xl font-heading text-3xl font-semibold leading-[1.03] tracking-[-0.045em] text-[#081b24] sm:text-4xl lg:text-[46px]">
-                {content.engineTitle}
+        <div className="relative z-10 mx-auto max-w-[1440px] px-6 py-16 sm:px-8 sm:py-20 lg:px-12">
+          <SectionLabel>05</SectionLabel>
+
+          <h2 className="mt-5 max-w-3xl font-heading text-[32px] font-semibold leading-[1.05] tracking-[-2px] lg:text-[46px]">
+            {content.engineTitle}
+          </h2>
+
+          <p className="mt-4 max-w-3xl text-sm leading-7 text-[#607078]">
+            {content.engineCaption}
+          </p>
+
+          <SolutionEngineVisual
+            module={module}
+            engineTitle={content.engineTitle}
+          />
+
+          <p className="mt-6 max-w-3xl text-sm leading-7 text-[#607078]">
+            <InlineSectionLinks text={content.engineText} />
+          </p>
+        </div>
+      </section>
+
+      <section
+        id="section-06"
+        className="relative scroll-mt-28 overflow-hidden bg-[#f4f6f2]"
+      >
+        <VIoTBackground />
+
+        <div className="relative z-10 mx-auto max-w-[1440px] px-6 py-16 sm:px-8 sm:py-20 lg:px-12">
+          <SectionLabel>07 / Contact / Enquiry</SectionLabel>
+
+          <div className="mt-6 rounded-2xl border border-[#c8d5d0] bg-white px-6 py-8 shadow-[0_16px_45px_rgba(8,27,36,0.05)] sm:px-8 lg:flex lg:items-end lg:justify-between lg:gap-8">
+            <div>
+              <h2 className="max-w-2xl font-heading text-3xl font-semibold tracking-[-0.045em] sm:text-4xl">
+                {content.ctaHeading}
               </h2>
+              <p className="mt-4 max-w-2xl text-sm leading-7 text-[#607078]">
+                {content.ctaSubheading}
+              </p>
             </div>
 
-            {/* <div className="lg:col-span-4">
-              <p className="max-w-md text-[12px] leading-6 text-[#607078] lg:ml-auto">
-                {content.engineCaption}
+            <Link
+              href="/contact"
+              className="group mt-7 inline-flex h-11 shrink-0 items-center gap-3 rounded-lg border border-[#27d59b] bg-[#27d59b] px-5 text-[10px] font-bold uppercase tracking-[0.08em] text-[#081b24] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white lg:mt-0"
+            >
+              {content.ctaHeading}
+              <ArrowIcon className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
+            </Link>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
+
+function FleetIntelligencePage({ module }: { module: Module }) {
+  const content = module.fleetIntelligence;
+
+  if (!content) return null;
+
+  const problemCallout =
+    content.problemParagraphs[content.problemParagraphs.length - 1];
+  const problemBody = content.problemParagraphs.slice(0, -1);
+
+  return (
+    <>
+      <section
+        id="section-01"
+        className="relative min-h-[590px] scroll-mt-28 overflow-hidden bg-[#081b24] text-white"
+      >
+        <VIoTBackground dark />
+
+        <div className="relative z-10 mx-auto flex min-h-[590px] max-w-[1440px] flex-col justify-between px-6 pb-8 pt-24 sm:px-8 sm:pt-28 lg:px-12 lg:pt-32">
+          <SectionLabel dark>Fleet Management Solution</SectionLabel>
+
+          <div className="grid items-center gap-12 py-12 lg:grid-cols-12">
+            <div className="lg:col-span-7">
+              <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.18em] text-[#27d59b]">
+                {module.number}
+              </span>
+
+              <h1 className="mt-5 max-w-4xl font-heading text-[36px] font-semibold leading-[0.92] tracking-[-0.045em] sm:text-[56px] lg:text-[76px] lg:tracking-[-4.5px]">
+                Intelligent Fleet Management Solutions for Smarter Operations
+              </h1>
+
+              <p className="mt-6 max-w-[700px] font-sans text-base font-normal leading-7 text-white/70 lg:text-lg">
+                Most platforms show you where a vehicle is. VIoT tells your
+                operations team what to do about it — before a small problem
+                becomes a breakdown, an accident, or a missed delivery.
               </p>
-            </div> */}
+              <Link
+                href="/contact"
+                className="mt-7 inline-flex h-11 items-center gap-3 rounded-lg bg-[#27d59b] px-5 font-sans text-sm font-semibold text-[#081b24] transition-colors hover:bg-white"
+              >
+                Request a Demo
+                <ArrowIcon className="h-3.5 w-3.5" />
+              </Link>
+            </div>
+
+            <div className="lg:col-span-5">
+              <HeroSignalVisual module={module} />
+            </div>
           </div>
 
-          <IndustryEngineVisual slug={solution.slug} />
+          <div className="border-t border-white/[0.09] pt-4">
+            <span className="font-mono text-[8px] uppercase tracking-[0.16em] text-white/35">
+              VIoT / Connected intelligence
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <SectionNav />
+
+      <section
+        id="section-02"
+        className="relative scroll-mt-32 overflow-hidden border-b border-[#cdd5d2] bg-[#f4f6f2]"
+      >
+        <VIoTBackground />
+        <div className="relative z-10 mx-auto max-w-[1440px] px-6 py-14 sm:px-8 sm:py-20 lg:px-12">
+          <SectionLabel>Overview</SectionLabel>
+          <div className="mt-6 grid gap-8 lg:grid-cols-12 lg:gap-12">
+            <div className="lg:col-span-5">
+              <h2 className="max-w-xl font-heading text-[32px] font-semibold leading-[1.05] tracking-[-2px] lg:text-[46px]">
+                Tracking Tells You Where. Not What To Do About It.
+              </h2>
+            </div>
+            <div className="space-y-5 lg:col-span-7">
+              <p className="max-w-[700px] font-sans text-base leading-[26px] text-[#405159]">
+                Most fleet owners already run three separate logins: a GPS
+                tracking app showing a moving dot, a dashcam app reviewed only
+                after an incident, and an Excel log for servicing. None talk to
+                each other, so problems surface late, resulting in breakdowns,
+                accidents, or missed maintenance.
+              </p>
+              <p className="max-w-[700px] font-sans text-base leading-[26px] text-[#405159]">
+                The dot on the map tells you where a vehicle is, but nothing
+                about the driver braking harshly all morning, an engine fault
+                left unattended, or a trailer leaving its assigned route. By the
+                time these become costs, it&apos;s too late to prevent them. You
+                can only explain them.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="section-03"
+        className="relative scroll-mt-28 overflow-hidden border-b border-[#cdd5d2] bg-white"
+      >
+        <VIoTBackground />
+
+        <div className="relative z-10 mx-auto max-w-[1440px] px-6 py-16 sm:px-8 sm:py-20 lg:px-12">
+          <SectionLabel>
+            03 / What Fleet Intelligence Actually Covers
+          </SectionLabel>
+
+          <p className="mt-6 max-w-3xl text-sm leading-7 text-[#607078]">
+            {content.coversIntro}
+          </p>
+
+          <div className="mt-8 overflow-hidden rounded-2xl border border-[#c8d5d0] bg-white shadow-[0_16px_45px_rgba(8,27,36,0.045)]">
+            <div className="hidden grid-cols-[0.8fr_1.1fr_1.1fr] border-b border-[#d8e2de] bg-[#f4f6f2] px-6 py-4 sm:grid">
+              <span className="font-mono text-[8px] font-semibold uppercase tracking-[0.15em] text-[#007c67]">
+                Capability
+              </span>
+              <span className="font-mono text-[8px] font-semibold uppercase tracking-[0.15em] text-[#007c67]">
+                What it does
+              </span>
+              <span className="font-mono text-[8px] font-semibold uppercase tracking-[0.15em] text-[#007c67]">
+                What it changes
+              </span>
+            </div>
+
+            {content.capabilityRows.map((row, index) => (
+              <div
+                key={row.name}
+                className={`grid gap-5 px-5 py-5 sm:grid-cols-[0.8fr_1.1fr_1.1fr] sm:px-6 ${
+                  index !== content.capabilityRows.length - 1
+                    ? "border-b border-[#d8e2de]"
+                    : ""
+                }`}
+              >
+                <h3 className="font-heading text-base font-semibold leading-6 text-[#081b24]">
+                  {row.name}
+                </h3>
+                <p className="text-[13px] leading-6 text-[#607078]">
+                  {row.whatItDoes}
+                </p>
+                <p className="text-[13px] leading-6 text-[#405159]">
+                  {row.whatItChanges}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-6 max-w-4xl border-l-2 border-[#27d59b] pl-5">
+            <p className="text-sm leading-7 text-[#607078]">
+              <InlineSectionLinks text={content.capabilityClosing} />
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="section-04"
+        className="relative scroll-mt-32 overflow-hidden bg-[#081b24] text-white"
+      >
+        <VIoTBackground dark />
+        <div className="relative z-10 mx-auto max-w-[1440px] px-6 py-14 sm:px-8 sm:py-20 lg:px-12">
+          <SectionLabel dark>Difference</SectionLabel>
+          <h2 className="mt-5 max-w-3xl font-heading text-[32px] font-semibold leading-[1.05] tracking-[-2px] lg:text-[46px]">
+            Why VIoT Is Different
+          </h2>
+          <div className="mt-8 grid gap-4 lg:grid-cols-3">
+            {[
+              {
+                title: "One Correlated Score, Not Three Disconnected Reports",
+                text: "Most telematics vendors offer driver scoring, route tracking, and maintenance alerts separately. Acting on them requires manually checking multiple reports. VIoT correlates driver behaviour, route, and maintenance signals into one score for each vehicle and driver, giving operations teams a clear picture of what needs attention.",
+                glyph: "signals",
+              },
+              {
+                title:
+                  "Built for Indian Road and Network Conditions, Not Adapted to Them",
+                text: "Indian routes often face unstable networks, voltage fluctuations, and heavy vehicle vibration. VIoT devices store trip data during network outages and automatically sync when connectivity returns, ensuring no gaps in records. The hardware is also designed to withstand voltage spikes and vibration, delivering reliable monitoring even in demanding road conditions.",
+                glyph: "network",
+              },
+              {
+                title: "We stay in the account after go-live",
+                text: "The standard model in this industry is device plus dashboard, installed once, and the vendor relationship effectively ends there. VIoT's support model is built to stay active after go-live rather than wait for a support ticket — what that looks like in practice is in Section 6.",
+                glyph: "support",
+              },
+            ].map((item) => (
+              <article
+                key={item.title}
+                className="rounded-xl border border-white/10 bg-white/[0.035] p-5 backdrop-blur-sm sm:p-6"
+              >
+                <div className="mb-5 flex h-10 w-10 items-center justify-center rounded-lg border border-[#27d59b]/25 bg-[#27d59b]/10">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#27d59b"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="h-5 w-5"
+                    aria-hidden="true"
+                  >
+                    {item.glyph === "signals" ? (
+                      <>
+                        <path d="M3 17l5-5 4 3 8-9" />
+                        <path d="M15 6h5v5" />
+                      </>
+                    ) : item.glyph === "network" ? (
+                      <>
+                        <path d="M3 8a14 14 0 0 1 18 0M6 12a9 9 0 0 1 12 0M10 16a3 3 0 0 1 4 0" />
+                        <circle cx="12" cy="20" r="1" />
+                      </>
+                    ) : (
+                      <>
+                        <path d="M4 13v-2a8 8 0 0 1 16 0v2" />
+                        <rect x="2" y="12" width="4" height="7" rx="2" />
+                        <rect x="18" y="12" width="4" height="7" rx="2" />
+                        <path d="M20 19c0 2-2 3-6 3" />
+                      </>
+                    )}
+                  </svg>
+                </div>
+                <h3 className="font-heading text-[20px] font-semibold leading-[1.3] sm:text-[22px]">
+                  {item.title}
+                </h3>
+                <p className="mt-4 font-sans text-sm font-normal leading-[22px] text-white/65">
+                  <InlineSectionLinks text={item.text} />
+                </p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="section-05"
+        className="relative scroll-mt-28 overflow-hidden border-b border-[#cdd5d2] bg-[#f4f6f2]"
+      >
+        <VIoTBackground />
+
+        <div className="relative z-10 mx-auto max-w-[1440px] px-6 py-16 sm:px-8 sm:py-20 lg:px-12">
+          <SectionLabel>05</SectionLabel>
+
+          <h2 className="mt-5 max-w-3xl font-heading text-[32px] font-semibold leading-[1.05] tracking-[-2px] lg:text-[46px]">
+            {content.engineTitle}
+          </h2>
+
+          <p className="mt-4 max-w-3xl text-sm leading-7 text-[#607078]">
+            {content.engineCaption}
+          </p>
+
+          <EngineVisual module={module} engineTitle={content.engineTitle} />
 
           <p className="mt-6 max-w-3xl text-sm leading-7 text-[#607078]">
             {content.engineText}
@@ -848,108 +1440,96 @@ function ClientIndustryPage({
         </div>
       </section>
 
-      {/* 6. FIELD PROOF */}
-      <section className="relative overflow-hidden border-b border-[#cdd5d2] bg-white">
-        <VIoTBackground />
-
-        <div className="relative z-10 mx-auto max-w-[1440px] px-6 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-24">
-          <SectionLabel>06 / Field proof</SectionLabel>
-
-          <h2 className="mt-5 max-w-4xl font-heading text-3xl font-semibold leading-[1.03] tracking-[-0.045em] text-[#081b24] sm:text-4xl lg:text-[46px]">
-            {content.proofTitle}
-          </h2>
-
-          <p className="mt-5 max-w-3xl text-sm leading-7 text-[#607078]">
-            {content.proofIntro}
-          </p>
-
-          <ProofStrip points={content.proofPoints} />
-        </div>
-      </section>
-
-      {/* 7. LONG-TERM / SUPPORT */}
-      <section className="relative overflow-hidden border-b border-white/[0.08] bg-[#081b24] text-white">
+      <section
+        id="section-06"
+        className="relative scroll-mt-28 overflow-hidden bg-[#081b24] text-white"
+      >
         <VIoTBackground dark />
 
-        <div className="relative z-10 mx-auto max-w-[1440px] px-6 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-24">
-          <div className="grid gap-10 lg:grid-cols-12 lg:gap-14">
+        <div className="relative z-10 mx-auto max-w-[1440px] px-6 py-16 sm:px-8 sm:py-20 lg:px-12">
+          <SectionLabel dark>06 / Support</SectionLabel>
+
+          <div className="mt-6 grid gap-10 lg:grid-cols-12">
             <div className="lg:col-span-5">
-              <div className="lg:sticky lg:top-28">
-                <SectionLabel dark>07 / Built to hold up</SectionLabel>
-                <h2 className="mt-5 max-w-xl font-heading text-3xl font-semibold leading-[1.03] tracking-[-0.045em] sm:text-4xl lg:text-[46px]">
-                  {content.supportTitle}
-                </h2>
-                <p className="mt-5 max-w-lg text-sm leading-7 text-white/55">
-                  {content.supportIntro}
-                </p>
-              </div>
+              <h2 className="font-heading text-[32px] font-semibold leading-[1.05] tracking-[-2px] lg:text-[46px]">
+                {content.supportTitle}
+              </h2>
             </div>
 
             <div className="lg:col-span-7">
-              <div className="overflow-hidden rounded-2xl border border-white/[0.09] bg-white/[0.018]">
-                {content.supportPoints.map((point, index) => (
+              <div className="grid gap-3">
+                {content.supportParagraphs.map((paragraph, index) => (
                   <div
-                    key={point.title}
-                    className={`px-5 py-6 sm:px-7 sm:py-7 ${
-                      index !== content.supportPoints.length - 1
-                        ? "border-b border-white/[0.08]"
-                        : ""
-                    }`}
+                    key={paragraph}
+                    className="flex items-start gap-4 rounded-xl border border-white/[0.09] bg-white/[0.025] p-5 sm:p-6"
                   >
-                    <div className="flex items-start gap-4">
-                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#27d59b]" />
-                      <div>
-                        <h3 className="font-heading text-lg font-semibold leading-[1.2] tracking-[-0.025em] text-white">
-                          {point.title}
-                        </h3>
-                        <p className="mt-3 text-[13px] leading-7 text-white/52">
-                          {point.text}
-                        </p>
-                      </div>
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-[#27d59b]/25 bg-[#27d59b]/[0.08]">
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="#27d59b"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="h-5 w-5"
+                        aria-hidden="true"
+                      >
+                        {index % 3 === 0 ? (
+                          <>
+                            <path d="M12 2l8 4v6c0 5-3 8-8 10-5-2-8-5-8-10V6l8-4z" />
+                            <path d="m9 12 2 2 4-4" />
+                          </>
+                        ) : index % 3 === 1 ? (
+                          <>
+                            <path d="M4 14v-3a8 8 0 0 1 16 0v3" />
+                            <rect x="2" y="13" width="4" height="6" rx="2" />
+                            <rect x="18" y="13" width="4" height="6" rx="2" />
+                          </>
+                        ) : (
+                          <>
+                            <path d="M4 19h16M6 15l4-4 3 2 5-7" />
+                            <path d="M14 6h4v4" />
+                          </>
+                        )}
+                      </svg>
                     </div>
+                    <p className="font-sans text-sm leading-[24px] text-white/65">
+                      <InlineSectionLinks text={paragraph} />
+                    </p>
                   </div>
                 ))}
               </div>
-
-              {content.supportClosing ? (
-                <p className="mt-6 max-w-2xl text-sm leading-7 text-white/58">
-                  {content.supportClosing}
-                </p>
-              ) : null}
             </div>
           </div>
         </div>
       </section>
 
-      {/* 8. CONTACT / ENQUIRY */}
-      <section className="relative overflow-hidden bg-[#f4f6f2]">
+      <section
+        id="section-07"
+        className="relative scroll-mt-28 overflow-hidden bg-[#f4f6f2]"
+      >
         <VIoTBackground />
 
-        <div className="relative z-10 mx-auto max-w-[1440px] px-6 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-24">
-          <div className="overflow-hidden rounded-2xl border border-[#c8d5d0] bg-white/88 p-6 shadow-[0_18px_55px_rgba(8,27,36,0.055)] backdrop-blur-sm sm:p-8 lg:p-10">
-            <div className="grid gap-8 lg:grid-cols-12 lg:items-end">
-              <div className="lg:col-span-8">
-                <SectionLabel>08 / Contact / Enquiry</SectionLabel>
-                <h2 className="mt-5 max-w-4xl font-heading text-3xl font-semibold leading-[1.03] tracking-[-0.045em] text-[#081b24] sm:text-4xl lg:text-[46px]">
-                  {content.ctaHeading}
-                </h2>
-                <p className="mt-5 max-w-2xl text-sm leading-7 text-[#607078]">
-                  {content.ctaSubheading}
-                </p>
-              </div>
+        <div className="relative z-10 mx-auto max-w-[1440px] px-6 py-16 sm:px-8 sm:py-20 lg:px-12">
+          <SectionLabel>07 / Contact / Enquiry</SectionLabel>
 
-              <div className="lg:col-span-4 lg:flex lg:justify-end">
-                <Link
-                  href="/contact"
-                  className="group inline-flex h-11 items-center gap-3 rounded-lg border border-[#081b24] bg-[#081b24] px-5 text-[9px] font-semibold uppercase tracking-[0.1em] text-white! transition-all duration-300 hover:border-[#007c67] hover:bg-[#007c67]"
-                >
-                  <span>Contact / Enquiry</span>
-                  <span className="flex h-6 w-6 items-center justify-center rounded-md border border-white/15">
-                    <ArrowIcon className="h-2.5 w-2.5 transition-transform duration-300 group-hover:translate-x-0.5" />
-                  </span>
-                </Link>
-              </div>
+          <div className="mt-6 rounded-2xl border border-[#c8d5d0] bg-white px-6 py-8 shadow-[0_16px_45px_rgba(8,27,36,0.05)] sm:px-8 lg:flex lg:items-end lg:justify-between lg:gap-8">
+            <div>
+              <h2 className="max-w-2xl font-heading text-3xl font-semibold tracking-[-0.045em] sm:text-4xl">
+                {content.ctaHeading}
+              </h2>
+              <p className="mt-4 max-w-2xl text-sm leading-7 text-[#607078]">
+                {content.ctaSubheading}
+              </p>
             </div>
+
+            <Link
+              href="/contact"
+              className="group mt-7 inline-flex h-11 shrink-0 items-center gap-3 rounded-lg border border-[#27d59b] bg-[#27d59b] px-5 text-[10px] font-bold uppercase tracking-[0.08em] text-[#081b24] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white lg:mt-0"
+            >
+              {content.ctaHeading}
+              <ArrowIcon className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
+            </Link>
           </div>
         </div>
       </section>
@@ -957,42 +1537,26 @@ function ClientIndustryPage({
   );
 }
 
-/* =========================================================
-   FALLBACK
-   Data Centres stays on its existing generic content until
-   its new client content document is supplied.
-========================================================= */
-
-function GenericIndustryPage({
-  solution,
-}: {
-  solution: NonNullable<ReturnType<typeof getSolution>>;
-}) {
-  const priorities = Array.isArray(solution.priorities)
-    ? solution.priorities
-    : [];
-
+function GenericModulePage({ module }: { module: Module }) {
   return (
     <>
-      <section className="relative min-h-[600px] overflow-hidden bg-[#081b24] text-white">
+      <section className="relative min-h-[560px] overflow-hidden bg-[#081b24] text-white">
         <VIoTBackground dark />
 
-        <div className="relative z-10 mx-auto flex min-h-[600px] max-w-[1440px] flex-col justify-between px-6 pb-8 pt-24 sm:px-8 sm:pt-28 lg:px-12 lg:pt-32">
-          <SectionLabel dark>
-            Solutions / {solution.name}
-          </SectionLabel>
+        <div className="relative z-10 mx-auto flex min-h-[560px] max-w-[1440px] flex-col justify-between px-6 pb-8 pt-24 sm:px-8 sm:pt-28 lg:px-12 lg:pt-32">
+          <SectionLabel dark>{module.name}</SectionLabel>
 
           <div className="max-w-4xl py-14">
             <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.18em] text-[#27d59b]">
-              {solution.number} / Industry
+              {module.number}
             </span>
 
-            <h1 className="mt-5 max-w-4xl font-heading text-[clamp(2.7rem,5vw,5rem)] font-semibold leading-[0.93] tracking-[-0.055em] text-white">
-              {solution.headline}
+            <h1 className="mt-5 max-w-[980px] font-heading text-[36px] font-semibold leading-[0.92] tracking-[-2px] sm:text-[52px] sm:tracking-[-3px] lg:text-[76px] lg:tracking-[-4.5px]">
+              {module.headline}
             </h1>
 
             <p className="mt-6 max-w-2xl text-sm leading-7 text-white/62 sm:text-[15px]">
-              {solution.lede}
+              {module.lede}
             </p>
           </div>
         </div>
@@ -1001,22 +1565,24 @@ function GenericIndustryPage({
       <section className="relative overflow-hidden bg-[#f4f6f2]">
         <VIoTBackground />
 
-        <div className="relative z-10 mx-auto max-w-[1440px] px-6 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-24">
-          <SectionLabel>Evaluation priorities</SectionLabel>
+        <div className="relative z-10 mx-auto max-w-[1440px] px-6 py-16 sm:px-8 sm:py-20 lg:px-12">
+          <div className="overflow-hidden rounded-2xl border border-[#c8d5d0] bg-white">
+            <div className="divide-y divide-[#d8e2de]">
+              {module.capabilities.map((item, index) => (
+                <div
+                  key={item}
+                  className="grid gap-3 px-5 py-4 sm:grid-cols-[42px_1fr] sm:px-6"
+                >
+                  <span className="font-mono text-[8px] text-[#007c67]">
+                    0{index + 1}
+                  </span>
 
-          <div className="mt-7 overflow-hidden rounded-2xl border border-[#c8d5d0] bg-white/82 shadow-[0_16px_45px_rgba(8,27,36,0.045)]">
-            {priorities.map((priority, index) => (
-              <div
-                key={priority}
-                className={`px-5 py-5 text-[13px] font-medium leading-6 text-[#26373e] sm:px-7 ${
-                  index !== priorities.length - 1
-                    ? "border-b border-[#d8e2de]"
-                    : ""
-                }`}
-              >
-                {priority}
-              </div>
-            ))}
+                  <span className="text-[13px] leading-6 text-[#26373e]">
+                    {item}
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -1024,47 +1590,23 @@ function GenericIndustryPage({
   );
 }
 
-export default async function SolutionPage({
+export default async function PlatformDetailPage({
   params,
-}: SolutionPageParams) {
+}: PlatformDetailParams) {
   const { slug } = await params;
-  const solution = getSolution(slug);
 
-  if (!solution) notFound();
+  const module = getPlatformModule(slug);
 
-  const serviceSchema = {
-    "@context": "https://schema.org",
-    "@type": "Service",
-    name: `${solution.name} connected operations solution`,
-    description: solution.lede,
-    url: `https://viot.tech/solutions/${solution.slug}`,
-    areaServed: {
-      "@type": "Country",
-      name: "India",
-    },
-    provider: {
-      "@id": "https://viot.tech/#organization",
-    },
-  };
+  if (!module) notFound();
 
   return (
-    <main className="overflow-hidden bg-[#f4f6f2] text-[#081b24] antialiased selection:bg-[#27d59b] selection:text-[#081b24]">
-      <StructuredData data={serviceSchema} />
-      <StructuredData
-        data={breadcrumbSchema([
-          { name: "Home", path: "/" },
-          { name: "Solutions", path: "/solutions" },
-          {
-            name: solution.name,
-            path: `/solutions/${solution.slug}`,
-          },
-        ])}
-      />
-
-      {solution.industryContent ? (
-        <ClientIndustryPage solution={solution} />
+    <main className="overflow-x-clip bg-[#f4f6f2] text-[#081b24] selection:bg-[#27d59b] selection:text-[#081b24]">
+      {module.fleetIntelligence ? (
+        <FleetIntelligencePage module={module} />
+      ) : module.solutionContent ? (
+        <ClientSolutionPage module={module} />
       ) : (
-        <GenericIndustryPage solution={solution} />
+        <GenericModulePage module={module} />
       )}
     </main>
   );

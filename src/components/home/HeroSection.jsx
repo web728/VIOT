@@ -1,231 +1,743 @@
+
+
 "use client";
 
+
+
 import Link from "next/link";
-import { AnimatePresence, motion } from "framer-motion";
+
+import { motion } from "framer-motion";
+
 import { useCallback, useEffect, useRef, useState } from "react";
+
 import { ArrowIcon } from "@/components/icons";
 
+
+
 const heroSlides = [
-  {
-    id: 1,
-    video: "/video/video-1.mp4",
-    title: "Track what moves.",
-    cta: "Explore Vehicle Telematics",
-    href: "/products/vehicle-telematics",
-  },
-  {
-    id: 2,
-    video: "/video/video-2.mp4",
-    title: "See what happens on the road.",
-    cta: "Explore Video Telematics",
-    href: "/products/video-telematics",
-  },
-  {
-    id: 3,
-    video: "/video/video-3.mp4",
-    title: "Secure every shipment.",
-    cta: "Explore Smart Logistics Locks",
-    href: "/products/smart-logistics-locks",
-  },
-  {
-    id: 4,
-    video: "/video/video-4.mp4",
-    title: "Secure critical infrastructure.",
-    cta: "Explore Smart Infra Locks",
-    href: "/products/smart-infra-locks",
-  },
-  {
-    id: 5,
-    video: "/video/video-5.mp4",
-    title: "Know where assets are.",
-    cta: "Explore Asset Trackers",
-    href: "/products/asset-trackers",
-  },
-  {
-    id: 6,
-    video: "/video/video-6.mp4",
-    title: "Sense what matters.",
-    cta: "Explore IoT Sensors",
-    href: "/products/iot-sensors",
-  },
+
+  { id: 1, video: "/video/video-1.mp4" },
+
+  { id: 2, video: "/video/video-2.mp4" },
+
+  { id: 3, video: "/video/video-3.mp4" },
+
+  { id: 4, video: "/video/video-4.mp4" },
+
+  { id: 5, video: "/video/video-5.mp4" },
+
+  { id: 6, video: "/video/video-6.mp4" },
+
 ];
 
-const contentTransition = {
-  duration: 0.65,
-  ease: [0.16, 1, 0.3, 1],
-};
+
+
+const TRANSITION_DURATION = 1.5;
+
+const PRELOAD_BEFORE_END = 2;
+
+
 
 export function HeroSection() {
+
   const [activeIndex, setActiveIndex] = useState(0);
+
+  const [previousIndex, setPreviousIndex] = useState(null);
+
+
+
   const videoRefs = useRef(new Map());
-  const activeSlide = heroSlides[activeIndex];
+
+  const activeIndexRef = useRef(0);
+
+  const transitioningRef = useRef(false);
+
+  const transitionTimeoutRef = useRef(null);
+
+  const previousIndexRef = useRef(null);
+
+  const mountedRef = useRef(false);
+
+
 
   const tryPlay = useCallback((video) => {
-    const target = video ?? videoRefs.current.get(activeIndex);
-    if (!target) return;
 
-    target.muted = true;
-    target.defaultMuted = true;
-    target.controls = false;
-    target.playsInline = true;
+    if (!video) return;
 
-    const playPromise = target.play();
+
+
+    video.muted = true;
+
+    video.defaultMuted = true;
+
+    video.controls = false;
+
+    video.playsInline = true;
+
+
+
+    const playPromise = video.play();
+
+
+
     if (playPromise && typeof playPromise.catch === "function") {
+
       playPromise.catch(() => {});
+
     }
-  }, [activeIndex]);
+
+  }, []);
+
+
+
+  const prepareVideo = useCallback((index) => {
+
+    const video = videoRefs.current.get(index);
+
+
+
+    if (!video) return;
+
+
+
+    video.muted = true;
+
+    video.defaultMuted = true;
+
+    video.controls = false;
+
+    video.playsInline = true;
+
+
+
+    if (video.preload !== "auto") {
+
+      video.preload = "auto";
+
+    }
+
+
+
+    if (video.networkState === HTMLMediaElement.NETWORK_EMPTY) {
+
+      video.load();
+
+    }
+
+  }, []);
+
+
+
+  const changeSlide = useCallback(() => {
+
+    if (transitioningRef.current) return;
+
+
+
+    const currentIndex = activeIndexRef.current;
+
+    const nextIndex = (currentIndex + 1) % heroSlides.length;
+
+
+
+    const currentVideo = videoRefs.current.get(currentIndex);
+
+    const nextVideo = videoRefs.current.get(nextIndex);
+
+
+
+    if (!nextVideo || nextVideo.readyState < 2) {
+
+      prepareVideo(nextIndex);
+
+      return;
+
+    }
+
+
+
+    transitioningRef.current = true;
+
+
+
+    try {
+
+      nextVideo.currentTime = 0;
+
+    } catch {}
+    // Start the next video before fading out the current one.
+    tryPlay(nextVideo);
+
+
+
+    previousIndexRef.current = currentIndex;
+
+    activeIndexRef.current = nextIndex;
+
+
+
+    setPreviousIndex(currentIndex);
+
+    setActiveIndex(nextIndex);
+
+
+
+    if (transitionTimeoutRef.current) {
+
+      window.clearTimeout(transitionTimeoutRef.current);
+
+    }
+
+
+
+    transitionTimeoutRef.current = window.setTimeout(() => {
+
+      currentVideo?.pause();
+
+
+
+      setPreviousIndex(null);
+
+      previousIndexRef.current = null;
+
+      transitioningRef.current = false;
+
+
+
+      const upcomingIndex =
+
+        (activeIndexRef.current + 1) % heroSlides.length;
+
+
+
+      prepareVideo(upcomingIndex);
+
+    }, TRANSITION_DURATION * 1000);
+
+  }, [prepareVideo, tryPlay]);
+
+
 
   useEffect(() => {
-    let frame = 0;
-    videoRefs.current.forEach((video, index) => {
-      video.muted = true;
-      video.defaultMuted = true;
-      video.controls = false;
-      video.playsInline = true;
 
-      if (index === activeIndex) {
-        try {
-          video.currentTime = 0;
-        } catch {}
-        frame = window.requestAnimationFrame(() => tryPlay(video));
-      } else {
-        video.pause();
+    mountedRef.current = true;
+
+
+
+    const firstVideo = videoRefs.current.get(0);
+
+
+
+    if (firstVideo) {
+
+      tryPlay(firstVideo);
+
+    }
+
+
+
+    prepareVideo(1);
+
+
+
+    return () => {
+
+      mountedRef.current = false;
+
+
+
+      if (transitionTimeoutRef.current) {
+
+        window.clearTimeout(transitionTimeoutRef.current);
+
       }
-    });
-    return () => window.cancelAnimationFrame(frame);
-  }, [activeIndex, tryPlay]);
+
+
+
+      videoRefs.current.forEach((video) => {
+
+        video.pause();
+
+      });
+
+    };
+
+  }, [prepareVideo, tryPlay]);
+
+
 
   useEffect(() => {
+
     const handleVisibility = () => {
-      if (!document.hidden) tryPlay();
+
+      if (document.hidden) return;
+
+
+
+      const currentVideo = videoRefs.current.get(
+
+        activeIndexRef.current
+
+      );
+
+
+
+      tryPlay(currentVideo);
+
+
+
+      const outgoingIndex = previousIndexRef.current;
+
+
+
+      if (outgoingIndex !== null) {
+
+        tryPlay(videoRefs.current.get(outgoingIndex));
+
+      }
+
     };
-    document.addEventListener("visibilitychange", handleVisibility);
-    return () => document.removeEventListener("visibilitychange", handleVisibility);
+
+
+
+    document.addEventListener(
+
+      "visibilitychange",
+
+      handleVisibility
+
+    );
+
+
+
+    return () => {
+
+      document.removeEventListener(
+
+        "visibilitychange",
+
+        handleVisibility
+
+      );
+
+    };
+
   }, [tryPlay]);
 
-  const handleVideoEnded = () => {
-    setActiveIndex((current) => (current + 1) % heroSlides.length);
+
+
+  const handleTimeUpdate = (index, video) => {
+
+    if (index !== activeIndexRef.current) return;
+
+    if (transitioningRef.current) return;
+
+
+
+    const duration = video.duration;
+
+
+
+    if (!Number.isFinite(duration) || duration <= 0) {
+
+      return;
+
+    }
+
+
+
+    const remainingTime = duration - video.currentTime;
+    // Preload the upcoming video ahead of the transition.
+    if (remainingTime <= PRELOAD_BEFORE_END + 1) {
+
+      prepareVideo((index + 1) % heroSlides.length);
+
+    }
+    // Crossfade before the current video ends.
+    if (remainingTime <= PRELOAD_BEFORE_END) {
+
+      changeSlide();
+
+    }
+
   };
 
+
+
+  const handleVideoEnded = (index) => {
+
+    if (index !== activeIndexRef.current) return;
+
+    if (transitioningRef.current) return;
+
+
+
+    changeSlide();
+
+  };
+
+
+
   return (
+
     <section className="relative overflow-hidden bg-[#081b24] text-white">
+
       <div className="relative h-[90vh] min-h-[560px] max-h-[760px] w-full">
-        {/* VIDEO LAYER */}
-        <div className="absolute inset-0">
-          {heroSlides.map((slide, index) => (
-            <motion.video
-              key={slide.id}
-              ref={(element) => {
-                if (element) {
-                  videoRefs.current.set(index, element);
-                  element.muted = true;
-                  element.defaultMuted = true;
-                  element.controls = false;
-                  element.playsInline = true;
-                } else {
-                  videoRefs.current.delete(index);
+
+
+
+        {/* VIDEO BACKGROUND LAYER */}
+
+        <div className="absolute inset-0 overflow-hidden">
+
+          {heroSlides.map((slide, index) => {
+
+            const isActive = index === activeIndex;
+
+            const isPrevious = index === previousIndex;
+
+
+
+            return (
+
+              <motion.video
+
+                key={slide.id}
+
+                ref={(element) => {
+
+                  if (element) {
+
+                    videoRefs.current.set(index, element);
+
+
+
+                    element.muted = true;
+
+                    element.defaultMuted = true;
+
+                    element.controls = false;
+
+                    element.playsInline = true;
+
+                  } else {
+
+                    videoRefs.current.delete(index);
+
+                  }
+
+                }}
+
+                src={slide.video}
+
+                muted
+
+                autoPlay={index === 0}
+
+                playsInline
+
+                controls={false}
+
+                loop={false}
+
+                preload={
+
+                  index === 0 || index === 1
+
+                    ? "auto"
+
+                    : "metadata"
+
                 }
-              }}
-              src={slide.video}
-              muted
-              autoPlay={index === activeIndex}
-              playsInline
-              controls={false}
-              preload={index === activeIndex ? "auto" : "metadata"}
-              tabIndex={-1}
-              onContextMenu={(event) => event.preventDefault()}
-              onLoadedData={() => {
-                if (index === activeIndex) tryPlay(videoRefs.current.get(index));
-              }}
-              onCanPlay={() => {
-                if (index === activeIndex) tryPlay(videoRefs.current.get(index));
-              }}
-              onPause={() => {
-                if (index !== activeIndex || document.hidden) return;
-                window.setTimeout(() => {
-                  const video = videoRefs.current.get(index);
-                  if (video && video.paused && !video.ended) tryPlay(video);
-                }, 120);
-              }}
-              onEnded={index === activeIndex ? handleVideoEnded : undefined}
-              initial={false}
-              animate={{
-                opacity: index === activeIndex ? 1 : 0,
-                scale: index === activeIndex ? 1 : 1.035,
-              }}
-              transition={{
-                opacity: { duration: 1.2, ease: "easeInOut" },
-                scale: { duration: 6, ease: "linear" },
-              }}
-              className="pointer-events-none absolute inset-0 h-full w-full select-none object-cover"
-              aria-hidden={index !== activeIndex}
-            />
-          ))}
+
+                tabIndex={-1}
+
+                disablePictureInPicture
+
+                onContextMenu={(event) =>
+
+                  event.preventDefault()
+
+                }
+
+                onLoadedData={(event) => {
+
+                  if (
+
+                    index === activeIndexRef.current &&
+
+                    !event.currentTarget.ended
+
+                  ) {
+
+                    tryPlay(event.currentTarget);
+
+                  }
+
+                }}
+
+                onCanPlay={(event) => {
+
+                  if (
+
+                    index === activeIndexRef.current &&
+
+                    event.currentTarget.paused &&
+
+                    !event.currentTarget.ended
+
+                  ) {
+
+                    tryPlay(event.currentTarget);
+
+                  }
+
+                }}
+
+                onTimeUpdate={(event) =>
+
+                  handleTimeUpdate(
+
+                    index,
+
+                    event.currentTarget
+
+                  )
+
+                }
+
+                onEnded={() => handleVideoEnded(index)}
+
+                initial={false}
+
+                animate={{
+
+                  opacity: isActive ? 1 : 0,
+
+                  scale: isActive ? 1 : 1.035,
+
+                }}
+
+                transition={{
+
+                  opacity: {
+
+                    duration: TRANSITION_DURATION,
+
+                    ease: "easeInOut",
+
+                  },
+
+                  scale: {
+
+                    duration: 6,
+
+                    ease: "linear",
+
+                  },
+
+                }}
+
+                style={{
+
+                  zIndex: isActive
+
+                    ? 2
+
+                    : isPrevious
+
+                      ? 1
+
+                      : 0,
+
+                  willChange: "opacity, transform",
+
+                }}
+
+                className="pointer-events-none absolute inset-0 h-full w-full select-none object-cover"
+
+                aria-hidden={!isActive}
+
+              />
+
+            );
+
+          })}
+
         </div>
 
-        {/* CINEMATIC OVERLAYS - SAME AS BEFORE */}
-        <div className="pointer-events-none absolute inset-0 bg-[#081b24]/30" />
-        <div className="pointer-events-none absolute inset-0 bg-[#081b24]/20" />
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-52 bg-gradient-to-t from-[#081b24]/85 via-[#081b24]/30 to-transparent" />
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-[#081b24]/55 to-transparent" />
+
+
+        {/* CINEMATIC OVERLAYS - UNCHANGED */}
+
+        <div className="pointer-events-none absolute inset-0 z-[3] bg-[#081b24]/30" />
+
+
+
+        <div className="pointer-events-none absolute inset-0 z-[3] bg-[#081b24]/20" />
+
+
+
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[3] h-52 bg-gradient-to-t from-[#081b24]/85 via-[#081b24]/30 to-transparent" />
+
+
+
+        <div className="pointer-events-none absolute inset-x-0 top-0 z-[3] h-36 bg-gradient-to-b from-[#081b24]/55 to-transparent" />
+
+
 
         {/* CENTER CONTENT */}
+
         <div className="absolute inset-0 z-10 flex items-center justify-center px-5 pb-8 pt-16 sm:px-8 sm:pb-10 sm:pt-20 lg:px-12">
-          <div className="mx-auto w-full max-w-4xl text-center">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeSlide.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -15 }}
-                transition={contentTransition}
-                className="flex flex-col items-center"
-              >
-                <h1 className="max-w-4xl text-balance font-heading text-[clamp(2.5rem,6vw,5.8rem)] font-semibold leading-[1.05] tracking-[-0.045em] text-white drop-shadow-[0_4px_25px_rgba(0,0,0,0.25)] sm:leading-[1.02] sm:tracking-[-0.05em]">
-                  {activeSlide.title}
-                </h1>
 
-                <div className="mt-7 flex w-full flex-col items-center justify-center gap-3 sm:mt-9 sm:w-auto sm:flex-row sm:gap-3.5">
-                  <Link
-                    href={activeSlide.href}
-                    className="group relative inline-flex min-h-12 w-full max-w-[320px] items-center justify-center gap-3 overflow-hidden rounded-lg border border-[#27d59b] bg-[#27d59b] px-5 py-3 text-center text-[11px] font-bold uppercase leading-[1.45] tracking-[0.06em] text-[#081b24] shadow-[0_10px_28px_rgba(39,213,155,0.16)] transition-all duration-300 hover:-translate-y-0.5 hover:border-white hover:bg-white hover:text-[#081b24] hover:shadow-[0_14px_34px_rgba(0,0,0,0.2)] sm:w-auto sm:max-w-none sm:px-6 sm:tracking-[0.08em]"
-                  >
-                    <span className="relative z-10 text-[#081b24] transition-colors duration-300 group-hover:text-[#081b24]">
-                      {activeSlide.cta}
-                    </span>
-                    <span className="relative z-10 flex h-6 w-6 shrink-0 items-center justify-center rounded-md border border-[#081b24]/10 bg-[#081b24]/10 transition-all duration-300 group-hover:border-[#081b24] group-hover:bg-[#081b24]">
-                      <ArrowIcon className="h-3 w-3 text-[#081b24] transition-all duration-300 group-hover:translate-x-0.5 group-hover:text-white" />
-                    </span>
-                  </Link>
 
-                  <Link
-                    href="/contact"
-                    className="group inline-flex min-h-12 w-full max-w-[320px] items-center justify-center gap-3 rounded-lg border border-white/25 bg-white/[0.07] px-6 py-3 text-[11px] font-bold uppercase leading-[1.45] tracking-[0.08em] text-white backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:border-white hover:bg-white hover:text-[#081b24] hover:shadow-[0_14px_34px_rgba(0,0,0,0.18)] sm:w-auto"
-                  >
-                    <span className="text-white transition-colors duration-300 group-hover:text-[#081b24]">
-                      Talk to us
-                    </span>
-                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md border border-white/15 bg-white/[0.05] transition-all duration-300 group-hover:border-[#081b24]/15 group-hover:bg-[#081b24]/10">
-                      <ArrowIcon className="h-3 w-3 text-white transition-all duration-300 group-hover:translate-x-0.5 group-hover:text-[#081b24]" />
-                    </span>
-                  </Link>
-                </div>
-              </motion.div>
-            </AnimatePresence>
+
+          <div className="mx-auto w-full max-w-5xl text-center">
+
+
+
+            <motion.div
+
+              initial={{ opacity: 0, y: 20 }}
+
+              animate={{ opacity: 1, y: 0 }}
+
+              transition={{
+
+                duration: 0.85,
+
+                ease: [0.16, 1, 0.3, 1],
+
+              }}
+
+              className="flex flex-col items-center"
+
+            >
+
+
+
+              {/* HEADLINE */}
+
+              <h1 className="max-w-5xl text-balance font-heading text-[36px] font-semibold leading-[0.92] tracking-[-2px] text-white drop-shadow-[0_4px_25px_rgba(0,0,0,0.25)] sm:text-[52px] sm:tracking-[-3px] lg:text-[76px] lg:tracking-[-4.5px]">
+
+                Connected Intelligence for Vehicles, Assets &amp; Operations
+
+              </h1>
+
+
+
+              {/* SUBLINE */}
+
+              <p className="mt-5 max-w-[700px] text-balance font-sans text-[16px] font-normal leading-[28px] text-white/85 drop-shadow-[0_2px_12px_rgba(0,0,0,0.25)] sm:mt-6 lg:text-[18px]">
+
+                Integrated IoT hardware, smart telematics and
+
+                cloud-based monitoring solutions for businesses.
+
+              </p>
+
+
+
+              {/* CTA BUTTONS */}
+
+              <div className="mt-7 flex w-full flex-col items-center justify-center gap-3 sm:mt-9 sm:w-auto sm:flex-row sm:gap-3.5">
+
+
+
+                {/* EXPLORE SOLUTIONS */}
+
+                <Link
+
+                  href="/products"
+
+                  className="group relative inline-flex min-h-12 w-full max-w-[320px] items-center justify-center gap-3 overflow-hidden rounded-lg border border-[#27d59b] bg-[#27d59b] px-5 py-3 text-center font-sans text-[14px] font-semibold leading-[18px] tracking-normal text-[#081b24] shadow-[0_10px_28px_rgba(39,213,155,0.16)] transition-all duration-300 hover:-translate-y-0.5 hover:border-white hover:bg-white hover:text-[#081b24] hover:shadow-[0_14px_34px_rgba(0,0,0,0.2)] sm:w-auto sm:max-w-none sm:px-6"
+
+                >
+
+                  <span className="relative z-10 text-[#081b24] transition-colors duration-300 group-hover:text-[#081b24]">
+
+                    Explore Solutions
+
+                  </span>
+
+
+
+                  <span className="relative z-10 flex h-6 w-6 shrink-0 items-center justify-center rounded-md border border-[#081b24]/10 bg-[#081b24]/10 transition-all duration-300 group-hover:border-[#081b24] group-hover:bg-[#081b24]">
+
+                    <ArrowIcon className="h-3 w-3 text-[#081b24] transition-all duration-300 group-hover:translate-x-0.5 group-hover:text-white" />
+
+                  </span>
+
+                </Link>
+
+
+
+                {/* REQUEST A DEMO */}
+
+                <Link
+
+                  href="/contact"
+
+                  className="group inline-flex min-h-12 w-full max-w-[320px] items-center justify-center gap-3 rounded-lg border border-white/25 bg-white/[0.07] px-6 py-3 font-sans text-[14px] font-semibold leading-[18px] tracking-normal text-white backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:border-white hover:bg-white hover:text-[#081b24] hover:shadow-[0_14px_34px_rgba(0,0,0,0.18)] sm:w-auto"
+
+                >
+
+                  <span className="text-white transition-colors duration-300 group-hover:text-[#081b24]">
+
+                    Request a Demo
+
+                  </span>
+
+
+
+                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md border border-white/15 bg-white/[0.05] transition-all duration-300 group-hover:border-[#081b24]/15 group-hover:bg-[#081b24]/10">
+
+                    <ArrowIcon className="h-3 w-3 text-white transition-all duration-300 group-hover:translate-x-0.5 group-hover:text-[#081b24]" />
+
+                  </span>
+
+                </Link>
+
+
+
+              </div>
+
+
+
+            </motion.div>
+
           </div>
+
         </div>
+
       </div>
 
+
+
+      {/* HIDE NATIVE VIDEO CONTROLS */}
+
       <style>{`
+
         video::-webkit-media-controls,
+
         video::-webkit-media-controls-enclosure,
+
         video::-webkit-media-controls-panel,
+
         video::-webkit-media-controls-play-button,
+
         video::-webkit-media-controls-start-playback-button {
+
           display: none !important;
+
           -webkit-appearance: none !important;
+
         }
+
       `}</style>
+
     </section>
+
   );
+
 }

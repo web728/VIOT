@@ -4,6 +4,8 @@ export type ProductVariant = {
   id: string;
   name: string;
   eyebrow?: string;
+  image?: string;
+  gallery?: string[];
   headline: string;
   description: string;
   features: string[];
@@ -21,6 +23,7 @@ export type ProductListingItem = {
 export type Product = {
   slug: string;
   id: string;
+  image?: string;
   number: string;
   name: string;
   shortName: string;
@@ -45,6 +48,7 @@ export const products: Product[] = [
   {
     slug: "vehicle-telematics",
     id: "vehicle-telematics",
+    image: "/image/basic-device.jpeg",
     number: "01",
     name: "Vehicle Telematics",
     shortName: "Vehicle telematics",
@@ -71,7 +75,8 @@ export const products: Product[] = [
     variants: [
       {
         id: "basic-tracking-device",
-        name: "Basic Tracking Device",
+        name: "4G Basic Tracking Device",
+        image: "/image/basic-device.jpeg",
         eyebrow: "Core vehicle tracking",
         headline: "Compact 4G tracking for everyday fleet visibility.",
         description:
@@ -104,7 +109,13 @@ export const products: Product[] = [
       },
       {
         id: "advanced-tracking-device",
-        name: "Advanced Tracking Device",
+        name: "4G Advanced Tracking Device",
+        image: "/image/advanced-tracking.png",
+        gallery: [
+          "/image/advanced-tracking.png",
+          "/image/relay-gps-tracker.jpeg",
+          "/image/me162-ble-device.jpeg",
+        ],
         eyebrow: "Expanded vehicle intelligence",
         headline: "More vehicle context from one connected tracking layer.",
         description:
@@ -149,12 +160,30 @@ export const products: Product[] = [
         note:
           "Peripheral functions depend on the selected sensor, accessory and deployment configuration.",
       },
+      {
+        id: "ev-can-device",
+        name: "EV CAN Device",
+        eyebrow: "Electric vehicle data",
+        image: "/image/vehicle-telematics.png",
+        headline: "Bring EV CAN data into the connected fleet view.",
+        description:
+          "A dedicated EV CAN device for deployments that need vehicle-network data alongside location and operational visibility. Final interfaces, supported parameters and technical specifications will be updated from the client-supplied EV CAN datasheet.",
+        features: [
+          "EV CAN data integration",
+          "Connected vehicle visibility",
+          "Deployment-specific parameter mapping",
+        ],
+        specs: [],
+        note:
+          "Technical specifications are pending the client-supplied EV CAN device datasheet.",
+      },
     ],
   },
 
   {
     slug: "video-telematics",
     id: "video-telematics",
+    image: "/image/3-channel-dash-cam.jpeg",
     number: "02",
     name: "Video Telematics",
     shortName: "Video telematics",
@@ -177,6 +206,87 @@ export const products: Product[] = [
       "Fleet operations - live preview, playback and device settings can be managed remotely, with built-in microphone and speaker support for two-way voice communication.",
       "Secure recording continuity - a built-in supercapacitor helps protect important recordings during sudden power interruption.",
       "Accurate positioning - GPS + Beidou supports vehicle location, route history and trip tracking.",
+    ],
+    variants: [
+      {
+        id: "2-channel-dash-cam",
+        name: "2-Channel Dash Cam",
+        eyebrow: "Video telematics",
+        image: "/image/2-channel-dash-cam.jpeg",
+        gallery: ["/image/2-channel-dash-cam.jpeg"],
+        headline: "Connected two-channel video for everyday fleet visibility.",
+        description:
+          "A two-channel dash camera configuration for deployments that need road and cabin or auxiliary visual coverage. Final camera, storage, AI and connectivity specifications will be updated from the client-supplied datasheet.",
+        features: [
+          "Two-channel video coverage",
+          "Connected fleet monitoring",
+          "Deployment-specific camera configuration",
+        ],
+        specs: [],
+        note:
+          "Technical specifications are pending the client-supplied 2-channel dash cam datasheet.",
+      },
+      {
+        id: "auxiliary-cameras",
+        name: "Auxiliary Cameras",
+        eyebrow: "Video telematics",
+        image: "/image/auxillary-cameras.jpeg",
+        gallery: ["/image/auxillary-cameras.jpeg"],
+        headline: "Extend visual coverage around the vehicle.",
+        description:
+          "Auxiliary cameras extend the video-coverage configuration around the vehicle where additional viewpoints are required. Exact camera type, resolution, field of view and compatibility depend on the selected deployment.",
+        features: [
+          "Additional vehicle viewpoints",
+          "Flexible camera placement",
+          "Deployment-specific integration",
+        ],
+        specs: [],
+        note:
+          "Technical specifications are pending the client-supplied auxiliary camera datasheet.",
+      },
+      {
+        id: "3-channel-dash-cam",
+        name: "3-Channel AI Dash Cam",
+        eyebrow: "AI video intelligence",
+        image: "/image/3-channel-dash-cam.jpeg",
+        gallery: ["/image/3-channel-dash-cam.jpeg"],
+        headline: "Three-channel AI video intelligence for connected fleet safety.",
+        description:
+          "One 1080P front camera and two 720P HD channels combine with ADAS, DMS and BSD monitoring, built-in 4G LTE and GPS + Beidou positioning for connected fleet visibility and event review.",
+        features: [
+          "Triple-channel HD recording",
+          "ADAS, DMS & BSD safety intelligence",
+          "4G remote monitoring",
+        ],
+        specs: [
+          ["Processor", "Dual-core processor @ 1.5GHz"],
+          ["AI engine", "1.0 TOPS Neural Processing Unit"],
+          ["Memory", "2GB DDR3"],
+          ["Camera channels", "3 channels"],
+          ["Front camera", "1080P Full HD · 115° wide angle"],
+          ["Additional cameras", "2 × 720P HD"],
+          ["Video compression", "H.265 / H.264"],
+          ["Video recording", "Simultaneous audio & video recording"],
+          ["AI functions", "ADAS, DMS & BSD"],
+          ["Cellular network", "Built-in 4G LTE · TDD-LTE / FDD-LTE"],
+          ["Wi-Fi", "Optional 2.4GHz Wi-Fi · 802.11 b/g/n AP mode"],
+          ["Positioning", "GPS + Beidou"],
+          ["Storage", "TF card support up to 512GB"],
+          ["Audio", "Built-in microphone & speaker"],
+          ["G-sensor", "Built-in 3-axis acceleration sensor"],
+          ["Mobile app", "Supported"],
+          ["Live preview", "Supported"],
+          ["Voice intercom", "Supported"],
+          ["Communication protocol", "JT/T808 · JT/T1078"],
+          ["SIM", "1 × Micro SIM"],
+          ["Power supply", "DC 10V-36V"],
+          ["Power consumption", "<5W"],
+          ["Upgrade", "OTA & TF card"],
+          ["Operating temperature", "-25°C to +70°C"],
+          ["Dimensions", "120 × 77 × 55 mm"],
+          ["Weight", "260 g"],
+        ],
+      },
     ],
     specs: [
       ["Processor", "Dual-core processor @ 1.5GHz"],
@@ -211,6 +321,7 @@ export const products: Product[] = [
   {
     slug: "smart-logistics-locks",
     id: "smart-logistics-locks",
+    image: "/image/4g-keypad-based-elock.jpeg",
     number: "03",
     name: "Smart Logistics Locks",
     shortName: "Logistics locks",
@@ -235,6 +346,60 @@ export const products: Product[] = [
     ],
     howItWorks:
       "When the rope or pole is inserted, the device is ready to lock. Locking and unlocking can be authorised through configured channels such as IC card, BLE, SMS or the platform. LED, buzzer and voice prompts indicate lock state and operation result. The device reports location, lock state and configured security events to the platform, while power-saving modes adjust reporting behaviour when the asset is static or sleeping.",
+    variants: [
+      {
+        id: "2g-rfid-e-lock",
+        name: "2G RFID-based E-Lock",
+        eyebrow: "Cargo security",
+        image: "/image/smart-lock.png",
+        headline: "RFID-based electronic locking for 2G deployments.",
+        description:
+          "A 2G RFID-based E-Lock configuration within the VIoT logistics-lock family. Final connectivity bands, battery, positioning, RFID and environmental specifications will be updated from the client-supplied technical sheet.",
+        features: [
+          "RFID-based access",
+          "Connected lock-state visibility",
+          "Cargo-security event monitoring",
+        ],
+        specs: [],
+        note:
+          "Technical specifications are pending the client-supplied 2G RFID E-Lock datasheet.",
+      },
+      {
+        id: "4g-rfid-e-lock",
+        name: "4G RFID-based E-Lock",
+        eyebrow: "Cargo security",
+        image: "/image/smart-lock.png",
+        headline: "RFID-based electronic locking with 4G connectivity.",
+        description:
+          "A 4G RFID-based E-Lock configuration for connected cargo-security workflows. Final device-specific communication bands, battery, positioning and mechanical specifications will be updated from the client-supplied technical sheet.",
+        features: [
+          "4G connected locking",
+          "RFID-based access",
+          "Location and security events",
+        ],
+        specs: [],
+        note:
+          "Technical specifications are pending the client-supplied 4G RFID E-Lock datasheet.",
+      },
+      {
+        id: "4g-keypad-e-lock",
+        name: "4G Keypad-based E-Lock",
+        eyebrow: "Cargo security",
+        image: "/image/4g-keypad-based-elock.jpeg",
+        gallery: ["/image/4g-keypad-based-elock.jpeg"],
+        headline: "Keypad-based cargo access with connected 4G visibility.",
+        description:
+          "A 4G keypad-based E-Lock configuration for logistics deployments that require controlled physical access together with connected lock-state and security-event visibility.",
+        features: [
+          "4G connected locking",
+          "Keypad-based access",
+          "Cargo-security event visibility",
+        ],
+        specs: [],
+        note:
+          "Technical specifications are pending the client-supplied 4G keypad E-Lock datasheet.",
+      },
+    ],
     specs: [
       ["Battery", "Rechargeable polymer lithium battery · 3.7V · 12000mAh"],
       [
@@ -281,6 +446,7 @@ export const products: Product[] = [
   {
     slug: "smart-infra-locks",
     id: "infra-locks",
+    image: "/image/smart-infra.png",
     number: "04",
     name: "Smart Infra Locks",
     shortName: "Infra locks",
@@ -361,6 +527,7 @@ export const products: Product[] = [
   {
     slug: "asset-trackers",
     id: "asset-trackers",
+    image: "/image/asset-trackers.png",
     number: "05",
     name: "Asset Trackers",
     shortName: "Asset trackers",
@@ -372,7 +539,7 @@ export const products: Product[] = [
     description:
       "VIoT asset tracking supports battery-powered deployments where installation flexibility, movement alerts and location visibility matter more than a hard-wired vehicle connection.",
     points: [
-      "7800 / 10000mAh battery options",
+      "7800mAh / 10000mAh battery options",
       "Powerful magnetic mounting",
       "Geo-fence and movement alerts",
     ],
@@ -399,6 +566,7 @@ export const products: Product[] = [
   {
     slug: "iot-sensors",
     id: "iot-sensors",
+    image: "/image/iot-sensors.png",
     number: "06",
     name: "IoT Sensors",
     shortName: "IoT sensors",
@@ -434,14 +602,14 @@ export const products: Product[] = [
         name: "Humidity Sensor",
         imagePlaceholder: "[Image: Humidity Sensor]",
         description:
-          "Measures relative humidity inside a cargo or storage compartment, typically as part of a combined temperature-humidity probe. (Interface to confirm - proposed below) It connects to the 1-Wire input of the GPS device, sharing the bus with the temperature probe. The platform shows live humidity %, trends, and threshold alerts for moisture-sensitive cargo.",
+          "Measures relative humidity inside a cargo or storage compartment, typically as part of a combined temperature-humidity probe. The selected probe interface is confirmed for the deployment before integration. The platform shows live humidity %, trends, and threshold alerts for moisture-sensitive cargo.",
       },
       {
         id: "load-axle-sensor",
         name: "Load/Axle Sensor",
         imagePlaceholder: "[Image: Load/Axle Sensor]",
         description:
-          "Measures weight and load distribution across axles using a load cell mounted on the suspension or chassis. (Interface to confirm - proposed below) It connects to the Analog Input (AIN) of the GPS device, which reads the load cell's voltage output. The platform shows live load weight per axle, overload alerts, and uneven-distribution warnings.",
+          "Measures weight and load distribution across axles using a load cell mounted on the suspension or chassis. The selected load-cell interface is confirmed for the deployment before integration. The platform shows live load weight per axle, overload alerts, and uneven-distribution warnings.",
       },
       {
         id: "lux-sensor",
@@ -454,18 +622,12 @@ export const products: Product[] = [
     specs: [
       ["Fuel Sensor", "RS485 input of the GPS device"],
       ["Temperature Sensor", "1-Wire input of the GPS device"],
-      [
-        "Humidity Sensor",
-        "1-Wire input of the GPS device - interface to confirm",
-      ],
-      [
-        "Load/Axle Sensor",
-        "Analog Input (AIN) of the GPS device - interface to confirm",
-      ],
+      ["Humidity Sensor", "Interface confirmed per selected probe and deployment"],
+      ["Load/Axle Sensor", "Interface confirmed per selected load-cell configuration"],
       ["Lux Sensor", "RS485 input of the GPS device"],
     ],
     note:
-      "Humidity Sensor and Load/Axle Sensor interfaces are marked as 'to confirm' in the client-supplied content.",
+      "Humidity and load/axle interfaces are confirmed during technical evaluation for the selected sensor configuration.",
   },
 ];
 

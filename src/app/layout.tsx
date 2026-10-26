@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
-import { Manrope, Inter, JetBrains_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono, Manrope } from "next/font/google";
 
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
+import { SmoothScroll } from "@/components/SmoothScroll";
 import { StructuredData } from "@/components/structured-data";
 
 import "./globals.css";
-import { SmoothScroll } from "@/components/SmoothScroll";
+
+const SITE_URL = "https://www.viot.in";
 
 const manrope = Manrope({
   variable: "--viot-heading",
@@ -30,27 +32,16 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://viot.in"),
-
+  metadataBase: new URL(SITE_URL),
   applicationName: "VIoT",
 
   title: {
-    default:
-      "VIoT - Track what moves. Secure what matters. Control who gets in.",
-    template: "%s | VIoT",
+    default: "VIoT - Track what moves. Secure what matters. Control who gets in.",
+    template: "%s",
   },
 
   description:
-    "VIoT is an Indian IoT company built on three divisions: Fleet Intelligence, Asset Intelligence, and Access Control. One team, three disciplines, one platform.",
-
-  keywords: [
-    "fleet intelligence",
-    "asset intelligence",
-    "access control",
-    "vehicle telematics India",
-    "smart locks",
-    "IoT sensors India",
-  ],
+    "Connected IoT hardware and technology solutions for vehicle intelligence, asset visibility, operational safety and smarter operations.",
 
   robots: {
     index: true,
@@ -63,7 +54,6 @@ export const metadata: Metadata = {
 
   creator: "VIoT Technologies LLP",
   publisher: "VIoT Technologies LLP",
-  category: "Fleet, Asset & Access Intelligence",
 
   formatDetection: {
     email: false,
@@ -74,19 +64,17 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: "VIoT",
-    title:
-      "VIoT - Track what moves. Secure what matters. Control who gets in.",
+    title: "VIoT - Track what moves. Secure what matters. Control who gets in.",
     description:
-      "Fleet Intelligence, Asset Intelligence and Access Control unified on one platform with India-first support.",
-    url: "https://viot.in",
+      "Connected IoT hardware and technology solutions for vehicle intelligence, asset visibility, operational safety and smarter operations.",
+    url: SITE_URL,
   },
 
   twitter: {
     card: "summary",
-    title:
-      "VIoT - Track what moves. Secure what matters. Control who gets in.",
+    title: "VIoT - Track what moves. Secure what matters. Control who gets in.",
     description:
-      "Fleet Intelligence, Asset Intelligence and Access Control unified on one platform with India-first support.",
+      "Connected IoT hardware and technology solutions for vehicle intelligence, asset visibility, operational safety and smarter operations.",
   },
 };
 
@@ -95,10 +83,10 @@ const organizationSchema = {
   "@graph": [
     {
       "@type": "Organization",
-      "@id": "https://viot.in/#organization",
+      "@id": `${SITE_URL}/#organization`,
       name: "VIoT Technologies LLP",
-      url: "https://viot.in",
-      logo: "https://viot.in/icon.svg",
+      url: SITE_URL,
+      logo: `${SITE_URL}/icon.svg`,
       email: "team@viot.in",
       foundingDate: "2026",
       address: {
@@ -112,11 +100,11 @@ const organizationSchema = {
     },
     {
       "@type": "WebSite",
-      "@id": "https://viot.in/#website",
-      url: "https://viot.in",
+      "@id": `${SITE_URL}/#website`,
+      url: SITE_URL,
       name: "VIoT",
       publisher: {
-        "@id": "https://viot.in/#organization",
+        "@id": `${SITE_URL}/#organization`,
       },
       inLanguage: "en-IN",
     },
@@ -130,14 +118,13 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang="en-IN"
       className={`${manrope.variable} ${inter.variable} ${jetbrainsMono.variable}`}
     >
       <body className="bg-paper text-ink antialiased">
         <StructuredData data={organizationSchema} />
 
         <Header />
-
         <SmoothScroll />
 
         <div id="main-content">{children}</div>

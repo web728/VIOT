@@ -15,25 +15,16 @@ export function generateStaticParams() {
   return products.map(({ slug }) => ({ slug }));
 }
 
-/* =========================================================
-   TYPES
-========================================================= */
-
 type ProductPageParams = {
   params: Promise<{
     slug: string;
   }>;
 };
 
-/* =========================================================
-   METADATA
-========================================================= */
-
 export async function generateMetadata({
   params,
 }: ProductPageParams): Promise<Metadata> {
   const { slug } = await params;
-
   const product = getProduct(slug);
 
   if (!product) {
@@ -49,32 +40,22 @@ export async function generateMetadata({
   };
 }
 
-/* =========================================================
-   SERVER-SAFE HELPERS
-========================================================= */
-
 function getProductImage(slug: string) {
+  const product = getProduct(slug);
+
+  if (product?.image) {
+    return product.image;
+  }
+
   switch (slug) {
-    case "vehicle-telematics":
-      return "/image/video.png";
-
-    case "video-telematics":
-      return "/image/car.jpeg";
-
-    case "smart-logistics-locks":
-      return "/image/lock.png";
-
     case "smart-infra-locks":
-      return "/image/lock.png";
-
+      return "/image/smart-infra.png";
     case "asset-trackers":
-      return "/image/lab.jpeg";
-
+      return "/image/asset-trackers.png";
     case "iot-sensors":
-      return "/image/ev.jpeg";
-
+      return "/image/iot-sensors.png";
     default:
-      return "/image/video.png";
+      return "/images/basic-device.jpeg";
   }
 }
 
@@ -83,15 +64,15 @@ function getProductFlow(slug: string) {
     case "vehicle-telematics":
       return {
         source: "Vehicle",
-        device: "Tracking Device",
-        data: "Location · Driving events · Vehicle status",
+        device: "Telematics Device",
+        data: "Location · Vehicle events · CAN data",
         output: "Fleet Operations",
       };
 
     case "video-telematics":
       return {
         source: "Vehicle",
-        device: "AI Video Device",
+        device: "Video Telematics Device",
         data: "Video · Driver events · Position",
         output: "Safety Operations",
       };
@@ -99,16 +80,16 @@ function getProductFlow(slug: string) {
     case "smart-logistics-locks":
       return {
         source: "Cargo",
-        device: "Smart Logistics Lock",
-        data: "Lock state · Location · Tamper events",
+        device: "E-Lock",
+        data: "Lock state · Location · Security events",
         output: "Cargo Security",
       };
 
     case "smart-infra-locks":
       return {
         source: "Infrastructure",
-        device: "Connected Lock",
-        data: "Lock state · Access · Exceptions",
+        device: "Smart Infra Lock",
+        data: "Access · Lock state · Exceptions",
         output: "Access Operations",
       };
 
@@ -124,7 +105,7 @@ function getProductFlow(slug: string) {
       return {
         source: "Field Input",
         device: "IoT Sensor",
-        data: "Temperature · Fuel · Sensor events",
+        data: "Fuel · Temperature · Load · Lux events",
         output: "Operational Monitoring",
       };
 
@@ -138,15 +119,10 @@ function getProductFlow(slug: string) {
   }
 }
 
-/* =========================================================
-   PAGE
-========================================================= */
-
 export default async function ProductPage({
   params,
 }: ProductPageParams) {
   const { slug } = await params;
-
   const product = getProduct(slug);
 
   if (!product) {

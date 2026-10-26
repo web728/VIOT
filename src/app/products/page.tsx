@@ -5,7 +5,7 @@ import ProductsClient from "./ProductsClient";
 export const metadata: Metadata = {
   title: "Products | Connected Hardware & IoT Solutions | VIoT",
   description:
-    "Explore VIoT connected hardware for vehicle tracking, advanced tracking and electric vehicle intelligence.",
+    "Explore VIoT connected hardware for vehicle telematics, video telematics, electronic locks, asset tracking and IoT sensing.",
   alternates: {
     canonical: "/products",
   },

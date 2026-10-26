@@ -1,4 +1,7 @@
-type JsonLdValue = Record<string, unknown> | Array<Record<string, unknown>>;
+const SITE_URL = "https://www.viot.in";
+
+type JsonLdRecord = Record<string, unknown>;
+type JsonLdValue = JsonLdRecord | JsonLdRecord[];
 
 export function StructuredData({ data }: { data: JsonLdValue }) {
   return (
@@ -19,7 +22,7 @@ export function breadcrumbSchema(items: Array<{ name: string; path: string }>) {
       "@type": "ListItem",
       position: index + 1,
       name: item.name,
-      item: `https://viot.in${item.path}`,
+      item: new URL(item.path, SITE_URL).toString(),
     })),
   };
 }

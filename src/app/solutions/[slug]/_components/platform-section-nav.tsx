@@ -101,7 +101,7 @@ export function PlatformSectionNav({
                   href={`#${item.id}`}
                   aria-current={active ? "location" : undefined}
                   onClick={(event) => handleJump(event, item.id)}
-                  className={`group relative inline-flex h-9 items-center gap-2 rounded-lg border px-3 text-[9px] font-semibold uppercase tracking-[0.09em] transition-all duration-300 ${
+                  className={`group relative inline-flex h-9 items-center gap-2 rounded-lg border px-3 font-sans text-[12px] font-medium leading-[18px] transition-all duration-300 ${
                     active
                       ? "border-[#007c67]/20 bg-white text-[#081b24] shadow-[0_7px_20px_rgba(8,27,36,0.06)]"
                       : "border-transparent text-[#607078] hover:border-[#c8d5d0] hover:bg-white/75 hover:text-[#081b24]"

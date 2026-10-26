@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { HeroSection } from "@/components/home/HeroSection";
+import { SmartIoTSolutionsSection } from "@/components/home/SmartIoTSolutionsSection";
 import { StatsSection } from "@/components/home/StatsSection";
 import { ServiceMapSection } from "@/components/home/ServiceMapSection";
 import { ProductsSection } from "@/components/home/ProductsSection";
@@ -19,11 +20,19 @@ export default function Home() {
   return (
     <main className="overflow-hidden">
       <HeroSection />
+
+      <SmartIoTSolutionsSection />
+
+      <PlatformSection />
+
       <StatsSection />
+
       <ServiceMapSection />
-      {/* <SolutionSection /> */}
-      <ProductsShowcase />
-      {/* <PlatformSection /> */}
+
+      <SolutionSection />
+
+      {/* <ProductsShowcase /> */}
+
       <CtaBand />
     </main>
   );

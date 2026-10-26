@@ -3,15 +3,12 @@
 import { motion } from "framer-motion";
 import { DataFlowVisual } from "./DataFlowVisual";
 
-/* Same background animation as the Platform section */
+// Existing background animation retained.
 function ServiceMapBackground() {
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden">
-      {/* Soft atmosphere */}
       <div className="absolute -right-[18%] top-[4%] h-[600px] w-[600px] rounded-full bg-signal/[0.035] blur-3xl" />
       <div className="absolute -left-[20%] bottom-[5%] h-[500px] w-[500px] rounded-full bg-white/[0.018] blur-3xl" />
-
-      {/* Very subtle grid */}
       <div
         className="absolute inset-0 opacity-[0.025]"
         style={{
@@ -22,8 +19,6 @@ function ServiceMapBackground() {
           backgroundSize: "90px 90px",
         }}
       />
-
-      {/* System paths */}
       <svg
         viewBox="0 0 1600 1000"
         preserveAspectRatio="none"
@@ -58,8 +53,6 @@ function ServiceMapBackground() {
           transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
         />
       </svg>
-
-      {/* Moving signals */}
       <motion.span
         className="absolute left-[18%] top-[31%] h-1.5 w-1.5 rounded-full bg-signal"
         animate={{ x: [0, 130, 260], opacity: [0, 0.8, 0] }}
@@ -75,8 +68,6 @@ function ServiceMapBackground() {
         animate={{ y: [0, 70, 140], opacity: [0, 0.7, 0] }}
         transition={{ duration: 5.5, delay: 2, repeat: Infinity, ease: "linear" }}
       />
-
-      {/* Large subtle rings */}
       <motion.div
         className="absolute right-[3%] top-[8%] h-[480px] w-[480px] rounded-full border border-white/[0.04]"
         animate={{ rotate: 360 }}
@@ -87,8 +78,6 @@ function ServiceMapBackground() {
         animate={{ rotate: -360 }}
         transition={{ duration: 55, repeat: Infinity, ease: "linear" }}
       />
-
-      {/* Ambient nodes */}
       {[
         ["12%", "22%"],
         ["29%", "68%"],
@@ -118,10 +107,8 @@ export function ServiceMapSection() {
     <section className="relative w-full min-w-0 overflow-hidden bg-ink text-white">
       <ServiceMapBackground />
 
-      <div
-        className="relative z-10 mx-auto w-full min-w-0 max-w-7xl px-4 py-12 min-[375px]:px-5 sm:px-8 sm:py-16 lg:px-12 lg:py-20"
-      >
-        {/* Intro */}
+      <div className="relative z-10 mx-auto w-full min-w-0 max-w-7xl px-4 py-12 min-[375px]:px-5 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
+        {/* Intro: only requested copy changed */}
         <div className="grid min-w-0 gap-8 lg:grid-cols-12 lg:gap-12">
           <motion.div
             initial={{ opacity: 0, y: 14 }}
@@ -131,18 +118,22 @@ export function ServiceMapSection() {
             className="min-w-0 lg:col-span-7"
           >
             <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-signal">
-              The connected layer
+              How VIoT Works
             </p>
 
             <h2 className="mt-4 max-w-3xl break-words font-heading text-[clamp(1.65rem,7.5vw,2.25rem)] font-semibold leading-[1.1] tracking-[-0.045em] sm:text-4xl sm:leading-[1.06] lg:text-[52px]">
-              Every signal has a journey.
+              From Device Data to
               <br className="hidden sm:block" />
-              <span className="text-[#27d59b]"> VIoT makes it useful.</span>
+              <span className="text-[#27d59b]"> Actionable Intelligence</span>
             </h2>
+
+            <p className="mt-5 max-w-3xl text-sm leading-[1.8] text-white/60 sm:text-base">
+              Intelligent hardware and a unified platform that transform real-time data into insights, alerts, and smarter operational decisions.
+            </p>
           </motion.div>
         </div>
 
-        {/* Data-flow illustration */}
+        {/* Existing DataFlowVisual and its animations retained */}
         <div className="mt-8 w-full min-w-0 max-w-full overflow-hidden sm:mt-12">
           <div className="w-full min-w-0 max-w-full">
             <DataFlowVisual />
@@ -152,3 +143,5 @@ export function ServiceMapSection() {
     </section>
   );
 }
+
+export default ServiceMapSection;

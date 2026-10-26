@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useRef, useState } from "react";
@@ -39,7 +40,11 @@ function StatsBackground() {
           strokeWidth="1.2"
           strokeDasharray="3 18"
           animate={{ strokeDashoffset: [0, -220] }}
-          transition={{ duration: 16, repeat: Infinity, ease: "linear" }}
+          transition={{
+            duration: 16,
+            repeat: Infinity,
+            ease: "linear",
+          }}
         />
 
         <path
@@ -54,19 +59,33 @@ function StatsBackground() {
           strokeWidth="1.2"
           strokeDasharray="2 22"
           animate={{ strokeDashoffset: [0, 180] }}
-          transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
+          transition={{
+            duration: 18,
+            repeat: Infinity,
+            ease: "linear",
+          }}
         />
       </svg>
 
       <motion.span
         className="absolute left-[18%] top-[31%] h-1.5 w-1.5 rounded-full bg-signal"
-        animate={{ x: [0, 130, 260], opacity: [0, 0.7, 0] }}
-        transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
+        animate={{
+          x: [0, 130, 260],
+          opacity: [0, 0.7, 0],
+        }}
+        transition={{
+          duration: 5,
+          repeat: Infinity,
+          ease: "linear",
+        }}
       />
 
       <motion.span
         className="absolute left-[58%] top-[64%] h-1.5 w-1.5 rounded-full bg-signal"
-        animate={{ x: [0, -110, -220], opacity: [0, 0.65, 0] }}
+        animate={{
+          x: [0, -110, -220],
+          opacity: [0, 0.65, 0],
+        }}
         transition={{
           duration: 6,
           delay: 1.2,
@@ -77,7 +96,10 @@ function StatsBackground() {
 
       <motion.span
         className="absolute right-[17%] top-[28%] h-1 w-1 rounded-full bg-signal"
-        animate={{ y: [0, 70, 140], opacity: [0, 0.6, 0] }}
+        animate={{
+          y: [0, 70, 140],
+          opacity: [0, 0.6, 0],
+        }}
         transition={{
           duration: 5.5,
           delay: 2,
@@ -89,13 +111,21 @@ function StatsBackground() {
       <motion.div
         className="absolute right-[3%] top-[8%] h-[480px] w-[480px] rounded-full border border-ink/[0.055]"
         animate={{ rotate: 360 }}
-        transition={{ duration: 80, repeat: Infinity, ease: "linear" }}
+        transition={{
+          duration: 80,
+          repeat: Infinity,
+          ease: "linear",
+        }}
       />
 
       <motion.div
         className="absolute right-[9%] top-[16%] h-[320px] w-[320px] rounded-full border border-signal/[0.07]"
         animate={{ rotate: -360 }}
-        transition={{ duration: 55, repeat: Infinity, ease: "linear" }}
+        transition={{
+          duration: 55,
+          repeat: Infinity,
+          ease: "linear",
+        }}
       />
 
       {[
@@ -110,7 +140,9 @@ function StatsBackground() {
           key={`${left}-${top}`}
           className="absolute h-1 w-1 rounded-full bg-ink/20"
           style={{ left, top }}
-          animate={{ opacity: [0.08, 0.35, 0.08] }}
+          animate={{
+            opacity: [0.08, 0.35, 0.08],
+          }}
           transition={{
             duration: 3 + index * 0.35,
             delay: index * 0.25,
@@ -128,9 +160,15 @@ interface CounterProps {
 
 function AnimatedCounter({ value }: CounterProps) {
   const ref = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: true, amount: 0.25 });
 
-  const numericPart = parseInt(value.replace(/[^0-9]/g, ""), 10) || 0;
+  const isInView = useInView(ref, {
+    once: true,
+    amount: 0.25,
+  });
+
+  const numericPart =
+    parseInt(value.replace(/[^0-9]/g, ""), 10) || 0;
+
   const prefix = value.match(/^[^0-9]*/)?.[0] ?? "";
   const suffix = value.match(/[^0-9]*$/)?.[0] ?? "";
 
@@ -141,16 +179,26 @@ function AnimatedCounter({ value }: CounterProps) {
 
     let startTime: number | null = null;
     let frameId: number;
+
     const duration = 1400;
 
     const animate = (timestamp: number) => {
-      if (startTime === null) startTime = timestamp;
+      if (startTime === null) {
+        startTime = timestamp;
+      }
 
       const elapsed = timestamp - startTime;
-      const progress = Math.min(elapsed / duration, 1);
+
+      const progress = Math.min(
+        elapsed / duration,
+        1
+      );
+
       const eased = 1 - Math.pow(1 - progress, 3);
 
-      setCount(Math.floor(eased * numericPart));
+      setCount(
+        Math.floor(eased * numericPart)
+      );
 
       if (progress < 1) {
         frameId = requestAnimationFrame(animate);
@@ -170,7 +218,9 @@ function AnimatedCounter({ value }: CounterProps) {
       className="font-heading text-[34px] font-semibold leading-none tracking-[-0.04em] text-ink sm:text-[42px] lg:text-[48px]"
     >
       {prefix}
-      {numericPart > 0 ? count.toLocaleString() : value}
+      {numericPart > 0
+        ? count.toLocaleString("en-US")
+        : value}
       {suffix}
     </span>
   );
@@ -197,28 +247,37 @@ export function StatsSection() {
       <StatsBackground />
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 py-14 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
+
+        {/* SECTION HEADING */}
         <div className="mb-10 flex flex-col gap-4 sm:mb-12 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <div className="mb-4 flex items-center gap-3">
+            <div className="flex items-center gap-3">
               <span className="h-px w-7 bg-signal-dark" />
-              <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.2em] text-signal-dark">
-                At a glance
-              </span>
-            </div>
 
-            <h2 className="max-w-xl font-heading text-2xl font-semibold leading-tight tracking-[-0.035em] text-ink sm:text-3xl">
-              Built across vehicles, assets and access.
-            </h2>
+              <h2 className="font-mono text-[9px] font-semibold uppercase tracking-[0.2em] text-signal-dark">
+                At a Glance
+              </h2>
+            </div>
           </div>
         </div>
 
+        {/* STATS GRID */}
         <div className="grid grid-cols-1 border-t border-line sm:grid-cols-3">
           {stats.map((stat, index) => (
             <motion.div
               key={stat.label}
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
+              initial={{
+                opacity: 0,
+                y: 12,
+              }}
+              whileInView={{
+                opacity: 1,
+                y: 0,
+              }}
+              viewport={{
+                once: true,
+                margin: "-60px",
+              }}
               transition={{
                 duration: 0.55,
                 delay: index * 0.08,
@@ -231,15 +290,19 @@ export function StatsSection() {
                     ? "border-t border-line sm:border-l sm:border-t-0 sm:pl-7"
                     : "sm:pr-7"
                 }
-                ${index < stats.length - 1 ? "sm:pr-7" : ""}
+                ${
+                  index < stats.length - 1
+                    ? "sm:pr-7"
+                    : ""
+                }
               `}
             >
-              
-
+              {/* ANIMATED NUMBER */}
               <div className="flex min-w-0 items-baseline">
                 <AnimatedCounter value={stat.number} />
               </div>
 
+              {/* STAT LABEL */}
               <p className="mt-3 max-w-[190px] break-words text-[10px] font-medium uppercase leading-5 tracking-[0.13em] text-muted sm:text-[11px]">
                 {stat.label}
               </p>

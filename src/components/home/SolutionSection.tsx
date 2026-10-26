@@ -137,7 +137,7 @@ function SolutionsEcosystemBackground() {
 }
 
 /* =========================================================
-   SOLUTIONS DATA
+   INDUSTRIES DATA
 ========================================================= */
 
 type HomeSolution = {
@@ -151,9 +151,9 @@ type HomeSolution = {
 
 const homeSolutions: HomeSolution[] = [
   {
-    slug: "logistics-supply-chain",
+    slug: "logistics-transportation",
     number: "01",
-    name: "Logistics & Supply Chain",
+    name: "Logistics & Transportation",
     headline: "Connect movement, cargo security and exceptions.",
     lede:
       "Bring vehicle location, cargo-security events and route exceptions into one connected operating view for logistics teams.",
@@ -165,37 +165,23 @@ const homeSolutions: HomeSolution[] = [
     ],
   },
   {
-    slug: "pharmaceuticals-chemicals",
+    slug: "electric-mobility",
     number: "02",
-    name: "Pharmaceuticals & Chemicals",
-    headline: "Protect sensitive movement with traceable context.",
+    name: "Electric Mobility",
+    headline: "Keep electric fleets visible and ready to run.",
     lede:
-      "Connect location, access, tamper and application-specific sensor events around the handling workflows that require tighter operational control.",
+      "Connect vehicle location, usage and device health around electric fleet operations so teams can act on exceptions early.",
     priorities: [
-      "Movement and route visibility",
-      "Access and tamper context",
-      "Temperature and application-specific sensing",
-      "Traceable event history",
+      "EV fleet location visibility",
+      "Trip and usage monitoring",
+      "Geofence and movement alerts",
+      "Device and connectivity health",
     ],
   },
   {
-    slug: "construction",
+    slug: "cement-mining",
     number: "03",
-    name: "Construction",
-    headline: "See vehicles and assets across changing sites.",
-    lede:
-      "Track mobile equipment, vehicles and site movement around changing work zones, operating boundaries and field conditions.",
-    priorities: [
-      "Vehicle and asset location",
-      "Site and project geofences",
-      "Movement and exception alerts",
-      "Field-ready deployment evaluation",
-    ],
-  },
-  {
-    slug: "mining",
-    number: "04",
-    name: "Mining",
+    name: "Cement & Mining",
     headline: "Keep field visibility working in demanding conditions.",
     lede:
       "Build connected tracking and monitoring around weak signal, power variation, dust, vibration and the operating realities of remote sites.",
@@ -203,12 +189,12 @@ const homeSolutions: HomeSolution[] = [
       "Continuous device reporting",
       "Offline data retention",
       "Wide-voltage field compatibility",
-      "Device and connectivity health",
+      "Site and haul-route monitoring",
     ],
   },
   {
     slug: "fmcg",
-    number: "05",
+    number: "04",
     name: "FMCG",
     headline: "Keep distribution movement and exceptions connected.",
     lede:
@@ -221,23 +207,37 @@ const homeSolutions: HomeSolution[] = [
     ],
   },
   {
-    slug: "data-centres",
-    number: "06",
-    name: "Data Centres",
-    headline: "Connect physical access events to the operating view.",
+    slug: "pharmaceuticals-chemicals",
+    number: "05",
+    name: "Pharmaceuticals & Chemicals",
+    headline: "Protect sensitive movement with traceable context.",
     lede:
-      "Bring lock state, access events and exceptions into a connected workflow around controlled infrastructure and response requirements.",
+      "Connect location, access, tamper and application-specific sensor events around the handling workflows that require tighter operational control.",
     priorities: [
-      "Connected lock-state visibility",
-      "Access and exception alerts",
-      "Event and location context",
-      "Deployment-specific integration",
+      "Movement and route visibility",
+      "Access and tamper context",
+      "Temperature and application-specific sensing",
+      "Traceable event history",
     ],
   },
   {
-    slug: "schools-universities",
+    slug: "infrastructure-security",
+    number: "06",
+    name: "Infrastructure & Security",
+    headline: "Connect field events into one operating view.",
+    lede:
+      "Combine connected locks, sensors and platform visibility around infrastructure and controlled-access workflows so exceptions can be seen and acted on in context.",
+    priorities: [
+      "Lock and sensor events",
+      "Access and exception alerts",
+      "Connected platform visibility",
+      "Application-specific integration",
+    ],
+  },
+  {
+    slug: "school-university",
     number: "07",
-    name: "Schools & Universities",
+    name: "School & University",
     headline: "Make transport visibility clear and accountable.",
     lede:
       "Connect vehicle location, route movement and zone exceptions around the institution’s day-to-day transport operation.",
@@ -248,24 +248,10 @@ const homeSolutions: HomeSolution[] = [
       "Operations-team access",
     ],
   },
-  {
-    slug: "smart-infrastructure",
-    number: "08",
-    name: "Smart Infrastructure",
-    headline: "Connect field events into one operating system.",
-    lede:
-      "Combine connected locks, sensors and platform visibility around infrastructure workflows so exceptions can be seen and acted on in context.",
-    priorities: [
-      "Lock and sensor events",
-      "Connected platform visibility",
-      "Exception response workflows",
-      "Application-specific integration",
-    ],
-  },
 ];
 
 /* =========================================================
-   SOLUTION SECTION
+   INDUSTRIES SECTION
 ========================================================= */
 
 export function SolutionSection() {
@@ -313,13 +299,18 @@ export function SolutionSection() {
             <div className="mb-4 flex items-center gap-3">
               <span className="h-px w-8 bg-signal-dark" />
               <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.2em] text-signal-dark">
-                Solutions
+                Industries We Serve
               </span>
             </div>
 
             <h2 className="max-w-4xl font-heading text-3xl font-semibold leading-[1.04] tracking-[-0.045em] text-ink sm:text-4xl lg:text-[50px]">
-              Solutions for connected operations
+              Engineered for Industries That Move
             </h2>
+
+            <p className="mt-4 max-w-2xl text-sm leading-6 text-muted sm:text-base sm:leading-7">
+              Purpose-built IoT hardware and intelligent platforms addressing
+              real-world operational challenges across industries.
+            </p>
           </div>
         </motion.div>
 
@@ -360,20 +351,7 @@ export function SolutionSection() {
                     />
 
                     <div className="flex min-h-[84px] items-center gap-4 px-5 py-5 sm:gap-5 sm:px-6">
-                      <div
-                        className={`
-                          flex h-8 w-8 shrink-0 items-center justify-center
-                          rounded-lg border font-mono text-[9px]
-                          font-semibold tracking-[0.12em] transition-all duration-300
-                          ${
-                            isActive
-                              ? "border-signal-dark/20 bg-signal-dark/[0.07] text-signal-dark"
-                              : "border-ink/[0.08] bg-white/60 text-muted group-hover:border-ink/[0.12]"
-                          }
-                        `}
-                      >
-                        {solution.number}
-                      </div>
+                    
 
                       <div className="min-w-0 flex-1">
                         <h3
@@ -424,15 +402,7 @@ export function SolutionSection() {
               })}
             </div>
 
-            <div className="mt-6 flex items-center justify-between px-1">
-              <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-muted">
-                Solution portfolio
-              </span>
-
-              <span className="rounded-md bg-signal-dark/[0.07] px-2.5 py-1 font-mono text-[9px] font-semibold tracking-[0.12em] text-signal-dark">
-                08
-              </span>
-            </div>
+     
           </div>
 
           <div className="min-w-0 lg:col-span-7">
@@ -550,13 +520,7 @@ export function SolutionSection() {
 
                   <div className="absolute inset-0 flex items-center justify-center px-6 text-center sm:px-8">
                     <div className="relative z-10 max-w-2xl">
-                      <div className="mb-5 flex items-center justify-center gap-3">
-                        <span className="h-px w-7 bg-signal" />
-                        <span className="font-mono text-[8px] font-semibold uppercase tracking-[0.2em] text-signal">
-                          Solution {activeSolution.number}
-                        </span>
-                        <span className="h-px w-7 bg-signal" />
-                      </div>
+                    
 
                       <h3 className="font-heading text-3xl font-semibold tracking-[-0.04em] text-white sm:text-4xl lg:text-5xl">
                         {activeSolution.name}
@@ -582,7 +546,7 @@ export function SolutionSection() {
                       </div>
 
                       <Link
-                        href={`/solutions/${activeSolution.slug}`}
+                        href={`/industries/${activeSolution.slug}`}
                         className="
                           group mt-7 inline-flex h-11 items-center gap-3
                           rounded-lg bg-signal px-5
@@ -593,7 +557,7 @@ export function SolutionSection() {
                           hover:shadow-[0_14px_34px_rgba(0,0,0,0.18)]
                         "
                       >
-                        <span className="!text-ink">Explore solution</span>
+                        <span className="!text-ink">Explore industry</span>
 
                         <span className="flex h-6 w-6 items-center justify-center rounded-md bg-ink/10 text-ink transition-all duration-300 group-hover:bg-ink group-hover:text-white">
                           <ArrowIcon className="h-2.5 w-2.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:!text-white" />
@@ -602,47 +566,14 @@ export function SolutionSection() {
                     </div>
                   </div>
 
-                  <div className="absolute left-5 top-5">
-                    <span className="font-mono text-[7px] uppercase tracking-[0.18em] text-white/40">
-                      VIoT / Solutions
-                    </span>
-                  </div>
+             
 
-                  <div className="absolute bottom-5 right-5">
-                    <span className="font-mono text-[7px] uppercase tracking-[0.18em] text-white/40">
-                      Connected operations
-                    </span>
-                  </div>
+               
                 </div>
               </motion.div>
             </AnimatePresence>
 
-            <div className="flex flex-col gap-4 pt-6 sm:flex-row sm:items-center sm:justify-between">
-              <span className="font-mono text-[8px] uppercase tracking-[0.16em] text-muted">
-                Eight operating environments · one connected platform
-              </span>
-
-              <Link
-                href="/contact"
-                className="
-                  group inline-flex w-fit items-center gap-3
-                  rounded-lg border border-ink bg-ink
-                  px-5 py-3 text-[10px] font-semibold uppercase
-                  tracking-[0.08em] !text-white
-                  shadow-[0_8px_24px_rgba(8,27,36,0.09)]
-                  transition-all duration-300
-                  hover:-translate-y-0.5 hover:border-signal-dark
-                  hover:bg-signal-dark hover:!text-white
-                  hover:shadow-[0_12px_30px_rgba(0,124,103,0.14)]
-                "
-              >
-                <span className="!text-white">Talk to our team</span>
-
-                <span className="flex h-6 w-6 items-center justify-center rounded-md border border-white/15 bg-white/[0.05]">
-                  <ArrowIcon className="h-2.5 w-2.5 !text-white transition-transform duration-300 group-hover:translate-x-0.5" />
-                </span>
-              </Link>
-            </div>
+           
           </div>
         </div>
       </div>

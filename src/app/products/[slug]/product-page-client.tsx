@@ -13,37 +13,21 @@ import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 
 import {
-
   Activity,
-
   ArrowLeft,
-
   ArrowRight,
-
   ArrowUpRight,
-
   ChevronRight,
-
   Database,
-
   Radio,
-
   Zap,
-
 } from "lucide-react";
 
-import {
-
-  breadcrumbSchema,
-
-  StructuredData,
-
-} from "@/components/structured-data";
+import { breadcrumbSchema, StructuredData } from "@/components/structured-data";
 
 import { CtaBand } from "@/components/home/CtaBand";
 
 type ProductFlow = {
-
   source: string;
 
   device: string;
@@ -51,16 +35,18 @@ type ProductFlow = {
   data: string;
 
   output: string;
-
 };
 
 type ProductVariant = {
-
   id: string;
 
   name: string;
 
   eyebrow?: string;
+
+  image?: string;
+
+  gallery?: string[];
 
   headline: string;
 
@@ -71,11 +57,9 @@ type ProductVariant = {
   specs: [string, string][];
 
   note?: string;
-
 };
 
 type ProductListingItem = {
-
   id: string;
 
   name: string;
@@ -83,11 +67,9 @@ type ProductListingItem = {
   imagePlaceholder: string;
 
   description: string;
-
 };
 
 type ProductPageProduct = {
-
   id: string;
 
   name: string;
@@ -119,35 +101,64 @@ type ProductPageProduct = {
   builtFor?: string[];
 
   listingItems?: ProductListingItem[];
-
 };
 
 type RelatedProduct = Pick<
-
   ProductPageProduct,
-
   "id" | "name" | "shortName" | "slug" | "number"
-
 >;
 
 const relatedProductCatalog: RelatedProduct[] = [
+  {
+    id: "vehicle-telematics",
+    number: "01",
+    name: "Vehicle Telematics",
+    shortName: "Vehicle Telematics",
+    slug: "vehicle-telematics",
+  },
 
-  { id: "vehicle-telematics", number: "01", name: "Vehicle Telematics", shortName: "Vehicle telematics", slug: "vehicle-telematics" },
+  {
+    id: "video-telematics",
+    number: "02",
+    name: "Video Telematics",
+    shortName: "Video Telematics",
+    slug: "video-telematics",
+  },
 
-  { id: "video-telematics", number: "02", name: "Video Telematics", shortName: "Video telematics", slug: "video-telematics" },
+  {
+    id: "smart-logistics-locks",
+    number: "03",
+    name: "Smart Logistics Locks",
+    shortName: "Logistics locks",
+    slug: "smart-logistics-locks",
+  },
 
-  { id: "smart-logistics-locks", number: "03", name: "Smart Logistics Locks", shortName: "Logistics locks", slug: "smart-logistics-locks" },
+  {
+    id: "infra-locks",
+    number: "04",
+    name: "Smart Infra Locks",
+    shortName: "Infra locks",
+    slug: "smart-infra-locks",
+  },
 
-  { id: "infra-locks", number: "04", name: "Smart Infra Locks", shortName: "Infra locks", slug: "smart-infra-locks" },
+  {
+    id: "asset-trackers",
+    number: "05",
+    name: "Asset Trackers",
+    shortName: "Asset Trackers",
+    slug: "asset-trackers",
+  },
 
-  { id: "asset-trackers", number: "05", name: "Asset Trackers", shortName: "Asset trackers", slug: "asset-trackers" },
-
-  { id: "iot-sensors", number: "06", name: "IoT Sensors", shortName: "IoT sensors", slug: "iot-sensors" },
-
+  {
+    id: "iot-sensors",
+    number: "06",
+    name: "IoT Sensors",
+    shortName: "IoT Sensors",
+    slug: "iot-sensors",
+  },
 ];
 
 type ProductPageClientProps = {
-
   product: ProductPageProduct;
 
   related: RelatedProduct[];
@@ -155,11 +166,9 @@ type ProductPageClientProps = {
   productImage: string;
 
   flow: ProductFlow;
-
 };
 
 type SpecificationTarget = {
-
   id: string;
 
   title: string;
@@ -167,297 +176,198 @@ type SpecificationTarget = {
   specs: [string, string][];
 
   note?: string | null;
-
 };
 
 function getProductImage(slug: string) {
-
   switch (slug) {
-
     case "vehicle-telematics":
-
-      return "/image/vehicle-telementic.png";
+      return "/image/basic-device.jpeg";
 
     case "video-telematics":
-
-      return "/image/video-telementics.png";
+      return "/image/3-channel-dash-cam.jpeg";
 
     case "smart-logistics-locks":
-
-      return "/image/smart-lock.png";
+      return "/image/4g-keypad-based-elock.jpeg";
 
     case "smart-infra-locks":
-
       return "/image/smart-infra.png";
 
     case "asset-trackers":
-
       return "/image/asset-trackers.png";
 
     case "iot-sensors":
-
       return "/image/iot-sensors.png";
 
     case "access-control":
-
       return "/image/access-control.png";
 
     default:
-
-      return "/image/vehicle-telematics.png";
-
+      return "/image/basic-device.jpeg";
   }
-
 }
 
 function getVariantImage(variantId: string, fallback: string) {
+  switch (variantId) {
+    case "basic-tracking-device":
+      return "/image/basic-device.jpeg";
 
-  if (variantId === "basic-tracking-device") {
+    case "advanced-tracking-device":
+      return "/image/advanced-tracking.png";
 
-    return "/image/basic-tracking.png";
+    case "2-channel-dash-cam":
+      return "/image/2-channel-dash-cam.jpeg";
 
+    case "auxiliary-cameras":
+      return "/image/auxillary-cameras.jpeg";
+
+    case "3-channel-dash-cam":
+      return "/image/3-channel-dash-cam.jpeg";
+
+    case "4g-keypad-e-lock":
+      return "/image/4g-keypad-based-elock.jpeg";
+
+    default:
+      return fallback;
   }
-
-  if (variantId === "advanced-tracking-device") {
-
-    return "/image/advanced-tracking.png";
-
-  }
-
-  return fallback;
-
 }
 
 function Reveal({
-
   children,
 
   delay = 0,
 
   className = "",
-
 }: {
-
   children: ReactNode;
 
   delay?: number;
 
   className?: string;
-
 }) {
-
   return (
-
     <motion.div
-
       initial={{ opacity: 0, y: 20 }}
-
       whileInView={{ opacity: 1, y: 0 }}
-
       viewport={{ once: true, amount: 0.15 }}
-
       transition={{
-
         duration: 0.6,
 
         delay,
 
         ease: [0.16, 1, 0.3, 1],
-
       }}
-
       className={className}
-
     >
-
       {children}
-
     </motion.div>
-
   );
-
 }
 
 function VIoTSVGBackground({ dark = false }: { dark?: boolean }) {
-
   return (
-
     <div
-
       aria-hidden="true"
-
       className={`pointer-events-none absolute inset-0 overflow-hidden ${
-
         dark ? "opacity-100" : "opacity-100"
-
       }`}
-
     >
-
       <div
-
         className={`absolute -left-48 top-[8%] h-[520px] w-[520px] rounded-full blur-3xl ${
-
           dark ? "bg-[#27d59b]/[0.025]" : "bg-[#27d59b]/[0.025]"
-
         }`}
-
       />
 
       <div
-
         className={`absolute -right-56 bottom-[5%] h-[620px] w-[620px] rounded-full blur-3xl ${
-
           dark ? "bg-white/[0.012]" : "bg-[#007c67]/[0.025]"
-
         }`}
-
       />
 
       <svg
-
         viewBox="0 0 1600 1000"
-
         preserveAspectRatio="none"
-
         className="absolute inset-0 h-full w-full"
-
         fill="none"
-
       >
-
         <motion.path
-
           d="M-160 260 C120 50 390 100 620 285 S1050 610 1760 235"
-
           stroke={dark ? "rgba(255,255,255,0.055)" : "rgba(8,27,36,0.11)"}
-
           strokeWidth="1"
-
           initial={{ pathLength: 0 }}
-
           whileInView={{ pathLength: 1 }}
-
           viewport={{ once: true }}
-
           transition={{ duration: 2.4, ease: "easeOut" }}
-
         />
 
         <motion.path
-
           d="M-180 700 C120 470 390 525 680 685 S1130 880 1780 560"
-
           stroke={dark ? "rgba(39,213,155,0.15)" : "rgba(0,124,103,0.20)"}
-
           strokeWidth="1.2"
-
           strokeDasharray="3 15"
-
           animate={{ strokeDashoffset: [0, -180] }}
-
           transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
-
         />
 
         <motion.path
-
           d="M-120 470 C230 340 420 420 650 515 S1060 700 1730 455"
-
           stroke={dark ? "rgba(39,213,155,0.075)" : "rgba(0,124,103,0.13)"}
-
           strokeWidth="1"
-
           strokeDasharray="2 20"
-
           animate={{ strokeDashoffset: [0, 180] }}
-
           transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-
         />
 
         <path
-
           d="M80 1080 C260 740 520 700 780 450 S1240 120 1620 -90"
-
           stroke={dark ? "rgba(255,255,255,0.035)" : "rgba(8,27,36,0.045)"}
-
           strokeWidth="1"
-
         />
-
       </svg>
 
       <motion.div
-
         className={`absolute right-[4%] top-[12%] h-[430px] w-[430px] rounded-full border ${
-
           dark ? "border-white/[0.035]" : "border-[#081b24]/[0.04]"
-
         }`}
-
         animate={{ rotate: 360 }}
-
         transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
-
       />
 
       <motion.div
-
         className={`absolute right-[9%] top-[18%] h-[300px] w-[300px] rounded-full border ${
-
           dark ? "border-[#27d59b]/[0.055]" : "border-[#007c67]/[0.055]"
-
         }`}
-
         animate={{ rotate: -360 }}
-
         transition={{ duration: 42, repeat: Infinity, ease: "linear" }}
-
       />
 
       <motion.span
-
         className="absolute left-[19%] top-[31%] h-1.5 w-1.5 rounded-full bg-[#27d59b]"
-
         animate={{
-
           x: [0, 90, 180],
 
           y: [0, 20, 0],
 
           opacity: [0.1, 0.7, 0],
-
         }}
-
         transition={{
-
           duration: 5.5,
 
           repeat: Infinity,
 
           ease: "easeInOut",
-
         }}
-
       />
 
       <motion.span
-
         className="absolute left-[46%] top-[69%] h-1.5 w-1.5 rounded-full bg-[#27d59b]"
-
         animate={{
-
           x: [0, -70, -150],
 
           y: [0, -25, 0],
 
           opacity: [0, 0.7, 0],
-
         }}
-
         transition={{
-
           duration: 6,
 
           delay: 1,
@@ -465,15 +375,10 @@ function VIoTSVGBackground({ dark = false }: { dark?: boolean }) {
           repeat: Infinity,
 
           ease: "easeInOut",
-
         }}
-
       />
-
     </div>
-
   );
-
 }
 
 function SpecificationsModal({
@@ -500,7 +405,8 @@ function SpecificationsModal({
     const previousOverflow = body.style.overflow;
     const previousPaddingRight = body.style.paddingRight;
     const previousTouchAction = body.style.touchAction;
-    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    const scrollbarWidth =
+      window.innerWidth - document.documentElement.clientWidth;
 
     body.style.overflow = "hidden";
     body.style.touchAction = "none";
@@ -628,7 +534,6 @@ function SpecificationsModal({
 }
 
 function ProductDetailBlock({
-
   id,
 
   number,
@@ -641,7 +546,7 @@ function ProductDetailBlock({
 
   points,
 
-  image,
+  images,
 
   imageAlt,
 
@@ -649,8 +554,8 @@ function ProductDetailBlock({
 
   onSpecifications,
 
+  hasSpecifications,
 }: {
-
   id: string;
 
   number: string;
@@ -663,7 +568,7 @@ function ProductDetailBlock({
 
   points: string[];
 
-  image: string;
+  images: string[];
 
   imageAlt: string;
 
@@ -671,599 +576,374 @@ function ProductDetailBlock({
 
   onSpecifications: () => void;
 
+  hasSpecifications: boolean;
 }) {
-
   const isAlternate = index % 2 === 1;
+  const safeImages = images.length > 0 ? images : ["/image/basic-device.jpeg"];
+  const [activeImage, setActiveImage] = useState(safeImages[0]);
+
+  useEffect(() => {
+    setActiveImage(safeImages[0]);
+  }, [safeImages[0]]);
 
   return (
-
     <section
-
       id={id}
-
       className={`relative overflow-hidden border-b border-[#d3ddd9] ${
-
         isAlternate ? "bg-white" : "bg-[#f4f6f2]"
-
       }`}
-
     >
-
       <VIoTSVGBackground />
 
       <div className="relative z-10 mx-auto max-w-[1360px] px-5 py-11 sm:px-8 sm:py-14 lg:px-12 lg:py-[72px]">
-
         <div className="grid gap-6 sm:gap-7 lg:grid-cols-12 lg:items-stretch">
-
           <Reveal
-
             className={`lg:col-span-7 ${
-
               isAlternate ? "lg:order-2" : "lg:order-1"
-
             }`}
-
           >
-
-            <div className="group relative h-full overflow-hidden rounded-2xl border border-[#c7d5d0] bg-[#eef2ef] shadow-[0_18px_50px_rgba(8,27,36,0.08)]">
-
-              <div className="relative aspect-[4/3] sm:aspect-[16/10] lg:h-full lg:min-h-[440px] lg:aspect-auto">
-
-                <Image
-
-                  src={image}
-
-                  alt={imageAlt}
-
-                  fill
-
-                  priority={index === 0}
-
-                  sizes="(max-width: 1024px) 100vw, 58vw"
-
-                  className="object-contain p-4 transition-transform duration-700 group-hover:scale-[1.02] sm:p-7 lg:p-10"
-
-                />
+            <div className="relative h-full overflow-hidden rounded-2xl border border-[#c7d5d0] bg-[#eef2ef] shadow-[0_18px_50px_rgba(8,27,36,0.08)]">
+              <div className="group relative aspect-[4/3] sm:aspect-[16/10] lg:min-h-[390px]">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeImage}
+                    initial={{ opacity: 0, scale: 0.985 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.99 }}
+                    transition={{ duration: 0.24 }}
+                    className="absolute inset-0"
+                  >
+                    <Image
+                      src={activeImage}
+                      alt={imageAlt}
+                      fill
+                      priority={index === 0}
+                      sizes="(max-width: 1024px) 100vw, 58vw"
+                      className="object-contain p-4 transition-transform duration-700 group-hover:scale-[1.02] sm:p-7 lg:p-10"
+                    />
+                  </motion.div>
+                </AnimatePresence>
 
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#081b24]/12 via-transparent to-white/[0.03]" />
 
                 <motion.div
-
                   className="absolute left-5 right-5 h-px bg-gradient-to-r from-transparent via-[#27d59b]/55 to-transparent"
-
                   animate={{
-
                     top: ["18%", "82%", "18%"],
-
                     opacity: [0, 0.55, 0],
-
                   }}
-
                   transition={{
-
                     duration: 6,
-
                     repeat: Infinity,
-
                     ease: "easeInOut",
-
                   }}
-
                 />
-
               </div>
 
-            </div>
+              {safeImages.length > 1 ? (
+                <div className="border-t border-[#c7d5d0] bg-white/70 p-3 backdrop-blur-sm sm:p-4">
+                  <div className="flex gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                    {safeImages.map((galleryImage, galleryIndex) => {
+                      const active = activeImage === galleryImage;
 
+                      return (
+                        <button
+                          key={galleryImage}
+                          type="button"
+                          onClick={() => setActiveImage(galleryImage)}
+                          aria-label={`View ${imageAlt} image ${galleryIndex + 1}`}
+                          aria-pressed={active}
+                          className={`relative h-16 w-20 shrink-0 overflow-hidden rounded-lg border bg-[#f4f6f2] transition-all duration-200 sm:h-[72px] sm:w-[92px] ${
+                            active
+                              ? "border-[#007c67] shadow-[0_6px_18px_rgba(8,27,36,0.08)]"
+                              : "border-[#c8d5d0] hover:border-[#007c67]/40"
+                          }`}
+                        >
+                          <Image
+                            src={galleryImage}
+                            alt=""
+                            fill
+                            sizes="92px"
+                            className="object-contain p-2"
+                          />
+                          <span
+                            className={`absolute bottom-1 right-1 h-1.5 w-1.5 rounded-full ${
+                              active ? "bg-[#27d59b]" : "bg-[#607078]/30"
+                            }`}
+                          />
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              ) : null}
+            </div>
           </Reveal>
 
           <Reveal
-
             delay={0.08}
-
             className={`lg:col-span-5 ${
-
               isAlternate ? "lg:order-1" : "lg:order-2"
-
             }`}
-
           >
-
             <div className="flex h-full flex-col rounded-2xl border border-[#c7d5d0] bg-white/80 p-5 sm:p-6 shadow-[0_18px_50px_rgba(8,27,36,0.05)] backdrop-blur-sm sm:p-7 lg:p-8">
-
               <div>
-
                 <div className="flex items-center gap-3">
-
                   <span className="flex h-7 min-w-7 items-center justify-center rounded-lg border border-[#007c67]/15 bg-[#007c67]/[0.04] px-2 font-mono text-[8px] font-semibold text-[#007c67]">
-
                     {number}
-
                   </span>
 
                   <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-[#007c67]">
-
                     {eyebrow}
-
                   </span>
-
                 </div>
 
-                <h2 className="mt-4 font-heading text-[30px] font-semibold leading-[1.04] tracking-[-0.035em] sm:mt-5 sm:text-4xl sm:tracking-[-0.045em] text-[#081b24] sm:text-4xl">
-
+                <h2 className="mt-5 font-heading text-[32px] font-semibold leading-[1.05] tracking-[-2px] text-[#081b24] lg:text-[46px]">
                   {title}
-
                 </h2>
 
-                <p className="mt-4 max-w-lg text-sm leading-7 text-[#607078]">
-
+                <p className="mt-5 max-w-[700px] font-sans text-[16px] font-normal leading-[26px] text-[#607078]">
                   {description}
-
                 </p>
-
               </div>
 
               <div className="mt-6 space-y-2.5 sm:mt-7">
-
                 {points.map((point, pointIndex) => (
-
                   <motion.div
-
                     key={point}
-
                     initial={{ opacity: 0, x: 12 }}
-
                     whileInView={{ opacity: 1, x: 0 }}
-
                     viewport={{ once: true, amount: 0.25 }}
-
                     transition={{
-
                       duration: 0.4,
 
                       delay: pointIndex * 0.05,
-
                     }}
-
                     className="flex items-start gap-3 rounded-xl border border-[#d2ddda] bg-white/65 px-3.5 py-3 sm:px-4 sm:py-3.5 transition-all duration-300 hover:border-[#007c67]/20 hover:bg-white"
-
                   >
-
                     <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-md border border-[#007c67]/10 bg-[#007c67]/[0.035] font-mono text-[7px] text-[#007c67]">
-
                       {String(pointIndex + 1).padStart(2, "0")}
-
                     </span>
 
-                    <span className="text-[13px] leading-5 text-[#081b24]/75">
-
+                    <span className="font-sans text-[14px] font-normal leading-[22px] text-[#081b24]/75">
                       {point}
-
                     </span>
-
                   </motion.div>
-
                 ))}
-
               </div>
 
               <div className="mt-auto flex flex-col gap-3 pt-6 sm:flex-row sm:flex-wrap sm:items-center sm:pt-7">
-
-                <button
-
-                  type="button"
-
-                  onClick={onSpecifications}
-
-                  className="group inline-flex h-10 w-full items-center justify-center gap-2 rounded-lg border border-[#081b24] sm:w-auto bg-[#081b24] px-4 text-[9px] font-semibold uppercase tracking-[0.09em] text-white transition-all duration-300 hover:border-[#007c67] hover:bg-[#007c67]"
-
-                >
-
-                  Specifications
-
-                  <ChevronRight className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-0.5" />
-
-                </button>
+                {hasSpecifications ? (
+                  <button
+                    type="button"
+                    onClick={onSpecifications}
+                    className="group inline-flex h-10 w-full items-center justify-center gap-2 rounded-lg border border-[#081b24] bg-[#081b24] px-4 font-sans text-[14px] font-semibold leading-[18px] text-white transition-all duration-300 hover:border-[#007c67] hover:bg-[#007c67] sm:w-auto"
+                  >
+                    Specifications
+                    <ChevronRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
+                  </button>
+                ) : null}
 
                 <Link
-
                   href="/contact"
-
                   className="group inline-flex h-10 w-full items-center justify-center gap-2 rounded-lg border border-[#c7d5d0] sm:w-auto bg-white px-4 text-[9px] font-semibold uppercase tracking-[0.09em] text-[#081b24] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#007c67] hover:bg-[#f4fffc] hover:text-[#007c67]"
-
                 >
-
                   Enquire
-
                   <ArrowUpRight className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-
                 </Link>
-
               </div>
-
             </div>
-
           </Reveal>
-
         </div>
-
       </div>
-
     </section>
-
   );
-
 }
 
 function ProductExtendedContent({
-
   product,
 
   onSpecifications,
-
 }: {
-
   product: ProductPageProduct;
 
   onSpecifications: () => void;
-
 }) {
-
   const isSmartInfra = product.slug === "smart-infra-locks";
   const isIoTSensors = product.slug === "iot-sensors";
 
   if (!isSmartInfra && !isIoTSensors) return null;
 
   return (
-
     <>
-
       {isSmartInfra ? (
-
         <>
-
-          <section className="relative overflow-hidden border-b border-[#d3ddd9] bg-white">
-
-            <VIoTSVGBackground />
-
-            <div className="relative z-10 mx-auto max-w-[1360px] px-5 py-11 sm:px-8 sm:py-14 lg:px-12 lg:py-[72px]">
-
-              <Reveal>
-
-                <div className="grid gap-8 lg:grid-cols-12 lg:items-start">
-
-                  <div className="lg:col-span-4">
-
-                    <div className="flex items-center gap-3">
-
-                      <span className="h-px w-8 bg-[#27d59b]" />
-
-                      <span className="font-mono text-[8px] font-semibold uppercase tracking-[0.18em] text-[#007c67]">
-
-                        Overview
-
-                      </span>
-
-                    </div>
-
-                    <h2 className="mt-4 font-heading text-[30px] font-semibold leading-[1.04] tracking-[-0.035em] sm:mt-5 sm:text-4xl sm:tracking-[-0.045em] text-[#081b24] sm:text-4xl">
-
-                      Smart Infra Locks
-
-                    </h2>
-
-                  </div>
-
-                  <div className="lg:col-span-8">
-
-                    <div className="rounded-2xl border border-[#c8d5d0] bg-[#f4f6f2]/92 p-6 shadow-[0_18px_48px_rgba(8,27,36,0.05)] backdrop-blur-sm sm:p-7 lg:p-8">
-
-                      <p className="text-[15px] leading-8 text-[#42545b]">
-
-                        Battery-free, keyless locking for the access points that matter most — cabinets, manholes, gates, containers, and security doors across critical infrastructure sites. Every access is logged, authorised remotely, and visible on the VIoT platform, so site teams stop depending on physical keys and start managing access the way they manage every other asset.
-
-                      </p>
-
-                    </div>
-
-                  </div>
-
-                </div>
-
-              </Reveal>
-
-            </div>
-
-          </section>
-
           <section className="relative overflow-hidden border-b border-[#d3ddd9] bg-[#f4f6f2]">
-
             <VIoTSVGBackground />
 
             <div className="relative z-10 mx-auto max-w-[1360px] px-5 py-11 sm:px-8 sm:py-14 lg:px-12 lg:py-[72px]">
-
               <Reveal>
-
                 <div className="flex items-center gap-3">
-
                   <span className="h-px w-8 bg-[#27d59b]" />
 
                   <span className="font-mono text-[8px] font-semibold uppercase tracking-[0.18em] text-[#007c67]">
-
                     Key capabilities
-
                   </span>
-
                 </div>
 
                 <div className="mt-7 overflow-hidden rounded-2xl border border-[#c8d5d0] bg-white/90 shadow-[0_18px_50px_rgba(8,27,36,0.05)] backdrop-blur-sm">
-
                   <div className="divide-y divide-[#d8e1de]">
-
                     {(product.keyCapabilities ?? []).map((item, index) => (
-
                       <motion.div
-
                         key={`${product.id}-capability-${index}`}
-
                         initial={{ opacity: 0, y: 12 }}
-
                         whileInView={{ opacity: 1, y: 0 }}
-
                         viewport={{ once: true, amount: 0.2 }}
-
                         transition={{ duration: 0.42, delay: index * 0.04 }}
-
                         className="grid gap-4 px-5 py-5 sm:grid-cols-[64px_1fr] sm:items-start sm:px-6 lg:px-7"
-
                       >
-
                         <span className="flex h-9 w-9 items-center justify-center rounded-lg border border-[#007c67]/12 bg-[#007c67]/[0.04] font-mono text-[8px] font-semibold text-[#007c67]">
-
                           {String(index + 1).padStart(2, "0")}
-
                         </span>
 
                         <p className="max-w-4xl text-[14px] leading-7 text-[#42545b]">
-
                           {item}
-
                         </p>
-
                       </motion.div>
-
                     ))}
-
                   </div>
-
                 </div>
-
               </Reveal>
-
             </div>
-
           </section>
 
           <section className="relative overflow-hidden border-b border-[#d3ddd9] bg-[#081b24] text-white">
-
             <VIoTSVGBackground dark />
 
             <div className="relative z-10 mx-auto max-w-[1360px] px-5 py-11 sm:px-8 sm:py-14 lg:px-12 lg:py-[72px]">
-
               <Reveal>
-
                 <div className="grid gap-8 lg:grid-cols-12 lg:items-start">
-
                   <div className="lg:col-span-4">
-
                     <div className="flex items-center gap-3">
-
                       <span className="h-px w-8 bg-[#27d59b]" />
 
                       <span className="font-mono text-[8px] font-semibold uppercase tracking-[0.18em] text-[#27d59b]">
-
                         How it works
-
                       </span>
-
                     </div>
-
                   </div>
 
                   <div className="lg:col-span-8">
-
                     <div className="rounded-2xl border border-white/[0.09] bg-white/[0.025] p-6 sm:p-7 lg:p-8">
-
                       <p className="text-[15px] leading-8 text-white/72">
-
                         {product.howItWorks}
-
                       </p>
-
                     </div>
-
                   </div>
-
                 </div>
-
               </Reveal>
-
             </div>
-
           </section>
 
           <section className="relative overflow-hidden border-b border-[#d3ddd9] bg-white">
-
             <VIoTSVGBackground />
 
             <div className="relative z-10 mx-auto max-w-[1360px] px-5 py-11 sm:px-8 sm:py-14 lg:px-12 lg:py-[72px]">
-
               <Reveal>
-
                 <div className="flex items-center gap-3">
-
                   <span className="h-px w-8 bg-[#27d59b]" />
 
                   <span className="font-mono text-[8px] font-semibold uppercase tracking-[0.18em] text-[#007c67]">
-
                     Built for
-
                   </span>
-
                 </div>
 
                 <div className="mt-7 overflow-hidden rounded-2xl border border-[#c8d5d0] bg-[#f4f6f2]/92 shadow-[0_18px_50px_rgba(8,27,36,0.05)] backdrop-blur-sm">
-
                   <div className="divide-y divide-[#d8e1de]">
-
                     {(product.builtFor ?? []).map((item, index) => (
-
                       <div
-
                         key={`${product.id}-built-for-${index}`}
-
                         className="grid gap-3 px-5 py-4 sm:grid-cols-[42px_1fr] sm:items-start sm:px-6 lg:px-7"
-
                       >
-
                         <span className="mt-1 flex h-6 w-6 items-center justify-center rounded-md border border-[#007c67]/10 bg-white font-mono text-[7px] text-[#007c67]">
-
                           {String(index + 1).padStart(2, "0")}
-
                         </span>
 
                         <p className="text-[14px] leading-7 text-[#42545b]">
-
                           {item}
-
                         </p>
-
                       </div>
-
                     ))}
-
                   </div>
-
                 </div>
-
               </Reveal>
-
             </div>
-
           </section>
 
           <section className="relative overflow-hidden border-b border-[#d3ddd9] bg-[#f4f6f2]">
-
             <VIoTSVGBackground />
 
             <div className="relative z-10 mx-auto max-w-[1360px] px-5 py-11 sm:px-8 sm:py-14 lg:px-12 lg:py-[72px]">
-
               <Reveal>
-
                 <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
-
                   <div>
-
                     <div className="flex items-center gap-3">
-
                       <span className="h-px w-8 bg-[#27d59b]" />
 
                       <span className="font-mono text-[8px] font-semibold uppercase tracking-[0.18em] text-[#007c67]">
-
                         Technical specifications
-
                       </span>
-
                     </div>
-
                   </div>
 
                   <button
-
                     type="button"
-
                     onClick={onSpecifications}
-
                     className="group inline-flex h-10 shrink-0 items-center gap-2 self-start rounded-lg border border-[#081b24] bg-[#081b24] px-4 text-[9px] font-semibold uppercase tracking-[0.09em] text-white transition-all duration-300 hover:border-[#007c67] hover:bg-[#007c67] sm:self-auto"
-
                   >
-
                     Open specifications
-
                     <ChevronRight className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-0.5" />
-
                   </button>
-
                 </div>
 
                 <div className="mt-7 overflow-hidden rounded-2xl border border-[#c8d5d0] bg-white shadow-[0_18px_50px_rgba(8,27,36,0.05)]">
-
                   <div className="hidden grid-cols-[230px_1fr] border-b border-[#d8e1de] bg-[#eef2ef] px-6 py-3 sm:grid">
-
                     <span className="font-mono text-[8px] font-semibold uppercase tracking-[0.15em] text-[#607078]">
-
                       Parameter
-
                     </span>
 
                     <span className="font-mono text-[8px] font-semibold uppercase tracking-[0.15em] text-[#607078]">
-
                       Specification
-
                     </span>
-
                   </div>
 
                   <div className="divide-y divide-[#d8e1de]">
-
                     {product.specs.map(([label, value], index) => (
-
                       <div
-
                         key={`${product.id}-inline-spec-${label}`}
-
                         className="grid gap-2 px-5 py-4 sm:grid-cols-[230px_1fr] sm:gap-6 sm:px-6"
-
                       >
-
                         <div className="flex items-start gap-2">
-
                           <span className="mt-0.5 font-mono text-[7px] text-[#9aa5a1]">
-
                             {String(index + 1).padStart(2, "0")}
-
                           </span>
 
                           <span className="font-mono text-[8px] font-semibold uppercase tracking-[0.1em] text-[#007c67]">
-
                             {label}
-
                           </span>
-
                         </div>
 
                         <p className="text-[13px] leading-6 text-[#42545b]">
-
                           {value}
-
                         </p>
-
                       </div>
-
                     ))}
-
                   </div>
-
                 </div>
-
               </Reveal>
-
             </div>
-
           </section>
-
         </>
-
       ) : null}
 
       {isIoTSensors ? (
@@ -1289,7 +969,11 @@ function ProductExtendedContent({
                   </h2>
 
                   <p className="mt-5 max-w-md text-[13px] leading-[1.75] text-white/48 sm:text-[14px]">
-                    Five sensor types cover fuel, temperature, humidity, load / axle and ambient light monitoring. Each sensor connects through the relevant GPS-device interface and sends its readings into the platform for live visibility, trends and alerts.
+                    Five sensor types cover fuel, temperature, humidity, load /
+                    axle and ambient light monitoring. Each sensor connects
+                    through the relevant GPS-device interface and sends its
+                    readings into the platform for live visibility, trends and
+                    alerts.
                   </p>
 
                   <div className="mt-7 hidden items-center gap-3 lg:flex">
@@ -1327,7 +1011,7 @@ function ProductExtendedContent({
                           <div className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.025] px-5 py-5 transition-all duration-300 hover:border-[#27d59b]/25 hover:bg-white/[0.04] sm:px-6 sm:py-6 lg:px-7">
                             <div className="absolute inset-y-0 left-0 w-px bg-gradient-to-b from-transparent via-[#27d59b]/45 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
-                            <div className="grid gap-4 sm:grid-cols-[48px_1fr_auto] sm:items-start">
+                            <div className="grid gap-4 sm:grid-cols-[48px_1fr] sm:items-start">
                               <span className="flex h-9 w-9 items-center justify-center rounded-full border border-[#27d59b]/20 bg-[#27d59b]/[0.045] font-mono text-[8px] font-semibold text-[#27d59b]">
                                 {String(index + 1).padStart(2, "0")}
                               </span>
@@ -1339,12 +1023,6 @@ function ProductExtendedContent({
                                 <p className="mt-2 max-w-2xl text-[12px] leading-[1.75] text-white/43 sm:text-[13px]">
                                   {item.description}
                                 </p>
-                              </div>
-
-                              <div className="hidden pt-1 sm:block">
-                                <span className="inline-flex h-8 items-center rounded-full border border-white/[0.08] px-3 font-mono text-[7px] uppercase tracking-[0.12em] text-white/26 transition-colors duration-300 group-hover:border-[#27d59b]/20 group-hover:text-[#27d59b]/70">
-                                  Sensor
-                                </span>
                               </div>
                             </div>
                           </div>
@@ -1358,33 +1036,18 @@ function ProductExtendedContent({
           </div>
         </section>
       ) : null}
-
     </>
-
   );
-
 }
 
-function RelatedProducts({
-
-  currentSlug,
-
-}: {
-
-  currentSlug: string;
-
-}) {
-
+function RelatedProducts({ currentSlug }: { currentSlug: string }) {
   const trackId = "related-products-track";
 
   const visibleProducts = relatedProductCatalog.filter(
-
     (item) => item.slug !== currentSlug,
-
   );
 
   const scrollTrack = (direction: "left" | "right") => {
-
     const track = document.getElementById(trackId);
 
     if (!track) return;
@@ -1396,221 +1059,128 @@ function RelatedProducts({
     const gap = 16;
 
     track.scrollBy({
-
       left: direction === "right" ? cardWidth + gap : -(cardWidth + gap),
 
       behavior: "smooth",
-
     });
-
   };
 
   return (
-
     <section className="relative overflow-hidden border-b border-[#d3ddd9] bg-white">
-
       <VIoTSVGBackground />
 
       <div className="relative z-10 mx-auto max-w-[1360px] px-5 py-11 sm:px-8 sm:py-14 lg:px-12 lg:py-[72px]">
-
         <div className="flex items-end justify-between gap-5">
-
           <div className="flex items-center gap-3">
-
             <span className="h-px w-8 bg-[#27d59b]" />
 
             <span className="font-mono text-[8px] font-semibold uppercase tracking-[0.18em] text-[#007c67]">
-
               More connected products
-
             </span>
-
           </div>
 
           <div className="hidden shrink-0 items-center gap-2 sm:flex">
-
             <button
-
               type="button"
-
               aria-label="Scroll products left"
-
               onClick={() => scrollTrack("left")}
-
               className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-[#c7d5d0] bg-white text-[#081b24] shadow-[0_8px_22px_rgba(8,27,36,0.05)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#007c67]/30 hover:text-[#007c67]"
-
             >
-
               <ArrowLeft className="h-4 w-4" />
-
             </button>
 
             <button
-
               type="button"
-
               aria-label="Scroll products right"
-
               onClick={() => scrollTrack("right")}
-
               className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-[#081b24] bg-[#081b24] text-white shadow-[0_8px_22px_rgba(8,27,36,0.10)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#007c67] hover:bg-[#007c67]"
-
             >
-
               <ArrowRight className="h-4 w-4" />
-
             </button>
-
           </div>
-
         </div>
 
         <div
-
           id={trackId}
-
           className="mt-6 flex snap-x snap-mandatory gap-3 overflow-x-auto sm:mt-7 sm:gap-4 overscroll-x-contain scroll-smooth pb-3 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
-
         >
-
-          {visibleProducts.map((item) => {
-
+          {visibleProducts.map((item, visibleIndex) => {
             const image = getProductImage(item.slug);
 
             return (
-
               <Link
-
                 key={item.id}
-
                 data-related-card
-
                 href={`/products/${item.slug}`}
-
                 className="group w-[82vw] min-w-[82vw] max-w-[280px] shrink-0 sm:w-[280px] sm:min-w-[280px] snap-start overflow-hidden rounded-2xl border border-[#c8d5d0] bg-[#f4f6f2] shadow-[0_14px_36px_rgba(8,27,36,0.045)] transition-all duration-300 hover:-translate-y-1 hover:border-[#007c67]/30 hover:bg-white hover:shadow-[0_18px_42px_rgba(8,27,36,0.08)] lg:w-[300px] lg:min-w-[300px]"
-
               >
-
                 <div className="relative aspect-[4/3] overflow-hidden border-b border-[#d4dfdb] bg-[#eef2ef]">
-
                   <Image
-
                     src={image}
-
                     alt={item.name}
-
                     fill
-
                     sizes="300px"
-
                     className="object-contain p-6 transition-transform duration-500 group-hover:scale-[1.025]"
-
                   />
 
                   <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#081b24]/10 via-transparent to-white/[0.03]" />
 
                   <span className="absolute left-4 top-4 rounded-md border border-[#007c67]/10 bg-white/80 px-2 py-1 font-mono text-[7px] font-semibold tracking-[0.16em] text-[#007c67] backdrop-blur-sm">
-
-                    {item.number}
-
+                    {String(visibleIndex + 1).padStart(2, "0")}
                   </span>
-
                 </div>
 
                 <div className="p-5">
-
                   <div className="flex items-start justify-between gap-4">
-
                     <div className="min-w-0">
-
                       <span className="font-mono text-[7px] uppercase tracking-[0.16em] text-[#607078]">
-
                         {item.shortName}
-
                       </span>
 
                       <h3 className="mt-2 font-heading text-xl font-semibold leading-[1.05] tracking-[-0.025em] text-[#081b24]">
-
                         {item.name}
-
                       </h3>
-
                     </div>
 
                     <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-[#c7d5d0] bg-white text-[#007c67] transition-all duration-300 group-hover:border-[#007c67] group-hover:bg-[#007c67] group-hover:text-white">
-
                       <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-
                     </span>
-
                   </div>
-
                 </div>
-
               </Link>
-
             );
-
           })}
-
         </div>
 
         <div className="mt-3 flex items-center justify-between sm:hidden">
-
-          <span className="font-mono text-[7px] uppercase tracking-[0.15em] text-[#607078]">
-
-            Swipe to explore
-
-          </span>
+          <span className="sr-only">Related products</span>
 
           <div className="flex items-center gap-2">
-
             <button
-
               type="button"
-
               aria-label="Scroll products left"
-
               onClick={() => scrollTrack("left")}
-
               className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-[#c7d5d0] bg-white text-[#081b24]"
-
             >
-
               <ArrowLeft className="h-3.5 w-3.5" />
-
             </button>
 
             <button
-
               type="button"
-
               aria-label="Scroll products right"
-
               onClick={() => scrollTrack("right")}
-
               className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-[#081b24] bg-[#081b24] text-white"
-
             >
-
               <ArrowRight className="h-3.5 w-3.5" />
-
             </button>
-
           </div>
-
         </div>
-
       </div>
-
     </section>
-
   );
-
 }
 
 export default function ProductPageClient({
-
   product,
 
   related,
@@ -1618,29 +1188,20 @@ export default function ProductPageClient({
   productImage,
 
   flow,
-
 }: ProductPageClientProps) {
-
   const [specTarget, setSpecTarget] = useState<SpecificationTarget | null>(
-
     null,
-
   );
 
   const closeSpecifications = useCallback(() => {
     setSpecTarget(null);
   }, []);
 
-  const currentProductImage =
-
-    getProductImage(product.slug) || productImage;
+  const currentProductImage = getProductImage(product.slug) || productImage;
 
   const detailItems = useMemo(() => {
-
-    if (product.slug === "vehicle-telematics" && product.variants?.length) {
-
+    if (product.variants?.length) {
       return product.variants.map((variant, index) => ({
-
         id: variant.id,
 
         number: String(index + 1).padStart(2, "0"),
@@ -1653,20 +1214,22 @@ export default function ProductPageClient({
 
         points: variant.features,
 
-        image: getVariantImage(variant.id, currentProductImage),
+        image:
+          variant.image ?? getVariantImage(variant.id, currentProductImage),
+
+        images:
+          variant.gallery?.length
+            ? variant.gallery
+            : [variant.image ?? getVariantImage(variant.id, currentProductImage)],
 
         specs: variant.specs,
 
         note: variant.note,
-
       }));
-
     }
 
     return [
-
       {
-
         id: "overview",
 
         number: product.number,
@@ -1681,20 +1244,18 @@ export default function ProductPageClient({
 
         image: currentProductImage,
 
+        images: [currentProductImage],
+
         specs: product.specs,
 
         note: product.note,
-
       },
-
     ];
-
   }, [currentProductImage, product]);
 
   const firstDetailId = detailItems[0]?.id ?? "overview";
 
   const productSchema = {
-
     "@context": "https://schema.org",
 
     "@type": "Product",
@@ -1709,48 +1270,40 @@ export default function ProductPageClient({
 
     category: "Connected fleet, asset and access hardware",
 
-    url: `https://viot.tech/products/${product.slug}`,
+    url: `https://www.viot.in/products/${product.slug}`,
 
     brand: {
-
       "@type": "Brand",
 
       name: "VIoT",
-
     },
-
   };
 
   return (
-
     <main className="overflow-x-clip bg-[#f4f6f2] text-[#081b24]">
-
       <StructuredData data={productSchema} />
 
       <StructuredData
-
         data={breadcrumbSchema([
-
           { name: "Home", path: "/" },
 
           { name: "Products", path: "/products" },
 
           {
-
             name: product.name,
 
             path: `/products/${product.slug}`,
-
           },
-
         ])}
-
       />
 
-      <section className="relative isolate min-h-[590px] overflow-hidden bg-[#061820] text-white sm:min-h-[630px] lg:min-h-[660px]">
+      <section className="relative isolate min-h-[520px] overflow-hidden bg-[#061820] text-white sm:min-h-[560px] lg:min-h-[600px]">
         <VIoTSVGBackground dark />
 
-        <div className="pointer-events-none absolute inset-0 z-[1] overflow-hidden" aria-hidden="true">
+        <div
+          className="pointer-events-none absolute inset-0 z-[1] overflow-hidden"
+          aria-hidden="true"
+        >
           <div className="absolute right-[-18%] top-1/2 h-[520px] w-[520px] -translate-y-1/2 rounded-full bg-[#27d59b]/[0.035] blur-3xl sm:right-[-8%] lg:right-[4%] lg:h-[620px] lg:w-[620px]" />
 
           <motion.svg
@@ -1792,11 +1345,19 @@ export default function ProductPageClient({
                 cx="565"
                 cy="330"
                 r={r}
-                stroke={index === 1 ? "rgba(39,213,155,0.12)" : "rgba(255,255,255,0.055)"}
+                stroke={
+                  index === 1
+                    ? "rgba(39,213,155,0.12)"
+                    : "rgba(255,255,255,0.055)"
+                }
                 strokeWidth="1"
                 strokeDasharray={index === 1 ? "5 16" : undefined}
                 animate={index === 1 ? { rotate: 360 } : undefined}
-                transition={index === 1 ? { duration: 38, repeat: Infinity, ease: "linear" } : undefined}
+                transition={
+                  index === 1
+                    ? { duration: 38, repeat: Infinity, ease: "linear" }
+                    : undefined
+                }
                 style={{ transformOrigin: "565px 330px" }}
               />
             ))}
@@ -1807,9 +1368,19 @@ export default function ProductPageClient({
               r="6"
               fill="#27d59b"
               animate={{ opacity: [0.35, 1, 0.35], r: [5, 7, 5] }}
-              transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+              transition={{
+                duration: 2.4,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
             />
-            <circle cx="565" cy="330" r="25" stroke="rgba(39,213,155,0.18)" strokeWidth="1" />
+            <circle
+              cx="565"
+              cy="330"
+              r="25"
+              stroke="rgba(39,213,155,0.18)"
+              strokeWidth="1"
+            />
 
             {[
               [298, 280, 0],
@@ -1824,7 +1395,12 @@ export default function ProductPageClient({
                 r="3.5"
                 fill="#27d59b"
                 animate={{ opacity: [0.18, 0.9, 0.18], scale: [0.8, 1.3, 0.8] }}
-                transition={{ duration: 2.8, delay, repeat: Infinity, ease: "easeInOut" }}
+                transition={{
+                  duration: 2.8,
+                  delay,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
               />
             ))}
 
@@ -1833,15 +1409,23 @@ export default function ProductPageClient({
               cy="430"
               r="4"
               fill="#27d59b"
-              animate={{ cx: [190, 350, 500, 690], cy: [430, 330, 360, 320], opacity: [0, 1, 1, 0] }}
-              transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
+              animate={{
+                cx: [190, 350, 500, 690],
+                cy: [430, 330, 360, 320],
+                opacity: [0, 1, 1, 0],
+              }}
+              transition={{
+                duration: 5.5,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
             />
           </motion.svg>
 
           <div className="absolute inset-0 bg-gradient-to-b from-[#061820]/0 via-[#061820]/8 to-[#061820]/78 lg:bg-gradient-to-r lg:from-[#061820] lg:via-[#061820]/90 lg:via-[48%] lg:to-transparent" />
         </div>
 
-        <div className="relative z-10 mx-auto flex min-h-[590px] max-w-[1440px] items-center px-5 py-20 sm:min-h-[630px] sm:px-8 sm:py-24 lg:min-h-[660px] lg:px-12 lg:py-24 xl:px-16">
+        <div className="relative z-10 mx-auto flex min-h-[520px] max-w-[1320px] items-center px-5 py-16 sm:min-h-[560px] sm:px-8 sm:py-20 lg:min-h-[600px] lg:px-12 lg:py-20 xl:px-16">
           <motion.div
             initial={{ opacity: 0, y: 22 }}
             animate={{ opacity: 1, y: 0 }}
@@ -1855,7 +1439,7 @@ export default function ProductPageClient({
               </span>
             </div>
 
-            <h1 className="mt-5 max-w-[620px] font-heading text-[clamp(2.35rem,6.2vw,4.15rem)] font-semibold leading-[0.98] tracking-[-0.04em] text-white sm:mt-6 sm:text-[clamp(2.8rem,5.6vw,4.15rem)] lg:leading-[0.96] lg:tracking-[-0.045em]">
+            <h1 className="mt-5 max-w-[820px] font-heading text-[36px] font-semibold leading-[0.92] tracking-[-2px] text-white sm:mt-6 sm:text-[52px] sm:tracking-[-3px] lg:text-[76px] lg:tracking-[-4.5px]">
               {(() => {
                 const words = product.headline.trim().split(/\s+/);
                 const accentCount = words.length > 4 ? 2 : 1;
@@ -1863,14 +1447,15 @@ export default function ProductPageClient({
                 const accent = words.slice(-accentCount).join(" ");
                 return (
                   <>
-                    {lead}{lead ? " " : ""}
+                    {lead}
+                    {lead ? " " : ""}
                     <span className="font-normal text-[#27d59b]">{accent}</span>
                   </>
                 );
               })()}
             </h1>
 
-            <p className="mt-5 max-w-[520px] text-[13px] leading-[1.7] text-white/58 sm:mt-6 sm:text-[14px] lg:text-[15px]">
+            <p className="mt-6 max-w-[700px] font-sans text-[16px] font-normal leading-[28px] text-white/65 lg:text-[18px]">
               {product.lede}
             </p>
 
@@ -1895,33 +1480,20 @@ export default function ProductPageClient({
       </section>
 
       {detailItems.map((item, index) => (
-
         <ProductDetailBlock
-
           key={item.id}
-
           id={item.id}
-
           number={item.number}
-
           eyebrow={item.eyebrow}
-
           title={item.title}
-
           description={item.description}
-
           points={item.points}
-
-          image={item.image}
-
+          images={item.images}
           imageAlt={item.title}
-
           index={index}
-
+          hasSpecifications={item.specs.length > 0}
           onSpecifications={() =>
-
             setSpecTarget({
-
               id: item.id,
 
               title: item.title,
@@ -1929,23 +1501,15 @@ export default function ProductPageClient({
               specs: item.specs,
 
               note: item.note,
-
             })
-
           }
-
         />
-
       ))}
 
       <ProductExtendedContent
-
         product={product}
-
         onSpecifications={() =>
-
           setSpecTarget({
-
             id: product.id,
 
             title: product.name,
@@ -1953,27 +1517,15 @@ export default function ProductPageClient({
             specs: product.specs,
 
             note: product.note,
-
           })
-
         }
-
       />
 
       <RelatedProducts currentSlug={product.slug} />
 
       <CtaBand />
 
-      <SpecificationsModal
-
-        target={specTarget}
-
-        onClose={closeSpecifications}
-
-      />
-
+      <SpecificationsModal target={specTarget} onClose={closeSpecifications} />
     </main>
-
   );
-
 }

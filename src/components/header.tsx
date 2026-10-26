@@ -13,7 +13,6 @@ import { ArrowIcon } from "./icons";
 import Image from "next/image";
 
 const productLinks = [
-
   ["Vehicle Telematics", "/products/vehicle-telematics"],
 
   ["Video Telematics", "/products/video-telematics"],
@@ -25,269 +24,178 @@ const productLinks = [
   ["Asset Trackers", "/products/asset-trackers"],
 
   ["IoT Sensors", "/products/iot-sensors"],
+] as const;
 
+const industryLinks = [
+  ["Logistics & Transportation", "/industries/logistics-transportation"],
+  ["Electric Mobility", "/industries/electric-mobility"],
+  ["Cement & Mining", "/industries/cement-mining"],
+  ["FMCG", "/industries/fmcg"],
+  ["Pharmaceuticals & Chemicals", "/industries/pharmaceuticals-chemicals"],
+  ["Infrastructure & Security", "/industries/infrastructure-security"],
+  ["School & University", "/industries/schools-universities"],
 ] as const;
 
 const solutionLinks = [
+  ["Fleet Management Solution", "/solutions/fleet-management"],
 
-  ["Logistics & Supply Chain", "/solutions/logistics-supply-chain"],
+  ["EV Management Solution", "/solutions/ev-management"],
 
-  ["Pharmaceuticals & Chemicals", "/solutions/pharmaceuticals-chemicals"],
+  ["Video Telematics Solution", "/solutions/video"],
 
-  ["Construction", "/solutions/construction"],
+  ["IoT Sensor Solution", "/solutions/iot-sensors"],
 
-  ["Mining", "/solutions/mining"],
+  ["E-Lock Solution", "/solutions/e-lock"],
 
-  ["FMCG", "/solutions/fmcg"],
-
-  ["Data Centres", "/solutions/data-centres"],
-
-  ["Schools & Universities", "/solutions/schools-universities"],
-
-  ["Smart Infrastructure", "/solutions/smart-infrastructure"],
-
+  ["Smart Access Solution", "/solutions/access-control"],
 ] as const;
 
-const platformLinks = [
+const resourceLinks = [
+  [
+    "7 Questions to Ask Any Telematics Vendor Before You Sign",
 
-  ["Fleet Intelligence", "/platform/fleet-management"],
+    "/insights/7-questions-to-ask-any-telematics-vendor-before-you-sign",
+  ],
 
-  ["EV Management", "/platform/ev-management"],
+  [
+    "2G/3G Shutdown: What Happens to the AIS-140 Devices Already on Your Vehicles",
 
-  ["Safe Logistics", "/platform/e-lock"],
-
-  ["Video Intelligence", "/platform/video"],
-
-  ["Smart Access Control", "/platform/access-control"],
-
-  ["Temperature & Humidity Monitoring", "/platform/temperature-humidity-monitoring"],
-
-  ["Fuel Monitoring", "/platform/fuel-monitoring"],
-
-  ["Load & Weight Analytics", "/platform/load-weight-analytics"],
-
-  ["Industrial Automation", "/platform/industrial-automation"],
-
+    "/insights/2g-3g-shutdown-what-happens-to-the-ais-140-devices-already-on-your-vehicles",
+  ],
 ] as const;
 
 const navItems = [
+  { label: "Products", href: "/products", links: productLinks },
 
-  {
+  { label: "Solutions", href: "/solutions", links: solutionLinks },
 
-    label: "Products",
+  { label: "Industries", href: "/industries", links: industryLinks },
 
-    href: "/products",
-
-    links: productLinks,
-
-  },
-
-  {
-
-    label: "Solutions",
-
-    href: "/platform",
-
-    links: platformLinks,
-
-  },
-
-   {
-
-    label: "Industries",
-
-    href: "/solutions",
-
-    links: solutionLinks,
-
-  },
-
+  { label: "Resources", href: "/insights", links: resourceLinks },
 ] as const;
 
 type NavGroupProps = {
   label: string;
+
   href: string;
+
   links: ReadonlyArray<readonly [string, string]>;
+
   active: boolean;
+
   isLightHeader: boolean;
 };
 
-function NavGroup({ label, href, links, active, isLightHeader }: NavGroupProps) {
+function NavGroup({
+  label,
 
+  href,
+
+  links,
+
+  active,
+
+  isLightHeader,
+}: NavGroupProps) {
   const [hover, setHover] = useState(false);
 
   return (
-
     <div
-
       className="relative py-2"
-
       onMouseEnter={() => setHover(true)}
-
       onMouseLeave={() => setHover(false)}
-
     >
-
       <Link
-
         href={href}
-
         style={{
-
           color: active
-
             ? "#27d59b"
-
             : isLightHeader
-
               ? hover
-
                 ? "#007c67"
-
                 : "#081b24"
-
               : hover
-
                 ? "#27d59b"
-
                 : "#ffffff",
-
         }}
-
-        className="inline-flex items-center gap-1.5 text-[12px] font-semibold tracking-[-0.01em] transition-colors duration-200"
-
+        className="inline-flex items-center gap-1.5 font-sans text-[14px] font-semibold tracking-[-0.01em] transition-colors duration-200"
       >
-
         {label}
 
         <svg
-
           width="7"
-
           height="4"
-
           viewBox="0 0 9 6"
-
           fill="none"
-
           className={`transition-transform duration-200 ${
-
             hover ? "rotate-180" : ""
-
           }`}
-
         >
-
           <path
-
             d="M1 1L4.5 4.5L8 1"
-
             stroke="currentColor"
-
             strokeWidth="2"
-
             strokeLinecap="round"
-
           />
-
         </svg>
-
       </Link>
 
       <AnimatePresence>
-
         {hover && (
-
           <motion.div
-
             initial={{
-
               opacity: 0,
 
               y: 6,
 
               scale: 0.985,
-
             }}
-
             animate={{
-
               opacity: 1,
 
               y: 0,
 
               scale: 1,
-
             }}
-
             exit={{
-
               opacity: 0,
 
               y: 5,
 
               scale: 0.985,
-
             }}
-
             transition={{
-
               duration: 0.18,
 
               ease: [0.16, 1, 0.3, 1],
-
             }}
-
-      className="absolute left-1/2 top-full z-30 mt-2 w-fit min-w-48 max-w-56 -translate-x-1/2 overflow-hidden rounded-xl border border-[#d9e0dd] bg-white p-1.5 shadow-[0_18px_45px_rgba(8,27,36,0.14)]"
-
+            className="absolute left-1/2 top-full z-30 mt-2 w-fit min-w-52 max-w-[320px] -translate-x-1/2 overflow-hidden rounded-xl border border-[#d9e0dd] bg-white p-1.5 shadow-[0_18px_45px_rgba(8,27,36,0.14)]"
           >
-
             <div className="flex flex-col gap-0.5">
-
               {links.map(([itemLabel, itemHref]) => (
-
                 <Link
-
                   key={itemHref}
-
                   href={itemHref}
-
-               className="group flex items-center justify-between rounded-lg px-2.5 py-1.5 text-[11px] font-semibold !text-[#081b24] transition-colors duration-150 hover:bg-[#f3f7f5] hover:!text-[#007c67]"
-
+                  className="group flex items-center justify-between rounded-lg px-2.5 py-1.5 text-[12px] font-medium !text-[#081b24] transition-colors duration-150 hover:bg-[#f3f7f5] hover:!text-[#007c67]"
                 >
-
-                <span className="!text-[#081b24] group-hover:!text-[#007c67]">
-
-  {itemLabel}
-
-</span>
-
-                  <span className="translate-x-[-2px] font-mono text-[11px] text-[#27d59b] opacity-0 transition-all duration-150 group-hover:translate-x-0 group-hover:opacity-100">
-
-                    →
-
+                  <span className="!text-[#081b24] group-hover:!text-[#007c67]">
+                    {itemLabel}
                   </span>
 
+                  <span className="translate-x-[-2px] font-mono text-[11px] text-[#27d59b] opacity-0 transition-all duration-150 group-hover:translate-x-0 group-hover:opacity-100">
+                    →
+                  </span>
                 </Link>
-
               ))}
-
             </div>
-
           </motion.div>
-
         )}
-
       </AnimatePresence>
-
     </div>
-
   );
-
 }
 
 export function Header() {
-
   const pathname = usePathname();
 
   const [open, setOpen] = useState(false);
@@ -297,11 +205,9 @@ export function Header() {
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
 
   const close = () => {
-
     setOpen(false);
 
     setMobileExpanded(null);
-
   };
 
   useEffect(() => {
@@ -309,610 +215,393 @@ export function Header() {
 
     const updateHeaderContrast = () => {
       // Inspect the actual page under the fixed header, not the scroll position.
-      const header = document.querySelector('[data-adaptive-header]');
+      const header = document.querySelector("[data-adaptive-header]");
+
       const x = window.innerWidth / 2;
+
       const y = Math.min(43, window.innerHeight - 1);
+
       const layers = document.elementsFromPoint(x, y);
+
       let backgroundIsDark = false;
+
       let foundBackground = false;
 
       for (const layer of layers) {
         if (header?.contains(layer)) continue;
+
         const style = window.getComputedStyle(layer);
+
         const rgb = style.backgroundColor.match(
-          /rgba?\(\s*([\d.]+)[,\s]+([\d.]+)[,\s]+([\d.]+)(?:[,\s/]+([\d.]+))?\s*\)/
+          /rgba?\\\\(\s*([\d.]+)[,\s]+([\d.]+)[,\s]+([\d.]+)(?:[,\s/]+([\d.]+))?\s*\\\\)/,
         );
+
         if (rgb) {
           const alpha = rgb[4] === undefined ? 1 : Number(rgb[4]);
+
           if (alpha >= 0.45) {
             const channels = [Number(rgb[1]), Number(rgb[2]), Number(rgb[3])]
+
               .map((value) => value / 255)
-              .map((value) => value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4);
-            const brightness = channels[0] * 0.2126 + channels[1] * 0.7152 + channels[2] * 0.0722;
+
+              .map((value) =>
+                value <= 0.04045
+                  ? value / 12.92
+                  : ((value + 0.055) / 1.055) ** 2.4,
+              );
+
+            const brightness =
+              channels[0] * 0.2126 +
+              channels[1] * 0.7152 +
+              channels[2] * 0.0722;
+
             backgroundIsDark = brightness < 0.18;
+
             foundBackground = true;
+
             break;
           }
         }
-        // Full-bleed hero video/image backgrounds are handled by their overlays;
-        // if no solid overlay exists, preserve the initial dark-hero assumption.
+        // Full-bleed hero video/image backgrounds are handled by their overlays;      // if no solid overlay exists, preserve the initial dark-hero assumption.
       }
-
       // Default to a dark hero until a section with a solid background is found.
       setIsLightHeader(foundBackground ? backgroundIsDark : true);
     };
 
     const scheduleUpdate = () => {
       if (frame !== null) cancelAnimationFrame(frame);
+
       frame = requestAnimationFrame(updateHeaderContrast);
     };
 
     scheduleUpdate();
+
     window.addEventListener("scroll", scheduleUpdate, { passive: true });
+
     window.addEventListener("resize", scheduleUpdate);
+
     return () => {
       window.removeEventListener("scroll", scheduleUpdate);
+
       window.removeEventListener("resize", scheduleUpdate);
+
       if (frame !== null) cancelAnimationFrame(frame);
     };
   }, [pathname]);
 
   useEffect(() => {
-
     document.body.style.overflow = open ? "hidden" : "unset";
 
     return () => {
-
       document.body.style.overflow = "unset";
-
     };
-
   }, [open]);
 
   return (
-
-  <header data-adaptive-header className="fixed left-0 top-0 z-50 w-full rounded-xl px-3 pt-3 sm:px-5">
-
+    <header
+      data-adaptive-header
+      className="fixed left-0 top-0 z-50 w-full rounded-xl px-3 pt-3 sm:px-5"
+    >
       {/* Main Navbar */}
 
       <div
-
         style={{
-
           backgroundColor: isLightHeader ? "#ffffff" : "#0d2935",
 
-          borderColor: isLightHeader
-
-            ? "#d8e0dd"
-
-            : "rgba(255,255,255,0.12)",
-
+          borderColor: isLightHeader ? "#d8e0dd" : "rgba(255,255,255,0.12)",
         }}
-
-className="relative mx-auto flex h-[56px] max-w-4xl items-center justify-between rounded-[10px] border px-4 shadow-[0_8px_28px_rgba(0,0,0,0.08)] transition-all duration-300"
-
+        className="relative mx-auto flex h-[54px] max-w-[1120px] items-center justify-between rounded-[10px] border px-4 shadow-[0_8px_28px_rgba(0,0,0,0.08)] transition-all duration-300"
       >
-
         {/* Logo */}
 
-      <Link
-
-  href="/"
-
-  aria-label="VIoT home"
-
-  onClick={close}
-
-  className="group flex shrink-0 items-center"
-
->
-
-  <Image
-
-    src="/logo/logo.png"
-
-    alt="VIoT"
-
-    width={120}
-
-    height={40}
-
-    priority
-
-    className="h-10 w-auto object-contain transition-transform duration-200 group-hover:scale-[1.03]"
-
-  />
-
-</Link>
+        <Link
+          href="/"
+          aria-label="VIoT home"
+          onClick={close}
+          className="group flex shrink-0 items-center"
+        >
+          <Image
+            src="/logo/logo.png"
+            alt="VIoT"
+            width={120}
+            height={40}
+            priority
+            className="h-9 w-auto object-contain transition-transform duration-200 group-hover:scale-[1.03]"
+          />
+        </Link>
 
         {/* Desktop Navigation */}
 
-      <nav className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-4 lg:flex">
-
+        <nav className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-3.5 lg:flex xl:gap-4">
           <Link
-
             href="/"
-
             style={{
-
               color:
-
                 pathname === "/"
-
                   ? "#27d59b"
-
                   : isLightHeader
-
                     ? "#081b24"
-
                     : "#ffffff",
-
             }}
-
-            className="text-[12px] font-semibold tracking-[-0.01em] transition-colors hover:text-[#27d59b]"
-
+            className="font-sans text-[14px] font-semibold tracking-[-0.01em] transition-colors hover:text-[#27d59b]"
           >
-
             Home
-
           </Link>
 
           <Link
-
             href="/about"
-
             style={{
-
               color:
-
                 pathname === "/about"
-
                   ? "#27d59b"
-
                   : isLightHeader
-
                     ? "#081b24"
-
                     : "#ffffff",
-
             }}
-
-            className="text-[12px] font-semibold tracking-[-0.01em] transition-colors hover:text-[#27d59b]"
-
+            className="font-sans text-[14px] font-semibold tracking-[-0.01em] transition-colors hover:text-[#27d59b]"
           >
-
             About
-
           </Link>
 
           {navItems.map((item) => (
-
             <NavGroup
-
               key={item.href}
-
               label={item.label}
-
               href={item.href}
-
               links={item.links}
-
               active={pathname.startsWith(item.href)}
-
               isLightHeader={isLightHeader}
-
             />
-
           ))}
-
         </nav>
 
         {/* Right Action */}
 
         <div className="flex items-center gap-2.5">
-
           <Link
-
             href="/contact"
-
             style={{
-
               backgroundColor: isLightHeader ? "#081b24" : "#27d59b",
 
               color: isLightHeader ? "#ffffff" : "#081b24",
-
             }}
-
-            className="hidden h-9 items-center justify-center gap-1.5 whitespace-nowrap rounded-full px-3.5 text-[11px] font-bold tracking-[0.01em] transition-all duration-200 hover:scale-[1.02] hover:opacity-95 lg:inline-flex"
-
+            className="hidden h-9 items-center justify-center gap-1.5 whitespace-nowrap rounded-lg px-3.5 font-sans text-[14px] font-semibold tracking-normal transition-all duration-200 hover:scale-[1.02] hover:opacity-95 lg:inline-flex"
           >
-
             Get in touch
-
             <span className="inline-flex scale-[0.72] items-center">
-
               <ArrowIcon />
-
             </span>
-
           </Link>
 
           {/* Mobile Button */}
 
           <button
-
             type="button"
-
             aria-label={open ? "Close menu" : "Open menu"}
-
             aria-expanded={open}
-
             onClick={() => setOpen((v) => !v)}
-
             style={{
-
               backgroundColor: isLightHeader
-
                 ? "#f3f6f4"
-
                 : "rgba(255,255,255,0.08)",
 
-              borderColor: isLightHeader
-
-                ? "#d8e0dd"
-
-                : "rgba(255,255,255,0.16)",
-
+              borderColor: isLightHeader ? "#d8e0dd" : "rgba(255,255,255,0.16)",
             }}
-
             className="flex h-9 w-9 flex-col items-center justify-center gap-[5px] rounded-[10px] border transition-colors lg:hidden"
-
           >
-
             <span
-
               className={`block h-[1.5px] w-[18px] transition-transform duration-300 ${
-
                 open
-
                   ? "translate-y-[3.25px] rotate-45 bg-[#081b24]"
-
                   : isLightHeader
-
                     ? "bg-[#081b24]"
-
                     : "bg-white"
-
               }`}
-
             />
 
             <span
-
               className={`block h-[1.5px] w-[18px] transition-transform duration-300 ${
-
                 open
-
                   ? "-translate-y-[3.25px] -rotate-45 bg-[#081b24]"
-
                   : isLightHeader
-
                     ? "bg-[#081b24]"
-
                     : "bg-white"
-
               }`}
-
             />
-
           </button>
-
         </div>
-
       </div>
 
       {/* Mobile Menu */}
 
       <AnimatePresence>
-
         {open && (
-
           <motion.div
-
             initial={{
-
               opacity: 0,
 
               y: -8,
 
               scale: 0.985,
-
             }}
-
             animate={{
-
               opacity: 1,
 
               y: 0,
 
               scale: 1,
-
             }}
-
             exit={{
-
               opacity: 0,
 
               y: -8,
 
               scale: 0.985,
-
             }}
-
             transition={{
-
               duration: 0.18,
 
               ease: [0.16, 1, 0.3, 1],
-
             }}
-
-            className="absolute inset-x-3 top-[67px] z-50 mx-auto max-h-[82vh] max-w-5xl overflow-y-auto rounded-2xl border border-[#d8e0dd] bg-white p-3.5 shadow-[0_20px_50px_rgba(8,27,36,0.16)] sm:inset-x-5 lg:hidden"
-
+            className="absolute inset-x-3 top-[65px] z-50 mx-auto max-h-[82vh] max-w-[1040px] overflow-y-auto rounded-2xl border border-[#d8e0dd] bg-white p-3.5 shadow-[0_20px_50px_rgba(8,27,36,0.16)] sm:inset-x-5 lg:hidden"
           >
-
             <div className="flex flex-col gap-1">
-
               {/* Home */}
 
               <Link
-
                 href="/"
-
                 onClick={close}
-
-                className={`rounded-lg px-3.5 py-2.5 text-[13px] font-bold transition-colors ${
-
+                className={`rounded-lg px-3.5 py-2.5 font-sans text-[13px] font-semibold transition-colors ${
                   pathname === "/"
-
                     ? "bg-[#f3f7f5] !text-[#007c67]"
-
                     : "!text-[#07151c] hover:bg-[#f3f7f5] hover:!text-[#007c67]"
-
                 }`}
-
               >
-
                 Home
-
               </Link>
 
               {/* About */}
 
               <Link
-
                 href="/about"
-
                 onClick={close}
-
-                className={`rounded-lg px-3.5 py-2.5 text-[13px] font-bold transition-colors ${
-
+                className={`rounded-lg px-3.5 py-2.5 font-sans text-[13px] font-semibold transition-colors ${
                   pathname === "/about"
-
                     ? "bg-[#f3f7f5] !text-[#007c67]"
-
                     : "!text-[#07151c] hover:bg-[#f3f7f5] hover:!text-[#007c67]"
-
                 }`}
-
               >
-
                 About Us
-
               </Link>
 
               {/* Navigation Groups */}
 
               {navItems.map((item) => {
-
                 const isExpanded = mobileExpanded === item.label;
 
                 return (
-
                   <div
-
                     key={item.href}
-
                     className="overflow-hidden rounded-xl border border-[#e3e9e6] bg-[#f8faf9]"
-
                   >
-
                     <div className="flex items-center justify-between px-3.5 py-2.5">
-
                       <Link
-
                         href={item.href}
-
                         onClick={close}
-
-                        className="!text-[#07151c] text-[13px] font-bold transition-colors hover:!text-[#007c67]"
-
+                        className="!text-[#07151c] font-sans text-[13px] font-semibold transition-colors hover:!text-[#007c67]"
                       >
-
                         {item.label}
-
                       </Link>
 
                       <button
-
                         type="button"
-
                         onClick={() =>
-
-                          setMobileExpanded(
-
-                            isExpanded ? null : item.label
-
-                          )
-
+                          setMobileExpanded(isExpanded ? null : item.label)
                         }
-
                         className="p-1.5 !text-[#07151c]"
-
                         aria-label={`Toggle ${item.label} menu`}
-
                       >
-
                         <svg
-
                           width="8"
-
                           height="5"
-
                           viewBox="0 0 9 6"
-
                           fill="none"
-
                           className={`transition-transform duration-200 ${
-
                             isExpanded ? "rotate-180" : ""
-
                           }`}
-
                         >
-
                           <path
-
                             d="M1 1L4.5 4.5L8 1"
-
                             stroke="currentColor"
-
                             strokeWidth="2"
-
                             strokeLinecap="round"
-
                           />
-
                         </svg>
-
                       </button>
-
                     </div>
 
                     <AnimatePresence>
-
                       {isExpanded && (
-
                         <motion.div
-
                           initial={{
-
                             height: 0,
 
                             opacity: 0,
-
                           }}
-
                           animate={{
-
                             height: "auto",
 
                             opacity: 1,
-
                           }}
-
                           exit={{
-
                             height: 0,
 
                             opacity: 0,
-
                           }}
-
                           transition={{
-
                             duration: 0.2,
-
                           }}
-
                           className="flex flex-col gap-0.5 border-t border-[#e3e9e6] bg-white px-2.5 pb-2.5 pt-1"
-
                         >
-
                           {item.links.map(([label, href]) => (
-
                             <Link
-
                               key={href}
-
                               href={href}
-
                               onClick={close}
-
-                              className="flex items-center justify-between rounded-lg px-3 py-2 text-[12px] font-semibold !text-[#07151c] transition-colors hover:bg-[#f3f7f5] hover:!text-[#007c67]"
-
+                              className="flex items-center justify-between rounded-lg px-3 py-2 font-sans text-[13px] font-medium !text-[#07151c] transition-colors hover:bg-[#f3f7f5] hover:!text-[#007c67]"
                             >
-
                               <span>{label}</span>
 
                               <span className="font-mono text-[11px] !text-[#009f7f]">
-
                                 →
-
                               </span>
-
                             </Link>
-
                           ))}
-
                         </motion.div>
-
                       )}
-
                     </AnimatePresence>
-
                   </div>
-
                 );
-
               })}
-
             </div>
 
             {/* Mobile CTA */}
 
             <div className="mt-2.5 border-t border-[#e5eae7] pt-2.5">
-
               <Link
-
                 href="/contact"
-
                 onClick={close}
-
-                className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#27d59b] px-4 py-2.5 text-[13px] font-bold !text-[#07151c] transition-all hover:bg-[#081b24] hover:!text-white"
-
+                className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#27d59b] px-4 py-2.5 text-[14px] font-medium !text-[#07151c] transition-all hover:bg-[#081b24] hover:!text-white"
               >
-
                 Get in touch
-
                 <span className="inline-flex scale-75 items-center">
-
                   <ArrowIcon />
-
                 </span>
-
               </Link>
-
             </div>
-
           </motion.div>
-
         )}
-
       </AnimatePresence>
-
     </header>
-
   );
-
 }

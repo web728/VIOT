@@ -1,11 +1,105 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowIcon } from "@/components/icons";
+import { ArrowUpRight } from "lucide-react";
 
-export const metadata: Metadata = { title: "Industries", description: "VIoT connected-vehicle systems for mining fleets, commercial and logistics fleets, and OEM manufacturing programmes.", alternates: { canonical: "/industries" } };
-const industries = [
-  ["01 / PRIORITY MARKET", "Mining operations", "Weak signal, unstable power, dust, vibration and long shifts make mining the right place to prove a reliable data path.", ["Device health and continuous reporting", "Geofenced operating areas", "Panic, tamper and movement exceptions", "Field-ready power and enclosure design"]],
-  ["02 / COMMERCIAL", "Logistics fleets", "Connect location, cargo security and vehicle condition for ordinary day-to-day fleet operations and last-mile movement.", ["Live trips and vehicle status", "Container and cargo e-lock events", "Route and zone exceptions", "ERP / TMS data integration"]],
-  ["03 / MANUFACTURING", "OEM programmes", "Install telematics at the point of manufacture so vehicles leave the line connected to a platform from day one.", ["Hardware + platform bundle", "Integration support", "Production-line deployment planning", "Ongoing device monitoring"]],
-];
-export default function IndustriesPage() { return <><section className="page-hero"><div className="container"><p className="breadcrumb">Industries / Deployment models</p><h1>Built for the conditions that expose <em>weak systems.</em></h1><p className="page-lede">VIoT starts with the operating environment, then matches the device, data path and platform workflow to it.</p></div></section><section className="section"><div className="container"><div className="split-heading"><div><p className="eyebrow dark"><span />Current focus</p><h2>Three markets. Specific jobs.</h2></div><p>These are the deployment models VIoT is actively building for today. We do not list a sector until the hardware and workflow have a clear job there.</p></div><div className="industry-page-grid">{industries.map(([label, title, copy, points]) => <article className="industry-panel" key={title as string}><p className="section-index">{label as string}</p><div><h2>{title as string}</h2><p>{copy as string}</p><ul>{(points as string[]).map((point) => <li key={point}>{point}</li>)}</ul></div></article>)}</div></div></section><section className="cta-band"><div className="container cta-grid"><div><p className="eyebrow"><span />Fit before pitch</p><h2>Start with the field conditions.</h2></div><div><p>Tell us the fleet size, operating environment, current devices and the data gap. We will map the right starting point.</p><Link className="button button-primary" href="/contact">Describe the operation <ArrowIcon /></Link></div></div></section></>; }
+import { solutions } from "@/lib/solutions";
+
+export const metadata: Metadata = {
+  title: "Industries | VIoT",
+  description:
+    "Explore VIoT applications across logistics, electric mobility, cement and mining, FMCG, pharmaceuticals and chemicals, infrastructure and security, and student transportation.",
+  alternates: {
+    canonical: "/industries",
+  },
+};
+
+export default function IndustriesPage() {
+  return (
+    <main className="overflow-x-clip bg-[#f4f6f2] text-[#081b24]">
+      <section className="relative overflow-hidden border-b border-white/[0.08] bg-[#081b24] text-white">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 overflow-hidden"
+        >
+          <div className="absolute -left-52 top-[10%] h-[480px] w-[480px] rounded-full bg-[#27d59b]/[0.035] blur-3xl" />
+          <div className="absolute -right-52 bottom-[-20%] h-[620px] w-[620px] rounded-full bg-white/[0.018] blur-3xl" />
+          <svg
+            viewBox="0 0 1600 700"
+            preserveAspectRatio="none"
+            className="absolute inset-0 h-full w-full"
+            fill="none"
+          >
+            <path
+              d="M-160 260 C120 50 390 100 620 285 S1050 610 1760 235"
+              stroke="rgba(255,255,255,0.055)"
+              strokeWidth="1"
+            />
+            <path
+              d="M-180 560 C120 390 390 430 680 535 S1130 700 1780 455"
+              stroke="rgba(39,213,155,0.16)"
+              strokeWidth="1.2"
+              strokeDasharray="3 15"
+            />
+          </svg>
+        </div>
+
+        <div className="relative z-10 mx-auto max-w-[1440px] px-6 pb-16 pt-28 sm:px-8 sm:pb-20 sm:pt-32 lg:px-12 lg:pb-24 xl:px-16">
+          <div className="max-w-[980px]">
+            <div className="flex items-center gap-3">
+              <span className="h-px w-8 bg-[#27d59b]" />
+              <span className="font-sans text-[12px] font-medium uppercase leading-[18px] tracking-[0.14em] text-[#27d59b]">
+                VIoT / Industries
+              </span>
+            </div>
+
+            <h1 className="mt-5 max-w-[960px] font-heading text-[36px] font-semibold leading-[0.92] tracking-[-2px] sm:text-[52px] sm:tracking-[-3px] lg:text-[76px] lg:tracking-[-4.5px]">
+              Connected intelligence for real operating environments.
+            </h1>
+
+            <p className="mt-6 max-w-[700px] font-sans text-[16px] font-normal leading-[28px] text-white/70 lg:text-[18px]">
+              Explore how VIoT applies connected hardware, monitoring and operational intelligence across seven industry environments.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-[1440px] px-6 py-14 sm:px-8 sm:py-16 lg:px-12 lg:py-24 xl:px-16">
+        <div className="border-b border-[#cdd5d2] pb-6">
+          <span className="font-sans text-[12px] font-medium uppercase leading-[18px] tracking-[0.14em] text-[#007c67]">
+            Industry applications
+          </span>
+        </div>
+
+        <div className="divide-y divide-[#cdd5d2]">
+          {solutions.map((industry) => (
+            <Link
+              key={industry.slug}
+              href={`/industries/${industry.slug}`}
+              className="group grid gap-5 py-8 transition-colors hover:bg-white/45 sm:grid-cols-[64px_minmax(0,1fr)_auto] sm:items-start sm:px-2 lg:py-10"
+            >
+              <span className="flex h-9 w-9 items-center justify-center rounded-lg border border-[#007c67]/15 bg-white font-sans text-[12px] font-medium text-[#007c67]">
+                {industry.number}
+              </span>
+
+              <div className="max-w-[920px]">
+                <p className="font-sans text-[12px] font-medium uppercase leading-[18px] tracking-[0.12em] text-[#007c67]">
+                  {industry.name}
+                </p>
+                <h2 className="mt-3 font-heading text-[26px] font-semibold leading-[1.3] text-[#081b24] sm:text-[30px] lg:text-[36px]">
+                  {industry.headline}
+                </h2>
+                <p className="mt-3 max-w-[700px] font-sans text-[16px] font-normal leading-[26px] text-[#607078]">
+                  {industry.lede}
+                </p>
+              </div>
+
+              <span className="flex h-10 w-10 items-center justify-center rounded-lg border border-[#c8d5d0] bg-white text-[#007c67] transition-all group-hover:border-[#007c67] group-hover:bg-[#007c67] group-hover:text-white">
+                <ArrowUpRight className="h-4 w-4" />
+              </span>
+            </Link>
+          ))}
+        </div>
+      </section>
+    </main>
+  );
+}

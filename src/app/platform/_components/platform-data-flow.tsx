@@ -25,7 +25,7 @@ const edgeSources = [
   {
     number: "04",
     name: "IoT Sensors",
-    detail: "Temperature · fuel",
+    detail: "Fuel · temperature · load · lux",
     icon: "sensor",
   },
 ] as const;
@@ -165,7 +165,7 @@ export function PlatformDataFlow() {
                 Connected data
               </span>
 
-              <h2 className="mt-3 max-w-3xl font-heading text-[clamp(2rem,3.2vw,3.3rem)] font-semibold leading-[1.03] tracking-[-0.035em] text-white">
+              <h2 className="mt-4 max-w-[800px] font-heading text-[32px] font-semibold leading-[1.05] tracking-[-2px] text-white lg:text-[46px]">
                 From field signals to
                 <span className="font-normal text-[#27d59b]"> operational intelligence.</span>
               </h2>
